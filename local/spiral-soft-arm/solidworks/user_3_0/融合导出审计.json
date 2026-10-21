@@ -1,0 +1,45 @@
+{
+  "cadquery_version": "2.8.0",
+  "trimesh_version": "5.1.1",
+  "source_file": "spi_rob_20261012_131147.step",
+  "source_sha256": "E5870759E9A1338843797E61D72DB2CE2A285865A1657FE6D952B9022024EAF1",
+  "source_solid_count": 29,
+  "fused_solid_count": 1,
+  "fused_step_file": "spi_rob_20261012_131147_整体融合.step",
+  "fused_step_sha256": "011FEC5AB20C35A4720CFB3DF0F48073F2B19089168061D3986628C5B6D2208E",
+  "step_round_trip_solid_count": 1,
+  "step_round_trip_volume_error_mm3": 0.0014319535112008452,
+  "review_stl_file": "spi_rob_20261012_131147_整体试打.stl",
+  "review_stl_sha256": "7D3C22AA5B31B67AC0A3B56D3533C063913C5F28FC5767F63A9B86A98F9F2C2D",
+  "stl_triangle_count": 414132,
+  "degenerate_stl_faces_removed": 2,
+  "raw_stl_topology": {
+    "boundary_edges": 2,
+    "nonmanifold_edges": 2,
+    "connected_components": 3,
+    "watertight": false,
+    "winding_consistent": true,
+    "is_volume": false
+  },
+  "final_stl_topology": {
+    "boundary_edges": 0,
+    "nonmanifold_edges": 0,
+    "connected_components": 1,
+    "watertight": true,
+    "winding_consistent": true,
+    "is_volume": true
+  },
+  "cleanup_volume_delta_mm3": -6.984919309616089e-10,
+  "bounding_box_mm": {
+    "x": 508.126894,
+    "y": 105.176533,
+    "z": 118.333493
+  },
+  "fused_brep_volume_mm3": 928811.364707,
+  "stl_mesh_volume_mm3": 928386.531963,
+  "stl_volume_error_percent": 0.045739,
+  "stl_bounds_error_mm": 2e-06,
+  "stl_linear_tolerance_mm": 0.15,
+  "stl_angular_tolerance_rad": 0.1,
+  "qualification": "single-piece geometry review and mesh topology check only; not print, strength, or underwater qualification"
+}

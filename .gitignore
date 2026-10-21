@@ -1,0 +1,10 @@
+# local task tracking (not committed)
+local/
+.superpowers/
+extensions/multi-robot-array/output/
+__pycache__/
+
+# Temporary local render previews and runtime logs
+MUJOCO_LOG.TXT
+tmp-*.png
+rl/tb/

@@ -1,0 +1,60 @@
+{
+  "schema_version": "3.0.0",
+  "model": "B32_centerline_dry_canister_with_three_external_wet_motors",
+  "units": "mm",
+  "reference_motor_mount": "../motor_mount_v2/generate_motor_mount.py",
+  "motor_center_radius_mm": 100.0,
+  "base_plate_diameter_mm": 260.0,
+  "base_plate_fixture_radius_mm": 117.0,
+  "canister": {
+    "outer_diameter_mm": 136.0,
+    "inner_diameter_mm": 126.0,
+    "top_z_mm": -20.0,
+    "body_bottom_z_mm": -230.0,
+    "top_wall_mm": 6.0,
+    "bottom_lid_thickness_mm": 10.0,
+    "motor_port_bore_mm": 10.0,
+    "motor_port_boss_diameter_mm": 14.0,
+    "shore_tether_port_bore_mm": 12.0,
+    "usb_c_panel_opening_mm": [9.0, 3.2],
+    "flange_fastener_pattern": {
+      "count": 12,
+      "radius_mm": 69.5,
+      "clearance_diameters_mm": [3.3, 4.3, 5.3],
+      "size_names": ["M3", "M4", "M5"]
+    }
+  },
+  "battery": {
+    "format": "21700",
+    "count": 4,
+    "capacity_mAh_each_user_confirmed": 8000,
+    "capacity_status": "user_confirmed; manufacturer_model_and_discharge_rating_pending",
+    "nominal_voltage_v_each_user_confirmed": 3.7,
+    "nominal_voltage_status": "user_confirmed_per_cell",
+    "envelope_diameter_mm": 21.55,
+    "envelope_length_mm": 70.21,
+    "cell_model": null,
+    "connection_assumption": "4S1P; pending electrical review"
+  },
+  "electronic_envelopes_mm": {
+    "esc_each_cylindrical": {"diameter": 3.0, "length": 25.0, "status": "user_confirmed"},
+    "controller_stm32": {"length": 152.0, "width": 87.5, "height": 18.0, "status": "user_confirmed"},
+    "ups_module": {"length": 52.8, "width": 32.0, "height": 18.0, "status": "user_confirmed"},
+    "voltage_regulator": {"length": 100.0, "width": 80.0, "height": 39.0, "status": "user_confirmed"},
+    "usb_c_pd_input": {"length": 28.0, "width": 20.0, "height": 5.0, "status": "length_width_reference; thickness_user_confirmed"},
+    "usb_c_boost_24v": {"length": 45.0, "width": 30.0, "height": 12.0, "status": "placeholder; select_after_current_and_power_review"},
+    "bms": {"length": 45.0, "width": 18.0, "height": 12.0, "status": "proxy"}
+  },
+  "power_inputs": {
+    "shore_voltage_v": 24.0,
+    "usb_c_route": "PD input -> 24 V boost -> UPS auxiliary input",
+    "usb_c_role": "auxiliary_power_confirmed_by_user",
+    "usb_c_reference_limit": "reference design 24 V 1 A (30 W); not sized to drive three motors"
+  },
+  "fasteners": {
+    "lid_flange_clearance_diameters_mm": {"M3": 3.3, "M4": 4.3, "M5": 5.3},
+    "top_plate_mount": "3 x M4 clearance through holes; matching blind posts",
+    "internal_module_mounting": "adjustable rails with M3/M4/M5 clearance holes; exact PCB hole patterns unverified"
+  },
+  "status": "fit_and_wiring_layout_candidate_only; not waterproof_or_print_release"
+}

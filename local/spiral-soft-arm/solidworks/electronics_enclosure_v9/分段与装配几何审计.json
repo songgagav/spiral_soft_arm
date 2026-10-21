@@ -1,0 +1,845 @@
+{
+  "candidate": "B32_three_sections_rotated_plate_arm_horizontal_motors_tangent_exit",
+  "release_status": "CAD_and_preview_candidate_only; not print or underwater release",
+  "source_arm_step_sha256": "53c40aa72ab8ca522b55e8eea3cd22330fdac32f5c19279a66e72a488e31958d",
+  "joint_source": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\preprint\\underwater_prototype_v1\\docs\\B32最终参数.json",
+  "seams": [
+    {
+      "joint_id": "joint_06",
+      "from_root_mm": 173.9548,
+      "joint_unit_span_from_root_mm": [
+        157.9625,
+        189.9472
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    },
+    {
+      "joint_id": "joint_13",
+      "from_root_mm": 350.0511,
+      "joint_unit_span_from_root_mm": [
+        340.3716,
+        359.7307
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    }
+  ],
+  "arm_section_print_mesh_z_lengths_mm": [
+    182.95,
+    185.1,
+    199.96
+  ],
+  "arm_section_brep_conservative_z_lengths_mm": [
+    183.22,
+    185.11,
+    200.001
+  ],
+  "arm_section_max_below_build_height": true,
+  "adjacent_section_solid_overlap_mm3": [
+    0.0,
+    0.0
+  ],
+  "tendon_channel_intrusion": {
+    "arm_section_overlap_mm3": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "installed_pin_overlap_mm3": [
+      0.0,
+      0.0
+    ],
+    "cutter_source": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\paper_v1\\generate_paper_step.py"
+  },
+  "plate": {
+    "shape": "six_sided",
+    "vertex_radius_mm": 125.0,
+    "maximum_corner_to_corner_mm": 250.0,
+    "upper_panel_boss_count": 12,
+    "root_guard_boss_count": 12,
+    "plate_bbox_mm": [
+      221.49,
+      250.0,
+      28.24
+    ]
+  },
+  "root_guard": {
+    "panel_count": 6,
+    "top_open": true,
+    "cover_height_mm": 20.0,
+    "arm_at_rest_overlap_mm3": 0
+  },
+  "wet_side_fairing": {
+    "panel_count": 12,
+    "top_attachment_holes_per_panel": 2,
+    "upper_lower_splice_brackets": 12,
+    "observation_openings": 3,
+    "motor_windows": 3,
+    "pressure_boundary": false
+  },
+  "drive_layout": {
+    "motor_axis": "horizontal_tangential_XY",
+    "plate_hole_rotation_deg": 60.0,
+    "source_arm_rotation_deg": -30.0,
+    "source_arm_channel_axis_offset_deg": 90.0,
+    "motor_centers_mm": [
+      [
+        106.5,
+        -25.499622644196176,
+        -33.0
+      ],
+      [
+        -31.16667900320917,
+        104.9815168251408,
+        -33.0
+      ],
+      [
+        -75.33332099679086,
+        -79.48189418094461,
+        -33.0
+      ]
+    ],
+    "motor_axes": [
+      [
+        -0.0,
+        1.0,
+        0.0
+      ],
+      [
+        -0.8660254037844387,
+        -0.4999999999999998,
+        0.0
+      ],
+      [
+        0.8660254037844385,
+        -0.5000000000000004,
+        0.0
+      ]
+    ],
+    "reel_centers_mm": [
+      [
+        106.5,
+        26.500377355803824,
+        -33.0
+      ],
+      [
+        -76.19999999999999,
+        78.98151682514082,
+        -33.0
+      ],
+      [
+        -30.30000000000006,
+        -105.48189418094464,
+        -33.0
+      ]
+    ],
+    "plan_alignment": {
+      "channel_000": {
+        "plate_hole_xy_mm": [
+          15.3,
+          26.50038
+        ],
+        "arm_channel_entry_xy_mm": [
+          15.3,
+          26.50038
+        ],
+        "hole_center_offset_mm": 0.0,
+        "axle_dot_outgoing_unit": 0.0
+      },
+      "channel_120": {
+        "plate_hole_xy_mm": [
+          -30.6,
+          0.0
+        ],
+        "arm_channel_entry_xy_mm": [
+          -30.6,
+          0.0
+        ],
+        "hole_center_offset_mm": 0.0,
+        "axle_dot_outgoing_unit": 0.0
+      },
+      "channel_240": {
+        "plate_hole_xy_mm": [
+          15.3,
+          -26.50038
+        ],
+        "arm_channel_entry_xy_mm": [
+          15.3,
+          -26.50038
+        ],
+        "hole_center_offset_mm": 0.0,
+        "axle_dot_outgoing_unit": 0.0
+      }
+    },
+    "straight_reel_exit_to_hole_deviation_mm": {
+      "channel_000": 0.0,
+      "channel_120": 0.0,
+      "channel_240": 0.0
+    },
+    "straight_segment_length_mm": 94.132,
+    "canister_roof_clearance_along_first_cable_mm": 1.428,
+    "reel_exit_to_hole_route": "straight tangent leg from reel core to rotated plate and arm hole; first 3.2 mm of finite cable thickness omitted in proxy",
+    "motor_to_canister_clearance_mm": 17.5,
+    "reel_to_motor_clearance_mm": 2.0,
+    "reel_geometry_status": "horizontal tangential motor axles, rotated plate and arm holes, tangent reel exits; supplier shaft and winding interface unverified"
+  },
+  "existing_enclosure_fit": {
+    "candidate": "faceted_service_fairing_v5",
+    "release_status": "fit_and_wiring_layout_candidate_only; not waterproof_or_print_release",
+    "original_arm_sha256": "53c40aa72ab8ca522b55e8eea3cd22330fdac32f5c19279a66e72a488e31958d",
+    "motor_count": 3,
+    "motor_centers_mm": [
+      [
+        106.5,
+        -25.499622644196176,
+        -33.0
+      ],
+      [
+        -31.16667900320917,
+        104.9815168251408,
+        -33.0
+      ],
+      [
+        -75.33332099679086,
+        -79.48189418094461,
+        -33.0
+      ]
+    ],
+    "base_plate_diameter_mm": 250.0,
+    "blind_post_compatible_plate_holes": 3,
+    "bottom_lid_flange_fastener_holes": 12,
+    "bottom_lid_fastener_sizes_and_counts": {
+      "M3": 4,
+      "M4": 4,
+      "M5": 4
+    },
+    "internal_rail_fastener_clearances_mm": [
+      3.3,
+      4.3,
+      5.3
+    ],
+    "battery": {
+      "cells": 4,
+      "capacity_mAh_per_cell_user_confirmed": 8000,
+      "topology": "4S1P_assumption",
+      "nominal_voltage_v_per_cell_user_confirmed": 3.7,
+      "nominal_voltage_estimate_v": 14.8,
+      "nominal_energy_estimate_Wh": 118.4,
+      "cell_model_and_discharge_rating_verified": false
+    },
+    "canister_outer_diameter_mm": 136.0,
+    "bottom_flange_outer_diameter_mm": 150.0,
+    "canister_body_with_lid_height_mm": 220.0,
+    "including_tether_gland_height_mm": 228.0,
+    "min_motor_to_canister_mm": 17.5,
+    "min_saddle_to_canister_mm": 9.4,
+    "component_envelope_overlap_pairs": [],
+    "components_outside_inner_cavity": [],
+    "lid_component_overlap_pairs": [],
+    "tendon_route_hard_part_overlap_mm3": {},
+    "penetrator_route_wall_overlap_mm3": {
+      "shore_to_UPS_main": 0.0,
+      "USB_C_to_PD": 0.0,
+      "ESC_1_to_motor_port": 0.0,
+      "motor_1_external_harness": 0.0,
+      "ESC_2_to_motor_port": 0.0,
+      "motor_2_external_harness": 0.0,
+      "ESC_3_to_motor_port": 0.0,
+      "motor_3_external_harness": 0.0
+    },
+    "wet_motor_port_count": 3,
+    "shore_port_count": 1,
+    "mounting_method": "three M4 blind top posts; 12 bottom flange holes (4 each M3/M4/M5); adjustable M3/M4/M5 internal rails; removable 21700 carrier",
+    "spool_positions": {
+      "count": 3,
+      "placement": "horizontal coaxial reel; plate holes at +60 degrees and source-arm channels at -30 degrees from their original +90-degree basis",
+      "effective_radius_mm": 6.5,
+      "flange_outer_radius_mm": 10.0,
+      "axial_width_mm": 8.0,
+      "status": "schematic proxy; shaft coupling, retention, groove and winding capacity unverified"
+    },
+    "tendon_disk_holes": {
+      "count": 3,
+      "center_radius_mm": 30.6,
+      "diameter_mm": 4.2,
+      "angles_deg": [
+        60.0,
+        180.0,
+        300.0
+      ],
+      "status": "straight cable proxy ends 0.8 mm below the underside opening; rounded entry and through-hole bend pending"
+    },
+    "hardware_envelopes_user_confirmed": {
+      "esc_each_cylindrical": {
+        "diameter": 3.0,
+        "length": 25.0,
+        "status": "user_confirmed"
+      },
+      "controller_stm32": {
+        "length": 152.0,
+        "width": 87.5,
+        "height": 18.0,
+        "status": "user_confirmed"
+      },
+      "ups_module": {
+        "length": 52.8,
+        "width": 32.0,
+        "height": 18.0,
+        "status": "user_confirmed"
+      },
+      "voltage_regulator": {
+        "length": 100.0,
+        "width": 80.0,
+        "height": 39.0,
+        "status": "user_confirmed"
+      },
+      "usb_c_pd_input": {
+        "length": 28.0,
+        "width": 20.0,
+        "height": 5.0,
+        "status": "length_width_reference; thickness_user_confirmed"
+      },
+      "usb_c_boost_24v": {
+        "length": 45.0,
+        "width": 30.0,
+        "height": 12.0,
+        "status": "placeholder; select_after_current_and_power_review"
+      },
+      "bms": {
+        "length": 45.0,
+        "width": 18.0,
+        "height": 12.0,
+        "status": "proxy"
+      }
+    },
+    "power_inputs": {
+      "shore_voltage_v": 24.0,
+      "usb_c_route": "PD input -> 24 V boost -> UPS auxiliary input",
+      "usb_c_role": "auxiliary_power_confirmed_by_user",
+      "usb_c_reference_limit": "reference design 24 V 1 A (30 W); not sized to drive three motors"
+    },
+    "wiring_corridors": "24 V isolated shore input and 4S battery/BMS to UPS; USB-C PD to 24 V boost to UPS auxiliary input; three radial ESC outputs; STM32 signal bus",
+    "tendon_route": "three straight tangent segments from winding cores to matching rotated plate and arm holes; hole transition not modeled",
+    "tendon_min_discrete_curvature_radius_mm": null,
+    "fairing": {
+      "type": "twelve_independent_flat_hexagonal_frustum_panels",
+      "panel_count": 12,
+      "upper_panel_count": 6,
+      "lower_panel_count": 6,
+      "motor_window_count": 3,
+      "observation_window_count": 3,
+      "type_c_service_window_count": 1,
+      "open_bottom": true,
+      "M3_panel_splice_clearance_holes_per_panel": 4,
+      "pressure_boundary": false,
+      "exterior_open_path_overlap_mm3": {
+        "motor_000": 0.0,
+        "motor_120": 0.0,
+        "motor_240": 0.0,
+        "observation_060": 0.0,
+        "observation_180": 0.0,
+        "observation_300": 0.0,
+        "type_c_180": 0.0
+      },
+      "part_overlap_mm3": {},
+      "panel_valid_single_solid": {
+        "upper_panel_000": true,
+        "lower_panel_000": true,
+        "upper_panel_060": true,
+        "lower_panel_060": true,
+        "upper_panel_120": true,
+        "lower_panel_120": true,
+        "upper_panel_180": true,
+        "lower_panel_180": true,
+        "upper_panel_240": true,
+        "lower_panel_240": true,
+        "upper_panel_300": true,
+        "lower_panel_300": true
+      },
+      "panel_join_brackets_verified": false
+    },
+    "unverified": [
+      "mini ESC manufacturer drawing, current rating, internal mounting detail and thermal behavior",
+      "actual PCB screw coordinates; M3/M4/M5 rails are adjustable generic provision",
+      "USB-C panel feedthrough sealing and boost-module power/current rating",
+      "UPS behavior with shore, battery, and USB-C auxiliary input simultaneously",
+      "cell model, discharge rating and 4S1P safety design",
+      "certified 5 m gland, gasket and pressure test",
+      "heat dissipation, cable bend radius, connector strain relief",
+      "runtime and UPS transfer under measured load"
+    ]
+  },
+  "print_part_records": {
+    "arm_section_01": {
+      "file": "print_parts/arm_section_01.stl",
+      "bbox_mm": [
+        59.49,
+        66.66,
+        182.95
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "arm_section_02": {
+      "file": "print_parts/arm_section_02.stl",
+      "bbox_mm": [
+        42.06,
+        46.84,
+        185.1
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "arm_section_03": {
+      "file": "print_parts/arm_section_03.stl",
+      "bbox_mm": [
+        25.4,
+        28.32,
+        199.96
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "hex_base_plate": {
+      "file": "print_parts/hex_base_plate.stl",
+      "bbox_mm": [
+        221.01,
+        250.0,
+        28.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "cable_reel_01": {
+      "file": "print_parts/cable_reel_01.stl",
+      "bbox_mm": [
+        20.0,
+        8.0,
+        20.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "cable_reel_02": {
+      "file": "print_parts/cable_reel_02.stl",
+      "bbox_mm": [
+        16.93,
+        21.32,
+        20.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "cable_reel_03": {
+      "file": "print_parts/cable_reel_03.stl",
+      "bbox_mm": [
+        16.93,
+        21.32,
+        20.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "wet_motor_saddle_01": {
+      "file": "print_parts/wet_motor_saddle_01.stl",
+      "bbox_mm": [
+        53.6,
+        16.0,
+        49.49
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "wet_motor_saddle_02": {
+      "file": "print_parts/wet_motor_saddle_02.stl",
+      "bbox_mm": [
+        53.6,
+        16.0,
+        49.49
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "wet_motor_saddle_03": {
+      "file": "print_parts/wet_motor_saddle_03.stl",
+      "bbox_mm": [
+        37.19,
+        52.42,
+        49.49
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "wet_motor_saddle_04": {
+      "file": "print_parts/wet_motor_saddle_04.stl",
+      "bbox_mm": [
+        37.19,
+        52.42,
+        49.49
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "wet_motor_saddle_05": {
+      "file": "print_parts/wet_motor_saddle_05.stl",
+      "bbox_mm": [
+        37.19,
+        52.42,
+        49.49
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "wet_motor_saddle_06": {
+      "file": "print_parts/wet_motor_saddle_06.stl",
+      "bbox_mm": [
+        37.19,
+        52.42,
+        49.49
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_retainer_01": {
+      "file": "print_parts/root_retainer_01.stl",
+      "bbox_mm": [
+        62.19,
+        77.64,
+        4.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_retainer_02": {
+      "file": "print_parts/root_retainer_02.stl",
+      "bbox_mm": [
+        62.19,
+        77.64,
+        4.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "upper_panel_000": {
+      "file": "print_parts/upper_panel_000_flat.stl",
+      "bbox_mm": [
+        141.5,
+        73.04,
+        4.3
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "lower_panel_000": {
+      "file": "print_parts/lower_panel_000_flat.stl",
+      "bbox_mm": [
+        141.5,
+        161.5,
+        4.21
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "upper_panel_060": {
+      "file": "print_parts/upper_panel_060_flat.stl",
+      "bbox_mm": [
+        141.5,
+        73.04,
+        4.3
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "lower_panel_060": {
+      "file": "print_parts/lower_panel_060_flat.stl",
+      "bbox_mm": [
+        141.5,
+        161.5,
+        4.21
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "upper_panel_120": {
+      "file": "print_parts/upper_panel_120_flat.stl",
+      "bbox_mm": [
+        141.5,
+        73.04,
+        4.3
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "lower_panel_120": {
+      "file": "print_parts/lower_panel_120_flat.stl",
+      "bbox_mm": [
+        141.5,
+        161.5,
+        4.21
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "upper_panel_180": {
+      "file": "print_parts/upper_panel_180_flat.stl",
+      "bbox_mm": [
+        141.5,
+        73.04,
+        4.3
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "lower_panel_180": {
+      "file": "print_parts/lower_panel_180_flat.stl",
+      "bbox_mm": [
+        141.5,
+        161.5,
+        4.21
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "upper_panel_240": {
+      "file": "print_parts/upper_panel_240_flat.stl",
+      "bbox_mm": [
+        141.5,
+        73.04,
+        4.3
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "lower_panel_240": {
+      "file": "print_parts/lower_panel_240_flat.stl",
+      "bbox_mm": [
+        141.5,
+        161.5,
+        4.21
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "upper_panel_300": {
+      "file": "print_parts/upper_panel_300_flat.stl",
+      "bbox_mm": [
+        141.5,
+        73.04,
+        4.3
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "lower_panel_300": {
+      "file": "print_parts/lower_panel_300_flat.stl",
+      "bbox_mm": [
+        141.5,
+        161.5,
+        4.21
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_guard_000": {
+      "file": "print_parts/root_guard_000_flat.stl",
+      "bbox_mm": [
+        55.0,
+        20.0,
+        2.6
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_guard_060": {
+      "file": "print_parts/root_guard_060_flat.stl",
+      "bbox_mm": [
+        55.0,
+        20.0,
+        2.6
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_guard_120": {
+      "file": "print_parts/root_guard_120_flat.stl",
+      "bbox_mm": [
+        55.0,
+        20.0,
+        2.6
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_guard_180": {
+      "file": "print_parts/root_guard_180_flat.stl",
+      "bbox_mm": [
+        55.0,
+        20.0,
+        2.6
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_guard_240": {
+      "file": "print_parts/root_guard_240_flat.stl",
+      "bbox_mm": [
+        55.0,
+        20.0,
+        2.6
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "root_guard_300": {
+      "file": "print_parts/root_guard_300_flat.stl",
+      "bbox_mm": [
+        55.0,
+        20.0,
+        2.6
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_000_m": {
+      "file": "print_parts/panel_splice_000_m.stl",
+      "bbox_mm": [
+        7.9,
+        25.0,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_000_p": {
+      "file": "print_parts/panel_splice_000_p.stl",
+      "bbox_mm": [
+        7.9,
+        25.0,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_060_m": {
+      "file": "print_parts/panel_splice_060_m.stl",
+      "bbox_mm": [
+        25.0,
+        15.36,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_060_p": {
+      "file": "print_parts/panel_splice_060_p.stl",
+      "bbox_mm": [
+        23.3,
+        18.3,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_120_m": {
+      "file": "print_parts/panel_splice_120_m.stl",
+      "bbox_mm": [
+        23.3,
+        18.3,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_120_p": {
+      "file": "print_parts/panel_splice_120_p.stl",
+      "bbox_mm": [
+        25.0,
+        15.36,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_180_m": {
+      "file": "print_parts/panel_splice_180_m.stl",
+      "bbox_mm": [
+        7.9,
+        25.0,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_180_p": {
+      "file": "print_parts/panel_splice_180_p.stl",
+      "bbox_mm": [
+        7.9,
+        25.0,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_240_m": {
+      "file": "print_parts/panel_splice_240_m.stl",
+      "bbox_mm": [
+        25.0,
+        15.36,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_240_p": {
+      "file": "print_parts/panel_splice_240_p.stl",
+      "bbox_mm": [
+        23.3,
+        18.3,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_300_m": {
+      "file": "print_parts/panel_splice_300_m.stl",
+      "bbox_mm": [
+        23.3,
+        18.3,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    },
+    "panel_splice_300_p": {
+      "file": "print_parts/panel_splice_300_p.stl",
+      "bbox_mm": [
+        25.0,
+        15.36,
+        22.0
+      ],
+      "valid_single_solid": true,
+      "stl_watertight_after_vertex_welding": true
+    }
+  },
+  "step_readback": {
+    "arm_valid": true,
+    "assembly_valid": true
+  },
+  "unverified": [
+    "dovetail fatigue, TPU creep and transverse pin retention",
+    "dynamic clearance and stiffness change at both arm seams",
+    "supplier motor output shaft interface and reel winding capacity",
+    "smooth fairlead from sloped free tendon into the arm channel and minimum cable bend radius",
+    "strength and fastening of narrow upper motor-window rails",
+    "root guard clearance through the full tendon-driven motion",
+    "actual printer XY footprint, slicer paths, fastener seats and physical assembly",
+    "pressure/leak and freshwater/seawater runtime testing"
+  ]
+}

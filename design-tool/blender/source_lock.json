@@ -1,0 +1,66 @@
+{
+  "lock_schema_version": "1.0.0",
+  "generator_version": "0.4.0",
+  "preprint_package_generator_version": "0.1.0",
+  "blender_version": "5.2.2 LTS",
+  "local_git_commit": null,
+  "upstream_repository": "https://github.com/ZhanchiWang/Open-Spiral-Robots",
+  "upstream_commit": "f563e69f292a6b8cac1946dc45ad9e60d8795391",
+  "upstream_commit_url": "https://github.com/ZhanchiWang/Open-Spiral-Robots/commit/f563e69f292a6b8cac1946dc45ad9e60d8795391",
+  "source_files": [
+    {
+      "path": "design-tool/DesignTool.py",
+      "sha256": "ceba8e77653a5ab60cd2c791693d544477629c15f8bd8b01443ac8922d65d91d"
+    },
+    {
+      "path": "design-tool/blender/geometry.py",
+      "sha256": "abab0b7ec8f3af9efbdbf8e6dce79b775cc8b9c6011c511d272714750f7eb952"
+    },
+    {
+      "path": "design-tool/blender/blender_geometry.py",
+      "sha256": "74f51722817e59f01f8cdb14e66bfc8c95b1a6c8ed3b4e0f829c376eeba79235"
+    },
+    {
+      "path": "design-tool/blender/generate_candidates.py",
+      "sha256": "c7066c3046cdab989cf6e2cc5657cf9242df19fa21a0a9a5093117be7c9d0f11"
+    },
+    {
+      "path": "design-tool/blender/build_preprint_assembly.py",
+      "sha256": "80d84a79ba3f7330f7ccd414e4f48cc9e75eaab7b05d82a8a16f8660c1e28324"
+    },
+    {
+      "path": "design-tool/blender/tests/test_preprint_package.py",
+      "sha256": "19405a8f9d00e5951dd70aefdfede3f2cf36cb86a5c43cbae66f41e04e067e0b"
+    },
+    {
+      "path": "design-tool/blender/validate_candidates.py",
+      "sha256": "c278231e0d0bd8b234d7326df1afccb5b5f471fdc845523ee691d5a429d4ee98"
+    },
+    {
+      "path": "design-tool/blender/record_provenance.py",
+      "sha256": "6b7df4bb78fb94d81b75ea1c9ffc1916146cd447f66768cebfb9e3819768853c"
+    },
+    {
+      "path": "design-tool/blender/candidates/A36.json",
+      "sha256": "8bd94c5369c499d1caec8c9f8879e05eeaca16409dd3b1ab080cd8525ef9f4a2"
+    },
+    {
+      "path": "design-tool/blender/candidates/A37.json",
+      "sha256": "c3bd82d87a84b1bf38ba8bb225c5bd4ec8e35017c310b6bbbbaac1c1a3f9878c"
+    },
+    {
+      "path": "design-tool/blender/candidates/B32.json",
+      "sha256": "957bea43bf156f5a95456fcd4d879bc07c10ee0809942f9b041b28b2b0e8e1f7"
+    },
+    {
+      "path": "design-tool/blender/candidates/B33.json",
+      "sha256": "a22c73ed90d272d815db47427fb87bc0d51520cc46c9c08172ab57e6b2330509"
+    }
+  ],
+  "model_units": {
+    "length": "mm",
+    "angle": "deg",
+    "mass": "kg",
+    "axis": "+Z"
+  }
+}

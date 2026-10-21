@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "candidate_id": "user_3_0",
+  "status": "monolithic_trial_candidate_not_release_ready",
+  "user_decision": "monolithic_single_piece_trial",
+  "source": {
+    "archive_filename": "3.0.zip",
+    "archive_entry": "3.0/spi_rob_20261012_131147.step",
+    "archive_sha256": "9CDA4A6F495421BD822767270CEB905D3C60AB09F045D3EE8AFAF3B7519813AE",
+    "step_sha256": "E5870759E9A1338843797E61D72DB2CE2A285865A1657FE6D952B9022024EAF1",
+    "unit": "mm"
+  },
+  "geometry_audit": {
+    "method": "STEP geometry import, solid-distance/overlap inspection, and boolean union; CadQuery 2.8.0 review",
+    "imported_solid_count": 29,
+    "fused_solid_count": 1,
+    "major_axis": "X",
+    "bounding_box_mm": {
+      "x": 508.126894,
+      "y": 105.176533,
+      "z": 118.333493
+    },
+    "sum_of_source_solid_volumes_mm3": 953026.0,
+    "fused_brep_volume_mm3": 928811.364707,
+    "fused_brep_volume_l": 0.928811365,
+    "neighboring_tapered_cells_clearance_mm": 0.0,
+    "axial_member_intersects_cells": true
+  },
+  "exports": {
+    "fused_step": {
+      "file": "spi_rob_20261012_131147_整体融合.step",
+      "sha256": "011FEC5AB20C35A4720CFB3DF0F48073F2B19089168061D3986628C5B6D2208E",
+      "valid_solid_count": 1,
+      "round_trip_volume_error_mm3": 0.0014319535112008452
+    },
+    "review_stl": {
+      "file": "spi_rob_20261012_131147_整体试打.stl",
+      "sha256": "7D3C22AA5B31B67AC0A3B56D3533C063913C5F28FC5767F63A9B86A98F9F2C2D",
+      "triangles": 414132,
+      "closed_mesh": true,
+      "winding_consistent": true,
+      "connected_components": 1,
+      "boundary_edges": 0,
+      "nonmanifold_edges": 0,
+      "degenerate_faces_removed": 2,
+      "volume_error_percent": 0.045739,
+      "bounding_box_error_mm": 2E-06,
+      "linear_tolerance_mm": 0.15,
+      "angular_tolerance_rad": 0.1
+    },
+    "generator": "fuse_monolithic.py",
+    "requirements": "requirements-cad.txt",
+    "cadquery_version": "2.8.0",
+    "trimesh_version": "5.1.1"
+  },
+  "b32_reference": {
+    "file": "../paper_v1/B32_550mm_SpiRobs_打印实体.step",
+    "bounding_box_mm": {
+      "x": 66.656,
+      "y": 59.5,
+      "z": 550.014
+    },
+    "major_axis": "Z",
+    "volume_mm3": 357146.19,
+    "candidate_to_b32_volume_ratio": 2.6006
+  },
+  "preliminary_buoyancy": {
+    "assumed_material": "solid TPU",
+    "assumed_density_kg_m3": 1200,
+    "freshwater_density_kg_m3": 1000,
+    "fully_submerged_net_downward_force_N": 1.822,
+    "equivalent_mass_kg": 0.1858,
+    "status": "rough estimate; print mass, infill, cavities, ingress, and attachments are not measured"
+  },
+  "open_questions": [
+    "three tendon paths and 120 degree guides",
+    "root and tip anchors and local minimum wall thickness",
+    "printer build volume, print orientation, supports, and TPU process",
+    "motor, spool, shaft, bearing, and cable-retention interfaces",
+    "buoyancy trim and water ingress state"
+  ],
+  "limitations": [
+    "not merged into B32 or wet-side assembly",
+    "STL is a geometric trial mesh; printer fit and functional features are not verified",
+    "not print-strength, fatigue, or underwater qualification",
+    "not a simulated 5 mm lift result",
+    "5 m pressure, pressure-vessel, and leak testing remain separate"
+  ]
+}

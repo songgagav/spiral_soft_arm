@@ -1,0 +1,158 @@
+{
+  "candidate": "centerline_canister_v3",
+  "release_status": "fit_and_wiring_layout_candidate_only; not waterproof_or_print_release",
+  "original_arm_sha256": "53c40aa72ab8ca522b55e8eea3cd22330fdac32f5c19279a66e72a488e31958d",
+  "motor_count": 3,
+  "motor_centers_mm": [
+    [
+      100.0,
+      0.0,
+      -33.5
+    ],
+    [
+      -49.99999999999998,
+      86.60254037844388,
+      -33.5
+    ],
+    [
+      -50.00000000000004,
+      -86.60254037844385,
+      -33.5
+    ]
+  ],
+  "base_plate_diameter_mm": 260.0,
+  "blind_post_compatible_plate_holes": 3,
+  "bottom_lid_flange_fastener_holes": 12,
+  "bottom_lid_fastener_sizes_and_counts": {
+    "M3": 4,
+    "M4": 4,
+    "M5": 4
+  },
+  "internal_rail_fastener_clearances_mm": [
+    3.3,
+    4.3,
+    5.3
+  ],
+  "battery": {
+    "cells": 4,
+    "capacity_mAh_per_cell_user_confirmed": 8000,
+    "topology": "4S1P_assumption",
+    "nominal_voltage_v_per_cell_user_confirmed": 3.7,
+    "nominal_voltage_estimate_v": 14.8,
+    "nominal_energy_estimate_Wh": 118.4,
+    "cell_model_and_discharge_rating_verified": false
+  },
+  "canister_outer_diameter_mm": 136.0,
+  "bottom_flange_outer_diameter_mm": 150.0,
+  "canister_body_with_lid_height_mm": 220.0,
+  "including_tether_gland_height_mm": 228.0,
+  "min_motor_to_canister_mm": 11.0,
+  "min_saddle_to_canister_mm": 3.549,
+  "component_envelope_overlap_pairs": [],
+  "components_outside_inner_cavity": [],
+  "lid_component_overlap_pairs": [],
+  "tendon_route_hard_part_overlap_mm3": {},
+  "penetrator_route_wall_overlap_mm3": {
+    "shore_to_UPS_main": 0.0,
+    "USB_C_to_PD": 0.0,
+    "ESC_1_to_motor_port": 0.0,
+    "motor_1_external_harness": 0.0,
+    "ESC_2_to_motor_port": 0.0,
+    "motor_2_external_harness": 0.0,
+    "ESC_3_to_motor_port": 0.0,
+    "motor_3_external_harness": 0.0
+  },
+  "wet_motor_port_count": 3,
+  "shore_port_count": 1,
+  "mounting_method": "three M4 blind top posts; 12 bottom flange holes (4 each M3/M4/M5); adjustable M3/M4/M5 internal rails; removable 21700 carrier",
+  "spool_positions": {
+    "count": 3,
+    "placement": "one proxy at the positive-tangent output end of each of the three wet-side motor envelopes",
+    "effective_radius_mm": 6.5,
+    "flange_outer_radius_mm": 10.0,
+    "axial_width_mm": 8.0,
+    "status": "schematic proxy; shaft coupling, retention, groove and winding capacity unverified"
+  },
+  "tendon_disk_holes": {
+    "count": 3,
+    "center_radius_mm": 30.6,
+    "diameter_mm": 4.2,
+    "angles_deg": [
+      0.0,
+      120.0,
+      240.0
+    ],
+    "status": "through-holes in the base disk; route proxy passes through each corresponding hole"
+  },
+  "hardware_envelopes_user_confirmed": {
+    "esc_each_cylindrical": {
+      "diameter": 3.0,
+      "length": 25.0,
+      "status": "user_confirmed"
+    },
+    "controller_stm32": {
+      "length": 152.0,
+      "width": 87.5,
+      "height": 18.0,
+      "status": "user_confirmed"
+    },
+    "ups_module": {
+      "length": 52.8,
+      "width": 32.0,
+      "height": 18.0,
+      "status": "user_confirmed"
+    },
+    "voltage_regulator": {
+      "length": 100.0,
+      "width": 80.0,
+      "height": 39.0,
+      "status": "user_confirmed"
+    },
+    "usb_c_pd_input": {
+      "length": 28.0,
+      "width": 20.0,
+      "height": 5.0,
+      "status": "length_width_reference; thickness_user_confirmed"
+    },
+    "usb_c_boost_24v": {
+      "length": 45.0,
+      "width": 30.0,
+      "height": 12.0,
+      "status": "placeholder; select_after_current_and_power_review"
+    },
+    "bms": {
+      "length": 45.0,
+      "width": 18.0,
+      "height": 12.0,
+      "status": "proxy"
+    }
+  },
+  "power_inputs": {
+    "shore_voltage_v": 24.0,
+    "usb_c_route": "PD input -> 24 V boost -> UPS auxiliary input",
+    "usb_c_role": "auxiliary_power_confirmed_by_user",
+    "usb_c_reference_limit": "reference design 24 V 1 A (30 W); not sized to drive three motors"
+  },
+  "wiring_corridors": "24 V isolated shore input and 4S battery/BMS to UPS; USB-C PD to 24 V boost to UPS auxiliary input; three radial ESC outputs; STM32 signal bus",
+  "tendon_route": "three motor-side spool proxies -> exterior guide r64 -> matching base-disk holes at radius 30.6 mm -> arm root; line path is geometric proxy",
+  "unverified": [
+    "mini ESC manufacturer drawing, current rating, internal mounting detail and thermal behavior",
+    "actual PCB screw coordinates; M3/M4/M5 rails are adjustable generic provision",
+    "USB-C panel feedthrough sealing and boost-module power/current rating",
+    "UPS behavior with shore, battery, and USB-C auxiliary input simultaneously",
+    "cell model, discharge rating and 4S1P safety design",
+    "certified 5 m gland, gasket and pressure test",
+    "heat dissipation, cable bend radius, connector strain relief",
+    "runtime and UPS transfer under measured load"
+  ],
+  "files": {
+    "assembly_step": "B32_中心电子仓_三湿侧电机总装.step",
+    "open_step": "B32_中心电子仓_拆解与接线.step",
+    "preview": "B32_中心电子仓_总装与内部接线预览.png",
+    "mounting_and_wiring": "B32_中心电子仓_安装剖面与接线图.png"
+  },
+  "step_readback": {
+    "assembly_valid": true,
+    "open_valid": true
+  }
+}

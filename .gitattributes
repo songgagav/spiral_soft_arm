@@ -1,0 +1,12 @@
+# Keep generated CAD and media artifacts intact and out of line-based diffs.
+*.step binary
+*.STEP binary
+*.stl binary
+*.STL binary
+*.3mf binary
+*.pdf binary
+*.zip binary
+*.mp4 binary
+*.png binary
+*.jpg binary
+*.jpeg binary

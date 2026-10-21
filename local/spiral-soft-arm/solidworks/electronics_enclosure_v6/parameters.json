@@ -1,0 +1,46 @@
+{
+  "schema_version": "6.0.0",
+  "model": "B32_three_print_sections_hex_plate_root_guard",
+  "units": "mm",
+  "reference_v5_script": "../electronics_enclosure_v5/generate_centerline_canister.py",
+  "reference_joint_data": "../../preprint/underwater_prototype_v1/docs/B32最终参数.json",
+  "split_joint_ids": ["joint_06", "joint_13"],
+  "printer_effective_height_mm": 250.0,
+  "dovetail": {
+    "hub_radius_mm": 8.0,
+    "rootward_hub_depth_mm": 9.0,
+    "tipward_hub_depth_mm": 14.0,
+    "male_projection_mm": 9.0,
+    "female_depth_mm": 9.5,
+    "side_clearance_mm": 0.3,
+    "cross_pin_clearance_diameter_mm": 2.7,
+    "cross_pin_proxy_diameter_mm": 2.5,
+    "cross_pin_axis_deg": 0.0,
+    "cross_pin_bore_half_lengths_mm": [28.0, 18.0],
+    "cross_pin_proxy_lengths_mm": [49.0, 30.0],
+    "key_xy_polygon_mm": [[-3.0, -3.2], [3.0, -3.2], [4.8, 3.2], [-4.8, 3.2]],
+    "socket_xy_polygon_mm": [[-3.3, -3.5], [3.3, -3.5], [5.1, 3.5], [-5.1, 3.5]],
+    "status": "geometric assembly candidate; fatigue, creep, and retention untested"
+  },
+  "hex_plate": {
+    "circumradius_mm": 130.0,
+    "face_angles_deg": [0, 60, 120, 180, 240, 300],
+    "upper_panel_tab_offsets_mm": [-58.0, 58.0],
+    "tab_hole_z_mm": -12.0,
+    "tab_hole_diameter_mm": 3.3,
+    "tab_gap_to_panel_mm": 0.25,
+    "tab_tangential_width_mm": 8.0
+  },
+  "root_guard": {
+    "bottom_z_mm": 0.0,
+    "top_z_mm": 20.0,
+    "outer_hex_circumradius_mm": 55.0,
+    "inner_hex_circumradius_mm": 52.0,
+    "panel_hole_z_mm": 5.0,
+    "panel_hole_tangential_offsets_mm": [-19.0, 19.0],
+    "panel_hole_diameter_mm": 3.3,
+    "panel_to_tab_gap_mm": 0.25,
+    "status": "fixed-root service shroud only; full-motion clearance untested"
+  },
+  "status": "CAD_and_preview_candidate_only; not print or underwater release"
+}
