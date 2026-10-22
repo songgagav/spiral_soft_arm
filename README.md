@@ -24,15 +24,15 @@
 | --- | --- | --- |
 | 工作环境 | 淡水和海水；目标深度 5 m | 尚无压力舱、密封或水下运行验证 |
 | 单次工作时间 | 约 30 分钟 | 尚无整机功耗、温升和续航实测 |
-| 岸上供电 | 隔离 24 V 经水下线缆供电 | 电源、接插件、线缆压降和绝缘方案未完成实测 |
+| 岸上供电 | 隔离 24 V；脐带缆正负导体各 4 mm²，现有线长 5 m | 接插件、压降、绝缘和带载温升尚未实测 |
 | 断电备份 | 岸上 24 V 中断后，内部电源继续运行至少 15 分钟 | UPS 切换、电池放电和带载时间未验证 |
-| 执行器布局 | 三台电机置于湿侧，直接接触周围水体 | CAD 包络已建立；电机水下运行、腐蚀和温升未验证 |
+| 执行器布局 | 三台 APISQUEEN 4092 置于湿侧，配套 mini ESC 采用双向 PWM | 电机水下运行、腐蚀、ESC 失控保护和温升未验证 |
 | 控制与功率电子 | STM32 主控；电调和电池置于根部电子仓候选空间 | 尚无 STM32 固件和完成的控制板装配验证 |
-| 电机候选 | ApisQueen 4092，优先评估配套 Mini ESC | 尚未完成单台样机测试；Mini ESC 电流、反馈、散热和接口资料不完整 |
-| 电池候选 | 4 节 21700，每节 8000 mAh | CAD/能量估算暂按 4S1P；电芯型号、持续放电倍率、保护板和实际续航未核实 |
-| 辅助输入 | Type‑C 模块接 UPS 输入，并预留升压/切换路径 | 还未完成电源路径、回灌保护和满载热设计验证 |
+| 电机候选 | APISQUEEN 4092，配套 mini ESC 采用双向 PWM | 单台性能、电调电流与温升、反馈能力和实物接口仍待测量 |
+| 电池候选 | 4S1P 松下 NCR21700T；用户确认每节 8 Ah，电池组仍为 8 Ah | BMS、电芯持续放电能力、变换效率和实际续航仍需器件资料与测试 |
+| 辅助输入 | USB‑C PD 经输入板和 24 V 升压接 UPS AUX | 还未完成电源路径、回灌保护和满载热设计验证 |
 
-4S1P 的估算为 14.8 V 标称、8 Ah、约 118.4 Wh；串联不会把容量变成 32 Ah。电芯容量本身不能证明电池可提供电机启动或堵转所需电流，也不能证明可满足 15 分钟备份时间。相关硬件候选与待确认项见[电调与 STM32 接口记录](local/spiral-soft-arm/solidworks/electronics_enclosure_v3/电调硬件候选与STM32接口.md)和[4092 单台样机验证流程](local/spiral-soft-arm/hardware/4092_单台样机验证流程与记录模板.md)。
+4S1P 按 14.8 V 标称电压与 8 Ah 估算约 118.4 Wh；备电时长仍需在实际负载下记录验证。相关硬件接线、传感器布置和待确认项见[硬件连接拓扑图](local/spiral-soft-arm/hardware/硬件连接拓扑图_2026-10-22.png)、[拓扑与接口补充清单](local/spiral-soft-arm/hardware/硬件拓扑与接口补充清单_2026-10-22.md)、[电调与 STM32 接口记录](local/spiral-soft-arm/solidworks/electronics_enclosure_v3/电调硬件候选与STM32接口.md)和[4092 单台样机验证流程](local/spiral-soft-arm/hardware/4092_单台样机验证流程与记录模板.md)。
 
 ## B32 几何基线
 
@@ -75,9 +75,9 @@ v9 的审计状态是“CAD 与预览候选”，并非打印或水下放行。�
 
 ### 电机、线轮、电子仓与供电
 
-- **湿侧驱动**：当前研究重点是三台 ApisQueen 4092 低速减速电机及配套 Mini ESC。页面参数、转矩口径、连续电流、编码器/霍尔反馈、ESC 保护和物理外形仍需供应商书面资料和单台样机测量。这个组合是待验证候选，不是已确认的最终选型。
+- **湿侧驱动**：布局采用三台 APISQUEEN 4092 低速减速电机及配套 mini ESC；用户确认控制协议为双向 PWM。页面参数、转矩口径、连续电流、反馈、ESC 保护、PWM 刷新率和物理外形仍需供应商资料与单台样机测量。
 - **控制器**：系统方案采用 STM32 作为中央控制器，由各电调完成三相换相和本地功率保护。仓库目前没有 STM32 固件工程，因此尚未实现三轴闭环、限位、通信超时、故障锁定或急停逻辑。
-- **UPS 与电池**：布局依据包括岸上隔离 24 V 输入、掉电备份、4S1P 电池估算和升压模块。电池实际放电能力、变换器效率、峰值功率、切换时间、再生制动回灌和 30 分钟任务能耗都尚未通过实测。
+- **UPS 与电池**：当前拓扑按岸上隔离 24 V、4S1P 松下 NCR21700T（用户确认每节 8 Ah）、BMS 后 9–35 V→24 V/15 A 变换器及 UPS 主/备电路径绘制。Type‑C PD 作为辅助输入；电池实际放电能力、变换器效率、峰值功率、切换时间、再生制动回灌和运行时长仍未实测。
 - **包覆与密封**：外部平板包覆件和内部密封电子仓是不同部件。外罩观察口用于检查/排水，不是压力平衡或承压结构的认证；电子仓也没有完成 5 m 压力和渗漏测试。
 
 ### 其他保留的机械候选
@@ -109,7 +109,7 @@ v9 的审计状态是“CAD 与预览候选”，并非打印或水下放行。�
 | [`local/spiral-soft-arm/preprint/`](local/spiral-soft-arm/preprint/) | v1–v4 参数推导、预打印包、仿真说明和验证记录 | 各版研究边界不同，v2 打印门槛和 v4 水下驱动报告需分别阅读 |
 | [`local/spiral-soft-arm/simulation/`](local/spiral-soft-arm/simulation/) | MuJoCo 模型、参数派生、工况运行、候选搜索、结果和图表 | v3 为四种水体/水深工况的主要脚本目录 |
 | [`local/spiral-soft-arm/solidworks/`](local/spiral-soft-arm/solidworks/) | STEP/STL、CAD 生成脚本、预览、装配审计和哈希清单 | 保存论文构形、驱动安装、电子仓、包覆件及其他独立候选 |
-| [`local/spiral-soft-arm/hardware/`](local/spiral-soft-arm/hardware/) | 湿侧电机验证流程和记录模板 | 模板尚未填写，不代表已采购或测试 |
+| [`local/spiral-soft-arm/hardware/`](local/spiral-soft-arm/hardware/) | 硬件连接拓扑、供电/CAN/PWM/监测接口清单及 4092 样机验证模板 | 图纸是接线评审资料；实物引脚、保护器件和水下测试仍待核验 |
 | [`fabrication/`](fabrication/) | STEP/STP/STL 几何分割工具和制造说明 | 可切分并报告包围盒；目前不会自动添加燕尾、销钉或其他装配连接结构 |
 | [`extensions/multi-robot-array/`](extensions/multi-robot-array/) | MuJoCo 多机器人阵列 XML 生成器与 PySide6 GUI | 与 B32 单臂打印放行无关的扩展工具 |
 | [`rl/`](rl/) | PPO reach 检查点和演示视频 | 当前仓库未包含对应训练脚本、环境定义和评估记录，不能据此声称已复现实验 |
@@ -125,6 +125,8 @@ v9 的审计状态是“CAD 与预览候选”，并非打印或水下放行。�
 - [B32 论文构形 STEP/STL](local/spiral-soft-arm/solidworks/paper_v1/)
 - [80 mm 基部和尖端 TPU 工艺短样](local/spiral-soft-arm/preprint/v2/process_coupons/)
 - [当前打印放行条件](local/spiral-soft-arm/preprint/v2/当前状态与放行条件.md)
+- [硬件连接拓扑图（PNG）](local/spiral-soft-arm/hardware/硬件连接拓扑图_2026-10-22.png) 与 [SVG 源文件](local/spiral-soft-arm/hardware/硬件连接拓扑图_2026-10-22.svg)
+- [硬件拓扑与接口补充清单](local/spiral-soft-arm/hardware/硬件拓扑与接口补充清单_2026-10-22.md)
 - [电机单台验证记录模板](local/spiral-soft-arm/hardware/4092_单台样机验证流程与记录模板.md)
 
 ## 安装与运行
