@@ -1,406 +1,152 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="3200" height="2200" viewBox="0 0 3200 2200" role="img" aria-labelledby="title desc">
-  <title id="title">B32 水下软体机械臂硬件连接拓扑图</title>
-  <desc id="desc">按用户确认的4S1P 8Ah电池、PWM配套mini ESC、4平方毫米岸电、CAN通信和新增电压电流温度监测绘制的接口拓扑。</desc>
-  <defs>
-    <marker id="arr-red" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#c7464e"/></marker>
-    <marker id="arr-purple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#8255a6"/></marker>
-    <marker id="arr-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#3476bd"/></marker>
-    <marker id="arr-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#23836a"/></marker>
-    <marker id="arr-orange" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#c88619"/></marker>
-    <marker id="arr-black" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#263542"/></marker>
-    <style>
-      text { font-family: "Microsoft YaHei", "Noto Sans CJK SC", "Arial", sans-serif; fill:#172633; }
-      .title { font-size:42px; font-weight:700; }
-      .sub { font-size:20px; fill:#506272; }
-      .zone-title { font-size:26px; font-weight:700; }
-      .card-title { font-size:22px; font-weight:700; }
-      .body { font-size:18px; fill:#40515f; }
-      .small { font-size:16px; fill:#536575; }
-      .tiny { font-size:14px; fill:#5d6d7b; }
-      .port { font-size:15px; font-weight:700; }
-      .row-title { font-size:19px; font-weight:700; }
-      .row-body { font-size:16px; fill:#435360; }
-      .panel { stroke-width:2; }
-      .card { fill:#fff; stroke:#aebdca; stroke-width:2; }
-      .power { fill:none; stroke:#c7464e; stroke-width:5; marker-end:url(#arr-red); }
-      .power-line { fill:none; stroke:#c7464e; stroke-width:4; }
-      .aux { fill:none; stroke:#8255a6; stroke-width:4; marker-end:url(#arr-purple); }
-      .control { fill:none; stroke:#3476bd; stroke-width:3.5; marker-end:url(#arr-blue); }
-      .sensor { fill:none; stroke:#23836a; stroke-width:3.5; stroke-dasharray:10 7; marker-end:url(#arr-green); }
-      .safety { fill:none; stroke:#c88619; stroke-width:4; stroke-dasharray:10 7; marker-end:url(#arr-orange); }
-      .phase { fill:none; stroke:#263542; stroke-width:4; marker-end:url(#arr-black); }
-      .unresolved { fill:none; stroke:#687888; stroke-width:3; stroke-dasharray:7 7; }
-      .label { font-size:16px; font-weight:700; paint-order:stroke; stroke:#f7f9fb; stroke-width:6px; stroke-linejoin:round; }
-      .table { fill:#fff; stroke:#d1dbe3; stroke-width:1.5; }
-      .must { fill:#fff0e9; stroke:#d08b55; }
-      .recommend { fill:#e8f4ef; stroke:#70a98f; }
-      .verify { fill:#fff5dc; stroke:#d1a541; }
-    </style>
-  </defs>
+<svg xmlns="http://www.w3.org/2000/svg" width="3200" height="2050" viewBox="0 0 3200 2050" role="img" aria-labelledby="title desc">
+<title id="title">B32 水下软体机械臂硬件连接拓扑图</title>
+<desc id="desc">清晰分区显示岸上、脐带缆、电子仓和湿侧的电源、CAN、PWM、急停与电压电流温度监测连线。</desc>
+<defs>
+ <marker id="arrow-red" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#c7464e"/></marker>
+ <marker id="arrow-purple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#8255a6"/></marker>
+ <marker id="arrow-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#3476bd"/></marker>
+ <marker id="arrow-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#23836a"/></marker>
+ <marker id="arrow-amber" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#c88619"/></marker>
+ <marker id="arrow-dark" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 L12 6 L0 12 Z" fill="#263542"/></marker>
+ <style>
+  text{font-family:"Microsoft YaHei","Noto Sans CJK SC","Arial",sans-serif;fill:#182734}
+  .title{font-size:42px;font-weight:700}.subtitle{font-size:20px;fill:#536574}.zone{font-size:26px;font-weight:700}
+  .cardtitle{font-size:22px;font-weight:700}.body{font-size:18px;fill:#41525f}.small{font-size:16px;fill:#566876}.tiny{font-size:14px;fill:#60717e}
+  .rowtitle{font-size:18px;font-weight:700}.rowbody{font-size:15px;fill:#455662}.label{font-size:15px;font-weight:700;paint-order:stroke;stroke:#f6f9fb;stroke-width:6px;stroke-linejoin:round}
+  .panel{stroke-width:2}.card{fill:#fff;stroke:#aebdca;stroke-width:2}.wire-red{fill:none;stroke:#c7464e;stroke-width:5}.pwr{fill:none;stroke:#c7464e;stroke-width:5;marker-end:url(#arrow-red)}
+  .wire-purple{fill:none;stroke:#8255a6;stroke-width:4}.aux{fill:none;stroke:#8255a6;stroke-width:4;marker-end:url(#arrow-purple)}
+  .control{fill:none;stroke:#3476bd;stroke-width:4;marker-end:url(#arrow-blue)}.sensor{fill:none;stroke:#23836a;stroke-width:4;stroke-dasharray:10 7;marker-end:url(#arrow-green)}
+  .safety{fill:none;stroke:#c88619;stroke-width:4;stroke-dasharray:10 7;marker-end:url(#arrow-amber)}.phase{fill:none;stroke:#263542;stroke-width:4;marker-end:url(#arrow-dark)}
+  .table{fill:#fff;stroke:#d4dde5;stroke-width:1.5}.tag{fill:#eaf3f9;stroke:#9eb4c5;stroke-width:1.5}.port{fill:#fff;stroke:#788b99;stroke-width:2}
+ </style>
+</defs>
+<rect width="3200" height="2050" fill="#f5f8fb"/>
+<text x="55" y="65" class="title">B32 水下软体机械臂｜硬件连接拓扑图</text>
+<text x="58" y="105" class="subtitle">岸上隔离 24 V · 4S1P 松下 NCR21700T / 8 Ah · 三路 APISQUEEN 4092 + 配套双向 PWM mini ESC · 动力线每芯 4 mm²</text>
+<rect x="2420" y="32" width="725" height="84" rx="18" fill="#e9f0f5" stroke="#b9c9d4" stroke-width="2"/>
+<text x="2450" y="67" class="cardtitle">设计目标：5 m · 约 30 min · 岸电断开备电约 15 min</text><text x="2450" y="96" class="small">均为目标工况，仍需整机测试验证</text>
+<line x1="60" y1="158" x2="105" y2="158" class="wire-red"/><text x="118" y="164" class="small">24 V 电源/母线</text>
+<line x1="320" y1="158" x2="365" y2="158" class="wire-purple"/><text x="378" y="164" class="small">Type-C 辅助</text>
+<line x1="560" y1="158" x2="605" y2="158" class="control"/><text x="618" y="164" class="small">CAN / PWM 信号</text>
+<line x1="850" y1="158" x2="895" y2="158" class="sensor"/><text x="908" y="164" class="small">监测信号</text>
+<line x1="1085" y1="158" x2="1130" y2="158" class="safety"/><text x="1143" y="164" class="small">硬接线急停</text>
+<line x1="1315" y1="158" x2="1360" y2="158" class="phase"/><text x="1373" y="164" class="small">电机三相线</text>
+<text x="1730" y="164" class="small">不同颜色表示不同线束；交叉处无实心节点表示不相连。</text>
 
-  <rect width="3200" height="2200" fill="#f5f8fb"/>
-  <text x="55" y="66" class="title">B32 水下软体机械臂｜硬件连接拓扑与监测</text>
-  <text x="58" y="108" class="sub">版本：2026-10-22 修订稿｜岸上隔离 24 V｜4S1P 8 Ah｜配套 mini ESC 双向 PWM｜脐带电源线 2 × 4 mm²</text>
-  <text x="58" y="143" class="small">目标工况：水深 5 m、运行约 30 min、岸电断开后备电约 15 min；时间与水下性能仍需整机测试记录。</text>
+<!-- Main zones -->
+<rect x="40" y="205" width="420" height="1280" rx="20" fill="#f0f4f7" stroke="#c4d0d9" class="panel"/>
+<rect x="480" y="205" width="310" height="1280" rx="20" fill="#edf2f6" stroke="#aebcc8" class="panel"/>
+<rect x="810" y="205" width="1500" height="1280" rx="20" fill="#edf4f9" stroke="#7290a7" stroke-width="3" stroke-dasharray="12 7"/>
+<rect x="2330" y="205" width="830" height="1280" rx="20" fill="#eaf7fa" stroke="#8ab7c4" class="panel"/>
+<text x="65" y="245" class="zone">岸上</text><text x="505" y="245" class="zone">脐带缆</text><text x="840" y="245" class="zone">头端干舱：UPS、主控与配电</text><text x="2360" y="245" class="zone">湿侧 / 水下</text>
+<text x="2360" y="277" class="small">三台电机置于水中；电池、ESC、控制器留在密封干舱内。</text>
 
-  <line x1="60" y1="176" x2="110" y2="176" class="power-line"/><text x="122" y="182" class="small">24 V 动力电源</text>
-  <line x1="300" y1="176" x2="350" y2="176" class="aux"/><text x="362" y="182" class="small">Type-C 辅助电源</text>
-  <line x1="590" y1="176" x2="640" y2="176" class="control"/><text x="652" y="182" class="small">CAN / PWM 信号</text>
-  <line x1="885" y1="176" x2="935" y2="176" class="sensor"/><text x="947" y="182" class="small">电压、电流、温度采样</text>
-  <line x1="1265" y1="176" x2="1315" y2="176" class="safety"/><text x="1327" y="182" class="small">硬件急停回路</text>
-  <line x1="1535" y1="176" x2="1585" y2="176" class="phase"/><text x="1597" y="182" class="small">电机三相输出</text>
-  <text x="1950" y="182" class="small">线条交叉且无连接点时不表示电气相连；接口编号是图纸代号。</text>
+<!-- Wires first, so device cards sit cleanly above lines -->
+<!-- Shore power to UPS MAIN -->
+<path d="M410 355 H500" class="pwr"/><path d="M770 355 H1370" class="pwr"/>
+<!-- Battery / BMS / 24V backup supply -->
+<path d="M1000 580 H1020" class="pwr"/><path d="M1170 580 H1190" class="pwr"/><path d="M1350 580 H1370" class="pwr"/>
+<!-- Type-C auxiliary chain -->
+<path d="M1000 765 H1020" class="aux"/><path d="M1170 765 H1190" class="aux"/><path d="M1350 765 H1370" class="aux"/>
+<!-- UPS output and branch point -->
+<path d="M1650 520 H1690" class="pwr"/><circle cx="1670" cy="520" r="8" fill="#c7464e" stroke="#fff" stroke-width="3"/>
+<!-- Main PDU to motor contactor -->
+<path d="M1805 600 V680" class="pwr"/>
+<!-- Independent logic branch: UPS OUT -> F_LOGIC -> buck input -->
+<path d="M1670 520 V940 H1425 V980" class="pwr"/>
+<!-- K1 switched ESC power rail and three fused branches -->
+<path d="M1920 745 H1990" class="wire-red"/><path d="M1990 330 V745" class="wire-red"/>
+<path d="M1990 330 H2000" class="wire-red"/><path d="M2030 330 H2040" class="pwr"/>
+<path d="M1990 530 H2000" class="wire-red"/><path d="M2030 530 H2040" class="pwr"/>
+<path d="M1990 730 H2000" class="wire-red"/><path d="M2030 730 H2040" class="pwr"/>
+<!-- ESC three-phase leads through J9 -->
+<path d="M2280 330 H2510" class="phase"/><path d="M2280 530 H2510" class="phase"/><path d="M2280 730 H2510" class="phase"/>
+<!-- Shore CAN to STM32, routed along the lower edge -->
+<path d="M770 595 H790 V500 H480 V1445 H1745 V1230" class="control"/>
+<!-- Hardwired NC emergency-stop loop to the K1 coil -->
+<path d="M770 875 H1600 V705 H1690" class="safety"/>
+<!-- Monitors to controller; battery NTCs stay on BMS -->
+<path d="M1280 1175 H1570" class="sensor"/>
+<!-- 5V logic output -->
+<path d="M1530 1060 H1570" class="pwr"/>
+<!-- PWM mapping harness link; individual ESC channel assignment is printed on each card/table -->
+<path d="M1920 1135 H1980" class="control"/>
 
-  <!-- System zones -->
-  <rect x="40" y="205" width="470" height="1045" rx="20" fill="#f0f4f7" stroke="#c4d0d9" class="panel"/>
-  <rect x="530" y="205" width="320" height="1045" rx="20" fill="#edf2f6" stroke="#aebcc8" class="panel"/>
-  <rect x="870" y="205" width="1360" height="1045" rx="20" fill="#edf4f9" stroke="#7290a7" stroke-width="3" stroke-dasharray="12 7"/>
-  <rect x="2250" y="205" width="910" height="1045" rx="20" fill="#eaf7fa" stroke="#8ab7c4" class="panel"/>
-  <text x="65" y="245" class="zone-title">岸上</text>
-  <text x="555" y="245" class="zone-title">脐带缆</text>
-  <text x="900" y="245" class="zone-title">水下头端密封电子仓</text>
-  <text x="2280" y="245" class="zone-title">湿侧 / 水下</text>
-  <text x="2280" y="275" class="small">三台 4092 电机；电子仓内保持干燥密封，外部包覆件不作为压力壳。</text>
+<!-- Shore equipment -->
+<rect x="70" y="280" width="340" height="150" rx="16" class="card"/><rect x="70" y="280" width="9" height="150" rx="4" fill="#c7464e"/>
+<text x="95" y="315" class="cardtitle">隔离 24 V 岸上电源</text><text x="95" y="350" class="body">DC：+24 V / 0 V (−)</text><text x="95" y="382" class="small">AC PE 按说明接电源 FG / 机壳</text><text x="95" y="410" class="tiny">PE 不作为水下电源回流线</text>
+<rect x="70" y="520" width="340" height="150" rx="16" class="card"/><rect x="70" y="520" width="9" height="150" rx="4" fill="#3476bd"/>
+<text x="95" y="555" class="cardtitle">岸上控制台</text><text x="95" y="590" class="body">电脑 / 控制器 → 隔离 USB-CAN</text><text x="95" y="622" class="small">配置、命令与状态监控</text><text x="95" y="650" class="tiny">USB 侧与总线侧隔离</text>
+<rect x="70" y="800" width="340" height="150" rx="16" fill="#fff9e9" stroke="#d3a343" stroke-width="2"/><rect x="70" y="800" width="9" height="150" rx="4" fill="#c88619"/>
+<text x="95" y="835" class="cardtitle">硬件急停按钮</text><text x="95" y="870" class="body">常闭 NC 回路</text><text x="95" y="902" class="small">按下 / 断线 → K1 释放</text><text x="95" y="930" class="tiny">切断 ESC 动力，STM32 保持供电</text>
 
-  <!-- Connections behind cards -->
-  <!-- Shore 24 V through the two-conductor tether to UPS MAIN -->
-  <path d="M470 355 H550" class="power"/>
-  <path d="M810 355 H900" class="power"/>
-  <path d="M985 355 H1060" class="power"/>
-  <text x="520" y="335" class="label" fill="#b43b43">J1 +24 V / 0 V</text>
-  <text x="875" y="390" class="label" fill="#b43b43">F0</text>
-  <!-- Battery to BMS and 24 V backup converter -->
-  <path d="M1070 730 H1090" class="power"/>
-  <path d="M1270 730 H1290" class="power"/>
-  <path d="M1510 730 V825 H1280 V615 H1220 V580" class="power"/>
+<!-- Umbilical harness -->
+<rect x="500" y="280" width="270" height="150" rx="16" class="card"/><text x="525" y="315" class="cardtitle">J1 动力线束</text><text x="525" y="350" class="body">两芯各 4 mm² · 5 m</text><text x="525" y="382" class="small">芯 1：+24 V</text><text x="525" y="410" class="small">芯 2：0 V / 负极回流</text>
+<rect x="500" y="520" width="270" height="150" rx="16" class="card"/><text x="525" y="555" class="cardtitle">J8 CAN 通信线束</text><text x="525" y="590" class="body">CANH / CANL 双绞对</text><text x="525" y="622" class="small">另带 CAN_REF 参考线</text><text x="525" y="650" class="tiny">屏蔽层单独处理，不作回流</text>
+<rect x="500" y="800" width="270" height="150" rx="16" fill="#fff9e9" stroke="#d3a343" stroke-width="2"/><text x="525" y="835" class="cardtitle">J10 急停线对</text><text x="525" y="870" class="body">低压常闭互锁</text><text x="525" y="902" class="small">与动力 / CAN 线分开标识</text><text x="525" y="930" class="tiny">开路即切断 K1 线圈</text>
+<text x="500" y="1000" class="tiny">J8 两端各 120 Ω；CAN_REF 接两端总线参考地，不接 PE。</text>
 
-  <!-- USB-C PD auxiliary input and boost -->
-  <path d="M1070 930 H1090" class="aux"/>
-  <path d="M1270 930 H1290" class="aux"/>
-  <path d="M1510 930 H1520 V850 H860 V595 H1350 V580" class="aux"/>
+<!-- Battery row -->
+<rect x="850" y="510" width="150" height="140" rx="15" class="card"/><text x="870" y="545" class="cardtitle">4S1P 电池</text><text x="870" y="578" class="body">NCR21700T</text><text x="870" y="608" class="small">8 Ah · 14.8 V</text><text x="870" y="633" class="tiny">满充 16.8 V</text>
+<rect x="1020" y="510" width="150" height="140" rx="15" class="card"/><text x="1040" y="545" class="cardtitle">4S BMS</text><text x="1040" y="578" class="body">B− / B1…B3 / B+</text><text x="1040" y="608" class="small">P+ / P− 输出</text><text x="1040" y="633" class="tiny">均衡、保护、NTC</text>
+<rect x="1190" y="510" width="160" height="140" rx="15" fill="#fffaf0" stroke="#d3a343" stroke-width="2"/><text x="1208" y="545" class="cardtitle">电池稳压器</text><text x="1208" y="578" class="body">9–35 V → 24 V</text><text x="1208" y="608" class="small">额定 15 A</text><text x="1208" y="633" class="tiny">接 UPS BACKUP</text>
+<text x="850" y="490" class="label" fill="#b43b43">J2</text><text x="1190" y="490" class="label" fill="#b43b43">J3 → UPS 备电输入</text>
 
-  <!-- UPS output to power distribution -->
-  <path d="M1400 385 H1510" class="power"/>
-  <text x="1408" y="365" class="label" fill="#b43b43">UPS OUT</text>
-  <!-- Motor power, hardware contactor, protected ESC branches -->
-  <path d="M1660 480 V520" class="power"/>
-  <path d="M1660 645 H1830 V395 H1845" class="power"/>
-  <path d="M1830 585 H1845" class="power"/>
-  <path d="M1830 775 H1845" class="power"/>
-  <text x="1672" y="672" class="label" fill="#b43b43">电调母线</text>
-  <text x="1836" y="375" class="tiny" fill="#b43b43">F_ESC1</text>
-  <text x="1836" y="565" class="tiny" fill="#b43b43">F_ESC2</text>
-  <text x="1836" y="755" class="tiny" fill="#b43b43">F_ESC3</text>
-  <!-- UPS output to logic buck -->
-  <path d="M1780 480 V500 H1790 V835 H1530 V900 H1410 V930" class="power"/>
-  <text x="1550" y="822" class="label" fill="#b43b43">F_LOGIC → J6 输入</text>
-  <!-- Buck to STM32 -->
-  <path d="M1510 1030 H1540" class="power"/>
-  <!-- Three separate timer PWM lines to the mini ESCs -->
-  <path d="M1800 975 H1815 V395 H1845" class="control"/>
-  <path d="M1800 1025 H1820 V585 H1845" class="control"/>
-  <path d="M1800 1075 H1825 V775 H1845" class="control"/>
-  <text x="1815" y="950" class="tiny" fill="#2867a9">PWM CH1</text>
-  <text x="1820" y="1005" class="tiny" fill="#2867a9">PWM CH2</text>
-  <text x="1825" y="1055" class="tiny" fill="#2867a9">PWM CH3</text>
-  <!-- CAN data and optional bus reference wire from shore to board -->
-  <path d="M470 610 H550" class="control"/>
-  <path d="M810 610 H840 V1160 H1540 V1110" class="control"/>
-  <text x="530" y="590" class="label" fill="#2867a9">J7 CAN 双绞线</text>
-  <!-- Hardwired normally-closed emergency stop loop to K1 coil -->
-  <path d="M470 850 H550" class="safety"/>
-  <path d="M810 850 H840 V1205 H1840 V600 H1770" class="safety"/>
-  <text x="1560" y="1190" class="label" fill="#9b6710">J10 NC 急停 / 断线停机回路 → K1 线圈</text>
-  <!-- Monitor signal to controller -->
-  <path d="M1300 1085 H1540" class="sensor"/>
-  <text x="1308" y="1060" class="label" fill="#1e765f">ADC / I²C 采样</text>
-  <!-- ESC three-phase output to wet-side motors -->
-  <path d="M2195 395 H2440" class="phase"/>
-  <path d="M2195 585 H2440" class="phase"/>
-  <path d="M2195 775 H2440" class="phase"/>
-  <text x="2260" y="375" class="label">A/B/C · 穿舱 J9</text>
-  <text x="2260" y="565" class="label">A/B/C · 穿舱 J9</text>
-  <text x="2260" y="755" class="label">A/B/C · 穿舱 J9</text>
-  <!-- Optional single-point shield bond at shore end -->
+<!-- Type-C row -->
+<rect x="850" y="700" width="150" height="130" rx="15" class="card"/><text x="870" y="735" class="cardtitle">USB-C PD</text><text x="870" y="770" class="body">辅助输入</text><text x="870" y="800" class="tiny">仅作辅助电源</text>
+<rect x="1020" y="700" width="150" height="130" rx="15" class="card"/><text x="1040" y="735" class="cardtitle">PD 输入板</text><text x="1040" y="770" class="body">PD IN → DC OUT</text><text x="1040" y="800" class="tiny">输出端核对</text>
+<rect x="1190" y="700" width="160" height="130" rx="15" fill="#f7f1fb" stroke="#b39bc8" stroke-width="2"/><text x="1208" y="735" class="cardtitle">24 V 升压</text><text x="1208" y="770" class="body">DC OUT → 24 V</text><text x="1208" y="800" class="tiny">接 UPS AUX</text>
+<text x="850" y="682" class="label" fill="#724591">J4 Type-C → UPS 辅助输入</text>
 
-  <text x="65" y="1000" class="tiny">CAN 屏蔽层若有：与信号参考线分开，接地方式按线缆 / USB-CAN 说明设计。</text>
+<!-- UPS, PDU and K1 -->
+<rect x="1370" y="270" width="280" height="570" rx="18" class="card"/>
+<rect x="1370" y="270" width="280" height="48" rx="18" fill="#dce9f1"/><text x="1395" y="302" class="cardtitle">UPS 切换模块</text>
+<text x="1400" y="385" class="body">MAIN ← 岸上 24 V</text><text x="1400" y="608" class="body">BACKUP ← 电池侧 24 V</text><text x="1400" y="793" class="body">AUX ← Type-C 升压 24 V</text>
+<text x="1400" y="480" class="small">三路输入按 UPS 内部切换</text><text x="1400" y="510" class="small">外部不并接多个电源输出</text>
+<text x="1400" y="545" class="body">OUT：稳定 24 V 母线</text>
+<text x="1655" y="500" class="label" fill="#b43b43">J5 UPS OUT</text>
+<rect x="1690" y="430" width="230" height="170" rx="16" class="card"/><rect x="1690" y="430" width="230" height="42" rx="16" fill="#f7e6e7"/><text x="1712" y="460" class="cardtitle">24 V 配电 J5</text><text x="1712" y="500" class="body">总保险 F_MAIN</text><text x="1712" y="532" class="small">V24 / I24 母线采样</text><text x="1712" y="564" class="small">ESC 动力 / 逻辑分路</text>
+<rect x="1690" y="680" width="230" height="130" rx="16" fill="#fff9e9" stroke="#d3a343" stroke-width="2"/><text x="1712" y="715" class="cardtitle">K1 常开接触器</text><text x="1712" y="748" class="body">切断三路 ESC 电源</text><text x="1712" y="780" class="small">UPS 继续供主控</text><text x="1640" y="695" class="tiny" fill="#9b6710">线圈 NC 急停</text>
+<text x="1700" y="925" class="label" fill="#b43b43">F_LOGIC</text>
 
-  <!-- Shore equipment -->
-  <rect x="70" y="280" width="400" height="160" rx="16" class="card"/>
-  <rect x="70" y="280" width="9" height="160" rx="4" fill="#c7464e"/>
-  <text x="95" y="315" class="card-title">隔离 24 V 岸上电源</text>
-  <text x="95" y="348" class="body">DC 输出：+24 V / 0 V（−）</text>
-  <text x="95" y="380" class="small">AC 侧 PE → 电源 FG / 机壳端</text>
-  <text x="95" y="410" class="tiny">0 V 是回流线；PE 不走脐带缆、不接水体</text>
+<!-- ESC branches and motors -->
+<rect x="1996" y="318" width="34" height="24" rx="4" fill="#fff" stroke="#c7464e" stroke-width="2"/><text x="2001" y="336" class="tiny">F1</text>
+<rect x="1996" y="518" width="34" height="24" rx="4" fill="#fff" stroke="#c7464e" stroke-width="2"/><text x="2001" y="536" class="tiny">F2</text>
+<rect x="1996" y="718" width="34" height="24" rx="4" fill="#fff" stroke="#c7464e" stroke-width="2"/><text x="2001" y="736" class="tiny">F3</text>
+<rect x="2040" y="260" width="240" height="140" rx="16" class="card"/><rect x="2040" y="260" width="9" height="140" rx="4" fill="#d98758"/><text x="2062" y="295" class="cardtitle">ESC 1 · 配套 mini</text><text x="2062" y="328" class="body">PWR 24 V / 0 V · F1</text><text x="2062" y="360" class="small">PWM CH1 · SIG_GND</text><text x="2062" y="386" class="tiny">A/B/C → 电机 1</text>
+<rect x="2040" y="460" width="240" height="140" rx="16" class="card"/><rect x="2040" y="460" width="9" height="140" rx="4" fill="#d98758"/><text x="2062" y="495" class="cardtitle">ESC 2 · 配套 mini</text><text x="2062" y="528" class="body">PWR 24 V / 0 V · F2</text><text x="2062" y="560" class="small">PWM CH2 · SIG_GND</text><text x="2062" y="586" class="tiny">A/B/C → 电机 2</text>
+<rect x="2040" y="660" width="240" height="140" rx="16" class="card"/><rect x="2040" y="660" width="9" height="140" rx="4" fill="#d98758"/><text x="2062" y="695" class="cardtitle">ESC 3 · 配套 mini</text><text x="2062" y="728" class="body">PWR 24 V / 0 V · F3</text><text x="2062" y="760" class="small">PWM CH3 · SIG_GND</text><text x="2062" y="786" class="tiny">A/B/C → 电机 3</text>
+<text x="2345" y="312" class="label">J9 · 水密穿舱</text><text x="2345" y="512" class="label">J9 · 水密穿舱</text><text x="2345" y="712" class="label">J9 · 水密穿舱</text>
+<rect x="2510" y="260" width="620" height="140" rx="16" fill="#fff" stroke="#8ab7c4" stroke-width="2"/><text x="2540" y="298" class="cardtitle">电机 1 · APISQUEEN 4092</text><text x="2540" y="333" class="body">湿侧无刷减速电机 · 12–24 V</text><text x="2540" y="368" class="small">三相 A/B/C · 额定水深与接线相序按实物核对</text>
+<rect x="2510" y="460" width="620" height="140" rx="16" fill="#fff" stroke="#8ab7c4" stroke-width="2"/><text x="2540" y="498" class="cardtitle">电机 2 · APISQUEEN 4092</text><text x="2540" y="533" class="body">湿侧无刷减速电机 · 12–24 V</text><text x="2540" y="568" class="small">三相 A/B/C · 额定水深与接线相序按实物核对</text>
+<rect x="2510" y="660" width="620" height="140" rx="16" fill="#fff" stroke="#8ab7c4" stroke-width="2"/><text x="2540" y="698" class="cardtitle">电机 3 · APISQUEEN 4092</text><text x="2540" y="733" class="body">湿侧无刷减速电机 · 12–24 V</text><text x="2540" y="768" class="small">三相 A/B/C · 额定水深与接线相序按实物核对</text>
 
-  <rect x="70" y="520" width="400" height="210" rx="16" class="card"/>
-  <rect x="70" y="520" width="9" height="210" rx="4" fill="#3476bd"/>
-  <text x="95" y="555" class="card-title">岸上控制与 CAN</text>
-  <text x="95" y="590" class="body">电脑 / 控制台 → 隔离 USB-CAN</text>
-  <text x="95" y="620" class="small">CANH、CANL 使用双绞线</text>
-  <text x="95" y="650" class="small">建议另带 CAN_REF 参考线</text>
-  <text x="95" y="680" class="small">终端：总线两个物理端各 120 Ω</text>
-  <text x="95" y="710" class="tiny">ATK-DMG474 有板载 CAN 接口；端子按板卡原理图核对</text>
+<!-- Logic, controller and monitoring -->
+<rect x="1320" y="980" width="210" height="140" rx="15" class="card"/><text x="1340" y="1015" class="cardtitle">J6 降压模块</text><text x="1340" y="1050" class="body">24 V → 5 V</text><text x="1340" y="1082" class="small">独立 F_LOGIC</text><text x="1340" y="1107" class="tiny">输入取 UPS OUT</text>
+<rect x="1570" y="1040" width="350" height="190" rx="16" class="card"/><rect x="1570" y="1040" width="350" height="42" rx="16" fill="#dce9f1"/><text x="1595" y="1070" class="cardtitle">STM32G474 主控</text><text x="1595" y="1110" class="body">5 V 输入 · GND 接系统 DC 0 V</text><text x="1595" y="1142" class="small">CAN ↔ J8 · TIM PWM CH1/2/3 → J7</text><text x="1595" y="1174" class="small">ADC / I²C 读取电压、电流、温度</text><text x="1595" y="1205" class="tiny">具体定时器引脚按开发板原理图核对</text>
+<rect x="1980" y="1010" width="310" height="250" rx="16" fill="#eef5fb" stroke="#8aaec8" stroke-width="2"/><text x="2005" y="1045" class="cardtitle">J7 PWM 线束映射</text><text x="2005" y="1085" class="body">TIM PWM CH1 + SIG_GND → ESC 1</text><text x="2005" y="1125" class="body">TIM PWM CH2 + SIG_GND → ESC 2</text><text x="2005" y="1165" class="body">TIM PWM CH3 + SIG_GND → ESC 3</text><text x="2005" y="1205" class="small">双向 PWM：1.0–1.5 ms 反转</text><text x="2005" y="1232" class="small">1.5 ms 停止 · 1.5–2.0 ms 正转</text>
+<rect x="850" y="1020" width="430" height="200" rx="16" fill="#eef8f4" stroke="#83b6a0" stroke-width="2"/><rect x="850" y="1020" width="9" height="200" rx="4" fill="#23836a"/><text x="875" y="1055" class="cardtitle">J11 电压 / 电流 / 温度采集</text><text x="875" y="1090" class="body">V_BAT / I_BAT：BMS 输出侧</text><text x="875" y="1122" class="body">V_24 / I_24：UPS OUT 母线</text><text x="875" y="1154" class="small">电池 NTC ×2 接 BMS</text><text x="875" y="1184" class="small">ESC ×3、电源模块 ×1 → STM32</text><text x="875" y="1208" class="tiny">模拟量进 ADC 前限幅至 0–3.3 V</text>
+<text x="1320" y="965" class="label" fill="#b43b43">24 V 逻辑支路输入</text><text x="1538" y="1047" class="tiny" fill="#b43b43">+5 V</text><text x="1288" y="1162" class="label" fill="#1e765f">监测数据</text>
 
-  <rect x="70" y="790" width="400" height="150" rx="16" fill="#fff9e9" stroke="#d3a343" stroke-width="2"/>
-  <rect x="70" y="790" width="9" height="150" rx="4" fill="#c88619"/>
-  <text x="95" y="825" class="card-title">岸上硬件急停</text>
-  <text x="95" y="858" class="body">常闭回路健康时吸合 K1</text>
-  <text x="95" y="890" class="small">急停或缆线断开 → 电调母线断电</text>
-  <text x="95" y="920" class="tiny">STM32 保持 5 V 供电用于故障记录</text>
+<!-- Ground and safety note box -->
+<rect x="2360" y="900" width="750" height="310" rx="18" fill="#fff" stroke="#b7c7d1" stroke-width="2"/><text x="2390" y="945" class="cardtitle">回流、参考地与散热边界</text><text x="2390" y="990" class="body">• 岸电 0 V 是 +24 V 的回流线，接 UPS MAIN−。</text><text x="2390" y="1030" class="body">• STM32 GND、PWM SIG_GND 与 ESC 逻辑地共 DC 0 V。</text><text x="2390" y="1070" class="body">• PE 留在岸上接电源 FG；不接水体，也不走动力回路。</text><text x="2390" y="1110" class="body">• CAN_REF 单独布线；屏蔽层不作电源回流线。</text><text x="2390" y="1150" class="body">• UPS / ESC 制动回灌与舱内散热需按器件资料处理。</text>
+<text x="2360" y="1260" class="small">电子舱为干舱；外罩开口不代表承压或防水。水密穿舱件、</text><text x="2360" y="1290" class="small">保险与接触器额定值、续航和温升须经实物验证。</text>
 
-  <!-- Umbilical bundle -->
-  <rect x="550" y="280" width="260" height="200" rx="16" class="card"/>
-  <text x="575" y="315" class="card-title">J1 动力供电</text>
-  <text x="575" y="350" class="body">2 芯 × 4 mm² 铜线</text>
-  <text x="575" y="382" class="body">已备长度 5 m</text>
-  <text x="575" y="414" class="small">芯 1：+24 V</text>
-  <text x="575" y="444" class="small">芯 2：0 V / 负极回流</text>
-  <text x="575" y="466" class="tiny">无单独 PE 芯；0 V 不等于 PE</text>
-
-  <rect x="550" y="520" width="260" height="215" rx="16" class="card"/>
-  <text x="575" y="555" class="card-title">J7 通信线束</text>
-  <text x="575" y="590" class="body">CANH / CANL 双绞对</text>
-  <text x="575" y="622" class="small">CAN_REF：建议独立细线</text>
-  <text x="575" y="654" class="small">CAN_REF 两端接 CAN_GND</text>
-  <text x="575" y="686" class="tiny">屏蔽层单独处理，不作回流</text>
-  <text x="575" y="714" class="tiny">CAN_REF 不代替动力 0 V 回线</text>
-
-  <rect x="550" y="790" width="260" height="150" rx="16" fill="#fff9e9" stroke="#d3a343" stroke-width="2"/>
-  <text x="575" y="825" class="card-title">J10 急停线对</text>
-  <text x="575" y="860" class="body">低压常闭互锁线</text>
-  <text x="575" y="890" class="small">与 CAN、动力线分开标识</text>
-  <text x="575" y="920" class="tiny">开路即释放 K1，切断电机支路</text>
-
-  <!-- UPS and 24 V distribution -->
-  <rect x="900" y="300" width="85" height="70" rx="11" fill="#fff4e8" stroke="#d08b55" stroke-width="2"/>
-  <text x="920" y="330" class="port">F0</text>
-  <text x="910" y="354" class="tiny">岸电保险</text>
-
-  <rect x="1060" y="260" width="340" height="320" rx="18" class="card"/>
-  <rect x="1060" y="260" width="340" height="45" rx="18" fill="#dbe8f1"/>
-  <text x="1085" y="291" class="card-title">UPS 切换模块</text>
-  <text x="1085" y="345" class="body">MAIN：岸上隔离 24 V</text>
-  <text x="1085" y="382" class="body">BACKUP：电池侧 24 V</text>
-  <text x="1085" y="419" class="body">AUX：Type-C 升压 24 V</text>
-  <text x="1085" y="456" class="body">OUT：稳定 24 V 母线</text>
-  <text x="1085" y="500" class="small">由 UPS 管理输入切换</text>
-  <text x="1085" y="534" class="tiny">外部不把多个 24 V 输入直接并联</text>
-  <text x="1068" y="340" class="tiny">MAIN</text>
-  <text x="1190" y="577" class="tiny">BACKUP</text>
-  <text x="1320" y="577" class="tiny">AUX</text>
-
-  <rect x="1510" y="300" width="300" height="180" rx="16" fill="#fff" stroke="#c98b8f" stroke-width="2"/>
-  <rect x="1510" y="300" width="300" height="42" rx="16" fill="#f7e6e7"/>
-  <text x="1533" y="329" class="card-title">J5 24 V 配电</text>
-  <text x="1533" y="371" class="body">UPS OUT +24 V / 0 V</text>
-  <text x="1533" y="403" class="small">母线电压 / 总电流采样</text>
-  <text x="1533" y="435" class="small">分电调动力支路与逻辑支路</text>
-  <text x="1533" y="463" class="tiny">电调分支独立保险 F_ESC1…3</text>
-
-  <rect x="1470" y="520" width="300" height="125" rx="16" fill="#fff9e9" stroke="#d3a343" stroke-width="2"/>
-  <text x="1493" y="555" class="card-title">K1 电调母线接触器</text>
-  <text x="1493" y="590" class="body">常开动力触点，线圈由 NC 急停回路保持</text>
-  <text x="1493" y="622" class="small">失电时切断 3 路 ESC，逻辑电源不断</text>
-
-  <!-- Battery chain -->
-  <rect x="900" y="650" width="170" height="160" rx="15" class="card"/>
-  <text x="920" y="685" class="card-title">4S1P 电池组</text>
-  <text x="920" y="720" class="body">NCR21700T</text>
-  <text x="920" y="752" class="small">14.8 V 标称</text>
-  <text x="920" y="782" class="small">8 Ah / 节</text>
-  <text x="920" y="802" class="tiny">串联后仍为 8 Ah</text>
-
-  <rect x="1090" y="650" width="180" height="160" rx="15" class="card"/>
-  <text x="1112" y="685" class="card-title">4S BMS</text>
-  <text x="1112" y="720" class="body">B− / B1…B3 / B+</text>
-  <text x="1112" y="752" class="small">P+ / P− 到转换器</text>
-  <text x="1112" y="782" class="small">均衡、保护、温度</text>
-  <text x="1112" y="802" class="tiny">F_BAT 靠近电池正极</text>
-
-  <rect x="1290" y="650" width="220" height="160" rx="15" fill="#fffaf0" stroke="#d3a343" stroke-width="2"/>
-  <text x="1312" y="685" class="card-title">电池侧稳压 / 升压</text>
-  <text x="1312" y="720" class="body">VIN：BMS P+ / P−</text>
-  <text x="1312" y="752" class="body">9–35 V → 24 V</text>
-  <text x="1312" y="782" class="small">额定 15 A（用户确认）</text>
-  <text x="1312" y="802" class="tiny">接 UPS BACKUP</text>
-
-  <!-- Type-C auxiliary chain -->
-  <rect x="900" y="870" width="170" height="120" rx="15" class="card"/>
-  <text x="920" y="905" class="card-title">USB-C PD 输入</text>
-  <text x="920" y="940" class="body">服务 / 辅助口</text>
-  <text x="920" y="970" class="tiny">水下需密封穿舱</text>
-
-  <rect x="1090" y="870" width="180" height="120" rx="15" class="card"/>
-  <text x="1112" y="905" class="card-title">PD 取电板</text>
-  <text x="1112" y="940" class="body">PD IN → DC OUT</text>
-  <text x="1112" y="970" class="tiny">协商档位按模块</text>
-
-  <rect x="1290" y="870" width="220" height="120" rx="15" class="card"/>
-  <text x="1312" y="905" class="card-title">24 V 升压模块</text>
-  <text x="1312" y="940" class="body">PD DC OUT → 24 V</text>
-  <text x="1312" y="970" class="tiny">仅辅助 UPS，不供三电机满载</text>
-
-  <!-- Monitoring, buck converter and STM32 -->
-  <rect x="900" y="1010" width="400" height="160" rx="16" fill="#f1faf6" stroke="#70a98f" stroke-width="2"/>
-  <rect x="900" y="1010" width="10" height="160" rx="4" fill="#23836a"/>
-  <text x="925" y="1045" class="card-title">J11 电源与温度监测</text>
-  <text x="925" y="1080" class="body">V_BAT / I_BAT：BMS 输出侧</text>
-  <text x="925" y="1112" class="body">V_24 / I_24：UPS 输出母线</text>
-  <text x="925" y="1144" class="tiny">NTC：电池×2→BMS；ESC×3/电源×1→STM32</text>
-  <text x="925" y="1164" class="tiny">V/I 与 BMS 温度状态接 STM32；ADC ≤ 3.3 V</text>
-
-  <rect x="1310" y="930" width="200" height="140" rx="15" class="card"/>
-  <text x="1330" y="965" class="card-title">J6 降压模块</text>
-  <text x="1330" y="1000" class="body">24 V → 5 V</text>
-  <text x="1330" y="1032" class="small">带独立逻辑保险</text>
-  <text x="1330" y="1058" class="tiny">输出电流留足板载负载余量</text>
-
-  <rect x="1540" y="900" width="260" height="210" rx="17" fill="#fff" stroke="#7798b5" stroke-width="2"/>
-  <rect x="1540" y="900" width="260" height="42" rx="17" fill="#dceafb"/>
-  <text x="1562" y="930" class="card-title">ATK-DMG474</text>
-  <text x="1562" y="972" class="body">5 V 输入，GND 接系统 0 V</text>
-  <text x="1562" y="1004" class="body">TIM PWM CH1 / CH2 / CH3</text>
-  <text x="1562" y="1036" class="small">ADC / I²C 读取监测数据</text>
-  <text x="1562" y="1068" class="small">板载 CAN ↔ 岸端 USB-CAN</text>
-  <text x="1562" y="1095" class="tiny">连接器与计时器引脚按原理图核对</text>
-
-  <!-- ESCs in dry compartment -->
-  <rect x="1845" y="330" width="350" height="130" rx="15" class="card"/>
-  <rect x="1845" y="330" width="9" height="130" rx="4" fill="#d98758"/>
-  <text x="1870" y="365" class="card-title">ESC 1 · APISQUEEN 配套 mini</text>
-  <text x="1870" y="398" class="body">PWR：24 V / 0 V · PWM CH1</text>
-  <text x="1870" y="430" class="small">SIG_GND 与 STM32 GND 共参考</text>
-  <text x="1870" y="452" class="tiny">按 1.0–2.0 ms 脉宽；1.5 ms 中位</text>
-
-  <rect x="1845" y="520" width="350" height="130" rx="15" class="card"/>
-  <rect x="1845" y="520" width="9" height="130" rx="4" fill="#d98758"/>
-  <text x="1870" y="555" class="card-title">ESC 2 · APISQUEEN 配套 mini</text>
-  <text x="1870" y="588" class="body">PWR：24 V / 0 V · PWM CH2</text>
-  <text x="1870" y="620" class="small">SIG_GND 与 STM32 GND 共参考</text>
-  <text x="1870" y="642" class="tiny">相线 A/B/C → 电机 2</text>
-
-  <rect x="1845" y="710" width="350" height="130" rx="15" class="card"/>
-  <rect x="1845" y="710" width="9" height="130" rx="4" fill="#d98758"/>
-  <text x="1870" y="745" class="card-title">ESC 3 · APISQUEEN 配套 mini</text>
-  <text x="1870" y="778" class="body">PWR：24 V / 0 V · PWM CH3</text>
-  <text x="1870" y="810" class="small">SIG_GND 与 STM32 GND 共参考</text>
-  <text x="1870" y="832" class="tiny">相线 A/B/C → 电机 3</text>
-
-  <!-- Wet-side motors -->
-  <text x="2280" y="310" class="small">J9：三相线经额定水深 ≥5 m 的密封穿舱件；每台 ESC 驱动一台电机。</text>
-  <rect x="2440" y="330" width="640" height="130" rx="16" fill="#fff" stroke="#77a9b6" stroke-width="2"/>
-  <text x="2470" y="370" class="card-title">电机 1 · APISQUEEN 4092</text>
-  <text x="2470" y="405" class="body">湿侧无刷减速电机 · 12–24 V</text>
-  <text x="2470" y="437" class="small">网页标称 80 W、IP68；相序按实物核对</text>
-
-  <rect x="2440" y="520" width="640" height="130" rx="16" fill="#fff" stroke="#77a9b6" stroke-width="2"/>
-  <text x="2470" y="560" class="card-title">电机 2 · APISQUEEN 4092</text>
-  <text x="2470" y="595" class="body">湿侧无刷减速电机 · 12–24 V</text>
-  <text x="2470" y="627" class="small">三相线通过密封穿舱；不得以水体作回路</text>
-
-  <rect x="2440" y="710" width="640" height="130" rx="16" fill="#fff" stroke="#77a9b6" stroke-width="2"/>
-  <text x="2470" y="750" class="card-title">电机 3 · APISQUEEN 4092</text>
-  <text x="2470" y="785" class="body">湿侧无刷减速电机 · 12–24 V</text>
-  <text x="2470" y="817" class="small">海水使用后按厂商要求淡水冲洗并检查</text>
-
-  <rect x="2280" y="900" width="800" height="210" rx="16" fill="#f3fafb" stroke="#8ab7c4" stroke-width="1.5"/>
-  <text x="2305" y="940" class="card-title">干舱 / 湿侧接口边界</text>
-  <text x="2305" y="977" class="body">密封电子仓是唯一干燥压力边界；外罩观察口 / 通水口不得连通电子仓。</text>
-  <text x="2305" y="1010" class="body">电源、CAN、急停及三组电机线分别做应力释放与水密穿舱。</text>
-  <text x="2305" y="1043" class="body">UPS 输出与电池支路的再生回灌能力要按 UPS / ESC 手册核对。</text>
-  <text x="2305" y="1076" class="small">如 UPS 不能吸收回灌，按厂商方案配置母线钳位 / 制动耗能支路。</text>
-
-  <!-- Power and control interface register -->
-  <text x="55" y="1300" class="zone-title">接口清单与建议补充硬件</text>
-  <text x="500" y="1300" class="small">已确认参数直接用于接线；需按实物选型的器件保留“待定”标注，不把拓扑图当作端子施工图。</text>
-
-  <!-- Left register column -->
-  <g>
-    <rect x="55" y="1325" width="1510" height="75" rx="11" class="table"/>
-    <rect x="68" y="1338" width="66" height="48" rx="9" class="recommend"/>
-    <text x="84" y="1370" class="row-title">J1</text>
-    <text x="150" y="1355" class="row-title">岸上电源 → UPS MAIN</text>
-    <text x="150" y="1380" class="row-body">+24 V / 0 V，两芯各 4 mm²，5 m；0 V 是回流线；岸上 AC PE 依电源说明接 FG。</text>
-
-    <rect x="55" y="1408" width="1510" height="75" rx="11" class="table"/>
-    <rect x="68" y="1421" width="66" height="48" rx="9" class="recommend"/>
-    <text x="84" y="1453" class="row-title">J2</text>
-    <text x="150" y="1438" class="row-title">4S1P 电池 → BMS → 电池侧 24 V 稳压器</text>
-    <text x="150" y="1463" class="row-body">松下 NCR21700T，8 Ah / 节；4S 标称 14.8 V、满充 16.8 V、组容量 8 Ah。</text>
-
-    <rect x="55" y="1491" width="1510" height="75" rx="11" class="table"/>
-    <rect x="68" y="1504" width="66" height="48" rx="9" class="recommend"/>
-    <text x="84" y="1536" class="row-title">J3</text>
-    <text x="150" y="1521" class="row-title">BMS → 9–35 V / 24 V 15 A 转换器 → UPS BACKUP</text>
-    <text x="150" y="1546" class="row-body">在电池正极附近加 F_BAT；BMS 需匹配 4S、均衡、过流/欠压保护及电池 NTC。</text>
-
-    <rect x="55" y="1574" width="1510" height="75" rx="11" class="table"/>
-    <rect x="68" y="1587" width="66" height="48" rx="9" class="verify"/>
-    <text x="84" y="1619" class="row-title">J4</text>
-    <text x="150" y="1604" class="row-title">Type-C PD → PD 输入板 → 24 V 升压 → UPS AUX</text>
-    <text x="150" y="1629" class="row-body">Type-C 为辅助输入；若端口会在水下暴露，使用合格水密穿舱件或改为干舱检修时接入。</text>
-
-    <rect x="55" y="1657" width="1510" height="75" rx="11" class="table"/>
-    <rect x="68" y="1670" width="66" height="48" rx="9" class="must"/>
-    <text x="84" y="1702" class="row-title">J5</text>
-    <text x="150" y="1687" class="row-title">UPS OUT → 24 V 配电 → K1 → 三路 ESC</text>
-    <text x="150" y="1712" class="row-body">配电板 / 端子排、总保险、三路支路保险和 DC 额定接触器；按启动峰值与线径选额定值。</text>
-
-    <rect x="55" y="1740" width="1510" height="75" rx="11" class="must"/>
-    <rect x="68" y="1753" width="66" height="48" rx="9" class="must"/>
-    <text x="84" y="1785" class="row-title">J6</text>
-    <text x="150" y="1770" class="row-title">UPS OUT 24 V → 降压模块 5 V → STM32</text>
-    <text x="150" y="1795" class="row-body">给逻辑支路独立保险；STM32 GND、PWM 信号地和 ESC 信号地共参考 0 V。</text>
-  </g>
-
-  <!-- Right register column -->
-  <g>
-    <rect x="1635" y="1325" width="1510" height="75" rx="11" class="table"/>
-    <rect x="1648" y="1338" width="66" height="48" rx="9" class="recommend"/>
-    <text x="1664" y="1370" class="row-title">J7</text>
-    <text x="1730" y="1355" class="row-title">STM32 三路双向 PWM → 三只 mini ESC</text>
-    <text x="1730" y="1380" class="row-body">每路 PWM 与 SIG_GND 成对布线；网页脉宽为 1.0–2.0 ms，1.5 ms 停止；定时器引脚按原理图核对。</text>
-
-    <rect x="1635" y="1408" width="1510" height="75" rx="11" class="table"/>
-    <rect x="1648" y="1421" width="66" height="48" rx="9" class="recommend"/>
-    <text x="1664" y="1453" class="row-title">J8</text>
-    <text x="1730" y="1438" class="row-title">岸端 USB-CAN ↔ STM32 板载 CAN</text>
-    <text x="1730" y="1463" class="row-body">隔离 USB-CAN、CANH/CANL 双绞线、CAN_REF 参考线、两端各 120 Ω；连接器处加 CAN ESD 保护。</text>
-
-    <rect x="1635" y="1491" width="1510" height="75" rx="11" class="table"/>
-    <rect x="1648" y="1504" width="66" height="48" rx="9" class="recommend"/>
-    <text x="1664" y="1536" class="row-title">J9</text>
-    <text x="1730" y="1521" class="row-title">三路 ESC A/B/C → 三台湿侧电机</text>
-    <text x="1730" y="1546" class="row-body">电机线与 PWM / CAN 分开走线；使用额定水深至少 5 m 的密封穿舱件和独立应力释放。</text>
-
-    <rect x="1635" y="1574" width="1510" height="75" rx="11" class="table"/>
-    <rect x="1648" y="1587" width="66" height="48" rx="9" class="recommend"/>
-    <text x="1664" y="1619" class="row-title">J10</text>
-    <text x="1730" y="1604" class="row-title">急停回路 → K1 线圈</text>
-    <text x="1730" y="1629" class="row-body">岸上常闭回路断开或脐带缆断线时，K1 释放并断开 ESC 供电；UPS 仍给 STM32 供电。</text>
-
-    <rect x="1635" y="1657" width="1510" height="75" rx="11" class="table"/>
-    <rect x="1648" y="1670" width="66" height="48" rx="9" class="recommend"/>
-    <text x="1664" y="1702" class="row-title">J11</text>
-    <text x="1730" y="1687" class="row-title">电压、电流、温度监测 → STM32 ADC / I²C</text>
-    <text x="1730" y="1712" class="row-body">测电池侧与 UPS 母线 V/I；电池 NTC ×2 接 BMS，ESC ×3 与电源区 ×1 接 STM32。</text>
-
-    <rect x="1635" y="1740" width="1510" height="75" rx="11" class="table"/>
-    <rect x="1648" y="1753" width="66" height="48" rx="9" class="verify"/>
-    <text x="1664" y="1785" class="row-title">J12</text>
-    <text x="1730" y="1770" class="row-title">电池充电 / 再生能量处理</text>
-    <text x="1730" y="1795" class="row-body">确认 UPS 是否有 4S 充电功能；否则使用 16.8 V CC/CV 充电器。核对 UPS 是否能吸收 ESC 制动回灌。</text>
-  </g>
-
-  <!-- Key notes -->
-  <rect x="55" y="1850" width="3090" height="285" rx="18" fill="#fff9e9" stroke="#d4b45c" stroke-width="2"/>
-  <text x="82" y="1888" class="card-title">本轮接线优化与上电前硬件补充</text>
-  <text x="82" y="1925" class="body">1. 建议增加：电池保险、24 V 总保险、三路 ESC 支路保险、独立逻辑保险、直流额定 K1 接触器、隔离 USB-CAN、CAN 端口 ESD 保护、BMS 温度探头和 4S 充电接口。</text>
-  <text x="82" y="1962" class="body">2. 监测量程建议：电池侧电压 0–20 V、电流至少 0–50 A；UPS 母线电压 0–60 V、电流至少 0–30 A。按实际堵转 / 启动峰值留量，模拟输出接入 STM32 前限幅到 0–3.3 V。</text>
-  <text x="82" y="1999" class="body">3. 温度点建议：电芯组中部 NTC ×2、每只 ESC 附近 NTC ×1、稳压器 / UPS 热点 NTC ×1；密封舱内增加导热板或热扩散件，达到阈值时由 STM32 限功率并停机。</text>
-  <text x="82" y="2036" class="body">4. 4 mm² 铜线粗估（5 m 单程、正负回路共 10 m）：24 V 侧 10 A 压降约 0.44 V；15 A 约 0.66 V，尚未计入接头和升温。首次带载记录岸端与舱内电压、总电流和线缆温升。</text>
-  <text x="82" y="2073" class="body">5. DC 0 V 连接 UPS / 电调回路 / STM32 GND；岸上 AC PE 仅按电源手册接 PE / FG。不得将 PE、DC 0 V、CAN 屏蔽层或海水互相代接。</text>
-  <text x="82" y="2110" class="small">依据：用户确认的硬件参数；APISQUEEN 4092 产品页（12–24 V、80 W、PWM）；正点原子 ATK-DMG474 产品资料（板载 CAN）。本图是连接拓扑和选型清单，不代表 5 m 耐压、温升、续航或实物接线已通过验证。</text>
-  <text x="82" y="2145" class="tiny">建议先完成断电通断检查、限流台架单电机试转、PWM 中位/方向验证、急停与断线验证、监测校准，再进行三电机联调与水下压力测试。</text>
+<!-- Interface register inside the graphic -->
+<text x="55" y="1530" class="zone">接口清单 · 逐线对应本图编号</text>
+<!-- Left column -->
+<rect x="55" y="1550" width="1510" height="68" rx="10" class="table"/><rect x="70" y="1560" width="62" height="46" rx="9" class="tag"/><text x="83" y="1590" class="rowtitle">J1</text><text x="150" y="1578" class="rowtitle">岸上 24 V → UPS MAIN</text><text x="150" y="1602" class="rowbody">+24 V 与 0 V 两芯各 4 mm²，5 m；0 V 为回流，岸上 AC PE 接 FG。</text>
+<rect x="55" y="1625" width="1510" height="68" rx="10" class="table"/><rect x="70" y="1635" width="62" height="46" rx="9" class="tag"/><text x="83" y="1665" class="rowtitle">J2</text><text x="150" y="1653" class="rowtitle">4S1P 电池 → 4S BMS</text><text x="150" y="1677" class="rowbody">松下 NCR21700T；每节 8 Ah，组容量 8 Ah；14.8 V 标称、16.8 V 满充。</text>
+<rect x="55" y="1700" width="1510" height="68" rx="10" class="table"/><rect x="70" y="1710" width="62" height="46" rx="9" class="tag"/><text x="83" y="1740" class="rowtitle">J3</text><text x="150" y="1728" class="rowtitle">BMS → 9–35 V / 24 V 15 A 稳压器 → UPS BACKUP</text><text x="150" y="1752" class="rowbody">电池正极设置 F_BAT；稳压器输入取 BMS P+ / P−。</text>
+<rect x="55" y="1775" width="1510" height="68" rx="10" class="table"/><rect x="70" y="1785" width="62" height="46" rx="9" class="tag"/><text x="83" y="1815" class="rowtitle">J4</text><text x="150" y="1803" class="rowtitle">USB-C PD → PD 输入板 → 24 V 升压 → UPS AUX</text><text x="150" y="1827" class="rowbody">Type-C 为辅助输入；水下暴露的接口须使用合格水密穿舱件。</text>
+<rect x="55" y="1850" width="1510" height="68" rx="10" class="table"/><rect x="70" y="1860" width="62" height="46" rx="9" class="tag"/><text x="83" y="1890" class="rowtitle">J5</text><text x="150" y="1878" class="rowtitle">UPS OUT → 24 V 配电 → K1 → 三路 ESC</text><text x="150" y="1902" class="rowbody">总保险、三路 ESC 支路保险；电压/总电流在分路前采样。</text>
+<rect x="55" y="1925" width="1510" height="68" rx="10" class="table"/><rect x="70" y="1935" width="62" height="46" rx="9" class="tag"/><text x="83" y="1965" class="rowtitle">J6</text><text x="150" y="1953" class="rowtitle">UPS OUT → F_LOGIC → 24→5 V 降压 → STM32</text><text x="150" y="1977" class="rowbody">降压器输入接 24 V，输出 5 V；STM32 GND 共 DC 0 V。</text>
+<!-- Right column -->
+<rect x="1635" y="1550" width="1510" height="68" rx="10" class="table"/><rect x="1650" y="1560" width="62" height="46" rx="9" class="tag"/><text x="1663" y="1590" class="rowtitle">J7</text><text x="1730" y="1578" class="rowtitle">STM32 三路双向 PWM → 三只 mini ESC</text><text x="1730" y="1602" class="rowbody">CH1/2/3 独立输出；每路信号与 SIG_GND 成对，具体定时器引脚按板卡原理图核对。</text>
+<rect x="1635" y="1625" width="1510" height="68" rx="10" class="table"/><rect x="1650" y="1635" width="62" height="46" rx="9" class="tag"/><text x="1663" y="1665" class="rowtitle">J8</text><text x="1730" y="1653" class="rowtitle">岸端隔离 USB-CAN ↔ ATK-DMG474 CAN</text><text x="1730" y="1677" class="rowbody">CANH/CANL 双绞，另带 CAN_REF；总线两端各 120 Ω，避免重复终端。</text>
+<rect x="1635" y="1700" width="1510" height="68" rx="10" class="table"/><rect x="1650" y="1710" width="62" height="46" rx="9" class="tag"/><text x="1663" y="1740" class="rowtitle">J9</text><text x="1730" y="1728" class="rowtitle">三路 ESC A/B/C → 三台 APISQUEEN 4092</text><text x="1730" y="1752" class="rowbody">每台一组三相线，经独立穿舱件连接湿侧电机。</text>
+<rect x="1635" y="1775" width="1510" height="68" rx="10" class="table"/><rect x="1650" y="1785" width="62" height="46" rx="9" class="tag"/><text x="1663" y="1815" class="rowtitle">J10</text><text x="1730" y="1803" class="rowtitle">岸上常闭急停线对 → K1 线圈</text><text x="1730" y="1827" class="rowbody">急停、断线或失电时 K1 释放，切断 ESC 动力；UPS 保持 STM32 供电。</text>
+<rect x="1635" y="1850" width="1510" height="68" rx="10" class="table"/><rect x="1650" y="1860" width="62" height="46" rx="9" class="tag"/><text x="1663" y="1890" class="rowtitle">J11</text><text x="1730" y="1878" class="rowtitle">电压、电流、温度 → STM32 / BMS</text><text x="1730" y="1902" class="rowbody">电池 NTC×2 接 BMS；ESC NTC×3、电源区 NTC×1 回 STM32；ADC ≤3.3 V。</text>
+<rect x="1635" y="1925" width="1510" height="68" rx="10" class="table"/><rect x="1650" y="1935" width="62" height="46" rx="9" class="tag"/><text x="1663" y="1965" class="rowtitle">J12</text><text x="1730" y="1953" class="rowtitle">系统地与电池维护</text><text x="1730" y="1977" class="rowbody">DC 0 V 共用信号参考；PE 不接水体；若 UPS 不含充电器，用 16.8 V CC/CV 给 4S 充电。</text>
+<text x="58" y="2030" class="tiny">本图是硬件连接拓扑，不表示板级针脚已映射，也不代表额定水深、温升、续航、急停或整机功能测试已通过。</text>
 </svg>
