@@ -1,0 +1,132 @@
+{
+  "candidate": "B32_M2006_dry_motor_pods_with_wet_reels",
+  "status": "dry_motor_drive_CAD_candidate_only; not print or underwater release",
+  "motor_centers_mm": [
+    [
+      103.42562584220408,
+      51.138438763306105,
+      -31.0
+    ],
+    [
+      -95.99999999999999,
+      64.00000000000001,
+      -31.0
+    ],
+    [
+      -7.425625842204056,
+      -115.13843876330611,
+      -31.0
+    ]
+  ],
+  "reel_centers_mm": [
+    [
+      48.000000000000014,
+      83.13843876330611,
+      -31.0
+    ],
+    [
+      -96.0,
+      1.4210854715202004e-14,
+      -31.0
+    ],
+    [
+      48.000000000000014,
+      -83.13843876330611,
+      -31.0
+    ]
+  ],
+  "axes": [
+    [
+      -0.8660254037844386,
+      0.5000000000000001,
+      0.0
+    ],
+    [
+      -1.2246467991473532e-16,
+      -1.0,
+      0.0
+    ],
+    [
+      0.8660254037844386,
+      0.5000000000000001,
+      0.0
+    ]
+  ],
+  "section_heights_mm": [
+    183.477,
+    185.096,
+    200.031
+  ],
+  "pod_to_center_canister_clearance_mm": [
+    8.164,
+    8.164,
+    8.164
+  ],
+  "pod_to_plate_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "pod_to_reel_clearance_mm": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "cartridge_unintended_overlaps_mm3": {
+    "axis_1_pod_bearing": 0.0,
+    "axis_1_pod_oil_seal": 0.0,
+    "axis_1_pod_rotating_labyrinth": 0.0,
+    "axis_1_motor_independent_shaft": 0.0,
+    "axis_1_fixed_rotating_labyrinth": 0.0,
+    "axis_2_pod_bearing": 0.0,
+    "axis_2_pod_oil_seal": 0.0,
+    "axis_2_pod_rotating_labyrinth": 0.0,
+    "axis_2_motor_independent_shaft": 0.0,
+    "axis_2_fixed_rotating_labyrinth": 0.0,
+    "axis_3_pod_bearing": 0.0,
+    "axis_3_pod_oil_seal": 0.0,
+    "axis_3_pod_rotating_labyrinth": 0.0,
+    "axis_3_motor_independent_shaft": 0.0,
+    "axis_3_fixed_rotating_labyrinth": 0.0
+  },
+  "pod_to_fairing_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "spool_to_hole_collinearity_mm": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "seal_status": "8x16x5 mm package is schematic; pressure rating, shaft finish, gland design and tests pending",
+  "canister_motor_cable_glands": "three static penetrations required; existing bores are not sealed gland designs",
+  "seams": [
+    {
+      "joint_id": "joint_06",
+      "from_root_mm": 173.9548,
+      "joint_unit_span_from_root_mm": [
+        157.9625,
+        189.9472
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    },
+    {
+      "joint_id": "joint_13",
+      "from_root_mm": 350.0511,
+      "joint_unit_span_from_root_mm": [
+        340.3716,
+        359.7307
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    }
+  ]
+}
