@@ -1,0 +1,131 @@
+{
+  "status": "dimensional layout candidate only; pressure sealing, electronics mounting and print release pending",
+  "motor_envelope_mm": [
+    24.4,
+    64.8
+  ],
+  "motor_center_xy_mm": [
+    [
+      29.620834875401158,
+      64.30479096680293
+    ],
+    [
+      -70.5,
+      -6.499999999999991
+    ],
+    [
+      40.879165124598856,
+      -57.80479096680292
+    ]
+  ],
+  "reel_to_hole_planar_mm": 39.9,
+  "reel_tangent_to_hole_3d_mm": 40.95,
+  "shaft_orientation": "vertical; reel tangent and arm tendon radial aligned in plan",
+  "section_heights_mm": [
+    183.48,
+    185.12,
+    200.05
+  ],
+  "print_part_envelopes_mm": {
+    "dry_tube": [
+      204.21,
+      204.0,
+      186.21
+    ],
+    "roof": [
+      204.21,
+      204.0,
+      8.21
+    ],
+    "lid": [
+      204.21,
+      204.0,
+      13.19
+    ],
+    "hex_plate": [
+      221.49,
+      250.0,
+      28.24
+    ]
+  },
+  "motor_to_electronics_overlap_mm3": {},
+  "motor_to_electronics_min_clearance_mm": 4.979,
+  "motor_to_electronics_closest_pairs_mm": [
+    [
+      4.979,
+      3,
+      "STM32_controller_envelope"
+    ],
+    [
+      6.912,
+      1,
+      "UPS_module_envelope"
+    ],
+    [
+      8.355,
+      1,
+      "STM32_controller_envelope"
+    ],
+    [
+      15.496,
+      2,
+      "21700_cell_1"
+    ],
+    [
+      18.8,
+      2,
+      "voltage_regulator_envelope"
+    ]
+  ],
+  "adapter_to_electronics_overlap_mm3": {},
+  "reel_to_plate_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "motor_to_tube_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "reel_to_fixed_labyrinth_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "fixed_to_rotating_labyrinth_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "seal_status": "placeholder geometry; purchased seal and pressure rating pending",
+  "service": "remove six upper flat panels and hex plate; release three wet reels, then lift roof/motor cartridge",
+  "seams": [
+    {
+      "joint_id": "joint_06",
+      "from_root_mm": 173.9548,
+      "joint_unit_span_from_root_mm": [
+        157.9625,
+        189.9472
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    },
+    {
+      "joint_id": "joint_13",
+      "from_root_mm": 350.0511,
+      "joint_unit_span_from_root_mm": [
+        340.3716,
+        359.7307
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    }
+  ]
+}
