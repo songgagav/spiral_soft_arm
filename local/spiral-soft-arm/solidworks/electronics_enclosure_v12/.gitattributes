@@ -1,0 +1,8 @@
+*.step -text -diff
+*.stl -text -diff
+*.png binary
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.csv text eol=crlf
+.gitattributes text eol=lf

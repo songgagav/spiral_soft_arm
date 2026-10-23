@@ -1,0 +1,192 @@
+{
+  "candidate": "B32_M2006_shared_dry_chamber_wet_reels",
+  "status": "shared_dry_motor_chamber_CAD_candidate_only; not print or underwater release",
+  "motor_centers_mm": [
+    [
+      82.92562584220408,
+      15.631397208144115,
+      -31.0
+    ],
+    [
+      -54.99999999999999,
+      64.0,
+      -31.0
+    ],
+    [
+      -27.925625842204063,
+      -79.63139720814414,
+      -31.0
+    ]
+  ],
+  "reel_centers_mm": [
+    [
+      27.500000000000014,
+      47.63139720814412,
+      -31.0
+    ],
+    [
+      -55.0,
+      0.0,
+      -31.0
+    ],
+    [
+      27.500000000000007,
+      -47.63139720814413,
+      -31.0
+    ]
+  ],
+  "axes": [
+    [
+      -0.8660254037844386,
+      0.5000000000000001,
+      0.0
+    ],
+    [
+      -1.2246467991473532e-16,
+      -1.0,
+      0.0
+    ],
+    [
+      0.8660254037844386,
+      0.5000000000000001,
+      0.0
+    ]
+  ],
+  "section_heights_mm": [
+    183.474,
+    185.125,
+    200.041
+  ],
+  "pod_to_center_canister_clearance_mm": [
+    14.0,
+    14.0,
+    14.0
+  ],
+  "reel_to_plate_hole_path_mm": [
+    32.341,
+    32.341,
+    32.341
+  ],
+  "duct_to_canister_intersection_mm3": [
+    454.466,
+    453.989,
+    453.989
+  ],
+  "duct_to_cap_intersection_mm3": [
+    678.584,
+    678.584,
+    678.584
+  ],
+  "duct_to_motor_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "wet_reel_to_dry_canister_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "support_to_motor_pod_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "canister_body_height_mm": 222.115,
+  "fairing_panel_max_height_mm": 216.044,
+  "fairing_panel_max_xy_mm": 167.184,
+  "fabrication_envelopes_xyz_mm": {
+    "hex_plate_with_tabs": [
+      249.589,
+      262.075,
+      28.0
+    ],
+    "dry_canister_shell": [
+      151.073,
+      150.0,
+      222.115
+    ],
+    "one_upper_panel": [
+      14.522,
+      159.597,
+      73.597
+    ],
+    "one_lower_panel": [
+      56.899,
+      163.059,
+      206.059
+    ],
+    "full_fairing_assembled": [
+      285.475,
+      330.434,
+      281.32
+    ]
+  },
+  "pod_to_plate_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "pod_to_reel_clearance_mm": [
+    1.0,
+    1.0,
+    1.0
+  ],
+  "cartridge_unintended_overlaps_mm3": {
+    "axis_1_pod_bearing": 0.0,
+    "axis_1_pod_oil_seal": 0.0,
+    "axis_1_pod_rotating_labyrinth": 0.0,
+    "axis_1_motor_independent_shaft": 0.0,
+    "axis_1_fixed_rotating_labyrinth": 0.0,
+    "axis_2_pod_bearing": 0.0,
+    "axis_2_pod_oil_seal": 0.0,
+    "axis_2_pod_rotating_labyrinth": 0.0,
+    "axis_2_motor_independent_shaft": 0.0,
+    "axis_2_fixed_rotating_labyrinth": 0.0,
+    "axis_3_pod_bearing": 0.0,
+    "axis_3_pod_oil_seal": 0.0,
+    "axis_3_pod_rotating_labyrinth": 0.0,
+    "axis_3_motor_independent_shaft": 0.0,
+    "axis_3_fixed_rotating_labyrinth": 0.0
+  },
+  "pod_to_fairing_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "spool_to_hole_collinearity_mm": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "seal_status": "8x16x5 mm package is schematic; pressure rating, shaft finish, gland design and tests pending",
+  "canister_motor_cable_glands": "three dry ducts to common canister; static joint seals and detachable couplings not detailed",
+  "seams": [
+    {
+      "joint_id": "joint_06",
+      "from_root_mm": 173.9548,
+      "joint_unit_span_from_root_mm": [
+        157.9625,
+        189.9472
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    },
+    {
+      "joint_id": "joint_13",
+      "from_root_mm": 350.0511,
+      "joint_unit_span_from_root_mm": [
+        340.3716,
+        359.7307
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    }
+  ]
+}
