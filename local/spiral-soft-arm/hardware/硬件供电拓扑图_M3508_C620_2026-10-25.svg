@@ -1,0 +1,210 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2600" height="1800" viewBox="0 0 2600 1800" role="img" aria-labelledby="title desc">
+<title id="title">B32 M3508/C620供电拓扑重规划</title>
+<desc id="desc">岸上隔离24伏电源直供电机主母线；4S电池经BMS和升压器接UPS备电，优先保持控制、通信和监测，并提供限流单电机应急动作；Type-C仅供低功率辅助。</desc>
+<defs>
+  <marker id="arr-red" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#bb3944"/></marker>
+  <marker id="arr-amber" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#c47a12"/></marker>
+  <marker id="arr-blue" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#3676b9"/></marker>
+  <marker id="arr-purple" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#8052a5"/></marker>
+  <marker id="arr-green" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#22826a"/></marker>
+  <style>
+    text{font-family:"Microsoft YaHei","Noto Sans CJK SC",Arial,sans-serif;fill:#192a36}
+    .title{font-size:42px;font-weight:700}.sub{font-size:20px;fill:#536777}.zone{font-size:24px;font-weight:700}
+    .ct{font-size:21px;font-weight:700}.body{font-size:17px;fill:#3d505e}.small{font-size:15px;fill:#536573}.tiny{font-size:13px;fill:#61717c}
+    .panel{stroke-width:2}.card{fill:#fff;stroke:#aebdc8;stroke-width:2}.wire{fill:none;stroke-width:5}
+    .shore{stroke:#bb3944;marker-end:url(#arr-red)}.backup{stroke:#c47a12;marker-end:url(#arr-amber)}
+    .logic{stroke:#3676b9;marker-end:url(#arr-blue)}.aux{stroke:#8052a5;stroke-dasharray:10 7;marker-end:url(#arr-purple)}
+    .sensor{stroke:#22826a;stroke-dasharray:8 7;marker-end:url(#arr-green)}.safety{stroke:#c47a12;stroke-dasharray:9 7}
+    .j{font-size:13px;font-weight:700;fill:#263c4c;paint-order:stroke;stroke:#f7fafc;stroke-width:5px;stroke-linejoin:round}
+    .label{font-size:14px;font-weight:700;paint-order:stroke;stroke:#f7fafc;stroke-width:5px;stroke-linejoin:round}
+  </style>
+</defs>
+<rect width="2600" height="1800" fill="#f5f8fb"/>
+<text x="55" y="66" class="title">B32 水下软体机械臂｜M3508 / C620 供电拓扑重规划</text>
+<text x="58" y="105" class="sub">24 V 岸电主供 · 4S1P / 8 Ah 限流备电 · 控制优先 · 单电机低功率应急通道</text>
+<rect x="1900" y="27" width="645" height="91" rx="16" fill="#e9f0f5" stroke="#b9c9d4" stroke-width="2"/>
+<text x="1930" y="62" class="ct">目标：岸电运行约 30 min</text><text x="1930" y="92" class="small">断岸电 15 min 按限功率备电设计，待实测</text>
+<line x1="60" y1="150" x2="112" y2="150" class="wire shore"/><text x="126" y="156" class="small">岸电 24 V 主动力</text>
+<line x1="335" y1="150" x2="387" y2="150" class="wire backup"/><text x="401" y="156" class="small">4S 电池备电</text>
+<line x1="610" y1="150" x2="662" y2="150" class="wire logic"/><text x="676" y="156" class="small">UPS 控制母线</text>
+<line x1="905" y1="150" x2="957" y2="150" class="wire aux"/><text x="971" y="156" class="small">Type‑C 辅助 / 充电支路</text>
+<line x1="1305" y1="150" x2="1357" y2="150" class="wire sensor"/><text x="1371" y="156" class="small">监测信号</text>
+<line x1="1570" y1="150" x2="1622" y2="150" class="wire safety"/><text x="1636" y="156" class="small">急停互锁</text>
+
+<!-- Zones -->
+<rect x="40" y="205" width="520" height="970" rx="20" fill="#f0f4f7" stroke="#c4d0d9" class="panel"/>
+<rect x="580" y="205" width="1190" height="970" rx="20" fill="#edf4f9" stroke="#829aac" class="panel"/>
+<rect x="1790" y="205" width="770" height="970" rx="20" fill="#edf7f6" stroke="#8fb5ad" class="panel"/>
+<text x="70" y="245" class="zone">岸上 / 脐带缆 / 电池</text>
+<text x="610" y="245" class="zone">干舱：保护、转换、UPS 与互锁</text>
+<text x="1820" y="245" class="zone">24 V 配电、驱动与控制</text>
+
+<!-- Wires behind cards -->
+<path d="M285 415V465" class="wire shore"/>
+<path d="M500 545H555V335H620" class="wire shore"/>
+<path d="M1070 330H1135V335H1220" class="wire shore"/>
+<path d="M1070 378H1155V610H1220" class="wire logic"/>
+<path d="M1700 335H1815" class="wire shore"/>
+<path d="M2140 415V475" class="wire shore"/>
+<path d="M500 780H620" class="wire backup"/>
+<path d="M870 780H900" class="wire backup"/>
+<path d="M1210 780H1220V690" class="wire backup"/>
+<path d="M1450 740V835" class="wire backup"/>
+<path d="M1700 920H1760V650H1820" class="wire backup"/>
+<path d="M500 1040H620" class="wire aux"/>
+<path d="M1070 1040H1140V730H1220" class="wire aux"/>
+<path d="M1700 640H1750V950H1820" class="wire logic"/>
+<path d="M2120 950H2150" class="wire logic"/>
+<path d="M1460 740V1015" class="wire logic"/>
+<path d="M1700 1090H1740V450H1700" class="wire safety"/>
+<path d="M1740 920H1700" class="wire safety"/>
+<path d="M2470 760V835H2290V850" class="wire sensor"/>
+<path d="M870 840H885V1150H2140V1020H2150" class="wire sensor"/>
+<path d="M1070 365H1090V520H1070" class="wire aux"/>
+<path d="M850 625V700H745" class="wire aux"/>
+
+<!-- Shore source and tether -->
+<rect x="70" y="270" width="430" height="145" rx="15" class="card"/>
+<rect x="70" y="270" width="9" height="145" rx="4" fill="#bb3944"/>
+<text x="95" y="307" class="ct">隔离 24 V 岸上电源</text>
+<text x="95" y="340" class="body">主供电：额定点按三电机约 30 A</text>
+<text x="95" y="372" class="small">电源建议 ≥35 A 连续；PE 留在岸上</text>
+<rect x="70" y="465" width="430" height="160" rx="15" class="card"/>
+<text x="95" y="502" class="ct">J1｜水下动力脐带缆</text>
+<text x="95" y="535" class="body">现有 5 m · 两芯各 4 mm²</text>
+<text x="95" y="568" class="small">芯 1：+24 V　芯 2：0 V 回流</text>
+<text x="95" y="597" class="tiny">30 A 时估算压降约 1.31 V，见下方说明</text>
+<rect x="70" y="700" width="430" height="160" rx="15" class="card"/>
+<rect x="70" y="700" width="9" height="160" rx="4" fill="#c47a12"/>
+<text x="95" y="737" class="ct">J2｜4S1P 电池组</text>
+<text x="95" y="770" class="body">NCR21700T · 8 Ah（按已确认参数）</text>
+<text x="95" y="803" class="small">14.8 V 标称 · 16.8 V 满充</text>
+<text x="95" y="832" class="tiny">标称能量约 118.4 Wh</text>
+<rect x="70" y="945" width="430" height="155" rx="15" class="card"/>
+<rect x="70" y="945" width="9" height="155" rx="4" fill="#8052a5"/>
+<text x="95" y="982" class="ct">J7｜USB‑C PD 辅助输入</text>
+<text x="95" y="1015" class="body">PD 受电板 + 限流 24 V 升压</text>
+<text x="95" y="1048" class="small">只接 UPS AUX / 控制支路</text>
+<text x="95" y="1078" class="tiny">不作为电机动力源，也不替代 4S 充电器</text>
+
+<!-- Power protection, battery conversion, charger -->
+<rect x="620" y="270" width="450" height="145" rx="15" class="card"/>
+<rect x="620" y="270" width="9" height="145" rx="4" fill="#bb3944"/>
+<text x="645" y="307" class="ct">J3｜岸电入口与保护</text>
+<text x="645" y="340" class="body">水密穿舱 → F_MAIN → 反接 / 浪涌保护</text>
+<text x="645" y="373" class="small">监测 V_SHORE、I_SHORE；正极设保险</text>
+<text x="645" y="400" class="tiny">输入 0 V 接系统回流星点，不接水体 / PE</text>
+<rect x="620" y="470" width="450" height="155" rx="15" class="card"/>
+<rect x="620" y="470" width="9" height="155" rx="4" fill="#8052a5"/>
+<text x="645" y="507" class="ct">J12｜4S 充电支路（条件项）</text>
+<text x="645" y="540" class="body">岸电 24 V → 4S CC/CV 充电器</text>
+<text x="645" y="573" class="small">输出 16.8 V → BMS 充电端</text>
+<text x="645" y="603" class="tiny">若 UPS 已含匹配充电功能，可用其充电路径</text>
+<rect x="620" y="700" width="250" height="160" rx="15" class="card"/>
+<rect x="620" y="700" width="9" height="160" rx="4" fill="#c47a12"/>
+<text x="645" y="737" class="ct">J4｜4S BMS</text>
+<text x="645" y="770" class="body">B− / B1…B3 / B+</text>
+<text x="645" y="803" class="small">放电 / 充电端按 BMS 型号接线</text>
+<text x="645" y="832" class="tiny">电芯 NTC 与放电电流保护</text>
+<rect x="900" y="700" width="310" height="160" rx="15" class="card"/>
+<rect x="900" y="700" width="9" height="160" rx="4" fill="#c47a12"/>
+<text x="925" y="737" class="ct">J5｜电池升压 / 限流</text>
+<text x="925" y="770" class="body">BMS P± → 9–35 V / 24 V、15 A</text>
+<text x="925" y="803" class="small">备电总输出软件 / 硬件限在 ≤10 A</text>
+<text x="925" y="832" class="tiny">电池侧约需 20–24 A，BMS / 电芯须匹配</text>
+<rect x="620" y="945" width="450" height="155" rx="15" class="card"/>
+<text x="645" y="982" class="ct">电池充电与温度监测</text>
+<text x="645" y="1015" class="body">独立充电器限流，禁止升压器反向灌电池</text>
+<text x="645" y="1048" class="small">T_BAT、T_BOOST、I_BAT / V_BAT → STM32</text>
+<text x="645" y="1078" class="tiny">充电电流按电芯和 BMS 规格设置</text>
+
+<!-- Source selection and emergency control -->
+<rect x="1220" y="270" width="480" height="170" rx="16" fill="#fff7f6" stroke="#cf7d83" stroke-width="2"/>
+<rect x="1220" y="270" width="9" height="170" rx="4" fill="#bb3944"/>
+<text x="1247" y="307" class="ct">K1｜岸电主电机接触器</text>
+<text x="1247" y="340" class="body">24 V 岸电 → 电机主母线</text>
+<text x="1247" y="373" class="small">DC 额定触点；NC 急停 / 岸电故障释放</text>
+<text x="1247" y="407" class="tiny">主路径按 ≥35 A 连续设计，支路分别保护</text>
+<rect x="1220" y="500" width="480" height="240" rx="16" fill="#f0f5fa" stroke="#86a4ba" stroke-width="2"/>
+<rect x="1220" y="500" width="9" height="240" rx="4" fill="#3676b9"/>
+<text x="1247" y="537" class="ct">UPS｜控制与低功率备电母线</text>
+<text x="1247" y="571" class="body">MAIN ← 岸电保护支路　BACKUP ← J5</text>
+<text x="1247" y="605" class="body">AUX ← J7 Type‑C PD　OUT → 控制负载</text>
+<text x="1247" y="642" class="small">UPS 输出只带控制器、CAN、传感器和 K2 支路</text>
+<text x="1247" y="676" class="small">核对 MAIN / OUT 连续电流与切换时间</text>
+<text x="1247" y="711" class="tiny">若 UPS 额定不足，保留它只带控制母线</text>
+<rect x="1220" y="835" width="480" height="180" rx="16" fill="#fff9eb" stroke="#d2ab5d" stroke-width="2"/>
+<rect x="1220" y="835" width="9" height="180" rx="4" fill="#c47a12"/>
+<text x="1247" y="872" class="ct">K2｜可选电机应急支路</text>
+<text x="1247" y="905" class="body">UPS OUT → 限流器（≤5 A）→ 电机母线</text>
+<text x="1247" y="938" class="small">K1 / K2 互锁，先断主路再接备电</text>
+<text x="1247" y="970" class="small">仅单台、低速动作；计入备电 ≤10 A 总预算</text>
+<text x="1247" y="998" class="tiny">超预算则 K2 断开，保持控制与监测</text>
+<rect x="1220" y="1040" width="480" height="100" rx="15" fill="#fff" stroke="#d2ab5d" stroke-width="2"/>
+<text x="1247" y="1078" class="ct">J11｜岸上 NC 急停 / 故障互锁</text>
+<text x="1247" y="1110" class="small">急停或断线 → K1、K2 释放；UPS 控制输出保留</text>
+
+<!-- Power distribution and loads -->
+<rect x="1820" y="270" width="690" height="145" rx="15" class="card"/>
+<rect x="1820" y="270" width="9" height="145" rx="4" fill="#bb3944"/>
+<text x="1847" y="307" class="ct">J8｜24 V 电机配电母线</text>
+<text x="1847" y="340" class="body">K1 主供 / K2 限流备供 → 总压、电流采样</text>
+<text x="1847" y="373" class="small">F1–F3 独立支路保险 → 三只 C620</text>
+<text x="1847" y="402" class="tiny">正极配电；DC 0 V 以单点星形回流</text>
+<rect x="1820" y="475" width="690" height="305" rx="15" fill="#fff" stroke="#9fb0bd" stroke-width="2"/>
+<text x="1847" y="512" class="ct">J9 / J10｜三路电调与电机</text>
+<line x1="1845" y1="535" x2="2485" y2="535" stroke="#e1e7ec" stroke-width="2"/>
+<text x="1850" y="574" class="body">F1 → C620‑1</text><text x="2055" y="574" class="small">三相 U/V/W + 7‑Pin → M3508‑1</text>
+<line x1="1845" y1="595" x2="2485" y2="595" stroke="#e1e7ec" stroke-width="2"/>
+<text x="1850" y="634" class="body">F2 → C620‑2</text><text x="2055" y="634" class="small">三相 U/V/W + 7‑Pin → M3508‑2</text>
+<line x1="1845" y1="655" x2="2485" y2="655" stroke="#e1e7ec" stroke-width="2"/>
+<text x="1850" y="694" class="body">F3 → C620‑3</text><text x="2055" y="694" class="small">三相 U/V/W + 7‑Pin → M3508‑3</text>
+<text x="1850" y="744" class="tiny">STM32 本地 CAN → C620 总线；电机线束与 CAN 分开固定</text>
+<rect x="1820" y="835" width="300" height="185" rx="15" fill="#f0f5fa" stroke="#86a4ba" stroke-width="2"/>
+<text x="1847" y="872" class="ct">J6｜控制电源支路</text>
+<text x="1847" y="905" class="body">UPS OUT 24 V → F_LOGIC</text>
+<text x="1847" y="938" class="small">24 V → 5 V 降压模块</text>
+<text x="1847" y="970" class="small">控制电源与 K1 电机支路分开</text>
+<text x="1847" y="1000" class="tiny">UPS 输出额定值需覆盖逻辑负载</text>
+<rect x="2150" y="835" width="360" height="185" rx="15" class="card"/>
+<text x="2177" y="872" class="ct">STM32G474VET6</text>
+<text x="2177" y="905" class="body">CAN → C620 ×3；岸端 CAN 独立隔离</text>
+<text x="2177" y="938" class="small">读取总线 / 电池 V、I，电调 / 模块温度</text>
+<text x="2177" y="970" class="small">岸电故障：限流、停电机或启用 K2</text>
+<text x="2177" y="1000" class="tiny">ADC 输入保护；传感器量程按母线重选</text>
+<rect x="1820" y="1045" width="690" height="95" rx="15" fill="#eef8f4" stroke="#83b6a0" stroke-width="2"/>
+<text x="1847" y="1082" class="ct">J13｜监测与回流</text>
+<text x="1847" y="1114" class="small">I/V：岸电、24 V 母线、备电；温度：电池、升压器、C620 ×3；PE 不下水，电缆 0 V 是回流线</text>
+<text x="1710" y="890" class="tiny" transform="rotate(-90 1710 890)">J11 NC 故障回路 → K1 / K2 线圈</text>
+
+<!-- Power budgets -->
+<text x="55" y="1230" class="zone">供电预算与运行边界</text>
+<rect x="55" y="1250" width="790" height="240" rx="16" fill="#fff" stroke="#d3a3a7" stroke-width="2"/>
+<text x="82" y="1290" class="ct">① 岸电主供与 5 m 脐带压降</text>
+<text x="82" y="1328" class="body">M3508/C620 额定点约 24 V × 10 A × 3 = 720 W（30 A），</text>
+<text x="82" y="1360" class="body">再加控制负载，岸上电源及主路径建议 ≥35 A 连续。</text>
+<text x="82" y="1400" class="small">4 mm² 铜线、5 m 单程（10 m 回路）：30 A 压降约 1.31 V；</text>
+<text x="82" y="1430" class="small">若保留该线，建议总电流先限 ≤15 A；30 A 工况改约 10 mm²，</text>
+<text x="82" y="1460" class="tiny">并按线材温度等级、接插件和水下弯曲要求复核。压降为估算。</text>
+<rect x="875" y="1250" width="790" height="240" rx="16" fill="#fffaf0" stroke="#d2ab5d" stroke-width="2"/>
+<text x="902" y="1290" class="ct">② 4S1P 8 Ah 备电预算</text>
+<text x="902" y="1328" class="body">标称 118.4 Wh；24 V / 10 A 备电上限对应 240 W。</text>
+<text x="902" y="1360" class="body">15 min 需 60 Wh 输出，尚需计入变换损耗与电池余量。</text>
+<text x="902" y="1400" class="small">电池侧约 20–24 A；BMS、电芯、保险和导线须满足。</text>
+<text x="902" y="1430" class="small">三台额定点运行 15 min 需约 180 Wh，当前电池不能支持。</text>
+<text x="902" y="1460" class="tiny">断岸电默认保控制 15 min；K2 只供低功率单轴动作，并需实测。</text>
+<rect x="1695" y="1250" width="850" height="240" rx="16" fill="#fff" stroke="#aebdc8" stroke-width="2"/>
+<text x="1722" y="1290" class="ct">③ 接地、充电与保护原则</text>
+<text x="1722" y="1328" class="body">岸上隔离 24 V 的 +24 V / 0 V 两根都下水；0 V 为电流回路。</text>
+<text x="1722" y="1360" class="body">AC PE 只按岸上电源说明接 FG / 机壳，不接水体或作回流。</text>
+<text x="1722" y="1400" class="small">保险放正极；急停切电机，控制与监测由 UPS 保持。</text>
+<text x="1722" y="1430" class="small">USB‑C 只作辅助；4S 充电用匹配 CC/CV 与 BMS 充电口。</text>
+<text x="1722" y="1460" class="tiny">核实 UPS 主路额定、备电切换、电机回灌吸收和机舱散热。</text>
+
+<rect x="55" y="1520" width="2490" height="205" rx="16" fill="#eaf0f5" stroke="#b8c7d1" stroke-width="2"/>
+<text x="82" y="1560" class="ct">接口速查</text>
+<text x="82" y="1595" class="small">J1 脐带 +24/0V　·　J2 电芯→BMS　·　J3 岸电保护入口　·　J4 BMS 放电端　·　J5 24 V 电池升压→UPS BACKUP</text>
+<text x="82" y="1628" class="small">J6 UPS OUT→控制降压　·　J7 Type‑C PD→UPS AUX　·　J8 24 V 电机母线　·　J9 母线→C620 支路　·　J10 C620→M3508 三相/7‑Pin</text>
+<text x="82" y="1661" class="small">J11 常闭急停互锁　·　J12 4S CC/CV 充电→BMS　·　J13 电压/电流/温度采集与 DC 0 V 参考</text>
+<text x="82" y="1697" class="tiny">岸端 CAN 另走双绞线（现有两芯 J1 仅供电）。图示为候选拓扑；保险、触点、BMS 端口和限流值须按实物资料及测试冻结。</text>
+</svg>
