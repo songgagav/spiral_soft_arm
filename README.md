@@ -61,7 +61,7 @@ B32 是本地论文构形和打印前研究的主要基线。当前参数记录�
 
 ### v13 当前根部驱动候选
 
-当前改型保存在 [`electronics_enclosure_v13`](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/)：三台 M2006 P36 按厂商直径 24.4 mm、总长 64.8 mm 的包络竖装在一只直筒干仓内，取消 v12 的外伸电机筒与三条干侧接线管；可拆顶盖带三处轴系，线盘在顶盘下方湿侧。顶盘仍为 250 mm 六边形，原第 6、第 13 关节内部燕尾榫分段保留。提供[总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/B32_v13_M2006竖装共用干仓总装.step)、[半透明总装预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/B32_v13_紧凑竖装总装预览.png)、[线盘线孔俯视](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/B32_v13_线盘线孔俯视.png)及[设计说明](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/README_紧凑竖装共用干仓.md)。这是几何布局候选；轴封、静密封、穿舱件和实际轴承/联轴器仍未定型。
+当前改型保存在 [`electronics_enclosure_v13`](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/)：三台 M2006 P36 按厂商直径 24.4 mm、总长 64.8 mm 的包络竖装在一只直筒干仓内，取消 v12 的外伸电机筒与三条干侧接线管；可拆顶盖带三处轴系，线盘在顶盘下方湿侧。顶盘仍为 250 mm 六边形，原第 6、第 13 关节内部燕尾榫分段保留。三处卷芯切点、顶盘孔中心和软臂根部开口已按俯视径向对齐，并用真实软臂截面探针核对。提供[总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/B32_v13_M2006竖装共用干仓总装.step)、[半透明总装预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/B32_v13_紧凑竖装总装预览.png)、[线盘线孔俯视](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/B32_v13_线盘线孔俯视.png)及[设计说明](local/spiral-soft-arm/solidworks/electronics_enclosure_v13/README_紧凑竖装共用干仓.md)。这是几何布局候选；轴封、静密封、穿舱件和实际轴承/联轴器仍未定型。
 
 ### v12 历史根部驱动候选
 

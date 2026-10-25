@@ -10,6 +10,8 @@
   "motor_mount_holes": 3,
   "motor_mount_thread": "M3, 4 mm deep per manufacturer drawing",
   "motor_center_radius_mm": 70.5,
+  "arm_root_rotation_deg": 30.0,
+  "tendon_angles_deg": [60, 180, 300],
   "reel_core_radius_mm": 6.5,
   "reel_flange_radius_mm": 10.0,
   "reel_center_z_mm": -18.0,

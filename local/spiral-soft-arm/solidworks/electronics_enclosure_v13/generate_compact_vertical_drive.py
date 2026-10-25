@@ -55,8 +55,11 @@ def make_arm_and_plate() -> tuple[list[cq.Shape],list[cq.Shape],cq.Shape,dict[st
     config["motor_saddles"]["inner_diameter_mm"]=41.2
     mount=v10.make_horizontal_mount(config,source_mount)
     sections,pins,seams=v10.make_arm_sections(mount.arm)
-    sections=[s.rotate((0,0,0),(0,0,1),-30) for s in sections]
-    pins=[s.rotate((0,0,0),(0,0,1),-30) for s in pins]
+    # The frozen arm's root channel openings, after its source orientation,
+    # must land at the same 60/180/300 degree azimuths as the plate holes.
+    rotation=P["arm_root_rotation_deg"]
+    sections=[s.rotate((0,0,0),(0,0,1),rotation) for s in sections]
+    pins=[s.rotate((0,0,0),(0,0,1),rotation) for s in pins]
     plate,_=v10.make_plate(mount)
     plate,guard=v10.make_root_guard(plate)
     return sections,pins,plate,guard,seams
@@ -151,6 +154,11 @@ def tendon_exit_proxy(angle: float) -> cq.Shape:
     return cq.Solid.makeCylinder(.8,axis.Length,start,axis.normalized())
 
 
+def tendon_root_channel_proxy(angle: float) -> cq.Shape:
+    hx,hy=xy(angle,P["tendon_hole_radius_mm"])
+    return cyl(.8,P["tendon_hole_entry_z_mm"],5,hx,hy)
+
+
 def render(parts: list[tuple[cq.Shape,tuple[float,float,float],float]],
            sections: list[cq.Shape]) -> None:
     import vtk
@@ -219,20 +227,45 @@ def draw_plan() -> None:
         ax.add_patch(Circle((cx,cy),12.2,facecolor="#1c4054",alpha=.75))
         ax.add_patch(Circle((cx,cy),10,fill=False,edgecolor="#c89627",linewidth=2))
         ax.plot([tx,hx],[ty,hy],color="#c47a1a",linewidth=2)
+        ax.add_patch(Circle((hx,hy),3.3,fill=False,edgecolor="#14844d",linewidth=2))
         ax.plot(hx,hy,"o",color="#c74f36",markersize=5)
         ax.text(cx+5,cy+5,str(i),fontsize=10)
         routes.append(math.dist((tx,ty,-18),(hx,hy,-8.8)))
     ax.set_aspect("equal");ax.set_xlim(-140,140);ax.set_ylim(-140,140)
     ax.grid(alpha=.2);ax.set_xlabel("X / mm");ax.set_ylabel("Y / mm")
-    ax.set_title("v13 顶视：线盘切线、线孔和机械臂拉索方向同一直线")
+    ax.set_title("v13 顶视：卷芯切点、顶盘孔与实测臂根开口径向对齐")
+    ax.text(-132,-130,"绿圈：臂根开口  红点：顶盘孔  橙线：卷芯切线",fontsize=8.5,color="#34505c")
     fig.tight_layout();fig.savefig(HERE/"B32_v13_线盘线孔俯视.png");plt.close(fig)
 
 
 def main() -> None:
     sections,pins,plate,guard,seams=make_arm_and_plate()
+    # A real section of the rotated arm, not the layout sketch, decides
+    # whether the root openings coincide with the three plate holes.
+    root_probe=[]
+    off_axis_probe=[]
+    plate_probe=[]
+    tangent_error=[]
+    for angle in P["tendon_angles_deg"]:
+        hx,hy=xy(angle,P["tendon_hole_radius_mm"])
+        root_probe.append(round(sections[0].intersect(cyl(1.5,0,5,hx,hy)).Volume(),6))
+        ox,oy=xy(angle+30,P["tendon_hole_radius_mm"])
+        off_axis_probe.append(round(sections[0].intersect(cyl(1.5,0,5,ox,oy)).Volume(),6))
+        plate_probe.append(round(plate.intersect(cyl(1.0,-8,0,hx,hy)).Volume(),6))
+        cx,cy=xy(angle,P["motor_center_radius_mm"],P["reel_core_radius_mm"])
+        tx,ty=xy(angle,P["motor_center_radius_mm"])
+        travel=np.array([hx-tx,hy-ty,P["tendon_hole_entry_z_mm"]-P["reel_center_z_mm"]])
+        radial_normal=np.array([tx-cx,ty-cy,0.0])
+        tangent_error.append(round(abs(float(np.dot(travel,radial_normal))) /
+                                   (np.linalg.norm(travel)*np.linalg.norm(radial_normal)),9))
+    if any(v>.001 for v in root_probe+plate_probe+tangent_error):
+        raise RuntimeError("reel tangent, plate hole, and actual arm root channel are not aligned")
+    if any(v<.1 for v in off_axis_probe):
+        raise RuntimeError("root channel probe cannot distinguish channel from nearby solid")
     tube,roof,lid,gland=make_hull()
     drives=[make_drive(a) for a in (60,180,300)]
     tendons=[tendon_exit_proxy(a) for a in (60,180,300)]
+    root_tendons=[tendon_root_channel_proxy(a) for a in (60,180,300)]
     internals=make_internal_envelopes()
     fairing={k:v for k,v in v10.make_fairing().items() if k.startswith("upper_panel_")}
     assembly=cq.Assembly(name="B32_v13_compact_vertical_shared_dry_chamber")
@@ -249,6 +282,8 @@ def main() -> None:
             assembly.add(shape,name=f"drive_{i}_{key}",color=color)
     for i,shape in enumerate(tendons,1):
         assembly.add(shape,name=f"tendon_{i}_straight_exit_proxy",color=cq.Color(.90,.47,.12))
+    for i,shape in enumerate(root_tendons,1):
+        assembly.add(shape,name=f"tendon_{i}_through_plate_into_arm_root_proxy",color=cq.Color(.90,.47,.12))
     for key,shape in internals.items():assembly.add(shape,name=key)
     for key,shape in {**fairing,**guard}.items():assembly.add(shape,name=key,color=cq.Color(.70,.79,.84))
     assembly.export(str(HERE/"B32_v13_M2006竖装共用干仓总装.step"),exportType="STEP",unit="MM")
@@ -258,6 +293,7 @@ def main() -> None:
         preview += [(d["motor"],(.08,.20,.29),1),(d["wet_reel"],(.90,.65,.16),1),
                     (d["oil_seal"],(.80,.29,.22),1),(d["motor_adapter"],(.48,.57,.60),.9)]
     preview += [(s,(.90,.47,.12),1) for s in tendons]
+    preview += [(s,(.90,.47,.12),1) for s in root_tendons]
     for key,shape in internals.items():
         if key in ("STM32_controller_envelope","voltage_regulator_envelope","UPS_module_envelope") or key.startswith("21700_cell_") or key.startswith("C610_"):
             preview.append((shape,(.29,.54,.34) if not key.startswith("21700") else (.57,.44,.28),.85))
@@ -280,6 +316,11 @@ def main() -> None:
     adapter_overlap={k:v for k,v in adapter_overlap.items() if v>.01}
     horizontal=P["motor_center_radius_mm"]-P["tendon_hole_radius_mm"]
     audit={"status":P["status"],"motor_envelope_mm":[24.4,64.8],
+           "arm_root_rotation_deg":P["arm_root_rotation_deg"],
+           "arm_root_channel_probe_overlap_mm3":root_probe,
+           "arm_root_off_axis_30deg_probe_overlap_mm3":off_axis_probe,
+           "plate_hole_probe_overlap_mm3":plate_probe,
+           "reel_3d_tangent_cosine_error":tangent_error,
            "motor_center_xy_mm":[xy(a,P["motor_center_radius_mm"],6.5) for a in (60,180,300)],
            "reel_to_hole_planar_mm":round(horizontal,2),"reel_tangent_to_hole_3d_mm":round(math.hypot(horizontal,9.2),2),
            "shaft_orientation":"vertical; reel tangent and arm tendon radial aligned in plan",

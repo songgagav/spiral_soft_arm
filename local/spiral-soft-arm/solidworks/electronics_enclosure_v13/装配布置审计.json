@@ -4,6 +4,27 @@
     24.4,
     64.8
   ],
+  "arm_root_rotation_deg": 30.0,
+  "arm_root_channel_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "arm_root_off_axis_30deg_probe_overlap_mm3": [
+    0.429987,
+    0.429987,
+    0.429987
+  ],
+  "plate_hole_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "reel_3d_tangent_cosine_error": [
+    0.0,
+    0.0,
+    0.0
+  ],
   "motor_center_xy_mm": [
     [
       29.620834875401158,
