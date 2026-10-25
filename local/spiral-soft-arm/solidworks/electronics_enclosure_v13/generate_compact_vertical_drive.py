@@ -61,6 +61,18 @@ def make_arm_and_plate() -> tuple[list[cq.Shape],list[cq.Shape],cq.Shape,dict[st
     sections=[s.rotate((0,0,0),(0,0,1),rotation) for s in sections]
     pins=[s.rotate((0,0,0),(0,0,1),rotation) for s in pins]
     plate,_=v10.make_plate(mount)
+    # Supersede the inherited 0.8 mm lead-ins with clear 1.5 x 45 degree
+    # chamfers on both faces. Keep the 4.2 mm cylindrical bore unchanged.
+    depth=P["tendon_mouth_chamfer_depth_mm"]
+    bore=P["tendon_bore_diameter_mm"]/2
+    mouth=P["tendon_mouth_diameter_mm"]/2
+    for angle in P["tendon_angles_deg"]:
+        hx,hy=xy(angle,P["tendon_hole_radius_mm"])
+        plate=plate.cut(cq.Solid.makeCone(mouth,bore,depth,
+                        cq.Vector(hx,hy,-8),cq.Vector(0,0,1)))
+        plate=plate.cut(cq.Solid.makeCone(bore,mouth,depth,
+                        cq.Vector(hx,hy,-depth),cq.Vector(0,0,1)))
+    plate=plate.clean()
     plate,guard=v10.make_root_guard(plate)
     return sections,pins,plate,guard,seams
 
@@ -238,6 +250,34 @@ def draw_plan() -> None:
     fig.tight_layout();fig.savefig(HERE/"B32_v13_线盘线孔俯视.png");plt.close(fig)
 
 
+def draw_chamfer_detail() -> None:
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    plt.rcParams["font.sans-serif"]=["Microsoft YaHei","SimHei"]
+    plt.rcParams["axes.unicode_minus"]=False
+    z=np.array([-8,-6.5,-1.5,0],dtype=float)
+    r=np.array([3.6,2.1,2.1,3.6],dtype=float)
+    fig,ax=plt.subplots(figsize=(8,5.5),dpi=180)
+    ax.fill_betweenx(z,-8,-r,color="#9aadb9",alpha=.85)
+    ax.fill_betweenx(z,r,8,color="#9aadb9",alpha=.85)
+    ax.plot(-r,z,color="#27485b",linewidth=2)
+    ax.plot(r,z,color="#27485b",linewidth=2)
+    ax.axvline(0,color="#d77d20",linestyle="--",linewidth=1)
+    ax.annotate("孔径 4.2 mm",xy=(2.1,-4),xytext=(4.6,-4),
+                arrowprops={"arrowstyle":"->","color":"#28485b"},fontsize=10)
+    ax.annotate("双面 1.5 × 45°",xy=(3.05,-7.45),xytext=(4.0,-10),
+                arrowprops={"arrowstyle":"->","color":"#28485b"},fontsize=10)
+    ax.text(0,1.15,"上侧孔口 Ø7.2 mm",ha="center",fontsize=11)
+    ax.text(0,-10.4,"湿侧入口 Ø7.2 mm",ha="center",fontsize=11)
+    ax.set_xlim(-9,9);ax.set_ylim(-11,2.2);ax.set_aspect("equal")
+    ax.set_xlabel("线孔中心的径向截面 / mm")
+    ax.set_ylabel("高度 z / mm")
+    ax.set_title("B32 v13 顶盘拉索孔倒角剖面（三处相同）")
+    ax.grid(alpha=.18)
+    fig.tight_layout();fig.savefig(HERE/"B32_v13_线孔双面倒角剖面.png");plt.close(fig)
+
+
 def main() -> None:
     sections,pins,plate,guard,seams=make_arm_and_plate()
     # A real section of the rotated arm, not the layout sketch, decides
@@ -245,6 +285,9 @@ def main() -> None:
     root_probe=[]
     off_axis_probe=[]
     plate_probe=[]
+    lower_mouth_probe=[]
+    upper_mouth_probe=[]
+    bore_wall_probe=[]
     tangent_error=[]
     for angle in P["tendon_angles_deg"]:
         hx,hy=xy(angle,P["tendon_hole_radius_mm"])
@@ -252,6 +295,10 @@ def main() -> None:
         ox,oy=xy(angle+30,P["tendon_hole_radius_mm"])
         off_axis_probe.append(round(sections[0].intersect(cyl(1.5,0,5,ox,oy)).Volume(),6))
         plate_probe.append(round(plate.intersect(cyl(1.0,-8,0,hx,hy)).Volume(),6))
+        px,py=xy(angle,P["tendon_hole_radius_mm"]+3.0)
+        lower_mouth_probe.append(round(plate.intersect(cyl(.2,-8,-7.95,px,py)).Volume(),6))
+        upper_mouth_probe.append(round(plate.intersect(cyl(.2,-.05,0,px,py)).Volume(),6))
+        bore_wall_probe.append(round(plate.intersect(cyl(.2,-4,-3.95,px,py)).Volume(),6))
         cx,cy=xy(angle,P["motor_center_radius_mm"],P["reel_core_radius_mm"])
         tx,ty=xy(angle,P["motor_center_radius_mm"])
         travel=np.array([hx-tx,hy-ty,P["tendon_hole_entry_z_mm"]-P["reel_center_z_mm"]])
@@ -262,6 +309,8 @@ def main() -> None:
         raise RuntimeError("reel tangent, plate hole, and actual arm root channel are not aligned")
     if any(v<.1 for v in off_axis_probe):
         raise RuntimeError("root channel probe cannot distinguish channel from nearby solid")
+    if any(v>.001 for v in lower_mouth_probe+upper_mouth_probe) or any(v<.005 for v in bore_wall_probe):
+        raise RuntimeError("tendon port chamfer profile does not match the requested mouth and bore")
     tube,roof,lid,gland=make_hull()
     drives=[make_drive(a) for a in (60,180,300)]
     tendons=[tendon_exit_proxy(a) for a in (60,180,300)]
@@ -301,6 +350,7 @@ def main() -> None:
     preview += [(s,(.57,.78,.84),.28) for s in guard.values()]
     render(preview,sections)
     draw_plan()
+    draw_chamfer_detail()
     def dims(shape):
         b=shape.BoundingBox();return [round(b.xlen,2),round(b.ylen,2),round(b.zlen,2)]
     # Static packaging checks are for layout review, not pressure or print release.
@@ -320,6 +370,11 @@ def main() -> None:
            "arm_root_channel_probe_overlap_mm3":root_probe,
            "arm_root_off_axis_30deg_probe_overlap_mm3":off_axis_probe,
            "plate_hole_probe_overlap_mm3":plate_probe,
+           "tendon_mouth_chamfer_depth_mm":P["tendon_mouth_chamfer_depth_mm"],
+           "tendon_mouth_diameter_mm":P["tendon_mouth_diameter_mm"],
+           "lower_mouth_probe_overlap_mm3":lower_mouth_probe,
+           "upper_mouth_probe_overlap_mm3":upper_mouth_probe,
+           "cylindrical_bore_wall_probe_overlap_mm3":bore_wall_probe,
            "reel_3d_tangent_cosine_error":tangent_error,
            "motor_center_xy_mm":[xy(a,P["motor_center_radius_mm"],6.5) for a in (60,180,300)],
            "reel_to_hole_planar_mm":round(horizontal,2),"reel_tangent_to_hole_3d_mm":round(math.hypot(horizontal,9.2),2),

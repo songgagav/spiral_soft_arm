@@ -20,6 +20,23 @@
     0.0,
     0.0
   ],
+  "tendon_mouth_chamfer_depth_mm": 1.5,
+  "tendon_mouth_diameter_mm": 7.2,
+  "lower_mouth_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "upper_mouth_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "cylindrical_bore_wall_probe_overlap_mm3": [
+    0.006283,
+    0.006283,
+    0.006283
+  ],
   "reel_3d_tangent_cosine_error": [
     0.0,
     0.0,
