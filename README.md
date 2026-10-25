@@ -26,13 +26,13 @@
 | 单次工作时间 | 约 30 分钟 | 尚无整机功耗、温升和续航实测 |
 | 岸上供电 | 隔离 24 V；脐带缆正负导体各 4 mm²，现有线长 5 m | 接插件、压降、绝缘和带载温升尚未实测 |
 | 断电备份 | 岸上 24 V 中断后，内部电源继续运行至少 15 分钟 | UPS 切换、电池放电和带载时间未验证 |
-| 执行器布局 | 当前 v14 候选将三台 DJI M2006 P36 竖装在一只共用干仓内；独立轴穿过迷宫与骨架油封，只有线盘在湿侧 | 仓体静密封、旋转轴封、轴承载荷与温升未验证 |
+| 执行器布局 | 当前 v15 候选将三台 DJI M2006 P36 竖装在共用干仓内，经干式直角传动舱驱动水平切向线盘轴；拉索从卷芯切点直达线孔 | 实际直角齿轮、仓体静密封、旋转轴封、轴承载荷与温升未验证 |
 | 控制与功率电子 | STM32 主控；电调和电池置于根部电子仓候选空间 | 尚无 STM32 固件和完成的控制板装配验证 |
 | 电机候选 | DJI M2006 P36，配套 C610 使用 CAN 指令 | 实物接口、供电限流、反馈闭环和轴封运行仍待验证 |
 | 电池候选 | 4S1P 松下 NCR21700T；用户确认每节 8 Ah，电池组仍为 8 Ah | BMS、电芯持续放电能力、变换效率和实际续航仍需器件资料与测试 |
 | 辅助输入 | USB‑C PD 经输入板和 24 V 升压接 UPS AUX | 还未完成电源路径、回灌保护和满载热设计验证 |
 
-4S1P 按 14.8 V 标称电压与 8 Ah 估算约 118.4 Wh；备电时长仍需在实际负载下记录验证。当前电机更换方案见[M2006/C610 干式驱动拓扑候选](local/spiral-soft-arm/hardware/M2006_C610_干式驱动拓扑候选_2026-10-23.md)与[v14 物理布置 CAD 说明](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/README_物理布置优化.md)。[2026-10-22 的 4092 硬件拓扑](local/spiral-soft-arm/hardware/硬件拓扑与接口补充清单_2026-10-22.md)保留为历史候选。
+4S1P 按 14.8 V 标称电压与 8 Ah 估算约 118.4 Wh；备电时长仍需在实际负载下记录验证。当前电机更换方案见[M2006/C610 干式驱动拓扑候选](local/spiral-soft-arm/hardware/M2006_C610_干式驱动拓扑候选_2026-10-23.md)与[v15 垂直电机水平线盘 CAD 说明](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/README_垂直电机水平线盘.md)。[2026-10-22 的 4092 硬件拓扑](local/spiral-soft-arm/hardware/硬件拓扑与接口补充清单_2026-10-22.md)保留为历史候选。
 
 ## B32 几何基线
 
@@ -59,9 +59,13 @@ B32 是本地论文构形和打印前研究的主要基线。当前参数记录�
 
 ## 机械与电子集成候选
 
-### v14 当前根部驱动候选
+### v15 当前根部驱动候选
 
-当前改型保存在 [`electronics_enclosure_v14`](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/)：三台 M2006 P36 按厂商 Ø24.4 × 64.8 mm 包络竖装在一只共用干仓内，独立轴穿过可拆顶盖驱动湿侧线盘。250 mm 六边形顶盘由六根支柱支撑；电子件重新排布，电池架、控制板支柱、转接板和仓壁的已发现实体冲突已消除。线盘切线、双面倒角线孔和臂根通道保持对齐；第 6、第 13 关节内部燕尾榫分段不变。提供[总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/B32_v14_物理装配优化总装.step)、[半透明预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/B32_v14_半透明总装预览.png)、[线盘线孔俯视](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/B32_v14_线盘线孔俯视.png)、[倒角剖面](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/B32_v14_线孔双面倒角剖面.png)和[几何审计](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/装配布置审计.json)。这是布局候选，轴封、静密封、轴承/联轴器、实际线束和承压结构仍需实物定型。
+当前改型保存在 [`electronics_enclosure_v15`](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/)：三台 M2006 保持竖装，线盘轴改为水平切向，电机与线盘轴相互垂直。每路经顶盖上的干式直角传动舱转向；湿侧线盘的卷芯切点、顶盘双面倒角线孔及臂根通道沿径向直线相接。电池、STM32、UPS 和支撑件已针对新电机位置重排。提供[总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/B32_v15_垂直电机水平线盘总装.step)、[半透明预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/B32_v15_半透明总装预览.png)、[轴线俯视](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/B32_v15_线盘线孔俯视.png)、[线孔剖面](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/B32_v15_线孔双面倒角剖面.png)及[装配布置审计](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/装配布置审计.json)。直角齿轮副目前仅预留空间，尚未完成选型或水密定型。
+
+### v14 历史根部驱动候选
+
+[`electronics_enclosure_v14`](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/) 保留竖装电机与同轴竖直线盘的布局。该版的电池、支撑件和仓壁静态空间重排作为 v15 的基础，但线盘轴向由 v15 修正。
 
 ### v13 历史根部驱动候选
 
@@ -135,7 +139,7 @@ v9 的审计状态是“CAD 与预览候选”，并非打印或水下放行。�
 
 ### 关键文件索引
 
-- [v14 当前物理布置共用干仓总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v14/B32_v14_物理装配优化总装.step)
+- [v15 当前垂直电机水平线盘总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v15/B32_v15_垂直电机水平线盘总装.step)
 - [三段机械臂与燕尾接口 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v9/B32_三段机械臂_燕尾榫装配.step)
 - [v9 分件 STL 与生成脚本](local/spiral-soft-arm/solidworks/electronics_enclosure_v9/)
 - [B32 论文构形 STEP/STL](local/spiral-soft-arm/solidworks/paper_v1/)
@@ -197,7 +201,7 @@ python extensions/multi-robot-array/array_gui.py
 
 | 验证层级 | 当前记录 | 尚未证明的内容 |
 | --- | --- | --- |
-| 几何/CAD | B32 主体基线单独存档；v14 已输出竖装共用干仓、湿侧线盘的 STEP 和预览，并检查关键包络、支撑件和预留过线空间 | 零件强度、装配公差、动态间隙、轴封寿命、螺钉保持和长期疲劳 |
+| 几何/CAD | B32 主体基线单独存档；v15 已输出竖装电机、水平切向线盘轴、干式直角传动舱的 STEP 和预览，并检查指定包络与直线出线空间 | 实际直角齿轮、零件强度、装配公差、动态间隙、轴封寿命和长期疲劳 |
 | 仿真 | v4 四种淡水/海水工况运行稳定，状态有限 | 5 mm 抬升任务失败；尚不能证明真实水动力、腱索或电机性能 |
 | 切片 | 80 mm 基部/尖端短样有几何文件 | 未见供应商切片预览、实际打印批次和打印记录 |
 | 材料/腱索 | TPU 95A 与三腱路线为当前研究基线 | 本批 TPU 拉伸/弯曲曲线、孔道摩擦、松弛、回差和疲劳未测 |
@@ -207,7 +211,7 @@ python extensions/multi-robot-array/array_gui.py
 
 建议的验证顺序是：检查 80 mm 短样切片并打印 → 测量尺寸、穿腱、低张力弯折与回弹 → 标定材料刚度和腱道摩擦 → 单台电机/电调测量转速、力矩、电流、温升和反馈 → 完成三路装配与动态绳路检查 → 台架抓取验证 → 通过结构审查后进行规定深度的压力与水下运行试验。每一阶段都应记录候选版本、源文件/模型哈希、材料批次、设备、参数、原始数据和结果。
 
-当前打印边界详见[打印放行条件](local/spiral-soft-arm/preprint/v2/当前状态与放行条件.md)。v14 CAD 文件即使通过静态几何布置检查，也不等于“可直接打印”或“可下水”。
+当前打印边界详见[打印放行条件](local/spiral-soft-arm/preprint/v2/当前状态与放行条件.md)。v15 CAD 文件即使通过静态几何布置检查，也不等于“可直接打印”或“可下水”。
 
 ## 候选版本和证据管理
 
@@ -221,7 +225,8 @@ python extensions/multi-robot-array/array_gui.py
 - **电子仓 v11**：三个独立干式电机筒的历史布局候选；外伸筒体和后盖预览问题促成 v12 改型。
 - **电子仓 v12**：三台 M2006 共用干侧空间、三条干侧管路、独立轴、迷宫与骨架油封及湿侧线盘的历史布置候选。
 - **电子仓 v13**：首次紧凑竖装方案，保留作历史对照。
-- **电子仓 v14**：当前三台 M2006 竖装于一只共用干仓，重新处理电池、转接板和支撑件实体空间；尚未完成水密或打印定型。
+- **电子仓 v14**：三台 M2006 竖装于共用干仓、线盘同轴竖装的历史候选。
+- **电子仓 v15**：当前电机竖装、水平切向线盘轴和干式直角传动舱候选；直角齿轮副、水密与打印尚未定型。
 - **MuJoCo 刚体模型**：用于机制与参数分析的降阶模型；其中的单元碰撞 STL 不是打印零件。
 
 本项目使用分阶段证据门槛：**几何检查 → 切片检查 → 短样打印 → 腱线与无负载运动 → 抓取/负载测试 → 水下与压力测试**。网格闭合、STEP 可读、仿真状态有限或图片外观正常，都不能单独证明零件可打印、机构可动、负载可抓取或整机防水。

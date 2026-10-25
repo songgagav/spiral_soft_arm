@@ -1,0 +1,208 @@
+{
+  "status": "perpendicular-axis layout candidate; bevel gear, radial shaft seal, pressure integrity and print release pending",
+  "motor_envelope_mm": [
+    24.4,
+    64.8
+  ],
+  "arm_root_rotation_deg": 30.0,
+  "arm_root_channel_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "arm_root_off_axis_30deg_probe_overlap_mm3": [
+    0.429987,
+    0.429987,
+    0.429987
+  ],
+  "plate_hole_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "tendon_mouth_chamfer_depth_mm": 1.5,
+  "tendon_mouth_diameter_mm": 7.2,
+  "lower_mouth_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "upper_mouth_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "cylindrical_bore_wall_probe_overlap_mm3": [
+    0.006283,
+    0.006283,
+    0.006283
+  ],
+  "reel_3d_tangent_cosine_error": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "motor_center_xy_mm": [
+    [
+      12.965390309173479,
+      70.45671475544961
+    ],
+    [
+      -67.5,
+      -23.999999999999993
+    ],
+    [
+      54.534609690826535,
+      -46.456714755449596
+    ]
+  ],
+  "reel_tangent_r_z_mm": [
+    68.819,
+    -15.82
+  ],
+  "reel_to_hole_planar_mm": 38.22,
+  "reel_tangent_to_hole_3d_mm": 38.86,
+  "shaft_orientation": "motor vertical; reel shaft horizontal tangential; tendon radial in plan",
+  "section_heights_mm": [
+    183.48,
+    185.12,
+    200.05
+  ],
+  "print_part_envelopes_mm": {
+    "dry_tube": [
+      212.21,
+      212.0,
+      211.21
+    ],
+    "roof": [
+      212.21,
+      212.0,
+      8.21
+    ],
+    "lid": [
+      212.21,
+      212.0,
+      13.2
+    ],
+    "hex_plate": [
+      221.49,
+      250.0,
+      28.24
+    ],
+    "plate_standoff": [
+      10.01,
+      10.0,
+      28.01
+    ],
+    "dry_gear_pod": [
+      37.08,
+      37.04,
+      24.08
+    ],
+    "wet_reel": [
+      17.45,
+      22.21,
+      21.0
+    ]
+  },
+  "critical_component_pair_overlap_mm3": {},
+  "critical_component_to_hull_overlap_mm3": {},
+  "motor_to_electronics_overlap_mm3": {},
+  "motor_to_electronics_min_clearance_mm": 7.729,
+  "motor_to_electronics_closest_pairs_mm": [
+    [
+      7.729,
+      1,
+      "UPS_module_envelope"
+    ],
+    [
+      8.511,
+      3,
+      "C610_1_envelope"
+    ],
+    [
+      9.154,
+      2,
+      "21700_cell_1"
+    ],
+    [
+      14.507,
+      1,
+      "STM32_controller_envelope"
+    ],
+    [
+      18.699,
+      2,
+      "voltage_regulator_envelope"
+    ]
+  ],
+  "adapter_to_electronics_overlap_mm3": {},
+  "drive_to_hull_overlap_mm3": {},
+  "adapter_to_tube_min_clearance_mm": 3.36,
+  "cable_keepout_to_critical_component_overlap_mm3": {},
+  "mount_structure_to_critical_component_overlap_mm3": {},
+  "drive_to_mount_structure_overlap_mm3": {},
+  "mount_structure_to_hull_overlap_mm3": {},
+  "cable_keepout_to_mount_structure_overlap_mm3": {},
+  "drive_part_unintended_overlap_mm3": {},
+  "tendon_to_solid_overlap_mm3": {},
+  "dry_pod_to_plate_standoff_overlap_mm3": {},
+  "drive_to_hex_plate_overlap_mm3": {},
+  "pod_cap_to_hex_plate_min_clearance_mm": 2.0,
+  "pod_static_gasket_compression_proxy": "0.05 mm contact at pod base and cap; not a pressure design",
+  "roof_to_battery_min_clearance_mm": 9.79,
+  "top_plate_support_count": 6,
+  "motor_mount": "3-hole M3 PCD19 proxy; dry-side adapter and three spacer posts per motor",
+  "shaft_load_path": "wet reel -> horizontal 8 mm shaft -> pod bearing -> dry 90-degree gear set (selection pending) -> vertical shaft/bearing -> motor",
+  "shore_tether_corridor": "smooth 10 mm diameter keepout from off-axis bottom gland to UPS input region",
+  "reel_to_plate_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "motor_to_tube_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "reel_to_fixed_labyrinth_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "fixed_to_rotating_labyrinth_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "seal_status": "placeholder geometry; purchased seal and pressure rating pending",
+  "service": "remove six upper flat panels and hex plate; release three wet reels, then lift roof/motor cartridge; bottom lid opens to electronics",
+  "seams": [
+    {
+      "joint_id": "joint_06",
+      "from_root_mm": 173.9548,
+      "joint_unit_span_from_root_mm": [
+        157.9625,
+        189.9472
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    },
+    {
+      "joint_id": "joint_13",
+      "from_root_mm": 350.0511,
+      "joint_unit_span_from_root_mm": [
+        340.3716,
+        359.7307
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    }
+  ]
+}
