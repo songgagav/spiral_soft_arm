@@ -1,0 +1,153 @@
+{
+  "status": "mainland-procurable M3508+C620 and purchased miter/bearing/seal envelope candidate; simultaneous-current limit, tooth CAD, press fits, axial thrust, pressure integrity and print release pending",
+  "gearmotor": "DJI RoboMaster M3508 P19 with factory 19:1 gearbox",
+  "esc": "DJI RoboMaster C620 x3",
+  "gearmotor_body_envelope_mm": [
+    42,
+    66.7
+  ],
+  "gearmotor_overall_length_mm": 98.4,
+  "gearmotor_nominal_continuous_torque_Nm": 3.0,
+  "per_motor_rated_input_current_A": 10.0,
+  "three_motor_simultaneous_rated_input_current_A": 30.0,
+  "existing_battery_side_regulator_rated_output_A": 15.0,
+  "power_budget_status": "simultaneous rated motor operating points exceed 15 A; active limiting and measured duty required",
+  "gearbox_output_shaft_mm": 10,
+  "miter_gear_pair": "KHK MMSA1.5-20R + MMSA1.5-20L, 1:1, module 1.5, 20 teeth, 10 mm bore",
+  "output_bearing": "SKF 3200 ATN9, 10x30x14",
+  "input_bearing": "SKF 6000-2RS1, 10x26x8",
+  "oil_seal": "SKF 10X22X7 HMSA10 RG envelope candidate only",
+  "reel_tangent_r_z_mm": [
+    41.473,
+    -17.231
+  ],
+  "tangent_to_hole_length_mm": 13.759,
+  "arm_root_channel_probe_overlap_mm3": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "motor_to_critical_component_overlap_mm3": {},
+  "motor_to_dry_tube_overlap_mm3": {},
+  "printed_part_envelopes_mm": [
+    [
+      60.5,
+      67.7,
+      183.5
+    ],
+    [
+      42.4,
+      47.2,
+      185.1
+    ],
+    [
+      25.5,
+      28.4,
+      200.1
+    ],
+    [
+      221.5,
+      250.0,
+      28.2
+    ],
+    [
+      212.1,
+      212.2,
+      211.3
+    ],
+    [
+      212.1,
+      212.2,
+      92.1
+    ],
+    [
+      212.1,
+      212.2,
+      13.2
+    ],
+    [
+      10.0,
+      10.0,
+      28.0
+    ],
+    [
+      10.0,
+      10.0,
+      28.0
+    ],
+    [
+      10.0,
+      10.0,
+      28.0
+    ],
+    [
+      10.0,
+      10.0,
+      28.0
+    ],
+    [
+      10.0,
+      10.0,
+      28.0
+    ],
+    [
+      10.0,
+      10.0,
+      28.0
+    ],
+    [
+      54.0,
+      54.0,
+      2.0
+    ],
+    [
+      54.0,
+      54.0,
+      2.0
+    ],
+    [
+      54.0,
+      54.0,
+      2.0
+    ]
+  ],
+  "print_envelope_pass": true,
+  "open_items": [
+    "actual tooth CAD and backlash",
+    "axial thrust and bearing life",
+    "5 m pressure and seawater seal selection",
+    "coupling and shaft fit tolerances",
+    "mechanical fastening details and support bracket clearance",
+    "15 A 24 V bus cannot power three M3508 at their simultaneous 10 A rating",
+    "C620 cable bend and connector clearance",
+    "STM32 to C620 CAN/PWM wiring map"
+  ],
+  "seams": [
+    {
+      "joint_id": "joint_06",
+      "from_root_mm": 173.9548,
+      "joint_unit_span_from_root_mm": [
+        157.9625,
+        189.9472
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    },
+    {
+      "joint_id": "joint_13",
+      "from_root_mm": 350.0511,
+      "joint_unit_span_from_root_mm": [
+        340.3716,
+        359.7307
+      ],
+      "split_inside_joint_unit": true,
+      "male_projection_mm": 9.0,
+      "nominal_side_clearance_mm": 0.3,
+      "cross_pin_clearance_diameter_mm": 2.7,
+      "cross_pin_axis_deg": 0.0
+    }
+  ]
+}

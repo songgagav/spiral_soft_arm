@@ -10,3 +10,9 @@
 *.png binary
 *.jpg binary
 *.jpeg binary
+
+# Keep the v16 manifest reproducible across Windows and Unix checkouts.
+local/spiral-soft-arm/solidworks/electronics_enclosure_v16/*.py text eol=lf
+local/spiral-soft-arm/solidworks/electronics_enclosure_v16/*.json text eol=lf
+local/spiral-soft-arm/solidworks/electronics_enclosure_v16/*.md text eol=lf
+local/spiral-soft-arm/solidworks/electronics_enclosure_v16/*.csv text eol=lf
