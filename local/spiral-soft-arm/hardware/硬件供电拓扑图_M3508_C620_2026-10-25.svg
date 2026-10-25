@@ -45,7 +45,7 @@
 <path d="M285 415V465" class="wire shore"/>
 <path d="M500 545H555V335H620" class="wire shore"/>
 <path d="M1070 330H1135V335H1220" class="wire shore"/>
-<path d="M1070 378H1155V610H1220" class="wire logic"/>
+<path d="M1070 378H1155V571H1220" class="wire logic"/>
 <path d="M1070 395H1095V680H900V700" class="wire enable"/>
 <text x="1104" y="674" class="tiny">PWR_GOOD 控制升压使能</text>
 <path d="M1700 335H1815" class="wire shore"/>
@@ -55,8 +55,8 @@
 <path d="M1210 780H1220V690" class="wire backup"/>
 <path d="M1450 740V835" class="wire backup"/>
 <path d="M1700 920H1760V650H1820" class="wire backup"/>
-<path d="M500 1040H620" class="wire aux"/>
-<path d="M1070 1040H1140V730H1220" class="wire aux"/>
+<path d="M500 1040H570V260H1175V605H1220" class="wire aux"/>
+<text x="1000" y="251" class="tiny">USB‑C PD 辅助电源 → UPS AUX（独立于电池充电）</text>
 <path d="M1700 640H1750V950H1820" class="wire logic"/>
 <path d="M2120 950H2150" class="wire logic"/>
 <path d="M1460 740V1015" class="wire logic"/>
