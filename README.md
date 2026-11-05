@@ -26,7 +26,7 @@
 | 单次工作时间 | 约 30 分钟 | 尚无整机功耗、温升和续航实测 |
 | 岸上供电 | 隔离 24 V；现有脐带缆两芯各 4 mm²、5 m | 三台电机按额定工作点约需 30 A；现有线缆压降估算约 1.3 V，需限流或换粗线，并实测温升 |
 | 断电备份 | 4S1P、8 Ah 电池经 BMS 与 24 V 升压进入 UPS；岸电在时关闭升压，岸电失效才启用；备电总输出限流 | 约 15 分钟目标对应降功率模式；三台电机额定负载下所需能量高于当前电池标称能量 |
-| 执行器布局 | 当前 v16 候选将三台 DJI M3508 P19 原厂减速电机竖装在共用干仓内，经 1:1 干式直角齿轮驱动水平切向线盘轴；拉索从卷芯切点直达线孔 | 商品齿形、仓体静密封、旋转轴封、轴承载荷与温升未验证 |
+| 执行器布局 | 当前 v23 几何候选将三台 DJI M3508 P19 竖装在共用干仓内，经 1:1 干式直角齿轮驱动湿侧水平切向线盘；拉索从线轮上侧切点直线穿过顶盘斜孔，再由根部曲面通道接入原腱道 | STEP 回读与静态干涉审查通过；商品齿形、根部强度、仓体密封、轴承载荷与温升未验证 |
 | 控制与功率电子 | STM32 主控；电调和电池置于根部电子仓候选空间 | 尚无 STM32 固件和完成的控制板装配验证 |
 | 电机候选 | 大陆可采购的 DJI M3508 P19，配套 C620 使用 CAN 指令或 PWM；持续最大输出扭矩标称 3 N·m | 三台额定工作电流合计约 30 A；24 V/15 A 模块仅在备电支路，主路需按新拓扑配电 |
 | 电池候选 | 4S1P 松下 NCR21700T；用户确认每节 8 Ah，电池组仍为 8 Ah | BMS、电芯持续放电能力、变换效率和实际续航仍需器件资料与测试 |
@@ -59,9 +59,13 @@ B32 是本地论文构形和打印前研究的主要基线。当前参数记录�
 
 ## 机械与电子集成候选
 
-### v16 当前根部驱动候选
+### v23 当前拉索与轴封接口候选
 
-当前改型保存在 [`electronics_enclosure_v16`](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/)：三台中国大陆可采购的 M3508 P19 原厂减速电机竖装，三块 C620 置于共用干仓底部。电机 Ø10 mm 输出轴通过可拆联轴器连接独立竖轴，再经 KHK 1:1 配对伞齿轮驱动水平切向线盘轴。输出轴由双列角接触轴承支承，穿仓处留有迷宫结构及 10 × 22 × 7 mm 骨架油封座。湿侧卷芯切点至线孔约 13.76 mm，保持径向直线出线。提供[总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_减速电机直角传动总装.step)、[半透明预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_半透明总装预览.png)、[俯视图](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_线盘线孔俯视.png)及[布置审计](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/装配布置审计.json)。齿轮齿形仍为商品包络，5 m 水密与三机同时供电尚未验证。
+[`electronics_enclosure_v23_cable_and_seal_interfaces`](local/spiral-soft-arm/solidworks/electronics_enclosure_v23_cable_and_seal_interfaces/) 整合三台 M3508、共用干仓、CNC D 轴联轴套、三路湿侧线轮及输出轴封座。线轮上侧切点至顶盘根部入口为直线；顶盘采用 Ø4.2 mm 斜孔，根部前 60 mm 使用平滑导入通道接回 B32 原腱道。电机 D 轴轴套位于干仓内；三只 10×22×7 mm 轴封位于完整 Ø10 输出轴跑道上，集成座孔以打印后精加工到 Ø22 H8 为目标。[总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v23_cable_and_seal_interfaces/B32_v23_M3508三路拉索与轴封接口总装.step)、[总装预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v23_cable_and_seal_interfaces/B32_v23_M3508三路总装预览.png)、[拉索尺寸图](local/spiral-soft-arm/solidworks/electronics_enclosure_v23_cable_and_seal_interfaces/B32_v23_拉索直线与根部过渡尺寸图.png)及[几何审查说明](local/spiral-soft-arm/solidworks/electronics_enclosure_v23_cable_and_seal_interfaces/README_拉索过渡与轴封接口.md)可供审核。该版完成静态几何核查，尚未通过切片、材料试件、压力或水下运行验证。
+
+### v16 历史根部驱动候选
+
+早期改型保存在 [`electronics_enclosure_v16`](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/)：三台中国大陆可采购的 M3508 P19 原厂减速电机竖装，三块 C620 置于共用干仓底部。电机 Ø10 mm 输出轴通过可拆联轴器连接独立竖轴，再经 KHK 1:1 配对伞齿轮驱动水平切向线盘轴。输出轴由双列角接触轴承支承，穿仓处留有迷宫结构及 10 × 22 × 7 mm 骨架油封座。湿侧卷芯切点至线孔约 13.76 mm，保持径向直线出线。提供[总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_减速电机直角传动总装.step)、[半透明预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_半透明总装预览.png)、[俯视图](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_线盘线孔俯视.png)及[布置审计](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/装配布置审计.json)。齿轮齿形仍为商品包络，5 m 水密与三机同时供电尚未验证。
 
 ### v15 历史根部驱动候选
 
@@ -99,14 +103,14 @@ v9 的审计状态是“CAD 与预览候选”，并非打印或水下放行。�
 
 ### 电机、线轮、电子仓与供电
 
-- **当前驱动**：v16 采用三台 DJI M3508 P19 与 C620；电机及电调在共用干侧空间，线盘在湿侧，C620 支持 CAN 指令及 PWM。轴封、穿线件和 24 V 支路容量尚需定型。M2006/C610、4092/mini ESC 记录保留为历史候选。
+- **当前驱动**：v23 采用三台 DJI M3508 P19 与 C620；电机、齿轮和 CNC D 轴套在共用干仓内，线轮在湿侧。线轮至顶盘为直线，根部用曲面导入段接原腱道。C620 支持 CAN 指令及 PWM；轴封适水性、穿线件和动态负载仍需验证。M2006/C610、4092/mini ESC 为历史候选。
 - **控制器**：系统方案采用 STM32 作为中央控制器，由各电调完成三相换相和本地功率保护。仓库目前没有 STM32 固件工程，因此尚未实现三轴闭环、限位、通信超时、故障锁定或急停逻辑。
 - **UPS 与电池**：当前拓扑按岸上隔离 24 V、4S1P 松下 NCR21700T（用户确认每节 8 Ah）、BMS 后 9–35 V→24 V/15 A 变换器及限流备电路径绘制。岸上 24 V 与 USB‑C PD 均可通过岸电优先选源级和共用 16.8 V CC/CV 充电级给电池充电；两种输入不直接并联。Type‑C PD 还分支供 UPS AUX，按 PD 合同总功率限制充电与 AUX 负载；任一外部电源有效时关闭电池升压。STM32 从 24 V 控制母线经单级 24→5 V 降压供电。电池实际放电能力、变换器效率、切换时间、再生制动回灌和运行时长仍未实测。
 - **包覆与密封**：外部平板包覆件和内部密封电子仓是不同部件。外罩观察口用于检查/排水，不是压力平衡或承压结构的认证；电子仓也没有完成 5 m 压力和渗漏测试。
 
 ### 其他保留的机械候选
 
-仓库保留多轮电机安装与电子仓布局，便于比较尺寸、走线和装配方式。`electronics_enclosure_v1` 至 `v15` 是历史设计记录，v16 是当前驱动布置候选；旧版尺寸或验证状态不能直接套用到 v16。`solidworks/user_3_0/` 是另一条一体式几何试验线，不能当作 B32 替代件。`solidworks/v2_rigid_links/` 是刚性连杆姿态模型，也不等同于连续 TPU 打印主体。
+仓库保留多轮电机安装与电子仓布局，便于比较尺寸、走线和装配方式。`electronics_enclosure_v1` 至 `v16` 为历史设计记录；v18 官方电机 CAD、v20 驱动模组和 v21 CNC 轴套是 v23 的来源，v23 是当前接口几何候选。旧版尺寸或验证状态不能直接套用到 v23。`solidworks/user_3_0/` 是独立一体式几何试验线，`solidworks/v2_rigid_links/` 是刚性连杆姿态模型，二者都不能替代连续 TPU 的 B32 基线。
 
 ## 仿真研究与当前结果
 
@@ -133,7 +137,7 @@ v9 的审计状态是“CAD 与预览候选”，并非打印或水下放行。�
 | [`local/spiral-soft-arm/preprint/`](local/spiral-soft-arm/preprint/) | v1–v4 参数推导、预打印包、仿真说明和验证记录 | 各版研究边界不同，v2 打印门槛和 v4 水下驱动报告需分别阅读 |
 | [`local/spiral-soft-arm/simulation/`](local/spiral-soft-arm/simulation/) | MuJoCo 模型、参数派生、工况运行、候选搜索、结果和图表 | v3 为四种水体/水深工况的主要脚本目录 |
 | [`local/spiral-soft-arm/solidworks/`](local/spiral-soft-arm/solidworks/) | STEP/STL、CAD 生成脚本、预览、装配审计和哈希清单 | 保存论文构形、驱动安装、电子仓、包覆件及其他独立候选 |
-| [`local/spiral-soft-arm/hardware/`](local/spiral-soft-arm/hardware/) | 当前 M3508/C620 接线候选及历史 M2006/C610、4092 接线、供电与监测资料 | v16 的引脚、保护器件和总线限流仍需按实物核验 |
+| [`local/spiral-soft-arm/hardware/`](local/spiral-soft-arm/hardware/) | 当前 M3508/C620 接线候选及历史 M2006/C610、4092 接线、供电与监测资料 | 当前候选的引脚、保护器件和总线限流仍需按实物核验 |
 | [`fabrication/`](fabrication/) | STEP/STP/STL 几何分割工具和制造说明 | 可切分并报告包围盒；目前不会自动添加燕尾、销钉或其他装配连接结构 |
 | [`extensions/multi-robot-array/`](extensions/multi-robot-array/) | MuJoCo 多机器人阵列 XML 生成器与 PySide6 GUI | 与 B32 单臂打印放行无关的扩展工具 |
 | [`rl/`](rl/) | PPO reach 检查点和演示视频 | 当前仓库未包含对应训练脚本、环境定义和评估记录，不能据此声称已复现实验 |
@@ -143,13 +147,14 @@ v9 的审计状态是“CAD 与预览候选”，并非打印或水下放行。�
 
 ### 关键文件索引
 
-- [v16 当前 M3508 减速电机与直角传动总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_减速电机直角传动总装.step)
+- [v23 当前三路 M3508 拉索与轴封接口总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v23_cable_and_seal_interfaces/B32_v23_M3508三路拉索与轴封接口总装.step)
+- [v16 历史 M3508 减速电机与直角传动总装 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/B32_v16_减速电机直角传动总装.step)
 - [三段机械臂与燕尾接口 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v9/B32_三段机械臂_燕尾榫装配.step)
 - [v9 分件 STL 与生成脚本](local/spiral-soft-arm/solidworks/electronics_enclosure_v9/)
 - [B32 论文构形 STEP/STL](local/spiral-soft-arm/solidworks/paper_v1/)
 - [80 mm 基部和尖端 TPU 工艺短样](local/spiral-soft-arm/preprint/v2/process_coupons/)
 - [当前打印放行条件](local/spiral-soft-arm/preprint/v2/当前状态与放行条件.md)
-- [v16 M3508/C620 机械与电气边界](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/README_大陆可采购减速电机与直角传动.md)
+- [v16 历史 M3508/C620 机械与电气边界](local/spiral-soft-arm/solidworks/electronics_enclosure_v16/README_大陆可采购减速电机与直角传动.md)
 - [当前 M3508/C620 干式驱动拓扑](local/spiral-soft-arm/hardware/M3508_C620_干式驱动拓扑候选_2026-10-25.md)
 - [当前 M3508/C620 供电拓扑图（PNG）](local/spiral-soft-arm/hardware/硬件供电拓扑图_M3508_C620_2026-10-25.png)、[SVG 源图](local/spiral-soft-arm/hardware/硬件供电拓扑图_M3508_C620_2026-10-25.svg)与[供电说明](local/spiral-soft-arm/hardware/M3508_C620_供电拓扑重规划_2026-10-25.md)
 - [历史 M2006/C610 干式驱动拓扑](local/spiral-soft-arm/hardware/M2006_C610_干式驱动拓扑候选_2026-10-23.md)
@@ -208,7 +213,7 @@ python extensions/multi-robot-array/array_gui.py
 
 | 验证层级 | 当前记录 | 尚未证明的内容 |
 | --- | --- | --- |
-| 几何/CAD | B32 主体基线单独存档；v16 已输出 M3508、水平切向线盘轴、商品齿轮/轴承/轴封包络的 STEP 和预览，并检查指定包络与直线出线空间 | 齿轮实物齿形、零件强度、装配公差、动态间隙、轴封寿命和长期疲劳 |
+| 几何/CAD | B32 主体基线单独存档；v23 三路 M3508、湿侧线轮、顶盘斜孔、根部导入、CNC 轴套和轴封座已输出 STEP/预览，173 个组件完成静态干涉审查 | 齿轮实物齿形、打印强度、装配公差、导管磨损、轴封寿命和动态间隙 |
 | 仿真 | v4 四种淡水/海水工况运行稳定，状态有限 | 5 mm 抬升任务失败；尚不能证明真实水动力、腱索或电机性能 |
 | 切片 | 80 mm 基部/尖端短样有几何文件 | 未见供应商切片预览、实际打印批次和打印记录 |
 | 材料/腱索 | TPU 95A 与三腱路线为当前研究基线 | 本批 TPU 拉伸/弯曲曲线、孔道摩擦、松弛、回差和疲劳未测 |
@@ -218,7 +223,7 @@ python extensions/multi-robot-array/array_gui.py
 
 建议的验证顺序是：检查 80 mm 短样切片并打印 → 测量尺寸、穿腱、低张力弯折与回弹 → 标定材料刚度和腱道摩擦 → 单台电机/电调测量转速、力矩、电流、温升和反馈 → 完成三路装配与动态绳路检查 → 台架抓取验证 → 通过结构审查后进行规定深度的压力与水下运行试验。每一阶段都应记录候选版本、源文件/模型哈希、材料批次、设备、参数、原始数据和结果。
 
-当前打印边界详见[打印放行条件](local/spiral-soft-arm/preprint/v2/当前状态与放行条件.md)。v16 CAD 文件即使通过静态几何布置检查，也不等于“可直接打印”或“可下水”。
+当前打印边界详见[打印放行条件](local/spiral-soft-arm/preprint/v2/当前状态与放行条件.md)。v23 CAD 文件即使通过静态几何布置检查，也不等于“可直接打印”或“可下水”。
 
 ## 候选版本和证据管理
 
@@ -234,7 +239,8 @@ python extensions/multi-robot-array/array_gui.py
 - **电子仓 v13**：首次紧凑竖装方案，保留作历史对照。
 - **电子仓 v14**：三台 M2006 竖装于共用干仓、线盘同轴竖装的历史候选。
 - **电子仓 v15**：M2006 竖装、水平切向线盘轴和干式直角传动舱的历史候选。
-- **电子仓 v16**：当前 M3508 P19/C620、1:1 直角齿轮、独立 Ø10 mm 传动轴、轴承与轴封的布置候选；打印和水密尚未定型。
+- **电子仓 v16**：M3508 P19/C620 与 1:1 直角齿轮的历史布置候选。
+- **电子仓 v23**：当前三路 M3508、顶盘斜孔、根部导入与 Ø10 输出轴封座的接口几何候选；打印和水密尚未定型。
 - **MuJoCo 刚体模型**：用于机制与参数分析的降阶模型；其中的单元碰撞 STL 不是打印零件。
 
 本项目使用分阶段证据门槛：**几何检查 → 切片检查 → 短样打印 → 腱线与无负载运动 → 抓取/负载测试 → 水下与压力测试**。网格闭合、STEP 可读、仿真状态有限或图片外观正常，都不能单独证明零件可打印、机构可动、负载可抓取或整机防水。

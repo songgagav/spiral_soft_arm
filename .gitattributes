@@ -1,5 +1,7 @@
 # Keep generated CAD and media artifacts intact and out of line-based diffs.
 *.step binary
+*.stp binary
+*.dxf binary
 *.STEP binary
 *.stl binary
 *.STL binary

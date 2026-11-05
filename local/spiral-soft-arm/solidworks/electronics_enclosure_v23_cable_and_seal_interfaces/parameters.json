@@ -1,0 +1,156 @@
+{
+  "schema_version": "23.0.0",
+  "model": "B32_three_channel_M3508_cable_and_seal_interfaces",
+  "units": "mm",
+  "release_status": "geometric interface candidate; not print, pressure, or underwater release",
+  "sources": {
+    "arm_generator": "../electronics_enclosure_v10/generate_modular_arm.py",
+    "arm_parameters": "../electronics_enclosure_v10/parameters.json",
+    "canister_generator": "../electronics_enclosure_v5/generate_centerline_canister.py",
+    "canister_parameters": "../electronics_enclosure_v5/parameters.json",
+    "drive_generator": "../electronics_enclosure_v20/generate_shaft_sleeve_reel.py",
+    "drive_parameters": "../electronics_enclosure_v20/parameters.json",
+    "sleeve_step": "../electronics_enclosure_v21_cnc_shaft_sleeve/M3508_D轴套联轴套_CNC模型_RevA.step",
+    "official_motor_step": "../electronics_enclosure_v18/references/official/DJI_M3508_P19_official.stp"
+  },
+  "drive_layout": {
+    "module_channel_angles_deg": [0.0, 120.0, 240.0],
+    "tendon_hole_angles_deg": [60.0, 180.0, 300.0],
+    "tendon_hole_radius_mm": 30.6,
+    "tendon_hole_exit_z_mm": 0.0,
+    "tendon_tangent_side": "upper",
+    "motor_center_radius_mm": 98.8508472397,
+    "motor_to_reel_axis_offset_mm": 55.5,
+    "reel_center_radius_mm": 81.8,
+    "module_rotation_offset_from_hole_deg": -90.0,
+    "reel_center_local_xyz_mm": [-55.5, 0.0, -23.0],
+    "motor_output_tip_z_mm": -68.7,
+    "motor_sleeve_z_range_mm": [-81.0, -61.0],
+    "motor_sleeve_seal_z_range_mm": [-80.5, -73.5],
+    "output_seal_local_x_range_mm": [-49.8, -42.8],
+    "output_seal_local_yz_mm": [0.0, -23.0]
+  },
+  "seals": {
+    "motor_sleeve_seal_candidate_mm": [16.0, 35.0, 7.0],
+    "motor_sleeve_seal_status": "excluded from the functional v23 assembly; motor and coupling are inside the common dry chamber, so this is not a wet/dry boundary; the CNC sleeve remains only as the D-shaft torque coupling",
+    "reel_output_seal_candidate_mm": [10.0, 22.0, 7.0],
+    "labyrinth": "v23 reduced OD 20 mm dimensional proxy; keep on wet side of each output seal"
+  },
+  "root_tendon_transition": {
+    "native_channel_base_radius_mm": 30.6,
+    "native_channel_tip_radius_mm": 1.83979,
+    "native_channel_length_mm": 550.01352,
+    "join_z_mm": 60.0,
+    "start_handle_mm": 20.0,
+    "end_handle_mm": 30.0,
+    "passage_diameter_mm": 4.2,
+    "plate_bore_diameter_mm": 4.2,
+    "plate_mouth_diameter_mm": 5.8,
+    "plate_mouth_axial_depth_mm": 0.8,
+    "status": "straight upper reel tangent through oblique top-plate bore; smooth guide inside the root joins the original tendon channel"
+  },
+  "output_bearings": {
+    "primary_model": "SKF 61900-2RS1",
+    "alternative_model": "NTN 6900LLU",
+    "quantity_per_channel": 2,
+    "dimensions_mm_each": [10.0, 22.0, 6.0],
+    "primary_basic_dynamic_load_kN_each": 2.7,
+    "primary_basic_static_load_kN_each": 1.27,
+    "alternative_basic_dynamic_load_kN_each": 2.7,
+    "alternative_basic_static_load_kN_each": 1.27,
+    "axial_stack_x_ranges_mm": [[-42.0, -36.0], [-34.0, -28.0]],
+    "source_documents": {
+      "skf": "https://cdn.skfmediahub.skf.com/api/public/0901d196802809de/pdf_preview_medium/0901d196802809de_pdf_preview_medium.pdf",
+      "ntn": "https://www.ntn.co.jp/english/products/catalog/pdf/8701E.pdf"
+    },
+    "status": "compact fit candidate; rough load screen only; combined load life and physical fit remain unverified"
+  },
+  "shared_dry_chamber": {
+    "style": "faceted, serviceable, single dry volume for three motors and right-angle drives",
+    "electronics_chamber": "retain v10 central canister as a separate compartment",
+    "lower_fairing": "redesign around motor envelope; retain 250 mm hex top plate and B32 arm",
+    "bottom_cover_gasket": "geometry placeholder only; material, section, compression and fastener torque not selected",
+    "gear_to_top_plate_clearance_mm": 0.35,
+    "wire_pass_through": "geometry placeholder only; connector and pressure rating not selected",
+    "battery_bms_lead_route": "v23 replaces the overlapping separate wire proxies with one two-core harness envelope routed inside the canister, below the regulator, and to the BMS edge; connector and electrical bend radius are not modeled",
+    "wall_thickness_mm": 4.0,
+    "outer_profile_z_radius_mm": [[-175.0, 144.0], [-100.0, 144.0], [-80.0, 136.5], [-8.0, 125.0]],
+    "wet_reel_tunnel_local_mm": {
+      "outer_x_range": [-68.0, -49.0],
+      "outer_y_range": [-12.0, 62.0],
+      "outer_z_range": [-58.0, -8.0],
+      "inner_x_range": [-65.2, -50.7],
+      "inner_y_range": [-11.0, 62.1],
+      "inner_z_range": [-54.0, -8.0],
+      "inner_end_y_mm": -11.0,
+      "cable_tunnel_local_x_mm": -55.5,
+      "output_shaft_center_y_mm": 0.0,
+      "output_shaft_center_z_mm": -23.0,
+      "output_shaft_bulkhead_hole_diameter_mm": 24.1,
+      "status": "flat-walled wet-side lane; dimension candidate, not pressure-rated"
+    },
+    "output_seal_gland": {
+      "seal_candidate": "SKF HMSA10 RG 10x22x7 dimensional candidate",
+      "shaft_counterface_diameter_mm": 10.0,
+      "shaft_counterface_tolerance": "h11, finish and hardness to seal supplier guidance; custom steel shaft required",
+      "shaft_counterface_local_x_range_mm": [-49.8, -42.8],
+      "seal_outer_diameter_mm": 22.0,
+      "seal_width_mm": 7.0,
+      "housing_bore_diameter_mm": 22.0,
+      "housing_bore_tolerance": "H8; nominal 22.000 to 22.033 mm; finish-machined after printing",
+      "housing_bore_surface_roughness_Ra_um": [1.6, 3.2],
+      "seat_depth_mm": 7.3,
+      "seal_nominal_x_range_mm": [-49.8, -42.8],
+      "seat_shoulder_x_mm": -42.8,
+      "seat_start_x_mm": -50.1,
+      "boss_outer_diameter_mm": 25.8,
+      "boss_axial_range_mm": [-50.7, -42.8],
+      "entry_chamfer_radial_mm": 0.3,
+      "entry_chamfer_axial_mm": 0.6,
+      "shaft_clearance_bore_diameter_mm": 10.3,
+      "minimum_nominal_clearance_to_central_canister_mm": 1.0,
+      "status": "integrated nominal seat geometry; H8 finish machining and actual seal water/pressure approval remain required"
+    },
+    "tendon_pass_through": {
+      "outer_diameter_mm": 4.0,
+      "inner_diameter_mm": 2.2,
+      "liner_end_clearance_before_root_mm": 9.0,
+      "bulkhead_hole_diameter_mm": 4.2,
+      "liner_start_offset_after_tangent_mm": 10.0,
+      "status": "straight liner follows the upper reel tangent into the oblique top-plate bore and stops at the arm-root inlet"
+    },
+    "electronics_motor_wire_pass_through": {
+      "angles_deg": [0.0, 120.0, 240.0],
+      "radial_start_mm": 61.7,
+      "length_mm": 18.0,
+      "center_z_mm": -76.0,
+      "outer_diameter_mm": 9.6,
+      "inner_diameter_mm": 7.0,
+      "status": "sleeve proxy fitted to v10 nominal 10 mm motor-wire port; no connector, cable gland, or pressure rating selected"
+    },
+    "service_cover": {
+      "outer_hex_circumradius_mm": 144.0,
+      "z_range_mm": [-181.0, -175.0],
+      "central_clearance_diameter_mm": 139.0,
+      "canister_gasket_inner_diameter_mm": 136.0,
+      "canister_gasket_outer_diameter_mm": 139.0,
+      "fastener_pattern_radius_mm": 141.7,
+      "fastener_clearance_diameter_mm": 3.3,
+      "fastener_angles_deg": [30.0, 90.0, 150.0, 210.0, 270.0, 330.0],
+      "status": "removable annular cover with nominal central canister gasket interface"
+    },
+    "top_interface": {
+      "kind": "integral_fusion_with_v10_top_plate",
+      "interface_z_mm": -8.0,
+      "top_gasket_used": false,
+      "reason": "fusing preserves the existing plate/tab shape and removes measured plate-shell interference and gasket-tab overlap"
+    }
+  },
+  "limits": [
+    "M3508 official STEP dimensions are nominal; verify physical motors and shafts",
+    "KHK gears are tooth-free dimensional envelopes",
+    "seal models are dimensional envelopes; water suitability is unverified",
+    "common chamber geometry does not prove pressure strength or watertightness",
+    "material, fasteners, wire glands, thermal behavior, print fit, and 5 m testing remain unverified"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "part": "M3508 D轴套联轴套 CNC 首件图 Rev A",
+  "units": "mm",
+  "source_step": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v18\\references\\official\\DJI_M3508_P19_official.stp",
+  "source_step_sha256": "12E62A62C12495210FEB74F1272F4D71CFFED070FD91A601D646B6C2A6D57087",
+  "motor_shaft_nominal": {
+    "diameter_mm": 10.0,
+    "across_flat_mm": 9.0,
+    "D_engagement_mm": 12.3,
+    "axial_thread": "M5-6H, nominal thread depth 10 mm",
+    "status": "nominal dimensions measured from official DJI STEP; verify actual motor before machining"
+  },
+  "sleeve": {
+    "overall_length_mm": 20.0,
+    "outer_diameter_mm": 16.0,
+    "motor_D_bore_circle_diameter_mm": 10.2,
+    "motor_D_bore_across_flat_mm": 9.2,
+    "motor_D_bore_depth_mm": 12.3,
+    "extension_shaft_bore_diameter_mm": 10.2,
+    "extension_shaft_bore_depth_mm": 7.7,
+    "M3_tap_drill_mm": 2.5,
+    "M3_count": 2,
+    "M3_spacing_deg": 180.0,
+    "M3_center_from_motor_face_mm": 16.2,
+    "end_chamfer_mm": 0.3,
+    "seal_land_start_mm_from_motor_face": 0.5,
+    "seal_land_width_mm": 7.0,
+    "seal_size": "16 x 35 x 7 mm, Freudenberg B2PT candidate 40412791",
+    "material": "TBD: CNC metal; seawater corrosion resistance and seal-track hardness must both be approved",
+    "seal_land_requirements": "Ø16 h11; roundness IT8; Rz 1.0-4.0 µm; Rmax <= 6.3 µm; hardness >=45 HRC; twist-free finish (verify with selected seal supplier)"
+  },
+  "status": "first-article CNC drawing; not a production release until motor D-shaft, extension shaft, seal, and material are confirmed",
+  "geometry": {
+    "valid": true,
+    "solid_count": 1,
+    "bounding_box_mm": [
+      16.0,
+      16.0,
+      20.0
+    ],
+    "volume_mm3": 2404.746
+  },
+  "step_reimport": {
+    "valid": true,
+    "solid_count": 1,
+    "bounding_box_mm": [
+      16.0,
+      16.0,
+      20.0
+    ],
+    "volume_mm3": 2404.746
+  }
+}

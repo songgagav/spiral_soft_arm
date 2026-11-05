@@ -1,0 +1,311 @@
+{
+  "schema_version": "2.0.0",
+  "status": "geometric_fit_candidate",
+  "units": "mm",
+  "audit_scope": "BREP collision/clearance and nominal packaging only; no pressure, material, seal-life, or print validation",
+  "sources": {
+    "arm_generator": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v10\\generate_modular_arm.py",
+      "sha256": "7FD165E36536361A094028976215736EFD2B9C1980F1E9262121E153FB0C2FB7"
+    },
+    "arm_parameters": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v10\\parameters.json",
+      "sha256": "7D1BE59DC907D2CF557B8980EB4090D06D998039B7918DA543064BA632FAD9E4"
+    },
+    "canister_generator": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v5\\generate_centerline_canister.py",
+      "sha256": "886A4873C1DAD91A0902E23B4DD4BE37EB98A49F5C55E21EB1610A16F12F1BD1"
+    },
+    "canister_parameters": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v5\\parameters.json",
+      "sha256": "3FB40C1BE5641A698E6EFE7AE29307C1A79461FA816B85B195F70DE12224827D"
+    },
+    "drive_generator": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v20\\generate_shaft_sleeve_reel.py",
+      "sha256": "39B8052FE954B1E15A3FBFAC5EC1DF44DEDEE0A4142C44D129922C62C07D98A0"
+    },
+    "drive_parameters": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v20\\parameters.json",
+      "sha256": "BADC7C64FB415120110555BC5DCFFCAE3D3FC281F475F757A9E3CEF7DD7A16F6"
+    },
+    "sleeve_step": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v21_cnc_shaft_sleeve\\M3508_D轴套联轴套_CNC模型_RevA.step",
+      "sha256": "508687ACC403C37BEED6CB7AA1F4E87F65BF04165BFA3FAFD5BCE378D7C2750D"
+    },
+    "official_motor_step": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v18\\references\\official\\DJI_M3508_P19_official.stp",
+      "sha256": "12E62A62C12495210FEB74F1272F4D71CFFED070FD91A601D646B6C2A6D57087"
+    }
+  },
+  "drive_layout": {
+    "motor_center_radius_mm": 98.85084723966709,
+    "reel_center_radius_mm": 81.8,
+    "motor_to_reel_axis_offset_mm": 55.5
+  },
+  "shared_chamber": {
+    "shell_valid": true,
+    "shell_solid_count": 1,
+    "shell_bounds_xyz_minmax_mm": [
+      -143.8,
+      -144.0,
+      -175.0,
+      124.7077,
+      144.0,
+      -8.0
+    ],
+    "service_cover_bounds_xyz_minmax_mm": [
+      -124.7077,
+      -144.0,
+      -181.0,
+      124.7077,
+      144.0,
+      -175.0
+    ],
+    "max_xy_footprint_mm": 288.0,
+    "printer_xy_limit_mm": 350.0,
+    "outer_hex_profile_z_radius_mm": [
+      [
+        -175.0,
+        144.0
+      ],
+      [
+        -100.0,
+        144.0
+      ],
+      [
+        -80.0,
+        136.5
+      ],
+      [
+        -8.0,
+        125.0
+      ]
+    ],
+    "nominal_wall_thickness_mm": 4.0,
+    "bottom_cover_central_clearance_diameter_mm": 139.0,
+    "canister_outer_diameter_mm": 136.0,
+    "bottom_cover_to_canister_radial_gap_mm": 1.5,
+    "bottom_cover_to_canister_exact_intersection_mm3": 0.0,
+    "service_cover_z_clearance_to_motor_bottom_mm": 7.9,
+    "output_seal_gland": {
+      "nominal_bore_mm": 22.0,
+      "seat_depth_mm": 7.3,
+      "boss_od_mm": 25.8,
+      "nominal_wall_around_seal_mm": 1.9
+    },
+    "output_seal_fit_checks": [
+      {
+        "channel_hole_angle_deg": 60,
+        "seal_to_shell_intersection_mm3": 0.0,
+        "seal_to_shaft_proxy_intersection_mm3": 0.0,
+        "full_round_journal_volume_mm3": 549.77871,
+        "round_journal_volume_present_mm3": 549.77871,
+        "round_journal_complete": true
+      },
+      {
+        "channel_hole_angle_deg": 180,
+        "seal_to_shell_intersection_mm3": 0.0,
+        "seal_to_shaft_proxy_intersection_mm3": 0.0,
+        "full_round_journal_volume_mm3": 549.77871,
+        "round_journal_volume_present_mm3": 549.77871,
+        "round_journal_complete": true
+      },
+      {
+        "channel_hole_angle_deg": 300,
+        "seal_to_shell_intersection_mm3": 0.0,
+        "seal_to_shaft_proxy_intersection_mm3": 0.0,
+        "full_round_journal_volume_mm3": 549.77871,
+        "round_journal_volume_present_mm3": 549.77871,
+        "round_journal_complete": true
+      }
+    ],
+    "upper_v10_fairing_exact_intersection_mm3": {
+      "upper_panel_000": 0.0,
+      "upper_panel_060": 0.0,
+      "upper_panel_120": 0.0,
+      "upper_panel_180": 0.0,
+      "upper_panel_240": 0.0,
+      "upper_panel_300": 0.0
+    },
+    "central_canister_exact_intersection_mm3": {
+      "v10_central_canister": 0.0,
+      "v10_central_canister_lid": 0.0
+    },
+    "official_motor_to_shell_clearances": [
+      {
+        "channel_hole_angle_deg": 60,
+        "intersection_volume_with_chamber_wall_mm3": 0.0,
+        "minimum_exact_distance_to_chamber_wall_mm": 9.0751,
+        "official_motor_valid_solids": 24
+      },
+      {
+        "channel_hole_angle_deg": 180,
+        "intersection_volume_with_chamber_wall_mm3": 0.0,
+        "minimum_exact_distance_to_chamber_wall_mm": 9.0751,
+        "official_motor_valid_solids": 24
+      },
+      {
+        "channel_hole_angle_deg": 300,
+        "intersection_volume_with_chamber_wall_mm3": 0.0,
+        "minimum_exact_distance_to_chamber_wall_mm": 9.0751,
+        "official_motor_valid_solids": 24
+      }
+    ],
+    "minimum_motor_to_shell_clearance_mm": 9.0751,
+    "wet_reel_service_pocket_checks": [
+      {
+        "channel_hole_angle_deg": 60,
+        "reel_component_count": 4,
+        "total_reel_component_volume_mm3": 1128.0076,
+        "reel_volume_in_wet_service_pocket_mm3": 1128.0076,
+        "reel_volume_in_dry_cavity_mm3": 0.0,
+        "wet_pocket_contains_reel": true,
+        "reel_clear_of_dry_cavity": true
+      },
+      {
+        "channel_hole_angle_deg": 180,
+        "reel_component_count": 4,
+        "total_reel_component_volume_mm3": 1128.0076,
+        "reel_volume_in_wet_service_pocket_mm3": 1128.0076,
+        "reel_volume_in_dry_cavity_mm3": 0.0,
+        "wet_pocket_contains_reel": true,
+        "reel_clear_of_dry_cavity": true
+      },
+      {
+        "channel_hole_angle_deg": 300,
+        "reel_component_count": 4,
+        "total_reel_component_volume_mm3": 1128.0076,
+        "reel_volume_in_wet_service_pocket_mm3": 1128.0076,
+        "reel_volume_in_dry_cavity_mm3": 0.0,
+        "wet_pocket_contains_reel": true,
+        "reel_clear_of_dry_cavity": true
+      }
+    ],
+    "cable_tube_to_canister_roof_checks": [
+      {
+        "channel_hole_angle_deg": 60,
+        "cable_tube_bottom_z_at_canister_radius_mm": -11.3467,
+        "canister_roof_z_mm": -20.0,
+        "nominal_vertical_roof_clearance_mm": 8.6533
+      },
+      {
+        "channel_hole_angle_deg": 180,
+        "cable_tube_bottom_z_at_canister_radius_mm": -11.3467,
+        "canister_roof_z_mm": -20.0,
+        "nominal_vertical_roof_clearance_mm": 8.6533
+      },
+      {
+        "channel_hole_angle_deg": 300,
+        "cable_tube_bottom_z_at_canister_radius_mm": -11.3467,
+        "canister_roof_z_mm": -20.0,
+        "nominal_vertical_roof_clearance_mm": 8.6533
+      }
+    ],
+    "minimum_cable_tube_roof_clearance_mm": 8.6533
+  },
+  "drive_to_drive_minimum_clearances": [
+    {
+      "channels": [
+        "060",
+        "180"
+      ],
+      "minimum_exact_solid_distance_mm": 35.6077,
+      "closest_solids": [
+        {
+          "component": "drive_060_root_transition_tendon_proxy",
+          "solid_index": 0
+        },
+        {
+          "component": "drive_180_root_transition_tendon_proxy",
+          "solid_index": 0
+        }
+      ],
+      "distance_pairs_evaluated_after_AABB_pruning": 1
+    },
+    {
+      "channels": [
+        "060",
+        "300"
+      ],
+      "minimum_exact_solid_distance_mm": 35.6077,
+      "closest_solids": [
+        {
+          "component": "drive_060_root_transition_tendon_proxy",
+          "solid_index": 0
+        },
+        {
+          "component": "drive_300_root_transition_tendon_proxy",
+          "solid_index": 0
+        }
+      ],
+      "distance_pairs_evaluated_after_AABB_pruning": 1
+    },
+    {
+      "channels": [
+        "180",
+        "300"
+      ],
+      "minimum_exact_solid_distance_mm": 35.6077,
+      "closest_solids": [
+        {
+          "component": "drive_180_root_transition_tendon_proxy",
+          "solid_index": 0
+        },
+        {
+          "component": "drive_300_root_transition_tendon_proxy",
+          "solid_index": 0
+        }
+      ],
+      "distance_pairs_evaluated_after_AABB_pruning": 1
+    }
+  ],
+  "channel_line_alignment": [
+    {
+      "channel_angle_deg": 0.0,
+      "hole_angle_deg": 60.0,
+      "reel_center_radius_mm": 81.8,
+      "cable_to_hole_length_mm": 55.2488,
+      "reel_axis_cable_dot": 0.0,
+      "cable_plan_radial_cross": 0.0,
+      "tendon_hole_center_xyz_mm": [
+        15.3,
+        26.5004,
+        0.0
+      ]
+    },
+    {
+      "channel_angle_deg": 120.0,
+      "hole_angle_deg": 180.0,
+      "reel_center_radius_mm": 81.8,
+      "cable_to_hole_length_mm": 55.2488,
+      "reel_axis_cable_dot": 0.0,
+      "cable_plan_radial_cross": 0.0,
+      "tendon_hole_center_xyz_mm": [
+        -30.6,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "channel_angle_deg": 240.0,
+      "hole_angle_deg": 300.0,
+      "reel_center_radius_mm": 81.8,
+      "cable_to_hole_length_mm": 55.2488,
+      "reel_axis_cable_dot": 0.0,
+      "cable_plan_radial_cross": 0.0,
+      "tendon_hole_center_xyz_mm": [
+        15.3,
+        -26.5004,
+        0.0
+      ]
+    }
+  ],
+  "limits": [
+    "The selected bearings have only a rough static tangential load screen; bevel-gear axial thrust, equivalent load, life, fits, and temperature remain unverified.",
+    "Motor, gear, shaft, and seal geometry is nominal; actual shaft tolerances and supplier part variants were not measured.",
+    "The large wet reel/tendon channels are geometric paths; dynamic tendon sealing, abrasion, debris ingress, and drainage are unverified.",
+    "The shared chamber, service cover, canister gasket, and output seals remain geometric interfaces; shell strength, material, fasteners, seal pressure capability, and 5 m water tests remain unverified.",
+    "The STEP motor and bearings are native/imported BREP representations; the bevel gears remain tooth-free envelopes, so mesh, torque, and thermal performance are not validated.",
+    "CAD clearance does not establish print fit, slicing, assembly access, waterproofing, or functional release."
+  ]
+}

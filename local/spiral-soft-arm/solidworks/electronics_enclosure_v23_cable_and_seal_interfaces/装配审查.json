@@ -1,0 +1,969 @@
+{
+  "schema_version": "1.0.0",
+  "status": "geometric_integration_candidate",
+  "units": "mm",
+  "created_from": "audit_shared_chamber_fit.py",
+  "source_manifest": {
+    "arm_generator": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v10\\generate_modular_arm.py",
+      "sha256": "7FD165E36536361A094028976215736EFD2B9C1980F1E9262121E153FB0C2FB7"
+    },
+    "arm_parameters": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v10\\parameters.json",
+      "sha256": "7D1BE59DC907D2CF557B8980EB4090D06D998039B7918DA543064BA632FAD9E4"
+    },
+    "canister_generator": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v5\\generate_centerline_canister.py",
+      "sha256": "886A4873C1DAD91A0902E23B4DD4BE37EB98A49F5C55E21EB1610A16F12F1BD1"
+    },
+    "canister_parameters": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v5\\parameters.json",
+      "sha256": "3FB40C1BE5641A698E6EFE7AE29307C1A79461FA816B85B195F70DE12224827D"
+    },
+    "drive_generator": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v20\\generate_shaft_sleeve_reel.py",
+      "sha256": "39B8052FE954B1E15A3FBFAC5EC1DF44DEDEE0A4142C44D129922C62C07D98A0"
+    },
+    "drive_parameters": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v20\\parameters.json",
+      "sha256": "BADC7C64FB415120110555BC5DCFFCAE3D3FC281F475F757A9E3CEF7DD7A16F6"
+    },
+    "sleeve_step": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v21_cnc_shaft_sleeve\\M3508_D轴套联轴套_CNC模型_RevA.step",
+      "sha256": "508687ACC403C37BEED6CB7AA1F4E87F65BF04165BFA3FAFD5BCE378D7C2750D"
+    },
+    "official_motor_step": {
+      "path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v18\\references\\official\\DJI_M3508_P19_official.stp",
+      "sha256": "12E62A62C12495210FEB74F1272F4D71CFFED070FD91A601D646B6C2A6D57087"
+    }
+  },
+  "assembly": {
+    "step_path": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v23_cable_and_seal_interfaces\\B32_v23_M3508三路拉索与轴封接口总装.step",
+    "step_sha256": "F0BAF21B35969A5530336BF4C10CF956DC5CB7C5ED4C25C00C54F564F8AB9491",
+    "step_valid_after_reimport": true,
+    "named_component_count": 173,
+    "source_solid_count": 273,
+    "reimported_solid_count": 273,
+    "bounds_xyz_minmax_mm": [
+      -143.8,
+      -144.0,
+      -248.0,
+      124.7077,
+      144.0,
+      550.0135
+    ],
+    "integral_top_plate_and_drive_chamber": {
+      "fusion_status": "valid_single_solid_with_local_gear_relief_pockets",
+      "channel_gear_clearance_checks": [
+        {
+          "channel_hole_angle_deg": 60,
+          "gear_plate_intersection_before_relief_mm3": 2.6198,
+          "clearance_pocket_xy_mm": [
+            70.7478,
+            46.7949,
+            76.8702,
+            56.8868
+          ],
+          "clearance_pocket_top_z_mm": -6.7,
+          "gear_remaining_intersection_with_integrated_plate_mm3": 0.0
+        },
+        {
+          "channel_hole_angle_deg": 180,
+          "gear_plate_intersection_before_relief_mm3": 2.6198,
+          "clearance_pocket_xy_mm": [
+            -87.5724,
+            37.65,
+            -76.0276,
+            39.3036
+          ],
+          "clearance_pocket_top_z_mm": -6.7,
+          "gear_remaining_intersection_with_integrated_plate_mm3": 0.0
+        },
+        {
+          "channel_hole_angle_deg": 300,
+          "gear_plate_intersection_before_relief_mm3": 2.6198,
+          "clearance_pocket_xy_mm": [
+            4.9298,
+            -94.8868,
+            11.0522,
+            -84.7949
+          ],
+          "clearance_pocket_top_z_mm": -6.7,
+          "gear_remaining_intersection_with_integrated_plate_mm3": 0.0
+        }
+      ]
+    },
+    "preview_pngs": {
+      "B32_v23_M3508三路总装预览.png": {
+        "sha256": "B16678932CB83402FC4DF7BD21AAA5327B33C97DA61BF75E8E33B7F9F921C1B6",
+        "size_px": [
+          1600,
+          1120
+        ]
+      },
+      "B32_v23_轴封与拉索接口剖视.png": {
+        "sha256": "B67A84431B28AEB364B52F200C3E1D1B5FAEBC4A8947E6224332A8E56E3618E1",
+        "size_px": [
+          1600,
+          1120
+        ]
+      }
+    }
+  },
+  "all_named_component_pair_audit": {
+    "component_count": 173,
+    "unordered_component_pairs": 14878,
+    "pairs_with_overlapping_AABBs_exactly_checked": 959,
+    "volume_overlap_threshold_mm3": 0.02,
+    "volume_overlap_pair_count": 61,
+    "volume_overlap_pair_count_by_category": {
+      "inherited_v10_geometry_pair": 52,
+      "new_v23_geometry_pair": 9
+    },
+    "volume_overlap_pairs": [
+      {
+        "components": [
+          "v10_central_electronics_canister",
+          "v10_ESC_1_mount_clips"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.42837,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_central_electronics_canister",
+          "v10_ESC_2_mount_clips"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.42837,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_central_electronics_canister",
+          "v10_ESC_3_mount_clips"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.42837,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_central_electronics_canister",
+          "v10_PD_input_mount_shelf"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.12421,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_central_electronics_canister_lid",
+          "v10_shore_tether_gland_proxy"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 424.11501,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_battery_support_A",
+          "v10_voltage_regulator_envelope"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1963.49541,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_battery_support_A",
+          "v10_service_deck"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 39.26991,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_battery_support_B",
+          "v10_voltage_regulator_envelope"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1963.49541,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_battery_support_B",
+          "v10_service_deck"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 39.26991,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_1_envelope",
+          "v10_UPS_to_ESC_bus"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 2.01016,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_1_envelope",
+          "v10_ESC_1_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 2.2698,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_1_envelope",
+          "v10_ESC_1_to_motor_port"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 4.43352,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_1_envelope",
+          "v10_ESC_2_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1.07297,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_1_envelope",
+          "v10_ESC_3_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1.07296,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_2_envelope",
+          "v10_ESC_2_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 3.26191,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_2_envelope",
+          "v10_ESC_2_to_motor_port"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 4.43358,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_3_envelope",
+          "v10_ESC_3_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 3.26192,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_3_envelope",
+          "v10_ESC_3_to_motor_port"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 4.43358,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_STM32_controller_envelope",
+          "v10_controller_signal_bus"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 13.07261,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_STM32_controller_envelope",
+          "v10_ESC_2_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 47.31,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_STM32_controller_envelope",
+          "v10_ESC_3_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 47.31,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_signal_harness_corridor"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 9.50729,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_BMS_to_UPS_backup"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 78.22566,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_shore_to_UPS_main"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 46.586,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_boost_24V_to_UPS_aux"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 78.22566,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_UPS_to_ESC_bus"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 29.09331,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_ESC_2_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 46.42332,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_BMS_envelope",
+          "v10_BMS_to_UPS_backup"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 2.3109,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_BMS_envelope",
+          "v10_PD_to_boost_24V"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 9.64482,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_USB_C_PD_input_envelope",
+          "v10_PD_to_boost_24V"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 26.2458,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_USB_C_receptacle_proxy",
+          "v10_USB_C_to_PD"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 36.19115,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_boost_24V_envelope",
+          "v10_PD_to_boost_24V"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.39099,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_boost_24V_envelope",
+          "v10_boost_24V_to_UPS_aux"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 23.56194,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_STM32_M3_M4_M5_mount_rail_high",
+          "v10_UPS_to_ESC_bus"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 20.80324,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_service_deck_shell_tab_1"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 190.93262,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_service_deck_shell_tab_2"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 190.93262,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_service_deck_shell_tab_3"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 190.93262,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_power_harness_corridor"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1.06884,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_shore_to_UPS_main"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.77265,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_signal_harness_corridor",
+          "v10_shore_to_UPS_main"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 250.18057,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_BMS_to_UPS_backup",
+          "v10_shore_to_UPS_main"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 28.5758,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_BMS_to_UPS_backup",
+          "v10_boost_24V_to_UPS_aux"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 168.00241,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_BMS_to_UPS_backup",
+          "v10_UPS_to_ESC_bus"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1.33333,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_shore_to_UPS_main",
+          "v10_boost_24V_to_UPS_aux"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 28.34699,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_shore_to_UPS_main",
+          "v10_UPS_to_ESC_bus"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1.23044,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_boost_24V_to_UPS_aux",
+          "v10_UPS_to_ESC_bus"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1.33333,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_to_ESC_bus",
+          "v10_ESC_1_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.63163,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_to_ESC_bus",
+          "v10_ESC_2_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 3.31796,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_to_ESC_bus",
+          "v10_ESC_3_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.93026,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_1_power_branch",
+          "v10_ESC_2_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.22154,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_1_power_branch",
+          "v10_ESC_3_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 0.22154,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_ESC_2_power_branch",
+          "v10_ESC_3_power_branch"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1.4025,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "drive_060_DJI_M3508_P19_official_STEP",
+          "drive_060_M5x45_axial_retaining_screw_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 55.75885,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_060_KHK_output_M4_set_screw_Y_proxy",
+          "drive_060_tangential_output_shaft_D_flat_and_M4_tap_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 5.00014,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_060_wound_tendon_turn_5_proxy",
+          "drive_060_straight_tendon_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 1.84498,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_180_DJI_M3508_P19_official_STEP",
+          "drive_180_M5x45_axial_retaining_screw_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 55.75885,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_180_KHK_output_M4_set_screw_Y_proxy",
+          "drive_180_tangential_output_shaft_D_flat_and_M4_tap_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 5.00014,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_180_wound_tendon_turn_5_proxy",
+          "drive_180_straight_tendon_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 1.84498,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_300_DJI_M3508_P19_official_STEP",
+          "drive_300_M5x45_axial_retaining_screw_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 55.75888,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_300_KHK_output_M4_set_screw_Y_proxy",
+          "drive_300_tangential_output_shaft_D_flat_and_M4_tap_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 5.00014,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_300_wound_tendon_turn_5_proxy",
+          "drive_300_straight_tendon_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 1.84498,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      }
+    ],
+    "nearest_nonoverlapping_component_pair": {
+      "components": [
+        "B32_v10_arm_sections_and_dovetails",
+        "v23_integral_top_plate_and_drive_chamber"
+      ],
+      "minimum_exact_BREP_distance_mm": 0.0
+    },
+    "exact_shape_distance_pairs_evaluated_after_AABB_pruning": 11
+  },
+  "overlap_interpretation": {
+    "inherited_v10_overlap_count": 52,
+    "inherited_v10_largest_intersections": [
+      {
+        "components": [
+          "v10_battery_support_A",
+          "v10_voltage_regulator_envelope"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1963.49541,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_battery_support_B",
+          "v10_voltage_regulator_envelope"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 1963.49541,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_central_electronics_canister_lid",
+          "v10_shore_tether_gland_proxy"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 424.11501,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_signal_harness_corridor",
+          "v10_shore_to_UPS_main"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 250.18057,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_service_deck_shell_tab_1"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 190.93262,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_service_deck_shell_tab_2"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 190.93262,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_service_deck",
+          "v10_service_deck_shell_tab_3"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 190.93262,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_BMS_to_UPS_backup",
+          "v10_boost_24V_to_UPS_aux"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 168.00241,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_BMS_to_UPS_backup"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 78.22566,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      },
+      {
+        "components": [
+          "v10_UPS_module_envelope",
+          "v10_boost_24V_to_UPS_aux"
+        ],
+        "category": "inherited_v10_geometry_pair",
+        "intersection_volume_mm3": 78.22566,
+        "review": "inherited overlap in frozen v10 geometry; preserved and not modified"
+      }
+    ],
+    "new_v23_overlap_count": 9,
+    "expected_new_v23_contact_pairs": [
+      {
+        "components": [
+          "drive_060_DJI_M3508_P19_official_STEP",
+          "drive_060_M5x45_axial_retaining_screw_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 55.75885,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_060_KHK_output_M4_set_screw_Y_proxy",
+          "drive_060_tangential_output_shaft_D_flat_and_M4_tap_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 5.00014,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_060_wound_tendon_turn_5_proxy",
+          "drive_060_straight_tendon_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 1.84498,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_180_DJI_M3508_P19_official_STEP",
+          "drive_180_M5x45_axial_retaining_screw_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 55.75885,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_180_KHK_output_M4_set_screw_Y_proxy",
+          "drive_180_tangential_output_shaft_D_flat_and_M4_tap_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 5.00014,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_180_wound_tendon_turn_5_proxy",
+          "drive_180_straight_tendon_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 1.84498,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_300_DJI_M3508_P19_official_STEP",
+          "drive_300_M5x45_axial_retaining_screw_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 55.75888,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_300_KHK_output_M4_set_screw_Y_proxy",
+          "drive_300_tangential_output_shaft_D_flat_and_M4_tap_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 5.00014,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      },
+      {
+        "components": [
+          "drive_300_wound_tendon_turn_5_proxy",
+          "drive_300_straight_tendon_proxy"
+        ],
+        "category": "new_v23_geometry_pair",
+        "intersection_volume_mm3": 1.84498,
+        "review": "new v23 overlap; inspect whether it is an intended contact or a real collision"
+      }
+    ],
+    "unexpected_new_v23_volume_intersection_count": 0,
+    "new_to_frozen_interface_overlap_count": 0,
+    "note": "Expected v23 intersections are motor M5 retaining screw engagement, KHK output M4 set-screw contact with the shaft flat, and continuity where each wound tendon turn joins its straight tendon proxy."
+  },
+  "line_and_seal_interfaces": {
+    "cable_to_hole_length_mm_each": [
+      55.2488,
+      55.2488,
+      55.2488
+    ],
+    "tendon_liner_outer_inner_diameter_mm": [
+      4.0,
+      2.2
+    ],
+    "tendon_liner_start_after_reel_tangent_mm": 10.0,
+    "tendon_liner_end_clearance_before_root_mm": 9.0,
+    "oblique_top_plate_route": {
+      "status": "straight upper reel tangent through a new 4.2 mm oblique bore",
+      "top_exit_radius_mm": 30.6,
+      "underside_entry_radius_mm_each": [
+        62.6112,
+        62.6112,
+        62.6112
+      ],
+      "root_transition": "smooth 60 mm swept passage joins the native B32 tendon channel"
+    },
+    "maximum_tendon_plan_deviation_from_radial_deg": 0.0,
+    "maximum_reel_axis_deviation_from_perpendicular_deg": 0.0,
+    "reel_axis_cable_dot_abs_each": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "output_seal_candidate_mm": [
+      10.0,
+      22.0,
+      7.0
+    ],
+    "seal_fit_checks_each": [
+      {
+        "channel_hole_angle_deg": 60,
+        "seal_to_shell_intersection_mm3": 0.0,
+        "seal_to_shaft_proxy_intersection_mm3": 0.0,
+        "full_round_journal_volume_mm3": 549.77871,
+        "round_journal_volume_present_mm3": 549.77871,
+        "round_journal_complete": true
+      },
+      {
+        "channel_hole_angle_deg": 180,
+        "seal_to_shell_intersection_mm3": 0.0,
+        "seal_to_shaft_proxy_intersection_mm3": 0.0,
+        "full_round_journal_volume_mm3": 549.77871,
+        "round_journal_volume_present_mm3": 549.77871,
+        "round_journal_complete": true
+      },
+      {
+        "channel_hole_angle_deg": 300,
+        "seal_to_shell_intersection_mm3": 0.0,
+        "seal_to_shaft_proxy_intersection_mm3": 0.0,
+        "full_round_journal_volume_mm3": 549.77871,
+        "round_journal_volume_present_mm3": 549.77871,
+        "round_journal_complete": true
+      }
+    ],
+    "direct_machined_gland": {
+      "nominal_bore_mm": 22.0,
+      "bore_tolerance": "H8; nominal 22.000 to 22.033 mm; finish-machined after printing",
+      "seat_depth_mm": 7.3,
+      "seal_width_mm": 7.0,
+      "depth_margin_over_width_mm": 0.3,
+      "boss_outer_diameter_mm": 25.8,
+      "nominal_radial_boss_wall_mm": 1.9,
+      "machined_after_print": true
+    },
+    "seat_fit_status": "nominal CAD envelope passes; H8 bore, roundness, Ra, and shaft counterface must be measured after machining",
+    "water_service_status": "not approved from geometry; confirm medium, differential pressure, and rotating duty with SKF"
+  },
+  "localized_geometry_results": {
+    "shared_chamber_report": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v23_cable_and_seal_interfaces\\装配冲突审查.json",
+    "status": "geometric_fit_candidate",
+    "drive_to_drive_minimum_exact_distances_mm": [
+      35.6077,
+      35.6077,
+      35.6077
+    ],
+    "minimum_motor_to_shell_clearance_mm": 9.0751,
+    "minimum_cable_liner_to_canister_roof_clearance_mm": 8.6533,
+    "wet_reel_pocket_containment_all_channels": true,
+    "upper_fairing_and_canister_intersections_mm3": {
+      "upper_panel_000": 0.0,
+      "upper_panel_060": 0.0,
+      "upper_panel_120": 0.0,
+      "upper_panel_180": 0.0,
+      "upper_panel_240": 0.0,
+      "upper_panel_300": 0.0,
+      "v10_central_canister": 0.0,
+      "v10_central_canister_lid": 0.0
+    }
+  },
+  "not_verified": [
+    "The root fairlead bend, cable wear, guide friction, liner fit, and native-channel connection need a printed coupon and loaded motion test.",
+    "The SKF candidate is specified for oil/grease; water suitability, 5 m pressure margin, shaft runout, finished counterface and service life need supplier confirmation and wet testing.",
+    "Bearing combined radial/axial loads, life, fits and temperature.",
+    "Gear tooth geometry, backlash, mesh, rated torque and thermal performance.",
+    "Printed materials, wall strength, fasteners, print orientation, slicing and assembly access.",
+    "Dry-chamber pressure resistance, water ingress, connector/cable feedthrough ratings, and 5 m immersion.",
+    "Dynamic tendon wear, contamination, drainage and operating-cycle performance."
+  ]
+}
