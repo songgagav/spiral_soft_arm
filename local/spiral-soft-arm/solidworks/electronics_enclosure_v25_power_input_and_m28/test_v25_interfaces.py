@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import importlib.util
+import sys
 import unittest
 from pathlib import Path
 
@@ -34,6 +36,55 @@ class V25ParameterContractTests(unittest.TestCase):
         self.assertEqual(m28["socket_axial_envelope"], 38.5)
         self.assertEqual(m28["plug_envelope"], [33.0, 71.5])
         self.assertEqual(m28["wire_section_mm2"], [2.5, 6.0])
+
+
+class V25GeometryContractTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        path = HERE / "generate_power_input.py"
+        if not path.is_file():
+            cls.generator = None
+            return
+        spec = importlib.util.spec_from_file_location("b32_v25_test_generator", path)
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = module
+        spec.loader.exec_module(module)
+        cls.generator = module
+        cls.components, cls.body_names = module.build_v25_components()
+
+    def require_generator(self):
+        self.assertIsNotNone(self.generator, "v25 geometry generator must exist")
+        return self.generator
+
+    def test_m28_cutter_has_drawing_flat_width_and_height(self) -> None:
+        cutter = self.require_generator().build_m28_opening_cutter(-241.0, -226.0)
+        bounds = cutter.BoundingBox()
+        self.assertAlmostEqual(bounds.xlen, 26.2, places=3)
+        self.assertAlmostEqual(bounds.ylen, 28.0, places=3)
+
+    def test_recess_leaves_five_millimetre_mounting_land(self) -> None:
+        generator = self.require_generator()
+        lid = self.components["v25_bottom_lid_with_M28_recess"]
+        probe = generator.cyl(0.2, -242.0, -228.0, 13.5, 0.0)
+        material = lid.intersect(probe)
+        self.assertAlmostEqual(material.BoundingBox().zlen, 5.0, places=2)
+
+    def test_buck_and_m28_service_parts_are_named_and_valid(self) -> None:
+        self.require_generator()
+        components, bodies = self.components, self.body_names
+        required = {
+            "v25_buck_5v_envelope",
+            "v25_buck_5v_shelf",
+            "v25_M28_socket_body",
+            "v25_M28_outside_flange",
+            "v25_M28_male_plug_envelope",
+            "v25_M28_service_clearance",
+        }
+        self.assertTrue(required.issubset(components))
+        self.assertIn("v25_buck_5v_envelope", bodies)
+        for name in required:
+            self.assertTrue(components[name].isValid(), name)
+        self.assertTrue(self.generator.build_m28_load_ring().isValid())
 
 
 if __name__ == "__main__":
