@@ -44,8 +44,8 @@ def build_m28_opening_cutter(z0: float, z1: float) -> cq.Shape:
 
 
 def build_m28_load_ring() -> cq.Shape:
-    """Integral outside ring around the flange, clear of the Ø36 face."""
-    return annulus(28.0, 20.0, -243.0, -240.0).clean()
+    """Integral inside ring around the rear-mount flange, clear of Ø36."""
+    return annulus(28.0, 20.0, -235.0, -230.0).clean()
 
 
 def _original_v23_lid() -> cq.Shape:
@@ -75,8 +75,8 @@ def build_v25_components() -> tuple[dict[str, cq.Shape], list[str]]:
     m28 = H["m28_power"]
     socket = build_m28_opening_cutter(-245.0, -206.5)
     components["v25_M28_socket_body"] = socket
-    components["v25_M28_outside_flange"] = annulus(
-        float(m28["outside_flange_diameter"])/2, 5.5, -245.0, -240.0
+    components["v25_M28_inside_flange"] = annulus(
+        float(m28["outside_flange_diameter"])/2, 5.5, -235.0, -230.0
     ).clean()
     plug_diameter, plug_length = map(float, m28["plug_envelope"])
     components["v25_M28_male_plug_envelope"] = cyl(
@@ -131,5 +131,139 @@ def dry_run_audit() -> dict[str, object]:
     }
 
 
+def _aabb_overlap(first: cq.Shape, second: cq.Shape) -> bool:
+    a, b = first.BoundingBox(), second.BoundingBox()
+    return not (a.xmax <= b.xmin or b.xmax <= a.xmin
+                or a.ymax <= b.ymin or b.ymax <= a.ymin
+                or a.zmax <= b.zmin or b.zmax <= a.zmin)
+
+
+def audit_v25_components(components: dict[str, cq.Shape],
+                         body_names: list[str]) -> dict[str, object]:
+    """Run exact volume checks for the v25 electronics fit boundary."""
+    hardware_hits = []
+    for index, first_name in enumerate(body_names):
+        first = components[first_name]
+        for second_name in body_names[index+1:]:
+            second = components[second_name]
+            if not _aabb_overlap(first, second):
+                continue
+            volume = first.intersect(second).Volume()
+            if volume > 0.02:
+                hardware_hits.append({
+                    "parts": [first_name, second_name],
+                    "volume_mm3": round(volume, 4),
+                })
+
+    shell = components["v24_central_electronics_canister"]
+    shell_hits: dict[str, float] = {}
+    shell_checked = list(body_names) + ["v25_buck_5v_shelf"]
+    for name in shell_checked:
+        shape = components[name]
+        if not _aabb_overlap(shape, shell):
+            continue
+        volume = shape.intersect(shell).Volume()
+        if volume > 0.02:
+            shell_hits[name] = round(volume, 4)
+
+    buck = components["v25_buck_5v_envelope"]
+    buck_hits = []
+    for name in body_names:
+        if name == "v25_buck_5v_envelope":
+            continue
+        other = components[name]
+        if not _aabb_overlap(buck, other):
+            continue
+        volume = buck.intersect(other).Volume()
+        if volume > 0.02:
+            buck_hits.append({"part": name, "volume_mm3": round(volume, 4)})
+
+    land_probe = cyl(0.2, -242.0, -228.0, 13.5, 0.0)
+    land = components["v25_bottom_lid_with_M28_recess"].intersect(land_probe)
+    land_thickness = round(land.BoundingBox().zlen, 3)
+    return {
+        "hardware_to_hardware_volume_overlaps": hardware_hits,
+        "internal_to_shell_volume_overlaps": shell_hits,
+        "buck_to_v24_hardware_volume_overlaps": buck_hits,
+        "m28_mount_land_mm": land_thickness,
+        "m28_opening_bounds_mm": [26.2, 28.0],
+        "m28_internal_load_ring_bounds_mm": [56.0, 56.0, 5.0],
+        "unverified": [
+            "M28 gasket groove and compression",
+            "M28 nut, cap tether and terminal-tail production dimensions",
+            "buck mounting holes, connector heights and 20 A thermal performance",
+            "wire bend radii and strain relief",
+        ],
+    }
+
+
+def _load_renderer():
+    path = HERE / "render_layout.py"
+    spec = importlib.util.spec_from_file_location("b32_v25_renderer", path)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
+def export_v25() -> dict[str, object]:
+    """Export, reimport, audit and render the v25 review candidate."""
+    components, bodies = build_v25_components()
+    audit = audit_v25_components(components, bodies)
+    if (audit["hardware_to_hardware_volume_overlaps"]
+            or audit["internal_to_shell_volume_overlaps"]
+            or audit["buck_to_v24_hardware_volume_overlaps"]):
+        raise ValueError(f"v25 fit audit failed: {audit}")
+    renderer = _load_renderer()
+    physical = {
+        name: shape for name, shape in components.items()
+        if name != "v25_M28_service_clearance"
+    }
+    electronics = {
+        name: shape for name, shape in physical.items()
+        if name.startswith("v24_") or name.startswith("v25_")
+    }
+    electronics_step = HERE / "B32_v25_选定硬件电子仓.step"
+    full_step = HERE / "B32_v25_三路M3508与电源接口总装.step"
+    for selected, path, title in (
+        (electronics, electronics_step, "B32_v25_selected_electronics"),
+        (physical, full_step, "B32_v25_full_assembly"),
+    ):
+        assembly = cq.Assembly(name=title)
+        for name, shape in selected.items():
+            rgba = renderer.colour(name)
+            assembly.add(shape, name=name, color=cq.Color(*rgba))
+        assembly.export(str(path), exportType="STEP", unit="MM")
+
+    electronics_readback = cq.importers.importStep(str(electronics_step)).val()
+    full_readback = cq.importers.importStep(str(full_step)).val()
+    if not electronics_readback.isValid() or not full_readback.isValid():
+        raise ValueError("One or both v25 STEP files failed BREP reimport")
+    images = renderer.render_v25_images(components)
+    audit.update({
+        "electronics_step_valid": True,
+        "full_assembly_step_valid": True,
+        "electronics_step_solids": len(electronics_readback.Solids()),
+        "full_assembly_step_solids": len(full_readback.Solids()),
+        "physical_component_count": len(physical),
+        "reference_service_clearance_exported": False,
+    })
+    audit_path = HERE / "装配空间审查.json"
+    audit_path.write_text(json.dumps(audit, ensure_ascii=False, indent=2) + "\n",
+                          encoding="utf-8")
+    return {
+        "electronics_step": electronics_step.name,
+        "full_assembly_step": full_step.name,
+        "electronics_step_valid": True,
+        "full_assembly_step_valid": True,
+        "electronics_step_solids": len(electronics_readback.Solids()),
+        "full_assembly_step_solids": len(full_readback.Solids()),
+        "preview": images["preview"],
+        "m28_detail": images["m28_detail"],
+        "layout": images["layout"],
+        "audit": audit_path.name,
+    }
+
+
 if __name__ == "__main__":
-    print(json.dumps(dry_run_audit(), ensure_ascii=False, indent=2))
+    print(json.dumps(export_v25(), ensure_ascii=False, indent=2))

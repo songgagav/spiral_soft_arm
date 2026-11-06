@@ -76,7 +76,7 @@ class V25GeometryContractTests(unittest.TestCase):
             "v25_buck_5v_envelope",
             "v25_buck_5v_shelf",
             "v25_M28_socket_body",
-            "v25_M28_outside_flange",
+            "v25_M28_inside_flange",
             "v25_M28_male_plug_envelope",
             "v25_M28_service_clearance",
         }
@@ -85,6 +85,40 @@ class V25GeometryContractTests(unittest.TestCase):
         for name in required:
             self.assertTrue(components[name].isValid(), name)
         self.assertTrue(self.generator.build_m28_load_ring().isValid())
+
+    def test_rear_mount_flange_and_load_ring_stay_inside_lid(self) -> None:
+        self.require_generator()
+        flange = self.components["v25_M28_inside_flange"].BoundingBox()
+        ring = self.generator.build_m28_load_ring().BoundingBox()
+        self.assertAlmostEqual(flange.zmin, -235.0, places=3)
+        self.assertAlmostEqual(flange.zmax, -230.0, places=3)
+        self.assertAlmostEqual(ring.zmin, -235.0, places=3)
+        self.assertAlmostEqual(ring.zmax, -230.0, places=3)
+
+    def test_full_audit_has_no_unexpected_volume_overlap(self) -> None:
+        generator = self.require_generator()
+        self.assertTrue(hasattr(generator, "audit_v25_components"),
+                        "v25 generator must expose the final overlap audit")
+        audit = generator.audit_v25_components(
+            self.components, self.body_names
+        )
+        self.assertEqual(audit["hardware_to_hardware_volume_overlaps"], [])
+        self.assertEqual(audit["internal_to_shell_volume_overlaps"], {})
+        self.assertEqual(audit["buck_to_v24_hardware_volume_overlaps"], [])
+        self.assertEqual(audit["m28_mount_land_mm"], 5.0)
+
+    def test_export_reimports_both_step_files(self) -> None:
+        generator = self.require_generator()
+        self.assertTrue(hasattr(generator, "export_v25"),
+                        "v25 generator must export and reimport both STEP files")
+        result = generator.export_v25()
+        self.assertTrue(result["electronics_step_valid"])
+        self.assertTrue(result["full_assembly_step_valid"])
+        self.assertGreater(result["electronics_step_solids"], 0)
+        self.assertGreater(result["full_assembly_step_solids"], 0)
+        for key in ("electronics_step", "full_assembly_step", "preview",
+                    "m28_detail", "layout", "audit"):
+            self.assertTrue((HERE / result[key]).is_file(), key)
 
 
 if __name__ == "__main__":

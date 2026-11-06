@@ -1,0 +1,27 @@
+{
+  "hardware_to_hardware_volume_overlaps": [],
+  "internal_to_shell_volume_overlaps": {},
+  "buck_to_v24_hardware_volume_overlaps": [],
+  "m28_mount_land_mm": 5.0,
+  "m28_opening_bounds_mm": [
+    26.2,
+    28.0
+  ],
+  "m28_internal_load_ring_bounds_mm": [
+    56.0,
+    56.0,
+    5.0
+  ],
+  "unverified": [
+    "M28 gasket groove and compression",
+    "M28 nut, cap tether and terminal-tail production dimensions",
+    "buck mounting holes, connector heights and 20 A thermal performance",
+    "wire bend radii and strain relief"
+  ],
+  "electronics_step_valid": true,
+  "full_assembly_step_valid": true,
+  "electronics_step_solids": 36,
+  "full_assembly_step_solids": 230,
+  "physical_component_count": 157,
+  "reference_service_clearance_exported": false
+}
