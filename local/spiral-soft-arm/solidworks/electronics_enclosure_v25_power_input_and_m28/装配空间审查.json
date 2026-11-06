@@ -2,15 +2,16 @@
   "hardware_to_hardware_volume_overlaps": [],
   "internal_to_shell_volume_overlaps": {},
   "buck_to_v24_hardware_volume_overlaps": [],
+  "m28_to_hardware_volume_overlaps": [],
   "m28_mount_land_mm": 5.0,
   "m28_opening_bounds_mm": [
     26.2,
     28.0
   ],
-  "m28_internal_load_ring_bounds_mm": [
+  "m28_retained_load_annulus_bounds_mm": [
     56.0,
     56.0,
-    5.0
+    10.0
   ],
   "unverified": [
     "M28 gasket groove and compression",

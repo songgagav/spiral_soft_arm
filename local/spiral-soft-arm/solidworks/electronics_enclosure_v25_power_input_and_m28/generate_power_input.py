@@ -44,8 +44,8 @@ def build_m28_opening_cutter(z0: float, z1: float) -> cq.Shape:
 
 
 def build_m28_load_ring() -> cq.Shape:
-    """Integral inside ring around the rear-mount flange, clear of Ø36."""
-    return annulus(28.0, 20.0, -235.0, -230.0).clean()
+    """Reference envelope of the retained full-thickness load annulus."""
+    return annulus(28.0, 20.0, -240.0, -230.0).clean()
 
 
 def _original_v23_lid() -> cq.Shape:
@@ -58,7 +58,9 @@ def build_recessed_m28_lid() -> cq.Shape:
     lid = _original_v23_lid()
     recess = cyl(20.0, -235.0, -226.0)
     opening = build_m28_opening_cutter(-244.0, -225.0)
-    return lid.cut(recess).cut(opening).fuse(build_m28_load_ring()).clean()
+    # The original 10 mm material between Ø40 and Ø56 is deliberately left
+    # intact as the load annulus; no redundant overlapping solid is added.
+    return lid.cut(recess).cut(opening).clean()
 
 
 def build_v25_components() -> tuple[dict[str, cq.Shape], list[str]]:
@@ -70,6 +72,25 @@ def build_v25_components() -> tuple[dict[str, cq.Shape], list[str]]:
         "v24_M28_outside_flange_proxy",
     ):
         components.pop(obsolete, None)
+
+    # The confirmed 38.5 mm M28 socket reaches 3.5 mm farther into the
+    # chamber than the v24 proxy.  Lift the regulator and its upper battery
+    # stack together so the regulator remains full-size and the cell shelf
+    # relationship is preserved.  This leaves 3.5 mm to the socket envelope
+    # and 6.79 mm above the cells to the nominal canister top.
+    upper_stack_shift_z = 7.0
+    shifted_names = {
+        "v24_regulator_envelope",
+        "v24_regulator_backing",
+        "v24_regulator_lower_rail",
+        "v24_4S_cell_carrier",
+        "v24_cell_carrier_shelf",
+    }
+    shifted_names.update(
+        name for name in components if name.startswith("v24_21700_cell_")
+    )
+    for name in shifted_names:
+        components[name] = components[name].translate((0.0, 0.0, upper_stack_shift_z))
 
     components["v25_bottom_lid_with_M28_recess"] = build_recessed_m28_lid()
     m28 = H["m28_power"]
@@ -178,6 +199,30 @@ def audit_v25_components(components: dict[str, cq.Shape],
         if volume > 0.02:
             buck_hits.append({"part": name, "volume_mm3": round(volume, 4)})
 
+    m28_hits = []
+    m28_checked = [
+        name for name in components
+        if name.startswith("v24_")
+        and name not in {
+            "v24_central_electronics_canister",
+            "v24_central_bottom_lid_M28_bore",
+        }
+        and "M12" not in name
+    ]
+    for target_name in ("v25_M28_socket_body", "v25_M28_inside_flange"):
+        target = components[target_name]
+        for name in m28_checked:
+            other = components[name]
+            if not _aabb_overlap(target, other):
+                continue
+            volume = target.intersect(other).Volume()
+            if volume > 0.02:
+                m28_hits.append({
+                    "connector_part": target_name,
+                    "hardware_part": name,
+                    "volume_mm3": round(volume, 4),
+                })
+
     land_probe = cyl(0.2, -242.0, -228.0, 13.5, 0.0)
     land = components["v25_bottom_lid_with_M28_recess"].intersect(land_probe)
     land_thickness = round(land.BoundingBox().zlen, 3)
@@ -185,9 +230,10 @@ def audit_v25_components(components: dict[str, cq.Shape],
         "hardware_to_hardware_volume_overlaps": hardware_hits,
         "internal_to_shell_volume_overlaps": shell_hits,
         "buck_to_v24_hardware_volume_overlaps": buck_hits,
+        "m28_to_hardware_volume_overlaps": m28_hits,
         "m28_mount_land_mm": land_thickness,
         "m28_opening_bounds_mm": [26.2, 28.0],
-        "m28_internal_load_ring_bounds_mm": [56.0, 56.0, 5.0],
+        "m28_retained_load_annulus_bounds_mm": [56.0, 56.0, 10.0],
         "unverified": [
             "M28 gasket groove and compression",
             "M28 nut, cap tether and terminal-tail production dimensions",
@@ -212,7 +258,8 @@ def export_v25() -> dict[str, object]:
     audit = audit_v25_components(components, bodies)
     if (audit["hardware_to_hardware_volume_overlaps"]
             or audit["internal_to_shell_volume_overlaps"]
-            or audit["buck_to_v24_hardware_volume_overlaps"]):
+            or audit["buck_to_v24_hardware_volume_overlaps"]
+            or audit["m28_to_hardware_volume_overlaps"]):
         raise ValueError(f"v25 fit audit failed: {audit}")
     renderer = _load_renderer()
     physical = {

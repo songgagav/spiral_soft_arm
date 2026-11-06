@@ -47,6 +47,8 @@
   "mounting": {
     "m28_location": "bottom-lid center",
     "m28_solution": "local inside recess leaves 5 mm land; surrounding annular load ring",
-    "buck_location": "vertical service lane beside STM32 and UPS"
+    "buck_location": "vertical service lane beside STM32 and UPS",
+    "upper_stack_shift_z": 7.0,
+    "upper_stack_shift_reason": "clear confirmed M28 socket tail while preserving regulator and cell-shelf relationship"
   }
 }

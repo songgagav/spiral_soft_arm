@@ -89,11 +89,14 @@ class V25GeometryContractTests(unittest.TestCase):
     def test_rear_mount_flange_and_load_ring_stay_inside_lid(self) -> None:
         self.require_generator()
         flange = self.components["v25_M28_inside_flange"].BoundingBox()
-        ring = self.generator.build_m28_load_ring().BoundingBox()
+        ring_shape = self.generator.build_m28_load_ring()
+        ring = ring_shape.BoundingBox()
+        lid = self.components["v25_bottom_lid_with_M28_recess"]
         self.assertAlmostEqual(flange.zmin, -235.0, places=3)
         self.assertAlmostEqual(flange.zmax, -230.0, places=3)
-        self.assertAlmostEqual(ring.zmin, -235.0, places=3)
+        self.assertAlmostEqual(ring.zmin, -240.0, places=3)
         self.assertAlmostEqual(ring.zmax, -230.0, places=3)
+        self.assertAlmostEqual(ring_shape.cut(lid).Volume(), 0.0, places=3)
 
     def test_full_audit_has_no_unexpected_volume_overlap(self) -> None:
         generator = self.require_generator()
@@ -105,7 +108,21 @@ class V25GeometryContractTests(unittest.TestCase):
         self.assertEqual(audit["hardware_to_hardware_volume_overlaps"], [])
         self.assertEqual(audit["internal_to_shell_volume_overlaps"], {})
         self.assertEqual(audit["buck_to_v24_hardware_volume_overlaps"], [])
+        self.assertEqual(audit["m28_to_hardware_volume_overlaps"], [])
         self.assertEqual(audit["m28_mount_land_mm"], 5.0)
+
+    def test_shifted_upper_stack_preserves_top_clearance(self) -> None:
+        self.require_generator()
+        regulator_bottom = self.components[
+            "v24_regulator_envelope"
+        ].BoundingBox().zmin
+        cell_top = max(
+            shape.BoundingBox().zmax for name, shape in self.components.items()
+            if name.startswith("v24_21700_cell_")
+        )
+        canister_top = float(self.generator.P["canister"]["top_z"])
+        self.assertAlmostEqual(regulator_bottom, -203.0, places=3)
+        self.assertGreaterEqual(canister_top - cell_top, 6.7)
 
     def test_export_reimports_both_step_files(self) -> None:
         generator = self.require_generator()
