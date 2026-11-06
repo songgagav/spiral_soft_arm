@@ -27,7 +27,7 @@
 | 岸上供电 | 隔离 24 V；现有脐带缆两芯各 4 mm²、5 m | 三台电机按额定工作点约需 30 A；现有线缆压降估算约 1.3 V，需限流或换粗线，并实测温升 |
 | 断电备份 | 4S1P、8 Ah 电池经 BMS 与 24 V 升压进入 UPS；岸电在时关闭升压，岸电失效才启用；备电总输出限流 | 约 15 分钟目标对应降功率模式；三台电机额定负载下所需能量高于当前电池标称能量 |
 | 执行器布局 | 当前 v23 几何候选将三台 DJI M3508 P19 竖装在共用干仓内，经 1:1 干式直角齿轮驱动湿侧水平切向线盘；拉索从线轮上侧切点直线穿过顶盘斜孔，再由根部曲面通道接入原腱道 | STEP 回读与静态干涉审查通过；商品齿形、根部强度、仓体密封、轴承载荷与温升未验证 |
-| 控制与功率电子 | STM32 主控；电调和电池置于根部电子仓候选空间 | 尚无 STM32 固件和完成的控制板装配验证 |
+| 控制与功率电子 | v24 布局候选采用 STM32F407ZGT6、三只 C620、4 节 21700、100×50×15 mm UPS、PD1002、理想二极管、4S40A 保护板、M28 岸电口和 M12 Type-C 辅助口 | 主要外形已做电子仓空间核查；保护板尺寸、接口安装图、CAN 密封走线和 24→5 V 模块待落实 |
 | 电机候选 | 大陆可采购的 DJI M3508 P19，配套 C620 使用 CAN 指令或 PWM；持续最大输出扭矩标称 3 N·m | 三台额定工作电流合计约 30 A；24 V/15 A 模块仅在备电支路，主路需按新拓扑配电 |
 | 电池候选 | 4S1P 松下 NCR21700T；用户确认每节 8 Ah，电池组仍为 8 Ah | BMS、电芯持续放电能力、变换效率和实际续航仍需器件资料与测试 |
 | 辅助输入 | USB‑C PD 同时作为 UPS AUX 辅助输入和 4S 备用充电输入；岸电优先充电，Type‑C 输入受 PD 总功率限流 | 双输入防回灌、PD 电压合同、功率分配和满载热设计仍待核对 |
@@ -58,6 +58,10 @@ B32 是本地论文构形和打印前研究的主要基线。当前参数记录�
 *上图为上游设计工具界面示例；截图中的参数不是本地 B32 的冻结参数。*
 
 ## 机械与电子集成候选
+
+### v24 当前选定硬件电子仓候选
+
+[`electronics_enclosure_v24_selected_hardware`](local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/) 沿用 v23 三路 M3508 机构并重新布置 Ø136 mm 中央电子仓。四节 21700 和三只 C620 位于上层；STM32F407ZGT6、UPS 及既有 24 V 稳压器竖装；PD1002、理想二极管与 4S40A 保护板位于底层。M28 两芯岸电口设置在底盖，M12 Type-C 辅助口靠近 PD 区。已输出[电子仓 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/B32_v24_选定硬件电子仓.step)、[整机 STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/B32_v24_三路M3508与选定电子仓总装.step)、[半透明预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/B32_v24_电子仓半透明装配预览.png)和[分层布局](local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/B32_v24_电子仓分层布局图.png)。现为外形布置候选，具体连接器开孔、板卡固定孔、通信穿仓和水密尚未定型；详见[v24 说明](local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/README.md)。
 
 ### v23 当前拉索与轴封接口候选
 
@@ -240,7 +244,8 @@ python extensions/multi-robot-array/array_gui.py
 - **电子仓 v14**：三台 M2006 竖装于共用干仓、线盘同轴竖装的历史候选。
 - **电子仓 v15**：M2006 竖装、水平切向线盘轴和干式直角传动舱的历史候选。
 - **电子仓 v16**：M3508 P19/C620 与 1:1 直角齿轮的历史布置候选。
-- **电子仓 v23**：当前三路 M3508、顶盘斜孔、根部导入与 Ø10 输出轴封座的接口几何候选；打印和水密尚未定型。
+- **电子仓 v23**：三路 M3508、顶盘斜孔、根部导入与 Ø10 输出轴封座的接口几何基线；打印和水密尚未定型。
+- **电子仓 v24**：在 v23 机构上重排本轮选定的电池、电调、主控、电源模块和面板接口；尚未完成实物孔位和密封定型。
 - **MuJoCo 刚体模型**：用于机制与参数分析的降阶模型；其中的单元碰撞 STL 不是打印零件。
 
 本项目使用分阶段证据门槛：**几何检查 → 切片检查 → 短样打印 → 腱线与无负载运动 → 抓取/负载测试 → 水下与压力测试**。网格闭合、STEP 可读、仿真状态有限或图片外观正常，都不能单独证明零件可打印、机构可动、负载可抓取或整机防水。

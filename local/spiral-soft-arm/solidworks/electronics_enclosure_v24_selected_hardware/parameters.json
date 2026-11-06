@@ -1,0 +1,20 @@
+{
+  "schema_version": "24.0.0",
+  "units": "mm",
+  "source_assembly": "../electronics_enclosure_v23_cable_and_seal_interfaces/generate_m3508_arm.py",
+  "status": "selected-hardware fit candidate; not print or water release",
+  "canister": {"outer_diameter": 136, "inner_diameter": 126, "top_z": -20, "bottom_z": -230, "lid_z": [-240, -230]},
+  "hardware": {
+    "cells": {"type": "21700", "count": 4, "diameter": 21.55, "length": 70.21, "centres_xy": [[-32.5, -12.5], [-7.5, -12.5], [-32.5, 12.5], [-7.5, 12.5]], "z": [-104, -33.79]},
+    "controller": {"model": "ALIENTEK STM32F407ZGT6", "size": [83, 52, 10], "aabb": [28, 38, -26, 26, -178, -95]},
+    "ups": {"model": "rear-mounted UPS", "size": [100, 50, 15], "aabb": [8, 23, -25, 25, -198, -98]},
+    "regulator": {"model": "existing 9-35V to 24V 15A, retained power-path allowance", "size": [100, 80, 39], "aabb": [-43, -4, -40, 40, -210, -110]},
+    "c620": {"model": "DJI C620", "count": 3, "size": [49.4, 25.8, 11.5], "centres_radius": 50, "angles_deg": [0, 120, 240], "z": [-103, -53.6]},
+    "pd1002": {"size": [48, 34, 5], "aabb": [-24, 24, -55, -21, -224, -219]},
+    "ideal_diode": {"size": [30, 16, 3], "aabb": [18, 48, -39, -23, -216, -213]},
+    "bms": {"model": "4S40A 16.8V-40V", "provisional_size": [60, 30, 10], "aabb": [-30, 30, 20, 50, -224, -214], "status": "body dimensions unconfirmed; replace with measured unit before machining"},
+    "m28_power": {"model": "2-pin 50A rear-panel waterproof", "panel_bore_proxy": 29, "inside_stem_diameter_proxy": 28, "inside_z": [-230, -211], "outside_flange_diameter_proxy": 42, "status": "cutout, gasket and inside depth require exact purchased drawing"},
+    "m12_type_c": {"model": "M12 threaded waterproof USB-C receptacle", "panel_bore_proxy": 15.4, "centre_xyz": [0, -68, -202], "inside_stem_length_proxy": 18, "status": "Kinsun-class interface proxy; confirm purchased mating set and drawing"}
+  },
+  "mounting": {"board_tray_gap": 1, "board_fixing": "removable edge clamps; PCB hole positions deliberately not invented", "lid_service_direction": "bottom"}
+}
