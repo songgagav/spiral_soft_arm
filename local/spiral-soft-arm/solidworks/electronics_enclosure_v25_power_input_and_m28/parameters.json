@@ -1,0 +1,52 @@
+{
+  "schema_version": "25.0.0",
+  "units": "mm",
+  "source_assembly": "../electronics_enclosure_v24_selected_hardware/generate_selected_hardware.py",
+  "status": "confirmed power-input and M28 interface candidate; not print or water release",
+  "canister": {"outer_diameter": 136.0, "inner_diameter": 126.0, "top_z": -20.0, "bottom_z": -230.0, "lid_z": [-240.0, -230.0]},
+  "hardware": {
+    "cells": {"type": "21700", "count": 4, "diameter": 21.55, "length": 70.21},
+    "controller": {"model": "ALIENTEK STM32F407ZGT6", "size": [83.0, 52.0, 10.0]},
+    "ups": {"model": "rear-mounted UPS", "size": [100.0, 50.0, 15.0]},
+    "pd1002": {
+      "size": [48.0, 34.0, 5.0],
+      "confirmed_functions": ["4S 16.8 V charging", "bidirectional USB-C charge-discharge", "shore and USB-C simultaneous input", "external supply powers load while charging battery"]
+    },
+    "ideal_diode": {"size": [30.0, 16.0, 3.0], "role": "prevent reverse current between external input paths"},
+    "buck_5v": {
+      "size": [42.0, 24.0, 5.0],
+      "input_voltage_v": [5.0, 35.0],
+      "rated_current_a_user_confirmed": 20.0,
+      "output_role": "STM32 5 V supply",
+      "aabb": [44.0, 49.0, -12.0, 12.0, -164.0, -122.0]
+    },
+    "m28_power": {
+      "model": "WXM M28 2-pin 50A rear-panel socket and male plug",
+      "panel_opening_flat_width": 26.2,
+      "panel_opening_height": 28.0,
+      "mounting_body_diameter": 27.8,
+      "outside_flange_diameter": 36.0,
+      "effective_panel_thickness": 5.0,
+      "original_lid_thickness": 10.0,
+      "socket_axial_envelope": 38.5,
+      "plug_envelope": [33.0, 71.5],
+      "wire_section_mm2": [2.5, 6.0],
+      "cable_outer_diameter_range": [9.0, 16.5],
+      "rated_current_a": 50.0,
+      "rated_voltage_v": 500.0,
+      "drawing_source": "user-supplied WXM product image dated 2026-11-06",
+      "seal_and_terminal_status": "gasket groove, nut and terminal-tail details remain unmeasured"
+    }
+  },
+  "power_path": {
+    "external_inputs": ["M28 shore 24 V", "M12 USB-C"],
+    "reverse_current_blocking": "ideal-diode paths prevent backfeed",
+    "charge_and_load": "PD1002 supports external load supply while charging the 4S battery",
+    "controller_supply": "24 V control bus -> 5-35 V buck -> STM32 5 V"
+  },
+  "mounting": {
+    "m28_location": "bottom-lid center",
+    "m28_solution": "local inside recess leaves 5 mm land; surrounding annular load ring",
+    "buck_location": "vertical service lane beside STM32 and UPS"
+  }
+}
