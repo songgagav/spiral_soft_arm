@@ -1,0 +1,28 @@
+{
+  "schema_version": "26.0.0",
+  "units": "mm",
+  "status": "static integrated assembly candidate; not print or underwater release",
+  "source_generator": "../electronics_enclosure_v25_power_input_and_m28/generate_power_input.py",
+  "original_arm": {
+    "component_name": "B32_v10_arm_sections_and_dovetails",
+    "solid_count": 5,
+    "bounds": [-33.945, 25.5, -33.328, 33.328, 0.0, 550.014],
+    "root_z": 0.0
+  },
+  "required_components": [
+    "B32_v10_arm_sections_and_dovetails",
+    "v23_integral_top_plate_and_drive_chamber",
+    "v24_central_electronics_canister",
+    "v25_bottom_lid_with_M28_recess",
+    "v25_M28_socket_body",
+    "v25_buck_5v_envelope"
+  ],
+  "required_drive_prefixes": ["drive_060_", "drive_180_", "drive_300_"],
+  "observation_only_components": ["v25_M28_service_clearance"],
+  "outputs": {
+    "step": "B32_v26_原机械臂与V25电子仓整合总装.step",
+    "whole_preview": "B32_v26_整机半透明预览.png",
+    "root_preview": "B32_v26_根部与电子仓接口近景.png",
+    "audit": "整机整合审查.json"
+  }
+}
