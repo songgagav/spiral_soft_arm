@@ -99,6 +99,17 @@ class V26GeometryContractTests(unittest.TestCase):
         self.assertAlmostEqual(audit["arm_root_z_mm"], 0.0, places=3)
         self.assertAlmostEqual(audit["arm_to_electronics_gap_mm"], 8.0,
                                places=3)
+        self.assertEqual(audit["inherited_v25_overlap_count"], 0)
+
+    def test_export_reimports_step_and_creates_review_artifacts(self) -> None:
+        generator = self.require_generator()
+        self.assertTrue(hasattr(generator, "export_v26"),
+                        "V26 generator must expose export_v26")
+        result = generator.export_v26()
+        self.assertTrue(result["step_valid"])
+        self.assertGreaterEqual(result["step_solids"], 230)
+        for key in ("step", "whole_preview", "root_preview", "audit"):
+            self.assertTrue((HERE / result[key]).is_file(), key)
 
 
 if __name__ == "__main__":

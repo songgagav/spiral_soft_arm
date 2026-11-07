@@ -69,6 +69,13 @@ def audit_v26_integration(components: dict[str, cq.Shape],
     bound_error = [round(actual - expected, 4)
                    for actual, expected in zip(actual_bounds, expected_bounds)]
     physical = physical_v26_components(components)
+    inherited_fit = v25.audit_v25_components(components, body_names)
+    inherited_overlap_count = (
+        len(inherited_fit["hardware_to_hardware_volume_overlaps"])
+        + len(inherited_fit["internal_to_shell_volume_overlaps"])
+        + len(inherited_fit["buck_to_v24_hardware_volume_overlaps"])
+        + len(inherited_fit["m28_to_hardware_volume_overlaps"])
+    )
     return {
         "source_generator": str(SOURCE),
         "component_count": len(components),
@@ -82,6 +89,8 @@ def audit_v26_integration(components: dict[str, cq.Shape],
         "arm_root_z_mm": round(arm_bounds.zmin, 3),
         "electronics_canister_top_z_mm": round(canister_bounds.zmax, 3),
         "arm_to_electronics_gap_mm": round(gap, 3),
+        "inherited_v25_overlap_count": inherited_overlap_count,
+        "inherited_v25_fit_audit": inherited_fit,
         "observation_only_exported": sorted(
             set(P["observation_only_components"]).intersection(physical)
         ),
@@ -94,7 +103,63 @@ def audit_v26_integration(components: dict[str, cq.Shape],
     }
 
 
+def _load_renderer():
+    path = HERE / "render_integrated_assembly.py"
+    renderer_spec = importlib.util.spec_from_file_location(
+        "b32_v26_renderer", path
+    )
+    renderer = importlib.util.module_from_spec(renderer_spec)
+    sys.modules[renderer_spec.name] = renderer
+    renderer_spec.loader.exec_module(renderer)
+    return renderer
+
+
+def export_v26() -> dict[str, object]:
+    """Export, reimport, audit, and render the independent V26 assembly."""
+    components, body_names = build_v26_components()
+    physical = physical_v26_components(components)
+    audit = audit_v26_integration(components, body_names)
+    if (audit["missing_required_components"]
+            or audit["missing_drive_prefixes"]
+            or audit["original_arm_solids"] != P["original_arm"]["solid_count"]
+            or any(abs(value) > 0.02
+                   for value in audit["original_arm_bound_error_mm"])
+            or audit["inherited_v25_overlap_count"]
+            or audit["observation_only_exported"]):
+        raise ValueError(f"V26 integration audit failed: {audit}")
+
+    renderer = _load_renderer()
+    step_path = HERE / P["outputs"]["step"]
+    assembly = cq.Assembly(name="B32_v26_original_arm_and_v25_electronics")
+    for name, shape in physical.items():
+        assembly.add(shape, name=name, color=cq.Color(*renderer.colour(name)))
+    assembly.export(str(step_path), exportType="STEP", unit="MM")
+
+    readback = cq.importers.importStep(str(step_path)).val()
+    if not readback.isValid() or not readback.Solids():
+        raise ValueError("V26 STEP failed BREP reimport")
+    images = renderer.render_v26_images(physical)
+    audit.update({
+        "step_valid": True,
+        "step_solids": len(readback.Solids()),
+        "step_bounds_mm": _rounded_bounds(readback),
+        "whole_preview": images["whole_preview"],
+        "root_preview": images["root_preview"],
+    })
+    audit_path = HERE / P["outputs"]["audit"]
+    audit_path.write_text(
+        json.dumps(audit, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
+    return {
+        "step": step_path.name,
+        "step_valid": True,
+        "step_solids": len(readback.Solids()),
+        "whole_preview": images["whole_preview"],
+        "root_preview": images["root_preview"],
+        "audit": audit_path.name,
+    }
+
+
 if __name__ == "__main__":
-    source_components, source_bodies = build_v26_components()
-    print(json.dumps(audit_v26_integration(source_components, source_bodies),
-                     ensure_ascii=False, indent=2))
+    print(json.dumps(export_v26(), ensure_ascii=False, indent=2))

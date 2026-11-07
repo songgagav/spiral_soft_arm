@@ -59,6 +59,10 @@ B32 是本地论文构形和打印前研究的主要基线。当前参数记录�
 
 ## 机械与电子集成候选
 
+### V26 原机械臂与V25电子仓整合总装
+
+[`integrated_assembly_v26_arm_and_v25_electronics`](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/) 是当前独立整机候选：保持原B32五实体机械臂、燕尾分段和三路M3508机构不变，完整复用V25电子仓，并输出[整机STEP](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_原机械臂与V25电子仓整合总装.step)、[全高预览](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_整机半透明预览.png)、[根部接口近景](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_根部与电子仓接口近景.png)和[整合审查](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/整机整合审查.json)。该版本是静态装配与坐标审查候选，不是打印、水密或运动验证结论。
+
 ### v25 当前电源输入与M28接口候选
 
 [`electronics_enclosure_v25_power_input_and_m28`](local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/) 在v24布局上加入42×24×5 mm的STM32降压模块，并按用户提供的M28-2芯/50A图纸重做底盖接口。10 mm底盖中心采用局部沉台形成5 mm夹持区，Ø36后装法兰和承力环位于仓内侧；开孔为26.2×28 mm异形孔，并保留Ø33×71.5 mm公插头空间。为避开38.5 mm插座尾部，稳压器及上方电池托架整体上移7 mm。已输出[电子仓STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/B32_v25_选定硬件电子仓.step)、[整机STEP](local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/B32_v25_三路M3508与电源接口总装.step)、[半透明预览](local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/B32_v25_电子仓半透明装配预览.png)、[M28细节](local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/B32_v25_M28沉台与承力环细节.png)和[分层电源图](local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/B32_v25_电子仓分层与电源路径图.png)。详见[v25说明](local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/README.md)。
@@ -251,6 +255,7 @@ python extensions/multi-robot-array/array_gui.py
 - **电子仓 v23**：三路 M3508、顶盘斜孔、根部导入与 Ø10 输出轴封座的接口几何基线；打印和水密尚未定型。
 - **电子仓 v24**：在 v23 机构上重排本轮选定的电池、电调、主控、电源模块和面板接口；尚未完成实物孔位和密封定型。
 - **电子仓 v25**：当前电源输入候选，加入24→5 V降压模块、M28异形孔、5 mm局部沉台、承力环和外接插头空间；密封细节和实物端子仍待确认。
+- **整机 V26**：保持原B32机械臂和三路驱动不变，整合V25电子仓并增加全高/根部审查；静态坐标与STEP候选，尚未完成打印、运动和水密验证。
 - **MuJoCo 刚体模型**：用于机制与参数分析的降阶模型；其中的单元碰撞 STL 不是打印零件。
 
 本项目使用分阶段证据门槛：**几何检查 → 切片检查 → 短样打印 → 腱线与无负载运动 → 抓取/负载测试 → 水下与压力测试**。网格闭合、STEP 可读、仿真状态有限或图片外观正常，都不能单独证明零件可打印、机构可动、负载可抓取或整机防水。

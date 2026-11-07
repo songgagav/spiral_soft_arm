@@ -1,0 +1,70 @@
+{
+  "source_generator": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v25_power_input_and_m28\\generate_power_input.py",
+  "component_count": 158,
+  "physical_component_count": 157,
+  "hardware_body_count": 14,
+  "missing_required_components": [],
+  "missing_drive_prefixes": [],
+  "original_arm_solids": 5,
+  "original_arm_bounds_mm": [
+    -33.945,
+    25.5,
+    -33.328,
+    33.328,
+    -0.0,
+    550.014
+  ],
+  "original_arm_bound_error_mm": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    -0.0,
+    0.0
+  ],
+  "arm_root_z_mm": -0.0,
+  "electronics_canister_top_z_mm": -8.0,
+  "arm_to_electronics_gap_mm": 8.0,
+  "inherited_v25_overlap_count": 0,
+  "inherited_v25_fit_audit": {
+    "hardware_to_hardware_volume_overlaps": [],
+    "internal_to_shell_volume_overlaps": {},
+    "buck_to_v24_hardware_volume_overlaps": [],
+    "m28_to_hardware_volume_overlaps": [],
+    "m28_mount_land_mm": 5.0,
+    "m28_opening_bounds_mm": [
+      26.2,
+      28.0
+    ],
+    "m28_retained_load_annulus_bounds_mm": [
+      56.0,
+      56.0,
+      10.0
+    ],
+    "unverified": [
+      "M28 gasket groove and compression",
+      "M28 nut, cap tether and terminal-tail production dimensions",
+      "buck mounting holes, connector heights and 20 A thermal performance",
+      "wire bend radii and strain relief"
+    ]
+  },
+  "observation_only_exported": [],
+  "unverified": [
+    "dynamic tendon motion, friction, slack and bending clearance",
+    "dovetail strength and printed-part fit",
+    "M28 terminals, PCB holes, complete wiring and strain relief",
+    "thermal performance, O-ring compression and 5 m pressure sealing"
+  ],
+  "step_valid": true,
+  "step_solids": 230,
+  "step_bounds_mm": [
+    -143.8,
+    124.708,
+    -144.0,
+    144.0,
+    -316.5,
+    550.014
+  ],
+  "whole_preview": "B32_v26_整机半透明预览.png",
+  "root_preview": "B32_v26_根部与电子仓接口近景.png"
+}
