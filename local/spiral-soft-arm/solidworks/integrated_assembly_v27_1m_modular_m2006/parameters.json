@@ -1,0 +1,78 @@
+{
+  "schema_version": "27.0.0",
+  "candidate_id": "V27-1M-M2006",
+  "units": "mm",
+  "release_status": "static CAD and engineering candidate; not print or underwater release",
+  "arm": {
+    "nominal_length_mm": 1000.0,
+    "unit_count": 42,
+    "segment_count": 4,
+    "tendon_count": 3,
+    "tip_diameter_mm": 5.0,
+    "root_diameter_mm": 120.0,
+    "tendon_material": "UHMWPE",
+    "tendon_diameter_mm": 0.5,
+    "max_segment_height_mm": 300.0
+  },
+  "root_interface": {
+    "top_plate_circumdiameter_mm": 250.0,
+    "flange_max_diameter_mm": 180.0,
+    "register_diameter_mm": 130.0,
+    "register_height_mm": 5.0,
+    "dowel_count": 2,
+    "dowel_diameter_mm": 6.0,
+    "dowel_angles_deg": [18.0, 153.0],
+    "fastener_count": 6,
+    "fastener_thread": "M5",
+    "fastener_clearance_diameter_mm": 5.5,
+    "fastener_pcd_mm": 160.0,
+    "minimum_tool_clearance_mm": 8.0
+  },
+  "drive": {
+    "motor_model": "DJI RoboMaster M2006 P36",
+    "motor_count": 3,
+    "c610_part_of_removable_module": false,
+    "fixed_transmission_members": [
+      "seal_housings",
+      "bearings",
+      "shafts",
+      "wet_spools"
+    ],
+    "tendon_alignment_lateral_tolerance_mm": 0.25,
+    "tendon_alignment_angular_tolerance_deg": 0.5
+  },
+  "environment": {
+    "media": ["freshwater", "seawater"],
+    "max_depth_m": 5.0,
+    "run_time_min": 30.0,
+    "payload_mass_kg": 1.0,
+    "motion_profile": "low_speed_full_travel",
+    "high_speed_whipping_required": false
+  },
+  "sources": {
+    "paper_pdf": {
+      "path": "../../../../related-papers/Wang 等 - 2024 - SpiRobs Logarithmic spiral-shaped robots for versatile grasping across scales.pdf",
+      "role": "paper_pdf"
+    },
+    "m2006_step": {
+      "path": "../../../../hardware/reference/RoboMaster_M2006_P36.STEP",
+      "role": "m2006_step"
+    },
+    "c610_step": {
+      "path": "../../../../hardware/reference/RoboMaster_C610.STEP",
+      "role": "c610_step"
+    },
+    "v25_generator": {
+      "path": "../electronics_enclosure_v25_power_input_and_m28/generate_power_input.py",
+      "role": "v25_generator"
+    },
+    "v25_parameters": {
+      "path": "../electronics_enclosure_v25_power_input_and_m28/parameters.json",
+      "role": "v25_parameters"
+    },
+    "v26_parameters": {
+      "path": "../integrated_assembly_v26_arm_and_v25_electronics/parameters.json",
+      "role": "v26_parameters"
+    }
+  }
+}
