@@ -41,6 +41,8 @@ class V26GeometryContractTests(unittest.TestCase):
         path = HERE / "generate_integrated_assembly.py"
         cls.generator_path = path
         cls.generator = None
+        cls.components = None
+        cls.body_names = None
         if path.is_file():
             spec = importlib.util.spec_from_file_location(
                 "b32_v26_test_generator", path
@@ -49,6 +51,7 @@ class V26GeometryContractTests(unittest.TestCase):
             sys.modules[spec.name] = module
             spec.loader.exec_module(module)
             cls.generator = module
+            cls.components, cls.body_names = module.build_v26_components()
 
     def require_generator(self):
         self.assertTrue(self.generator_path.is_file(),
@@ -58,7 +61,7 @@ class V26GeometryContractTests(unittest.TestCase):
 
     def test_integrated_components_preserve_original_arm_geometry(self) -> None:
         generator = self.require_generator()
-        components, _ = generator.build_v26_components()
+        components = self.components
         arm = components["B32_v10_arm_sections_and_dovetails"]
         bounds = arm.BoundingBox()
         self.assertEqual(len(arm.Solids()), 5)
@@ -71,7 +74,7 @@ class V26GeometryContractTests(unittest.TestCase):
 
     def test_integrated_components_include_v25_and_all_three_drives(self) -> None:
         generator = self.require_generator()
-        components, _ = generator.build_v26_components()
+        components = self.components
         required = generator.P["required_components"]
         self.assertTrue(set(required).issubset(components))
         for prefix in generator.P["required_drive_prefixes"]:
@@ -80,10 +83,22 @@ class V26GeometryContractTests(unittest.TestCase):
 
     def test_physical_export_omits_observation_only_volume(self) -> None:
         generator = self.require_generator()
-        components, _ = generator.build_v26_components()
+        components = self.components
         physical = generator.physical_v26_components(components)
         self.assertNotIn("v25_M28_service_clearance", physical)
         self.assertIn("v25_M28_socket_body", physical)
+
+    def test_audit_reports_preserved_coordinates_and_required_parts(self) -> None:
+        generator = self.require_generator()
+        audit = generator.audit_v26_integration(
+            self.components, self.body_names
+        )
+        self.assertEqual(audit["missing_required_components"], [])
+        self.assertEqual(audit["missing_drive_prefixes"], [])
+        self.assertEqual(audit["original_arm_solids"], 5)
+        self.assertAlmostEqual(audit["arm_root_z_mm"], 0.0, places=3)
+        self.assertAlmostEqual(audit["arm_to_electronics_gap_mm"], 8.0,
+                               places=3)
 
 
 if __name__ == "__main__":
