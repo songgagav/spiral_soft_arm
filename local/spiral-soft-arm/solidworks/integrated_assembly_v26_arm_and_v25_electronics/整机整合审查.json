@@ -1,5 +1,5 @@
 {
-  "source_generator": "E:\\Spiral_Robots\\Open-Spiral-Robots-main\\Open-Spiral-Robots-main\\local\\spiral-soft-arm\\solidworks\\electronics_enclosure_v25_power_input_and_m28\\generate_power_input.py",
+  "source_generator": "../electronics_enclosure_v25_power_input_and_m28/generate_power_input.py",
   "component_count": 158,
   "physical_component_count": 157,
   "hardware_body_count": 14,

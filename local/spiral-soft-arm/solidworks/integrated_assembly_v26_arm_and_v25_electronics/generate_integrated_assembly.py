@@ -77,7 +77,7 @@ def audit_v26_integration(components: dict[str, cq.Shape],
         + len(inherited_fit["m28_to_hardware_volume_overlaps"])
     )
     return {
-        "source_generator": str(SOURCE),
+        "source_generator": P["source_generator"],
         "component_count": len(components),
         "physical_component_count": len(physical),
         "hardware_body_count": len(body_names),

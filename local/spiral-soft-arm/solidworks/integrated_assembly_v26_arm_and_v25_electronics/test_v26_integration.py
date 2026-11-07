@@ -93,6 +93,8 @@ class V26GeometryContractTests(unittest.TestCase):
         audit = generator.audit_v26_integration(
             self.components, self.body_names
         )
+        self.assertEqual(audit["source_generator"],
+                         generator.P["source_generator"])
         self.assertEqual(audit["missing_required_components"], [])
         self.assertEqual(audit["missing_drive_prefixes"], [])
         self.assertEqual(audit["original_arm_solids"], 5)
