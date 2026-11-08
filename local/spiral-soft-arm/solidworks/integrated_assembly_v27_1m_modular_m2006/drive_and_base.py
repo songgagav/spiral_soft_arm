@@ -204,14 +204,14 @@ def build_drive_module(
     official_solid_count = len(official_shape.Solids())
 
     plate = _hex_prism(118.0, -102.0, 6.0)
-    center_clearance = _vertical_cylinder((0.0, 0.0, 0.0), 55.0, -103.0, -95.0)
+    center_clearance = _vertical_cylinder((0.0, 0.0, 0.0), 70.0, -103.0, -95.0)
     plate = plate.cut(center_clearance).clean()
     components: dict[str, cq.Shape] = {"removable_motor_plate": plate}
     motor_names: list[str] = []
     for axis in axes:
         name = f"removable_M2006_{axis.axis_index:02d}"
-        motor = _vertical_cylinder(axis.spool_center, 12.2, -96.0, -31.2)
-        coupling = _vertical_ring(axis.spool_center, 8.0, 5.05, -35.0, -23.0)
+        motor = _vertical_cylinder(axis.spool_center, 12.2, -100.0, -35.2)
+        coupling = _vertical_ring(axis.spool_center, 8.0, 5.05, -35.0, -27.2)
         cradle = _vertical_ring(axis.spool_center, 15.0, 12.4, -97.0, -86.0)
         components[name] = motor
         components[f"removable_coupling_sleeve_{axis.axis_index:02d}"] = coupling
@@ -222,7 +222,7 @@ def build_drive_module(
     )
     for index, angle_deg in enumerate((17.0, 157.0), start=1):
         radial = _unit_radial(angle_deg)
-        center = (70.0 * radial[0], 70.0 * radial[1], 0.0)
+        center = (78.0 * radial[0], 78.0 * radial[1], 0.0)
         components[f"removable_plate_dowel_{index:02d}"] = _vertical_cylinder(
             center, 3.0, -98.0, -90.0
         )
@@ -246,6 +246,13 @@ def build_fixed_base(
 ) -> FixedBaseResult:
     axes = tuple(axes or optimize_drive_axes(contract, root))
     top_plate = _hex_prism(125.0, -8.0, 8.0)
+    register_service_clearance = _vertical_cylinder(
+        (0.0, 0.0, 0.0),
+        0.5 * float(contract.root_interface.register_diameter_mm) + 0.25,
+        -8.2,
+        0.2,
+    )
+    top_plate = top_plate.cut(register_service_clearance).clean()
     components: dict[str, cq.Shape] = {
         "fixed_top_plate": top_plate,
         "fixed_root_receiver": root.base_side_receiver,
