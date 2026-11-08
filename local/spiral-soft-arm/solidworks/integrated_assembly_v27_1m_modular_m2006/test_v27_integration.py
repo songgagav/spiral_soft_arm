@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 import hashlib
 from pathlib import Path
 import unittest
@@ -18,12 +19,86 @@ from model_contract import load_contract
 from render_v27 import render_v27
 
 
+class V27ZZDeliveryTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.directory = Path(__file__).resolve().parent
+        cls.repo_root = cls.directory.parents[3]
+        cls.local_readme = cls.directory / "README.md"
+        cls.root_readme = cls.repo_root / "README.md"
+        cls.manifest = cls.directory / "来源与SHA256.csv"
+
+    def test_delivery_manifest_is_complete_and_hashes_match(self) -> None:
+        self.assertTrue(self.manifest.is_file())
+        with self.manifest.open("r", encoding="utf-8-sig", newline="") as stream:
+            rows = list(csv.DictReader(stream))
+        paths = [row["relative_path"] for row in rows]
+        self.assertEqual(paths, sorted(paths))
+        expected = {
+            path.relative_to(self.repo_root).as_posix()
+            for path in self.directory.iterdir()
+            if path.is_file()
+            and path.name != self.manifest.name
+            and path.suffix.lower() in {".py", ".json", ".step", ".png", ".md"}
+        }
+        expected.add("README.md")
+        contract = load_contract()
+        for spec in contract.source_specs.values():
+            expected.add(
+                (contract.output_directory / spec["path"])
+                .resolve()
+                .relative_to(self.repo_root)
+                .as_posix()
+            )
+        self.assertEqual(set(paths), expected)
+        for row in rows:
+            path = self.repo_root / row["relative_path"]
+            digest = hashlib.sha256(path.read_bytes()).hexdigest()
+            self.assertEqual(row["sha256"], digest)
+            self.assertEqual(int(row["size_bytes"]), path.stat().st_size)
+
+    def test_readme_lists_arm_and_drive_swap_sequences(self) -> None:
+        text = self.local_readme.read_text(encoding="utf-8")
+        self.assertIn("更换整根四段臂体模块", text)
+        self.assertIn("更换三台 M2006 整板驱动模块", text)
+        self.assertIn("零位/预紧标定", text)
+        self.assertIn("C610 固定在电子/控制侧", text)
+        self.assertIn("固定密封边界", text)
+
+    def test_readme_lists_unverified_physical_gates(self) -> None:
+        text = self.local_readme.read_text(encoding="utf-8")
+        self.assertIn(
+            "CAD does not prove printing, strength, 5 m water-tightness, 30-minute thermal behavior or 1 kg task success.",
+            text,
+        )
+        for item in ("切片", "打印", "强度", "5 m", "30 分钟", "1 kg"):
+            self.assertIn(item, text)
+
+    def test_root_readme_links_v27_without_replacing_v26(self) -> None:
+        text = self.root_readme.read_text(encoding="utf-8")
+        self.assertIn("integrated_assembly_v27_1m_modular_m2006", text)
+        self.assertIn("integrated_assembly_v26_arm_and_v25_electronics", text)
+
+
 class V27PlacementHelperTests(unittest.TestCase):
     def test_polar_center_uses_standard_xy_rotation(self) -> None:
         x_mm, y_mm, z_mm = _polar_center(48.0, 120.0, -55.0)
         self.assertAlmostEqual(x_mm, -24.0)
         self.assertAlmostEqual(y_mm, 24.0 * 3.0**0.5)
         self.assertEqual(z_mm, -55.0)
+
+
+class V27StepDeterminismTests(unittest.TestCase):
+    def test_step_headers_use_frozen_timestamp(self) -> None:
+        directory = Path(__file__).resolve().parent
+        for name in (
+            "SpiRobs_v27_1m_四段臂体模块.step",
+            "SpiRobs_v27_M2006三电机驱动模块.step",
+            "SpiRobs_v27_固定传动密封基座.step",
+            "SpiRobs_v27_1m模块化总装.step",
+        ):
+            header = (directory / name).read_text(encoding="utf-8")[:512]
+            self.assertIn("'2000-01-01T00:00:00'", header)
 
 
 class V27IntegrationTests(unittest.TestCase):

@@ -59,6 +59,10 @@ B32 是本地论文构形和打印前研究的主要基线。当前参数记录�
 
 ## 机械与电子集成候选
 
+### V27 1 m 四段臂体与 M2006 模块化总装
+
+[`integrated_assembly_v27_1m_modular_m2006`](local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/) 是与 V26 并列保存的新候选，不覆盖 B32/V26 基线。该版本采用 1,000 mm、42 单元、四段打印臂体；整根四段臂体从 Ø180 根部快换接口拆换，三台 M2006 连同共同安装板作为另一个模块拆换，而固定轴、双支承、轴封/迷宫和湿侧线轮留在 250 mm 顶盘基座。目录内提供四个 STEP、四张审查图、工程审计、复现测试和 SHA-256 清单。当前仅通过静态 CAD、公式与文件回读门槛，尚未证明打印强度、5 m 水密、30 分钟温升或 1 kg 任务。
+
 ### V26 原机械臂与V25电子仓整合总装
 
 [`integrated_assembly_v26_arm_and_v25_electronics`](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/) 是当前独立整机候选：保持原B32五实体机械臂、燕尾分段和三路M3508机构不变，完整复用V25电子仓，并输出[整机STEP](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_原机械臂与V25电子仓整合总装.step)、[全高预览](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_整机半透明预览.png)、[根部接口近景](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_根部与电子仓接口近景.png)和[整合审查](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/整机整合审查.json)。该版本是静态装配与坐标审查候选，不是打印、水密或运动验证结论。
@@ -255,6 +259,7 @@ python extensions/multi-robot-array/array_gui.py
 - **电子仓 v23**：三路 M3508、顶盘斜孔、根部导入与 Ø10 输出轴封座的接口几何基线；打印和水密尚未定型。
 - **电子仓 v24**：在 v23 机构上重排本轮选定的电池、电调、主控、电源模块和面板接口；尚未完成实物孔位和密封定型。
 - **电子仓 v25**：当前电源输入候选，加入24→5 V降压模块、M28异形孔、5 mm局部沉台、承力环和外接插头空间；密封细节和实物端子仍待确认。
+- **整机 V27**：1 m、42 单元、四段臂体与三 M2006 整板驱动的模块化候选；固定轴承、轴封、轴和湿侧线轮留在基座，仍需打印、强度、水密、温升和负载验证。
 - **整机 V26**：保持原B32机械臂和三路驱动不变，整合V25电子仓并增加全高/根部审查；静态坐标与STEP候选，尚未完成打印、运动和水密验证。
 - **MuJoCo 刚体模型**：用于机制与参数分析的降阶模型；其中的单元碰撞 STL 不是打印零件。
 

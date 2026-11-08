@@ -5,6 +5,7 @@ import hashlib
 import importlib.util
 import math
 from pathlib import Path
+import re
 import sys
 from typing import Any, Iterable
 
@@ -274,6 +275,16 @@ def _export_assembly(names: Iterable[str], result: V27AssemblyResult, path: Path
     for name in names:
         assembly.add(result.components[name], name=name)
     assembly.export(str(path), exportType="STEP", unit="MM")
+    step_text = path.read_text(encoding="utf-8")
+    step_text, replacement_count = re.subn(
+        r"(FILE_NAME\('[^']*',)'[^']+'",
+        r"\1'2000-01-01T00:00:00'",
+        step_text,
+        count=1,
+    )
+    if replacement_count != 1:
+        raise ValueError(f"STEP header timestamp was not found: {path}")
+    path.write_text(step_text, encoding="utf-8", newline="\n")
     readback = cq.importers.importStep(str(path)).val()
     if not readback.isValid() or not readback.Solids():
         raise ValueError(f"STEP readback failed: {path}")
