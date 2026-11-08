@@ -85,6 +85,7 @@ class V27ParameterContractTests(unittest.TestCase):
             "m2006_step",
             "c610_step",
             "v25_generator",
+            "v24_parameters",
             "v25_parameters",
             "v26_parameters",
         }

@@ -1,18 +1,23 @@
 from __future__ import annotations
 
+import builtins
 import csv
+from dataclasses import replace
 import hashlib
 from pathlib import Path
 import unittest
+from unittest.mock import patch
 
 import cadquery as cq
 from PIL import Image
 
 from generate_v27_assembly import (
     _polar_center,
+    _select_v25_electronics,
     audit_v27_assembly,
     build_v27_assembly,
     export_v27,
+    preflight_v27,
     snapshot_v26_outputs,
 )
 from model_contract import load_contract
@@ -112,11 +117,22 @@ class V27IntegrationTests(unittest.TestCase):
         cls.images = render_v27(cls.result)
 
     def test_required_three_module_components_exist(self) -> None:
-        self.assertEqual(len(self.result.arm_component_names), 8)
+        self.assertTrue(
+            {
+                "arm_dovetail_lock_01",
+                "arm_tip_tendon_anchor_01",
+                "arm_terminal_adjustment_01",
+                "arm_terminal_secondary_retention_01",
+            }.issubset(self.result.arm_component_names)
+        )
         self.assertIn("removable_motor_plate", self.result.drive_component_names)
         self.assertEqual(
             len([name for name in self.result.drive_component_names if name.startswith("removable_M2006_")]),
             3,
+        )
+        self.assertEqual(
+            len([name for name in self.result.fixed_component_names if name.startswith("fixed_root_dowel_")]),
+            2,
         )
         self.assertEqual(
             len([name for name in self.result.fixed_component_names if name.startswith("fixed_wet_spool_")]),
@@ -150,6 +166,8 @@ class V27IntegrationTests(unittest.TestCase):
 
     def test_drive_plate_can_translate_out_after_couplings_released(self) -> None:
         self.assertTrue(self.audit["service"]["drive_negative_z_removal_clear"])
+        self.assertGreaterEqual(self.audit["service"]["drive_sweep_sample_count"], 15)
+        self.assertGreaterEqual(self.audit["service"]["drive_sweep_min_clearance_mm"], 0.25)
 
     def test_all_service_fasteners_have_tool_envelopes(self) -> None:
         self.assertEqual(self.audit["service"]["root_fastener_tool_envelopes"], 6)
@@ -185,6 +203,33 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertEqual(len(self.audit["alignment"]), 3)
         self.assertFalse(self.audit["engineering"]["qualified"])
         self.assertTrue(all(len(record["sha256"]) == 64 for record in self.audit["sources"].values()))
+        audit_path = self.contract.output_directory / "V27装配审查.json"
+        self.assertTrue(audit_path.is_file())
+
+    def test_clean_checkout_electronics_selection_avoids_ignored_dependencies(self) -> None:
+        real_open = builtins.open
+
+        def guarded_open(file, *args, **kwargs):
+            text = str(file).replace("\\", "/")
+            if any(part in text for part in ("/motor_mount_v2/", "/paper_v1/", "/simulation/v3/")):
+                raise AssertionError(f"ignored dependency opened: {text}")
+            return real_open(file, *args, **kwargs)
+
+        with patch("builtins.open", guarded_open):
+            selected = _select_v25_electronics(self.contract)
+        self.assertTrue(selected)
+
+    def test_export_preflight_rejects_forbidden_collision(self) -> None:
+        components = dict(self.result.components)
+        components["removable_motor_plate"] = components["fixed_top_plate"]
+        bad = replace(self.result, components=components)
+        with self.assertRaisesRegex(ValueError, "preflight"):
+            preflight_v27(bad)
+
+    def test_same_group_and_rotating_pairs_are_audited(self) -> None:
+        collisions = self.audit["collisions"]
+        self.assertGreater(collisions["checked_pair_count"], 100)
+        self.assertTrue(any("fixed_wet_spool" in pair[0] for pair in collisions["checked_same_group_pairs"]))
 
     def test_status_is_candidate_not_release(self) -> None:
         status = self.audit["status"].lower()

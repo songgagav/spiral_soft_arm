@@ -42,9 +42,11 @@ class ForceBudgetReport:
     drivetrain_efficiency: float
     seal_drag_torque_nm: float
     tendon_friction_efficiency: float
-    effective_radius_mm: float
+    minimum_effective_radius_mm: float
+    maximum_effective_radius_mm: float
     net_spool_torque_nm: float
-    available_tendon_force_n: float
+    minimum_tendon_force_n: float
+    maximum_tendon_force_n: float
     qualified: bool
     missing_measurements: tuple[str, ...]
     assumptions: dict[str, Any]
@@ -99,7 +101,8 @@ def compute_tendon_travel(
     if not extreme_lengths:
         raise ValueError("at least one design extreme is required")
     required = tuple(
-        max(abs(delta[index]) for delta in signed_deltas)
+        max(delta[index] for delta in signed_deltas)
+        - min(delta[index] for delta in signed_deltas)
         for index in range(len(reference))
     )
     return TendonTravelReport(
@@ -109,7 +112,7 @@ def compute_tendon_travel(
         required_travel_mm=required,
         assumptions={
             "method": "piecewise_linear_sampled_centerline_length",
-            "travel_definition": "maximum_absolute_difference_from_straight_reference",
+            "travel_definition": "full_extreme_to_extreme_wind_and_payout_range",
         },
     )
 
@@ -166,10 +169,13 @@ def compute_force_budget(
     drivetrain_efficiency: float,
     seal_drag_torque_nm: float,
     tendon_friction_efficiency: float,
-    effective_radius_mm: float,
+    minimum_effective_radius_mm: float,
+    maximum_effective_radius_mm: float,
 ) -> ForceBudgetReport:
-    if motor_continuous_torque_nm <= 0.0 or effective_radius_mm <= 0.0:
+    if motor_continuous_torque_nm <= 0.0 or minimum_effective_radius_mm <= 0.0:
         raise ValueError("motor torque and effective radius must be positive")
+    if maximum_effective_radius_mm < minimum_effective_radius_mm:
+        raise ValueError("maximum spool radius may not be below minimum radius")
     if not 0.0 < drivetrain_efficiency <= 1.0:
         raise ValueError("drivetrain efficiency must be in (0, 1]")
     if not 0.0 < tendon_friction_efficiency <= 1.0:
@@ -179,7 +185,8 @@ def compute_force_budget(
     net_torque = motor_continuous_torque_nm * drivetrain_efficiency - seal_drag_torque_nm
     if net_torque <= 0.0:
         raise ValueError("seal drag consumes the available continuous torque")
-    force = net_torque / (effective_radius_mm / 1000.0) * tendon_friction_efficiency
+    maximum_force = net_torque / (minimum_effective_radius_mm / 1000.0) * tendon_friction_efficiency
+    minimum_force = net_torque / (maximum_effective_radius_mm / 1000.0) * tendon_friction_efficiency
     assumptions = {
         "motor_continuous_torque_nm": float(motor_continuous_torque_nm),
         "drivetrain_efficiency": float(drivetrain_efficiency),
@@ -192,11 +199,17 @@ def compute_force_budget(
         drivetrain_efficiency=float(drivetrain_efficiency),
         seal_drag_torque_nm=float(seal_drag_torque_nm),
         tendon_friction_efficiency=float(tendon_friction_efficiency),
-        effective_radius_mm=float(effective_radius_mm),
+        minimum_effective_radius_mm=float(minimum_effective_radius_mm),
+        maximum_effective_radius_mm=float(maximum_effective_radius_mm),
         net_spool_torque_nm=net_torque,
-        available_tendon_force_n=force,
-        qualified=True,
-        missing_measurements=(),
+        minimum_tendon_force_n=minimum_force,
+        maximum_tendon_force_n=maximum_force,
+        qualified=False,
+        missing_measurements=(
+            "measured_seal_drag_torque",
+            "measured_drivetrain_efficiency",
+            "measured_tendon_friction_efficiency",
+        ),
         assumptions=assumptions,
     )
 
@@ -299,7 +312,8 @@ def generate_v27_engineering_audit(contract: Any) -> dict[str, Any]:
         drivetrain_efficiency=0.85,
         seal_drag_torque_nm=0.05,
         tendon_friction_efficiency=0.70,
-        effective_radius_mm=10.0,
+        minimum_effective_radius_mm=10.0,
+        maximum_effective_radius_mm=12.0,
     )
     root_load = compute_root_load(
         target_mass_kg=contract.environment.payload_mass_kg,
@@ -317,6 +331,9 @@ def generate_v27_engineering_audit(contract: Any) -> dict[str, Any]:
             "measured_drivetrain_efficiency",
             "measured_tendon_friction_efficiency",
             "measured_dynamic_root_load",
+            "arm_wet_mass_and_buoyancy",
+            "bolt_group_capacity",
+            "measured_low_speed_full_travel_current",
             *root_load.missing_measurements,
             *capacity.missing_measurements,
             *force.missing_measurements,

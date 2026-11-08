@@ -30,6 +30,7 @@ class TendonAlignment:
     side_error_mm: float
     lateral_error_mm: float
     perpendicular_error_deg: float
+    entry_direction_error_deg: float
     passes: bool
 
 
@@ -121,7 +122,7 @@ def _hex_prism(circumradius_mm: float, z0_mm: float, height_mm: float) -> cq.Sha
 
 
 def optimize_drive_axes(contract: Any, root: Any) -> tuple[DriveAxis, DriveAxis, DriveAxis]:
-    tangent_radius_mm = 102.0
+    tangent_radius_mm = 103.0
     effective_radius_mm = 10.0
     axes: list[DriveAxis] = []
     for index, terminal in enumerate(root.tendon_terminals, start=1):
@@ -140,7 +141,7 @@ def optimize_drive_axes(contract: Any, root: Any) -> tuple[DriveAxis, DriveAxis,
                 root_inlet=tuple(float(value) for value in terminal.inlet_point),
                 tangent_point=tangent_point,
                 spool_center=spool_center,
-                tendon_direction=radial,
+                tendon_direction=tuple(float(value) for value in terminal.axis_direction),
                 shaft_axis=(0.0, 0.0, 1.0),
                 spool_effective_radius_mm=effective_radius_mm,
                 delta_from_v26_local_mm=(
@@ -176,6 +177,12 @@ def audit_tendon_alignment(
             math.acos(max(-1.0, min(1.0, dot / (shaft_norm * tendon_norm))))
         )
         perpendicular_error = abs(90.0 - angle)
+        delta_norm = math.sqrt(sum(value * value for value in delta))
+        expected_norm = math.sqrt(sum(value * value for value in expected))
+        entry_dot = sum(a * b for a, b in zip(delta, expected))
+        entry_angle = math.degrees(
+            math.acos(max(-1.0, min(1.0, entry_dot / (delta_norm * expected_norm))))
+        )
         alignments.append(
             TendonAlignment(
                 axis_index=axis.axis_index,
@@ -184,8 +191,10 @@ def audit_tendon_alignment(
                 side_error_mm=side_error,
                 lateral_error_mm=lateral_error,
                 perpendicular_error_deg=perpendicular_error,
+                entry_direction_error_deg=entry_angle,
                 passes=lateral_error <= lateral_tolerance
-                and perpendicular_error <= angular_tolerance,
+                and perpendicular_error <= angular_tolerance
+                and entry_angle <= angular_tolerance,
             )
         )
     return tuple(alignments)
@@ -203,28 +212,32 @@ def build_drive_module(
     official_shape = cq.importers.importStep(str(official_path)).val()
     official_solid_count = len(official_shape.Solids())
 
-    plate = _hex_prism(118.0, -102.0, 6.0)
-    center_clearance = _vertical_cylinder((0.0, 0.0, 0.0), 70.0, -103.0, -95.0)
+    plate = _hex_prism(118.0, -108.0, 6.0)
+    center_clearance = _vertical_cylinder((0.0, 0.0, 0.0), 75.0, -109.0, -101.0)
     plate = plate.cut(center_clearance).clean()
+    for angle_deg in (17.0, 157.0):
+        radial = _unit_radial(angle_deg)
+        center = (85.0 * radial[0], 85.0 * radial[1], 0.0)
+        plate = plate.cut(_vertical_cylinder(center, 3.6, -109.0, -101.0)).clean()
     components: dict[str, cq.Shape] = {"removable_motor_plate": plate}
     motor_names: list[str] = []
     for axis in axes:
         name = f"removable_M2006_{axis.axis_index:02d}"
-        motor = _vertical_cylinder(axis.spool_center, 12.2, -100.0, -35.2)
-        coupling = _vertical_ring(axis.spool_center, 8.0, 5.05, -35.0, -27.2)
-        cradle = _vertical_ring(axis.spool_center, 15.0, 12.4, -97.0, -86.0)
+        motor = _vertical_cylinder(axis.spool_center, 12.2, -102.0, -37.2)
+        coupling = _vertical_ring(axis.spool_center, 8.0, 5.05, -41.0, -33.2)
+        cradle = _vertical_ring(axis.spool_center, 15.0, 12.4, -105.0, -94.0)
         components[name] = motor
         components[f"removable_coupling_sleeve_{axis.axis_index:02d}"] = coupling
         components[f"removable_motor_cradle_{axis.axis_index:02d}"] = cradle
         motor_names.append(name)
     components["removable_plate_register"] = _vertical_ring(
-        (0.0, 0.0, 0.0), 60.0, 55.0, -96.0, -93.0
+        (0.0, 0.0, 0.0), 75.1, 72.5, -106.0, -100.0
     )
     for index, angle_deg in enumerate((17.0, 157.0), start=1):
         radial = _unit_radial(angle_deg)
-        center = (78.0 * radial[0], 78.0 * radial[1], 0.0)
+        center = (85.0 * radial[0], 85.0 * radial[1], 0.0)
         components[f"removable_plate_dowel_{index:02d}"] = _vertical_cylinder(
-            center, 3.0, -98.0, -90.0
+            center, 3.0, -106.0, -98.0
         )
     return DriveModuleResult(
         components=components,
@@ -248,7 +261,7 @@ def build_fixed_base(
     top_plate = _hex_prism(125.0, -8.0, 8.0)
     register_service_clearance = _vertical_cylinder(
         (0.0, 0.0, 0.0),
-        0.5 * float(contract.root_interface.register_diameter_mm) + 0.25,
+        90.25,
         -8.2,
         0.2,
     )
@@ -257,15 +270,29 @@ def build_fixed_base(
         "fixed_top_plate": top_plate,
         "fixed_root_receiver": root.base_side_receiver,
     }
+    outer_shell = _vertical_ring((0.0, 0.0, 0.0), 124.0, 120.0, -110.0, -8.0)
+    inner_shell = _vertical_ring((0.0, 0.0, 0.0), 72.0, 68.5, -110.0, -8.0)
+    components["fixed_common_motor_chamber"] = cq.Compound.makeCompound(
+        [outer_shell, inner_shell]
+    )
+    components["fixed_drive_plate_register_seat"] = _vertical_ring(
+        (0.0, 0.0, 0.0), 75.5, 75.25, -100.0, -96.0
+    )
+    for index, angle_deg in enumerate((17.0, 157.0), start=1):
+        radial = _unit_radial(angle_deg)
+        center = (85.0 * radial[0], 85.0 * radial[1], 0.0)
+        components[f"fixed_drive_plate_dowel_socket_{index:02d}"] = _vertical_ring(
+            center, 3.5, 3.1, -106.0, -98.0
+        )
     support_pairs: list[tuple[str, str]] = []
     for axis in axes:
         index = axis.axis_index
         center = axis.spool_center
         wet_tunnel = _vertical_cylinder(center, 13.2, -8.2, 0.2)
         top_plate = top_plate.cut(wet_tunnel)
-        spool_core = _vertical_cylinder(center, 10.0, -3.5, 3.5)
-        lower_flange = _vertical_cylinder(center, 12.0, -5.0, -3.5)
-        upper_flange = _vertical_cylinder(center, 12.0, 3.5, 5.0)
+        spool_core = _vertical_cylinder(center, 10.0, -1.0, 6.0)
+        lower_flange = _vertical_cylinder(center, 12.0, -2.5, -1.0)
+        upper_flange = _vertical_cylinder(center, 12.0, 6.0, 7.5)
         spool = spool_core.fuse(lower_flange, upper_flange).clean()
         shaft = _vertical_cylinder(center, 5.0, -35.0, 5.0)
         bearing_inner_name = f"fixed_bearing_inner_{index:02d}"
@@ -274,20 +301,29 @@ def build_fixed_base(
         components[f"fixed_shaft_{index:02d}"] = shaft
         components[bearing_inner_name] = _vertical_ring(center, 11.0, 5.05, -24.0, -18.0)
         components[bearing_outer_name] = _vertical_ring(center, 11.0, 5.05, -17.0, -11.0)
+        components[f"fixed_bearing_inner_housing_{index:02d}"] = _vertical_ring(
+            center, 13.0, 11.05, -24.0, -18.0
+        )
+        components[f"fixed_bearing_outer_housing_{index:02d}"] = _vertical_ring(
+            center, 13.0, 11.05, -17.0, -11.0
+        )
         components[f"fixed_seal_housing_{index:02d}"] = _vertical_ring(
-            center, 14.0, 11.05, -11.0, 0.0
+            center, 13.0, 11.05, -11.0, -2.75
         )
         components[f"fixed_oil_seal_{index:02d}"] = _vertical_ring(
-            center, 11.0, 5.05, -10.0, -3.0
+            center, 11.0, 5.05, -10.0, -7.0
         )
         components[f"fixed_labyrinth_{index:02d}"] = _vertical_ring(
-            center, 12.0, 5.5, -3.0, 1.5
+            center, 11.0, 5.5, -6.75, -2.75
         )
         components[f"fixed_axial_retainer_{index:02d}"] = _vertical_ring(
             center, 7.5, 5.05, -27.0, -25.0
         )
         support_pairs.append((bearing_inner_name, bearing_outer_name))
     components["fixed_top_plate"] = top_plate.clean()
+    for x_mm, y_mm, _ in root.fastener_centers:
+        probe = _vertical_cylinder((x_mm, y_mm, 0.0), 2.75, -9.0, 11.0)
+        components["fixed_top_plate"] = components["fixed_top_plate"].cut(probe).clean()
     return FixedBaseResult(
         components=components,
         top_plate=components["fixed_top_plate"],

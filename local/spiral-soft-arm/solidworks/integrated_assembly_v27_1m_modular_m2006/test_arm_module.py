@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 import importlib.util
 from pathlib import Path
 import sys
@@ -66,8 +67,20 @@ class V27ArmSegmentationTests(unittest.TestCase):
         arm = self.get_arm_module()
         planes = arm.compute_unit_planes(self.contract)
         longest_unit = max(b - a for a, b in zip(planes, planes[1:]))
-        with self.assertRaisesRegex(ValueError, "individual unit"):
+        with self.assertRaisesRegex(ValueError, "candidate boundaries"):
             arm.choose_four_segment_ranges(planes, longest_unit - 0.01)
+
+    def test_connector_projection_is_included_in_height_limit(self) -> None:
+        arm = self.get_arm_module()
+        tight_contract = replace(
+            self.contract,
+            arm=replace(self.contract.arm, max_segment_height_mm=265.0),
+        )
+        result = arm.build_arm_module(tight_contract)
+        actual_heights = tuple(
+            shape.BoundingBox().zlen for shape in result.print_segments.values()
+        )
+        self.assertTrue(all(height < 265.0 for height in actual_heights), actual_heights)
 
 
 class V27ArmCadTests(unittest.TestCase):
@@ -125,6 +138,18 @@ class V27ArmCadTests(unittest.TestCase):
             self.assertTrue(lock.proxy.isValid())
             self.assertGreater(lock.proxy.Volume(), 0.0)
             self.assertEqual(lock.kind, "cross_pin")
+            self.assertGreaterEqual(lock.insertion_clearance_mm, 1.0)
+
+    def test_paper_spiral_unit_profile_is_used(self) -> None:
+        result = self.build()
+        self.assertEqual(result.geometry_source, "paper_discrete_logarithmic_spiral_profile")
+        self.assertEqual(result.unit_profile_count, 42)
+        self.assertTrue(all(shape.Faces().__len__() > 20 for shape in result.print_segments.values()))
+
+    def test_tip_tendon_anchors_are_delivered(self) -> None:
+        result = self.build()
+        self.assertEqual(len(result.tip_anchors), 3)
+        self.assertTrue(all(anchor.proxy.isValid() for anchor in result.tip_anchors))
 
     def test_arm_result_names_four_print_segments(self) -> None:
         result = self.build()

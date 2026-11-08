@@ -105,6 +105,28 @@ class V27RootQuickChangeTests(unittest.TestCase):
             self.assertGreater(terminal.adjustment_stroke_mm, 0.0)
             self.assertGreaterEqual(terminal.future_load_cell_straight_length_mm, 20.0)
 
+    def test_arm_capture_sleeve_transfers_load_without_gap(self) -> None:
+        _, result = self.build()
+        first_segment = self.arm.print_segments["arm_segment_01"]
+        self.assertTrue(result.arm_capture_sleeve.isValid())
+        self.assertGreater(result.arm_capture_sleeve.intersect(first_segment).Volume(), 1.0)
+        self.assertAlmostEqual(result.arm_capture_sleeve.distance(first_segment), 0.0, places=6)
+
+    def test_terminal_blocks_clear_the_tpu_root(self) -> None:
+        _, result = self.build()
+        first_segment = self.arm.print_segments["arm_segment_01"]
+        for terminal in result.tendon_terminals:
+            self.assertLess(terminal.capture_block.intersect(first_segment).Volume(), 0.02)
+
+    def test_terminal_entry_direction_comes_from_actual_channel(self) -> None:
+        _, result = self.build()
+        for terminal, channel in zip(result.tendon_terminals, self.arm.tendon_centerlines):
+            delta = tuple(b - a for a, b in zip(channel.samples[0], channel.samples[1]))
+            norm = math.sqrt(sum(value * value for value in delta))
+            expected = tuple(value / norm for value in delta)
+            for actual, target in zip(terminal.axis_direction, expected):
+                self.assertAlmostEqual(actual, target, places=7)
+
 
 if __name__ == "__main__":
     unittest.main()

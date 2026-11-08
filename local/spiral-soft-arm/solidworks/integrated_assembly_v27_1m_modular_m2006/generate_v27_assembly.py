@@ -2,11 +2,11 @@ from __future__ import annotations
 
 from dataclasses import asdict, dataclass
 import hashlib
-import importlib.util
+import json
 import math
 from pathlib import Path
 import re
-import sys
+from itertools import combinations
 from typing import Any, Iterable
 
 import cadquery as cq
@@ -60,17 +60,6 @@ def snapshot_v26_outputs(contract: V27Contract) -> dict[str, str]:
     return snapshot
 
 
-def _load_v25(contract: V27Contract) -> Any:
-    path = (contract.output_directory / contract.source_specs["v25_generator"]["path"]).resolve()
-    spec = importlib.util.spec_from_file_location("v27_v25_electronics_source", path)
-    if spec is None or spec.loader is None:
-        raise ImportError(path)
-    module = importlib.util.module_from_spec(spec)
-    sys.modules[spec.name] = module
-    spec.loader.exec_module(module)
-    return module
-
-
 def _box_from_center(
     size_x: float, size_y: float, size_z: float, center: tuple[float, float, float]
 ) -> cq.Shape:
@@ -88,22 +77,50 @@ def _polar_center(radius_mm: float, angle_deg: float, z_mm: float) -> tuple[floa
 
 
 def _select_v25_electronics(contract: V27Contract) -> dict[str, cq.Shape]:
-    module = _load_v25(contract)
-    source, _ = module.build_v25_components()
-    excluded = {
-        "v24_central_bottom_lid_M28_bore",
-        "v25_M28_service_clearance",
-    }
-    selected = {
-        name: shape
-        for name, shape in source.items()
-        if (name.startswith("v24_") or name.startswith("v25_"))
-        and name not in excluded
-        and "C620" not in name
-    }
-    selected["v27_STM32F407_controller_envelope"] = selected.pop(
-        "v24_controller_envelope"
+    """Reconstruct the frozen V24/V25 envelopes from tracked JSON only."""
+    v24_path = (contract.output_directory / contract.source_specs["v24_parameters"]["path"]).resolve()
+    v25_path = (contract.output_directory / contract.source_specs["v25_parameters"]["path"]).resolve()
+    v24 = json.loads(v24_path.read_text(encoding="utf-8"))
+    v25 = json.loads(v25_path.read_text(encoding="utf-8"))
+    selected: dict[str, cq.Shape] = {}
+    canister = v24["canister"]
+    outer = cq.Solid.makeCylinder(0.5 * canister["outer_diameter"], canister["top_z"] - canister["bottom_z"], cq.Vector(0, 0, canister["bottom_z"]), cq.Vector(0, 0, 1))
+    inner = cq.Solid.makeCylinder(0.5 * canister["inner_diameter"], canister["top_z"] - canister["bottom_z"] + 0.2, cq.Vector(0, 0, canister["bottom_z"] - 0.1), cq.Vector(0, 0, 1))
+    selected["v24_central_electronics_canister"] = outer.cut(inner)
+    lid = cq.Solid.makeCylinder(68.0, 10.0, cq.Vector(0, 0, -240), cq.Vector(0, 0, 1))
+    m28_bore = cq.Solid.makeCylinder(13.9, 10.2, cq.Vector(0, 0, -240.1), cq.Vector(0, 0, 1))
+    selected["v25_bottom_lid_with_M28_recess"] = lid.cut(m28_bore)
+
+    hardware = v24["hardware"]
+    for index, (x_mm, y_mm) in enumerate(hardware["cells"]["centres_xy"], start=1):
+        selected[f"v24_21700_cell_{index}"] = cq.Solid.makeCylinder(
+            0.5 * hardware["cells"]["diameter"],
+            hardware["cells"]["length"],
+            cq.Vector(x_mm, y_mm, hardware["cells"]["z"][0] + 12.0),
+            cq.Vector(0, 0, 1),
+        )
+    for key, name in (
+        ("controller", "v27_STM32F407_controller_envelope"),
+        ("ups", "v24_UPS_envelope"),
+        ("regulator", "v24_regulator_envelope"),
+        ("pd1002", "v24_PD1002_envelope"),
+        ("ideal_diode", "v24_ideal_diode_envelope"),
+        ("bms", "v24_BMS_envelope"),
+    ):
+        aabb = hardware[key]["aabb"]
+        selected[name] = cq.Solid.makeBox(aabb[1] - aabb[0], aabb[3] - aabb[2], aabb[5] - aabb[4], cq.Vector(aabb[0], aabb[2], aabb[4]))
+    buck_aabb = v25["hardware"]["buck_5v"]["aabb"]
+    selected["v25_buck_5v_envelope"] = cq.Solid.makeBox(
+        buck_aabb[1] - buck_aabb[0], buck_aabb[3] - buck_aabb[2], buck_aabb[5] - buck_aabb[4], cq.Vector(buck_aabb[0], buck_aabb[2], buck_aabb[4])
     )
+    selected["v25_M28_socket_body"] = cq.Solid.makeCylinder(13.9, 38.5, cq.Vector(0, 0, -240), cq.Vector(0, 0, 1))
+    selected["v24_M12_USB_C_inside_stem_proxy"] = cq.Solid.makeCylinder(7.2, 18.0, cq.Vector(0, -68, -202), cq.Vector(0, 1, 0))
+    selected["v24_central_electronics_canister"] = selected[
+        "v24_central_electronics_canister"
+    ].cut(selected["v24_M12_USB_C_inside_stem_proxy"])
+    selected["v24_regulator_envelope"] = selected[
+        "v24_regulator_envelope"
+    ].translate((0.0, 0.0, 15.0))
     # The official C610 STEP is an exploded service model.  The fixed electronics
     # side therefore uses the measured main-case envelope only, with three units
     # occupying the C620 bays removed above.
@@ -131,9 +148,17 @@ def _arm_components(arm: ArmBuildResult, root: RootInterfaceResult) -> dict[str,
             "arm_root_flange": root.arm_side_flange,
             "arm_root_backing": root.metal_backing_proxy,
             "arm_register": root.register_proxy,
+            "arm_capture_sleeve": root.arm_capture_sleeve,
             "arm_tendon_terminals": terminal_compound,
         }
     )
+    for index, lock in enumerate(arm.lock_features, start=1):
+        components[f"arm_dovetail_lock_{index:02d}"] = lock.proxy
+    for index, anchor in enumerate(arm.tip_anchors, start=1):
+        components[f"arm_tip_tendon_anchor_{index:02d}"] = anchor.proxy
+    for index, terminal in enumerate(root.tendon_terminals, start=1):
+        components[f"arm_terminal_adjustment_{index:02d}"] = terminal.adjustment_envelope
+        components[f"arm_terminal_secondary_retention_{index:02d}"] = terminal.secondary_retention
     return components
 
 
@@ -146,6 +171,8 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
     arm_components = _arm_components(arm, root)
     drive_components = dict(drive.components)
     fixed_components = dict(fixed.components)
+    for index, dowel in enumerate(root.dowel_proxies, start=1):
+        fixed_components[f"fixed_root_dowel_{index:02d}"] = dowel
     electronics_components = _select_v25_electronics(contract)
     components = {
         **arm_components,
@@ -158,10 +185,40 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
         for group in (arm_components, drive_components, fixed_components, electronics_components)
     ):
         raise ValueError("component names must be globally unique")
-    intentional = [("arm_root_flange", "fixed_root_receiver")]
+    intentional = [
+        ("arm_root_flange", "fixed_root_receiver"),
+        ("arm_capture_sleeve", "arm_module_arm_segment_01"),
+        ("arm_root_flange", "arm_module_arm_segment_01"),
+        ("arm_root_flange", "arm_capture_sleeve"),
+        ("arm_root_flange", "arm_root_backing"),
+        ("arm_root_flange", "arm_register"),
+        ("arm_root_backing", "arm_capture_sleeve"),
+        ("arm_root_flange", "arm_tendon_terminals"),
+        ("removable_motor_plate", "removable_plate_register"),
+    ]
+    for index in range(1, 4):
+        intentional.extend(
+            [
+                ("arm_module_arm_segment_04", f"arm_tip_tendon_anchor_{index:02d}"),
+                ("arm_root_flange", f"arm_terminal_adjustment_{index:02d}"),
+                ("arm_root_flange", f"arm_terminal_secondary_retention_{index:02d}"),
+                ("arm_tendon_terminals", f"arm_terminal_adjustment_{index:02d}"),
+                ("arm_tendon_terminals", f"arm_terminal_secondary_retention_{index:02d}"),
+                (f"arm_terminal_adjustment_{index:02d}", f"arm_terminal_secondary_retention_{index:02d}"),
+            ]
+        )
     for index in range(1, 4):
         intentional.append(
             (f"removable_coupling_sleeve_{index:02d}", f"fixed_shaft_{index:02d}")
+        )
+        intentional.append(
+            (f"removable_M2006_{index:02d}", f"removable_coupling_sleeve_{index:02d}")
+        )
+        intentional.append(
+            ("removable_motor_plate", f"removable_motor_cradle_{index:02d}")
+        )
+        intentional.append(
+            (f"fixed_wet_spool_{index:02d}", f"fixed_shaft_{index:02d}")
         )
     return V27AssemblyResult(
         contract=contract,
@@ -191,34 +248,77 @@ def _aabb_overlap(first: cq.Shape, second: cq.Shape) -> bool:
     )
 
 
-def _cross_group_collisions(result: V27AssemblyResult) -> list[dict[str, Any]]:
-    groups = (
-        result.arm_component_names,
-        result.drive_component_names,
-        result.fixed_component_names,
-        result.electronics_component_names,
-    )
+def _component_group(result: V27AssemblyResult, name: str) -> str:
+    for label, names in (
+        ("arm", result.arm_component_names),
+        ("drive", result.drive_component_names),
+        ("fixed", result.fixed_component_names),
+        ("electronics", result.electronics_component_names),
+    ):
+        if name in names:
+            return label
+    raise KeyError(name)
+
+
+def _all_component_collisions(result: V27AssemblyResult) -> tuple[list[dict[str, Any]], int, list[list[str]]]:
     intentional = {frozenset(pair) for pair in result.intentional_contacts}
     collisions: list[dict[str, Any]] = []
-    for first_group_index, first_group in enumerate(groups):
-        for second_group in groups[first_group_index + 1 :]:
-            for first_name in first_group:
-                first = result.components[first_name]
-                for second_name in second_group:
-                    if frozenset((first_name, second_name)) in intentional:
-                        continue
-                    second = result.components[second_name]
-                    if not _aabb_overlap(first, second):
-                        continue
-                    volume = first.intersect(second).Volume()
-                    if volume > 0.02:
-                        collisions.append(
-                            {
-                                "components": [first_name, second_name],
-                                "volume_mm3": round(volume, 4),
-                            }
-                        )
-    return collisions
+    checked_same_group: list[list[str]] = []
+    names = tuple(result.components)
+    for first_name, second_name in combinations(names, 2):
+        if _component_group(result, first_name) == _component_group(result, second_name):
+            checked_same_group.append([first_name, second_name])
+        if frozenset((first_name, second_name)) in intentional:
+            continue
+        first = result.components[first_name]
+        second = result.components[second_name]
+        if not _aabb_overlap(first, second):
+            continue
+        volume = first.intersect(second).Volume()
+        if volume > 0.02:
+            collisions.append(
+                {
+                    "components": [first_name, second_name],
+                    "volume_mm3": round(volume, 4),
+                }
+            )
+    return collisions, len(names) * (len(names) - 1) // 2, checked_same_group
+
+
+def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
+    moving_names = tuple(
+        name for name in result.drive_component_names if "coupling_sleeve" not in name
+    )
+    obstacles = (*result.fixed_component_names, *result.electronics_component_names)
+    offsets = tuple(float(value) for value in range(10, 201, 10))
+    minimum_clearance = float("inf")
+    collisions: list[dict[str, Any]] = []
+    for offset in offsets:
+        for moving_name in moving_names:
+            moving = result.components[moving_name].translate((0.0, 0.0, -offset))
+            moving_box = moving.BoundingBox()
+            for obstacle_name in obstacles:
+                obstacle = result.components[obstacle_name]
+                obstacle_box = obstacle.BoundingBox()
+                dx = max(obstacle_box.xmin - moving_box.xmax, moving_box.xmin - obstacle_box.xmax, 0.0)
+                dy = max(obstacle_box.ymin - moving_box.ymax, moving_box.ymin - obstacle_box.ymax, 0.0)
+                dz = max(obstacle_box.zmin - moving_box.zmax, moving_box.zmin - obstacle_box.zmax, 0.0)
+                bbox_distance = math.sqrt(dx * dx + dy * dy + dz * dz)
+                if bbox_distance > 0.0:
+                    minimum_clearance = min(minimum_clearance, bbox_distance)
+                    continue
+                volume = moving.intersect(obstacle).Volume()
+                if volume > 0.02:
+                    collisions.append({"offset_mm": offset, "components": [moving_name, obstacle_name], "volume_mm3": round(volume, 4)})
+                    minimum_clearance = 0.0
+                else:
+                    minimum_clearance = min(minimum_clearance, moving.distance(obstacle))
+    return {
+        "sample_count": len(offsets),
+        "minimum_clearance_mm": minimum_clearance,
+        "collisions": collisions,
+        "passes": not collisions,
+    }
 
 
 def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
@@ -226,22 +326,21 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     alignment = audit_tendon_alignment(contract, result.root, result.fixed.axes)
     engineering = generate_v27_engineering_audit(contract)
     sources = build_source_manifest(contract)
-    collisions = _cross_group_collisions(result)
+    collisions, checked_pair_count, checked_same_group = _all_component_collisions(result)
     arm_names = set(result.arm_component_names)
     arm_forbidden = [
         item
         for item in collisions
         if any(name in arm_names for name in item["components"])
     ]
-    electronics_shell = result.components["v24_central_electronics_canister"].BoundingBox()
-    motor_min_radius = min(
-        math.hypot(axis.spool_center[0], axis.spool_center[1]) - 12.2
-        for axis in result.fixed.axes
-    )
+    drive_sweep = _drive_removal_sweep(result)
     service = {
         "arm_positive_z_removal_clear": not arm_forbidden
         and result.root.register_height_mm > 0.0,
-        "drive_negative_z_removal_clear": motor_min_radius > max(abs(electronics_shell.xmax), abs(electronics_shell.ymax)),
+        "drive_negative_z_removal_clear": drive_sweep["passes"],
+        "drive_sweep_sample_count": drive_sweep["sample_count"],
+        "drive_sweep_min_clearance_mm": drive_sweep["minimum_clearance_mm"],
+        "drive_sweep_collisions": drive_sweep["collisions"],
         "root_fastener_tool_envelopes": len(result.root.tool_envelopes),
         "all_tool_envelopes_valid": all(shape.isValid() for shape in result.root.tool_envelopes),
         "fixed_shafts_supported_without_drive": result.fixed.shafts_supported_without_drive,
@@ -265,9 +364,27 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         "collisions": {
             "forbidden": collisions,
             "intentional_contacts": [list(pair) for pair in result.intentional_contacts],
+            "checked_pair_count": checked_pair_count,
+            "checked_same_group_pairs": checked_same_group,
         },
         "service": service,
     }
+
+
+def preflight_v27(result: V27AssemblyResult) -> dict[str, Any]:
+    audit = audit_v27_assembly(result)
+    failures: list[str] = []
+    if audit["collisions"]["forbidden"]:
+        failures.append("forbidden component collision")
+    if not all(item["passes"] for item in audit["alignment"]):
+        failures.append("tendon alignment")
+    if not audit["service"]["arm_positive_z_removal_clear"]:
+        failures.append("arm removal")
+    if not audit["service"]["drive_negative_z_removal_clear"]:
+        failures.append("drive removal sweep")
+    if failures:
+        raise ValueError("V27 preflight failed: " + ", ".join(failures))
+    return audit
 
 
 def _export_assembly(names: Iterable[str], result: V27AssemblyResult, path: Path) -> None:
@@ -292,6 +409,11 @@ def _export_assembly(names: Iterable[str], result: V27AssemblyResult, path: Path
 
 def export_v27(result: V27AssemblyResult) -> dict[str, Path]:
     directory = result.contract.output_directory
+    audit = preflight_v27(result)
+    (directory / "V27装配审查.json").write_text(
+        json.dumps(audit, ensure_ascii=False, indent=2, sort_keys=True, allow_nan=False) + "\n",
+        encoding="utf-8",
+    )
     outputs = {
         "arm_module": directory / "SpiRobs_v27_1m_四段臂体模块.step",
         "drive_module": directory / "SpiRobs_v27_M2006三电机驱动模块.step",

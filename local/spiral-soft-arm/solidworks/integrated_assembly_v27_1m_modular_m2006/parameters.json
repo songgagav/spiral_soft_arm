@@ -70,6 +70,10 @@
       "path": "../electronics_enclosure_v25_power_input_and_m28/parameters.json",
       "role": "v25_parameters"
     },
+    "v24_parameters": {
+      "path": "../electronics_enclosure_v24_selected_hardware/parameters.json",
+      "role": "v24_parameters"
+    },
     "v26_parameters": {
       "path": "../integrated_assembly_v26_arm_and_v25_electronics/parameters.json",
       "role": "v26_parameters"

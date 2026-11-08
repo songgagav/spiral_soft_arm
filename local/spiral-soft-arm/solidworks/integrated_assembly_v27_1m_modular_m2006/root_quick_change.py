@@ -24,6 +24,7 @@ class TendonTerminal:
 @dataclass(frozen=True)
 class RootInterfaceResult:
     arm_side_flange: cq.Shape
+    arm_capture_sleeve: cq.Shape
     base_side_receiver: cq.Shape
     metal_backing_proxy: cq.Shape
     register_proxy: cq.Shape
@@ -98,6 +99,8 @@ def build_root_interface(contract: Any, arm: Any) -> RootInterfaceResult:
     arm_radius = 0.5 * float(contract.arm.root_diameter_mm)
     register_radius = 0.5 * float(cfg.register_diameter_mm)
     arm_flange = _annulus(flange_radius, arm_radius + 0.5, 0.0, 8.0)
+    arm_capture_sleeve = _annulus(arm_radius + 1.0, arm_radius - 3.0, 0.0, 12.0)
+    arm_flange = arm_flange.fuse(arm_capture_sleeve).clean()
     register = _annulus(register_radius, arm_radius + 0.5, -float(cfg.register_height_mm), float(cfg.register_height_mm))
     arm_flange = arm_flange.fuse(register).clean()
 
@@ -160,15 +163,20 @@ def build_root_interface(contract: Any, arm: Any) -> RootInterfaceResult:
         zip((0.0, 120.0, 240.0), arm.tendon_centerlines), start=1
     ):
         key_code = f"K{index}-{3.0 + 0.5 * (index - 1):.1f}"
-        capture = _oriented_box(18.0, 7.0 + index, 8.0, 50.0, angle_deg)
-        axis = _radial_point(1.0, angle_deg)
+        capture = _oriented_box(18.0, 7.0 + index, 8.0, 75.0, angle_deg)
+        delta = tuple(
+            float(second - first)
+            for first, second in zip(channel.samples[0], channel.samples[1])
+        )
+        norm = math.sqrt(sum(value * value for value in delta))
+        axis = tuple(value / norm for value in delta)
         adjustment = _cylinder_between(
             2.0,
-            _radial_point(58.0, angle_deg),
-            _radial_point(78.0, angle_deg),
+            _radial_point(63.0, angle_deg),
+            _radial_point(83.0, angle_deg),
         )
         tangential = (-axis[1], axis[0], 0.0)
-        pin_center = _radial_point(50.0, angle_deg)
+        pin_center = _radial_point(75.0, angle_deg)
         retention = cq.Solid.makeCylinder(
             1.0,
             12.0,
@@ -194,8 +202,18 @@ def build_root_interface(contract: Any, arm: Any) -> RootInterfaceResult:
             )
         )
 
+    # Provide real service passages through the mating receiver and register;
+    # terminal hardware must not occupy the same material as the fixed base.
+    for terminal in terminals:
+        receiver = receiver.cut(terminal.capture_block).cut(
+            terminal.adjustment_envelope
+        ).cut(terminal.secondary_retention)
+        register = register.cut(terminal.adjustment_envelope)
+        arm_flange = arm_flange.cut(terminal.adjustment_envelope)
+
     return RootInterfaceResult(
         arm_side_flange=arm_flange.clean(),
+        arm_capture_sleeve=arm_capture_sleeve.clean(),
         base_side_receiver=receiver.clean(),
         metal_backing_proxy=backing.clean(),
         register_proxy=register,

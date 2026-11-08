@@ -28,7 +28,7 @@ class V27EngineeringFormulaTests(unittest.TestCase):
         self.assertEqual(report.reference_lengths_mm, (5.0,))
         self.assertEqual(report.extreme_lengths_mm, ((6.0,), (2.0,)))
         self.assertEqual(report.signed_deltas_mm, ((1.0,), (-3.0,)))
-        self.assertEqual(report.required_travel_mm, (3.0,))
+        self.assertEqual(report.required_travel_mm, (4.0,))
 
     def test_spool_capacity_includes_twenty_percent_margin(self) -> None:
         report = compute_spool_capacity(
@@ -48,10 +48,13 @@ class V27EngineeringFormulaTests(unittest.TestCase):
             drivetrain_efficiency=0.8,
             seal_drag_torque_nm=0.1,
             tendon_friction_efficiency=0.5,
-            effective_radius_mm=10.0,
+            minimum_effective_radius_mm=10.0,
+            maximum_effective_radius_mm=12.0,
         )
         self.assertAlmostEqual(report.net_spool_torque_nm, 0.7)
-        self.assertAlmostEqual(report.available_tendon_force_n, 35.0)
+        self.assertAlmostEqual(report.maximum_tendon_force_n, 35.0)
+        self.assertAlmostEqual(report.minimum_tendon_force_n, 0.7 / 0.012 * 0.5)
+        self.assertFalse(report.qualified)
 
     def test_root_moment_from_force_and_lever_arm(self) -> None:
         report = compute_root_load(
@@ -96,7 +99,8 @@ class V27EngineeringBoundaryTests(unittest.TestCase):
                 drivetrain_efficiency=0.0,
                 seal_drag_torque_nm=0.1,
                 tendon_friction_efficiency=0.5,
-                effective_radius_mm=10.0,
+                minimum_effective_radius_mm=10.0,
+                maximum_effective_radius_mm=12.0,
             )
 
     def test_seal_and_tendon_friction_are_never_omitted(self) -> None:
@@ -104,14 +108,16 @@ class V27EngineeringBoundaryTests(unittest.TestCase):
             compute_force_budget(  # type: ignore[call-arg]
                 motor_continuous_torque_nm=1.0,
                 drivetrain_efficiency=0.8,
-                effective_radius_mm=10.0,
+                minimum_effective_radius_mm=10.0,
+                maximum_effective_radius_mm=12.0,
             )
         report = compute_force_budget(
             motor_continuous_torque_nm=1.0,
             drivetrain_efficiency=0.8,
             seal_drag_torque_nm=0.1,
             tendon_friction_efficiency=0.5,
-            effective_radius_mm=10.0,
+            minimum_effective_radius_mm=10.0,
+            maximum_effective_radius_mm=12.0,
         )
         self.assertIn("seal_drag_torque_nm", report.assumptions)
         self.assertIn("tendon_friction_efficiency", report.assumptions)
@@ -126,6 +132,10 @@ class V27EngineeringBoundaryTests(unittest.TestCase):
         self.assertFalse(payload["qualified"])
         self.assertTrue(payload["missing_measurements"])
         self.assertTrue(math.isfinite(payload["root_load"]["root_moment_nm"]))
+        self.assertGreater(max(payload["tendon_travel"]["required_travel_mm"]), 30.0)
+        self.assertAlmostEqual(payload["force_budget"]["minimum_tendon_force_n"], 46.6666666667, places=6)
+        self.assertIn("arm_wet_mass_and_buoyancy", payload["missing_measurements"])
+        self.assertIn("bolt_group_capacity", payload["missing_measurements"])
 
 
 if __name__ == "__main__":

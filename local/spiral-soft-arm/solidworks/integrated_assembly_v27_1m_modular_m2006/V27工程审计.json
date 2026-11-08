@@ -14,20 +14,29 @@
       "seal_drag_torque_nm": 0.05,
       "tendon_friction_efficiency": 0.7
     },
-    "available_tendon_force_n": 55.999999999999986,
     "drivetrain_efficiency": 0.85,
-    "effective_radius_mm": 10.0,
-    "missing_measurements": [],
+    "maximum_effective_radius_mm": 12.0,
+    "maximum_tendon_force_n": 55.999999999999986,
+    "minimum_effective_radius_mm": 10.0,
+    "minimum_tendon_force_n": 46.66666666666666,
+    "missing_measurements": [
+      "measured_seal_drag_torque",
+      "measured_drivetrain_efficiency",
+      "measured_tendon_friction_efficiency"
+    ],
     "motor_continuous_torque_nm": 1.0,
     "net_spool_torque_nm": 0.7999999999999999,
-    "qualified": true,
+    "qualified": false,
     "seal_drag_torque_nm": 0.05,
     "tendon_friction_efficiency": 0.7
   },
   "hardware_validated": false,
   "missing_measurements": [
+    "arm_wet_mass_and_buoyancy",
+    "bolt_group_capacity",
     "measured_drivetrain_efficiency",
     "measured_dynamic_root_load",
+    "measured_low_speed_full_travel_current",
     "measured_seal_drag_torque",
     "measured_spool_usable_turns",
     "measured_tendon_friction_efficiency",
@@ -66,54 +75,54 @@
     },
     "available_travel_mm": 376.99111843077515,
     "margin_fraction": 0.2,
-    "margin_mm": 355.28323305630914,
+    "margin_mm": 333.72786738648983,
     "maximum_effective_radius_mm": 12.0,
     "minimum_effective_radius_mm": 10.0,
     "missing_measurements": [],
     "qualified": true,
-    "required_travel_mm": 18.089904478721678,
-    "required_turns_at_max_radius": 0.28790977178487714,
-    "required_with_margin_mm": 21.707885374466013,
+    "required_travel_mm": 36.05270920357111,
+    "required_turns_at_max_radius": 0.5737966881603012,
+    "required_with_margin_mm": 43.26325104428533,
     "usable_turns": 6.0
   },
   "status": "calculation_candidate_not_physical_release",
   "tendon_travel": {
     "assumptions": {
       "method": "piecewise_linear_sampled_centerline_length",
-      "travel_definition": "maximum_absolute_difference_from_straight_reference"
+      "travel_definition": "full_extreme_to_extreme_wind_and_payout_range"
     },
     "extreme_lengths_mm": [
       [
-        982.410040861107,
-        1009.390691371513,
-        1009.390691371513
+        983.4087710111688,
+        1010.4483910175818,
+        1010.4483910175819
       ],
       [
-        1018.3841418258254,
-        991.4036428555372,
-        991.4036428555371
+        1019.4614802147399,
+        992.4220388469423,
+        992.4220388469422
       ]
     ],
     "reference_lengths_mm": [
-      1000.4999453398286,
-      1000.4999453398286,
-      1000.4999453398286
+      1001.537987222283,
+      1001.537987222283,
+      1001.537987222283
     ],
     "required_travel_mm": [
-      18.089904478721678,
-      9.096302484291414,
-      9.096302484291527
+      36.05270920357111,
+      18.026352170639484,
+      18.02635217063971
     ],
     "signed_deltas_mm": [
       [
-        -18.089904478721678,
-        8.89074603168433,
-        8.89074603168433
+        -18.129216211114226,
+        8.910403795298748,
+        8.910403795298862
       ],
       [
-        17.884196485996767,
-        -9.096302484291414,
-        -9.096302484291527
+        17.923492992456886,
+        -9.115948375340736,
+        -9.11594837534085
       ]
     ]
   }

@@ -75,11 +75,14 @@ class V27DriveAndBaseTests(unittest.TestCase):
                 "fixed_oil_seal",
                 "fixed_labyrinth",
                 "fixed_axial_retainer",
+                "fixed_bearing_inner_housing",
+                "fixed_bearing_outer_housing",
             ):
                 name = f"{prefix}_{index:02d}"
                 self.assertIn(name, base.components)
                 self.assertNotIn(name, module.components)
                 self.assertTrue(base.components[name].isValid())
+        self.assertIn("fixed_common_motor_chamber", base.components)
 
     def test_motor_removal_does_not_remove_or_unseat_shafts(self) -> None:
         _, _, module, base = self.build()
@@ -133,6 +136,62 @@ class V27DriveAndBaseTests(unittest.TestCase):
         )
         self.assertGreater(wrong_audit[0].side_error_mm, 0.25)
         self.assertFalse(wrong_audit[0].passes)
+
+    def test_alignment_uses_actual_arm_entry_direction(self) -> None:
+        drive, axes, _, _ = self.build()
+        audit = drive.audit_tendon_alignment(self.contract, self.root, axes)
+        self.assertTrue(all(item.entry_direction_error_deg <= 0.5 for item in audit))
+        wrong_terminal = replace(
+            self.root.tendon_terminals[0],
+            axis_direction=(0.0, 0.0, 1.0),
+        )
+        wrong_root = replace(
+            self.root,
+            tendon_terminals=(wrong_terminal, *self.root.tendon_terminals[1:]),
+        )
+        wrong = drive.audit_tendon_alignment(self.contract, wrong_root, axes)
+        self.assertGreater(wrong[0].entry_direction_error_deg, 0.5)
+        self.assertFalse(wrong[0].passes)
+
+    def test_rotating_spools_clear_stationary_seals_and_labyrinths(self) -> None:
+        _, _, _, base = self.build()
+        for index in range(1, 4):
+            spool = base.components[f"fixed_wet_spool_{index:02d}"]
+            for stationary in ("fixed_oil_seal", "fixed_labyrinth"):
+                other = base.components[f"{stationary}_{index:02d}"]
+                self.assertLess(spool.intersect(other).Volume(), 0.02)
+
+    def test_bearing_outer_races_have_fixed_housings(self) -> None:
+        _, _, _, base = self.build()
+        for index in range(1, 4):
+            for station in ("inner", "outer"):
+                bearing = base.components[f"fixed_bearing_{station}_{index:02d}"]
+                housing = base.components[f"fixed_bearing_{station}_housing_{index:02d}"]
+                self.assertLess(bearing.intersect(housing).Volume(), 0.02)
+                self.assertLessEqual(bearing.distance(housing), 0.1)
+
+    def test_drive_plate_register_and_dowels_have_fixed_mates(self) -> None:
+        _, _, module, base = self.build()
+        register = module.components["removable_plate_register"]
+        plate = module.components[module.plate_name]
+        receiver = base.components["fixed_drive_plate_register_seat"]
+        self.assertLessEqual(register.distance(plate), 0.01)
+        self.assertLessEqual(register.distance(receiver), 0.6)
+        for index in range(1, 3):
+            pin = module.components[f"removable_plate_dowel_{index:02d}"]
+            socket = base.components[f"fixed_drive_plate_dowel_socket_{index:02d}"]
+            self.assertLessEqual(pin.distance(socket), 0.2)
+
+    def test_root_fastener_axes_are_open_through_fixed_base(self) -> None:
+        _, _, _, base = self.build()
+        for x_mm, y_mm, _ in self.root.fastener_centers:
+            probe = __import__("cadquery").Solid.makeCylinder(
+                2.75,
+                20.0,
+                __import__("cadquery").Vector(x_mm, y_mm, -9.0),
+                __import__("cadquery").Vector(0.0, 0.0, 1.0),
+            )
+            self.assertLess(base.components["fixed_top_plate"].intersect(probe).Volume(), 0.02)
 
     def test_three_v26_coordinate_deltas_are_recorded(self) -> None:
         _, axes, _, _ = self.build()
