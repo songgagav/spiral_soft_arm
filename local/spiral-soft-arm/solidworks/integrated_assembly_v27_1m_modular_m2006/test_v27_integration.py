@@ -4,6 +4,7 @@ import builtins
 import csv
 from dataclasses import replace
 import hashlib
+import json
 from pathlib import Path
 import unittest
 from unittest.mock import patch
@@ -41,10 +42,11 @@ class V27ZZDeliveryTests(unittest.TestCase):
         self.assertEqual(paths, sorted(paths))
         expected = {
             path.relative_to(self.repo_root).as_posix()
-            for path in self.directory.iterdir()
+            for path in self.directory.rglob("*")
             if path.is_file()
             and path.name != self.manifest.name
-            and path.suffix.lower() in {".py", ".json", ".step", ".png", ".md"}
+            and path.suffix.lower()
+            in {".py", ".json", ".step", ".stl", ".png", ".md", ".docx"}
         }
         expected.add("README.md")
         contract = load_contract()
@@ -55,6 +57,28 @@ class V27ZZDeliveryTests(unittest.TestCase):
                 .relative_to(self.repo_root)
                 .as_posix()
             )
+        snapshot_path = self.repo_root / "v27_electronics_snapshot" / "V27电子件快照.json"
+        snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+        for collection in ("components", "service_clearances"):
+            for component in snapshot[collection]:
+                expected.add(
+                    (snapshot_path.parent / component["file"])
+                    .relative_to(self.repo_root)
+                    .as_posix()
+                )
+        for source in snapshot["source_files"].values():
+            expected.add(
+                (self.repo_root / source["path"])
+                .resolve()
+                .relative_to(self.repo_root)
+                .as_posix()
+            )
+        v26_parameters = (
+            self.directory.parent
+            / "integrated_assembly_v26_arm_and_v25_electronics"
+            / "parameters.json"
+        )
+        expected.add(v26_parameters.relative_to(self.repo_root).as_posix())
         self.assertEqual(set(paths), expected)
         for row in rows:
             path = self.repo_root / row["relative_path"]
@@ -143,7 +167,14 @@ class V27IntegrationTests(unittest.TestCase):
         names = self.result.electronics_component_names
         self.assertTrue(any("STM32" in name for name in names))
         self.assertTrue(any("21700" in name for name in names))
-        self.assertEqual(len([name for name in names if "C610" in name]), 3)
+        self.assertEqual(
+            len([name for name in names if "C610" in name and name.endswith("_envelope")]),
+            3,
+        )
+        self.assertEqual(
+            len([name for name in names if "C610" in name and name.endswith("_backing")]),
+            3,
+        )
         self.assertFalse(any("M3508" in name or "C620" in name for name in names))
 
     def test_no_component_name_uses_m3508(self) -> None:
@@ -166,8 +197,10 @@ class V27IntegrationTests(unittest.TestCase):
 
     def test_drive_plate_can_translate_out_after_couplings_released(self) -> None:
         self.assertTrue(self.audit["service"]["drive_negative_z_removal_clear"])
-        self.assertGreaterEqual(self.audit["service"]["drive_sweep_sample_count"], 15)
-        self.assertGreaterEqual(self.audit["service"]["drive_sweep_min_clearance_mm"], 0.25)
+        self.assertEqual(self.audit["service"]["drive_sweep_travel_mm"], 280.0)
+        self.assertAlmostEqual(
+            self.audit["service"]["drive_sweep_min_clearance_mm"], 0.25, places=6
+        )
 
     def test_all_service_fasteners_have_tool_envelopes(self) -> None:
         self.assertEqual(self.audit["service"]["root_fastener_tool_envelopes"], 6)
@@ -178,8 +211,12 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertEqual(self.audit["service"]["fixed_shaft_support_pair_count"], 3)
 
     def test_export_creates_four_named_step_outputs(self) -> None:
+        module_outputs = {
+            self.exports[key].name
+            for key in ("arm_module", "drive_module", "fixed_base", "full_assembly")
+        }
         self.assertEqual(
-            {path.name for path in self.exports.values()},
+            module_outputs,
             {
                 "SpiRobs_v27_1m_四段臂体模块.step",
                 "SpiRobs_v27_M2006三电机驱动模块.step",
@@ -187,6 +224,13 @@ class V27IntegrationTests(unittest.TestCase):
                 "SpiRobs_v27_1m模块化总装.step",
             },
         )
+        segment_outputs = {
+            path.name
+            for key, path in self.exports.items()
+            if key.startswith("print_segment_")
+        }
+        self.assertEqual(len(segment_outputs), 4)
+        self.assertTrue(all(name.endswith(".step") for name in segment_outputs))
         self.assertTrue(all(path.is_file() and path.stat().st_size > 0 for path in self.exports.values()))
 
     def test_full_step_readback_has_valid_solids_and_bounds(self) -> None:
@@ -240,7 +284,14 @@ class V27IntegrationTests(unittest.TestCase):
     def test_four_review_images_are_nonempty(self) -> None:
         self.assertEqual(
             set(self.images),
-            {"full_transparent", "exploded_modules", "root_quick_change", "drive_section"},
+            {
+                "full_transparent",
+                "exploded_modules",
+                "root_quick_change",
+                "drive_section",
+                "electronics_bay",
+                "dovetail_joints",
+            },
         )
         for path in self.images.values():
             self.assertTrue(path.is_file() and path.stat().st_size > 10_000)

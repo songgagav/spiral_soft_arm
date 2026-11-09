@@ -166,7 +166,7 @@ def build_root_interface(contract: Any, arm: Any) -> RootInterfaceResult:
         key_code = f"K{index}-{3.0 + 0.5 * (index - 1):.1f}"
         capture = _oriented_box(18.0, 7.0 + index, 8.0, 75.0, angle_deg)
         angle = math.radians(angle_deg)
-        axis = (math.cos(angle), math.sin(angle), 0.0)
+        axis = (-math.cos(angle), -math.sin(angle), 0.0)
         route_radius = max(
             0.40,
             0.5 * float(contract.arm.tendon_diameter_mm) + 0.15,

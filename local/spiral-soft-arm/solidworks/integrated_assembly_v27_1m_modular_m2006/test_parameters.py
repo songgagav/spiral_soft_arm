@@ -84,10 +84,7 @@ class V27ParameterContractTests(unittest.TestCase):
             "paper_pdf",
             "m2006_step",
             "c610_step",
-            "v25_generator",
-            "v24_parameters",
-            "v25_parameters",
-            "v26_parameters",
+            "electronics_snapshot_manifest",
         }
         self.assertEqual(set(manifest), expected_roles)
         for role, source in manifest.items():

@@ -61,7 +61,7 @@ class V27ArmSegmentationTests(unittest.TestCase):
         spans = [planes[end] - planes[start - 1] for start, end in ranges]
         self.assertTrue(all(span < 300.0 for span in spans), spans)
         self.assertEqual(ranges, ((1, 3), (4, 8), (9, 16), (17, 42)))
-        self.assertAlmostEqual(max(spans), 264.8434050798424, places=6)
+        self.assertAlmostEqual(max(spans), 267.4703685856176, places=6)
 
     def test_segmentation_rejects_impossible_height(self) -> None:
         arm = self.get_arm_module()
@@ -110,8 +110,11 @@ class V27ArmCadTests(unittest.TestCase):
         self.assertEqual(len(result.tendon_centerlines), 3)
         for channel in result.tendon_centerlines:
             with self.subTest(channel=channel.name):
-                self.assertEqual(channel.samples[0][2], 0.0)
-                self.assertEqual(channel.samples[-1][2], 1000.0)
+                self.assertEqual(
+                    channel.samples[0][2],
+                    float(self.contract.integration["root_tendon_entry_z_mm"]),
+                )
+                self.assertEqual(channel.samples[-1][2], self.contract.arm.nominal_length_mm)
                 self.assertGreaterEqual(len(channel.samples), 43)
                 z_values = [point[2] for point in channel.samples]
                 self.assertTrue(all(left < right for left, right in zip(z_values, z_values[1:])))
@@ -126,6 +129,7 @@ class V27ArmCadTests(unittest.TestCase):
             [joint.name for joint in result.dovetails],
             ["dovetail_01", "dovetail_02", "dovetail_03"],
         )
+        self.assertEqual(tuple(joint.unit_index for joint in result.dovetails), (5, 10, 18))
         for joint in result.dovetails:
             self.assertTrue(joint.male.isValid())
             self.assertTrue(joint.female_cutter.isValid())
@@ -137,8 +141,8 @@ class V27ArmCadTests(unittest.TestCase):
         for lock in result.lock_features:
             self.assertTrue(lock.proxy.isValid())
             self.assertGreater(lock.proxy.Volume(), 0.0)
-            self.assertEqual(lock.kind, "cross_pin")
-            self.assertGreaterEqual(lock.insertion_clearance_mm, 1.0)
+            self.assertEqual(lock.kind, "full_width_removable_pin")
+            self.assertAlmostEqual(lock.insertion_clearance_mm, 0.3, places=6)
 
     def test_paper_spiral_unit_profile_is_used(self) -> None:
         result = self.build()
@@ -158,6 +162,7 @@ class V27ArmCadTests(unittest.TestCase):
             ("arm_segment_01", "arm_segment_02", "arm_segment_03", "arm_segment_04"),
         )
         self.assertEqual(len(result.segment_ranges), 4)
+        self.assertEqual(result.segment_ranges, ((1, 5), (5, 10), (10, 18), (18, 42)))
         for name, shape in result.print_segments.items():
             with self.subTest(name=name):
                 self.assertTrue(shape.isValid())

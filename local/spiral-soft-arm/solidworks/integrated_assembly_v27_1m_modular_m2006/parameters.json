@@ -99,6 +99,8 @@
     ],
     "drive_plate_dowel_hole_diameter_mm": 8.2,
     "drive_plate_dowel_pin_diameter_mm": 6.0,
+    "fixed_drive_plate_dowel_socket_inner_radius_mm": 3.25,
+    "fixed_drive_plate_dowel_socket_outer_radius_mm": 3.75,
     "canister_motor_port_relief_angles_deg": [
       0.0,
       120.0,

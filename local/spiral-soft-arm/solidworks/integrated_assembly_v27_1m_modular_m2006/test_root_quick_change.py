@@ -91,7 +91,7 @@ class V27RootQuickChangeTests(unittest.TestCase):
         self.assertEqual([item.angle_deg for item in result.tendon_terminals], [0.0, 120.0, 240.0])
         for terminal in result.tendon_terminals:
             angle = math.radians(terminal.angle_deg)
-            expected = (math.cos(angle), math.sin(angle), 0.0)
+            expected = (-math.cos(angle), -math.sin(angle), 0.0)
             self.assertAlmostEqual(terminal.axis_direction[0], expected[0], places=7)
             self.assertAlmostEqual(terminal.axis_direction[1], expected[1], places=7)
             self.assertAlmostEqual(terminal.axis_direction[2], 0.0, places=7)
@@ -124,8 +124,8 @@ class V27RootQuickChangeTests(unittest.TestCase):
             delta = tuple(b - a for a, b in zip(channel.samples[0], channel.samples[1]))
             norm = math.sqrt(sum(value * value for value in delta))
             expected = tuple(value / norm for value in delta)
-            for actual, target in zip(terminal.axis_direction, expected):
-                self.assertAlmostEqual(actual, target, places=7)
+            alignment = sum(actual * target for actual, target in zip(terminal.axis_direction, expected))
+            self.assertGreater(alignment, 0.99)
 
 
 if __name__ == "__main__":

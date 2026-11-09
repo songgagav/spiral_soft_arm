@@ -71,17 +71,19 @@ class V27DriveAndBaseTests(unittest.TestCase):
                 "fixed_shaft",
                 "fixed_bearing_inner",
                 "fixed_bearing_outer",
-                "fixed_seal_housing",
                 "fixed_oil_seal",
                 "fixed_labyrinth",
                 "fixed_axial_retainer",
-                "fixed_bearing_inner_housing",
-                "fixed_bearing_outer_housing",
             ):
                 name = f"{prefix}_{index:02d}"
                 self.assertIn(name, base.components)
                 self.assertNotIn(name, module.components)
                 self.assertTrue(base.components[name].isValid())
+            for station in ("inner", "outer"):
+                bearing = base.components[f"fixed_bearing_{station}_{index:02d}"]
+                top_plate = base.components["fixed_top_plate"]
+                self.assertLess(bearing.intersect(top_plate).Volume(), 0.02)
+                self.assertLessEqual(bearing.distance(top_plate), 0.1)
         self.assertIn("fixed_common_motor_chamber", base.components)
 
     def test_motor_removal_does_not_remove_or_unseat_shafts(self) -> None:
@@ -166,21 +168,29 @@ class V27DriveAndBaseTests(unittest.TestCase):
         for index in range(1, 4):
             for station in ("inner", "outer"):
                 bearing = base.components[f"fixed_bearing_{station}_{index:02d}"]
-                housing = base.components[f"fixed_bearing_{station}_housing_{index:02d}"]
+                housing = base.components["fixed_top_plate"]
                 self.assertLess(bearing.intersect(housing).Volume(), 0.02)
                 self.assertLessEqual(bearing.distance(housing), 0.1)
 
     def test_drive_plate_register_and_dowels_have_fixed_mates(self) -> None:
-        _, _, module, base = self.build()
-        register = module.components["removable_plate_register"]
+        drive, _, module, base = self.build()
+        cfg = self.contract.integration
+        z0, z1 = (float(value) for value in cfg["drive_register_z_mm"])
+        register = drive._vertical_ring(
+            (0.0, 0.0, 0.0),
+            float(cfg["drive_register_outer_radius_mm"]),
+            float(cfg["drive_register_inner_radius_mm"]),
+            z0,
+            z1,
+        )
         plate = module.components[module.plate_name]
         receiver = base.components["fixed_drive_plate_register_seat"]
-        self.assertLessEqual(register.distance(plate), 0.01)
-        self.assertLessEqual(register.distance(receiver), 0.6)
+        self.assertLessEqual(register.cut(plate).Volume(), 0.02)
+        self.assertAlmostEqual(register.distance(receiver), 0.25, places=6)
         for index in range(1, 3):
             pin = module.components[f"removable_plate_dowel_{index:02d}"]
             socket = base.components[f"fixed_drive_plate_dowel_socket_{index:02d}"]
-            self.assertLessEqual(pin.distance(socket), 0.2)
+            self.assertAlmostEqual(pin.distance(socket), 0.25, places=6)
 
     def test_root_fastener_axes_are_open_through_fixed_base(self) -> None:
         _, _, _, base = self.build()

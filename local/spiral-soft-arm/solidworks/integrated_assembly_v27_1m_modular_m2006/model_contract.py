@@ -221,6 +221,19 @@ def validate_contract(contract: V27Contract) -> None:
         <= integration["fixed_drive_register_seat_outer_radius_mm"]
     ):
         raise ValueError("drive-plate dowels must clear the central register seat")
+    socket_inner_radius = float(
+        integration["fixed_drive_plate_dowel_socket_inner_radius_mm"]
+    )
+    socket_outer_radius = float(
+        integration["fixed_drive_plate_dowel_socket_outer_radius_mm"]
+    )
+    pin_radius = 0.5 * float(integration["drive_plate_dowel_pin_diameter_mm"])
+    if (
+        socket_inner_radius - pin_radius < 0.25
+        or socket_outer_radius <= socket_inner_radius
+        or socket_outer_radius >= 0.5 * float(integration["drive_plate_dowel_hole_diameter_mm"]) - 0.25
+    ):
+        raise ValueError("fixed drive-plate dowel sockets require at least 0.25 mm radial fit clearance")
 
 
 def _sha256(path: Path) -> str:

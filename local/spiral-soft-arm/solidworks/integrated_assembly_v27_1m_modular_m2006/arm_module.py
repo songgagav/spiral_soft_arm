@@ -184,7 +184,12 @@ def make_root_transition_passage(
     return passage.clean()
 
 
-def _channel_samples(contract: Any, planes: Sequence[float], angle_deg: float) -> tuple[tuple[float, float, float], ...]:
+def _channel_samples(
+    contract: Any,
+    planes: Sequence[float],
+    angle_deg: float,
+    segment_boundaries: Sequence[float] = (),
+) -> tuple[tuple[float, float, float], ...]:
     """Sample the inlet transition and the native internal tendon channel."""
     controls = _root_transition_points(contract, angle_deg)
     transition = tuple(
@@ -192,10 +197,16 @@ def _channel_samples(contract: Any, planes: Sequence[float], angle_deg: float) -
         for index in range(1, 16)
     )
     join_z = float(contract.integration["root_tendon_transition_join_z_mm"])
+    internal_planes = sorted(
+        {
+            float(z_mm)
+            for z_mm in (*planes, *segment_boundaries)
+            if z_mm > join_z + 1.0e-8
+        }
+    )
     internal = tuple(
         _channel_point(contract, z_mm, angle_deg)
-        for z_mm in planes
-        if z_mm > join_z + 1.0e-8
+        for z_mm in internal_planes
     )
     return (tuple(controls[0].toTuple()), *transition, tuple(controls[3].toTuple()), *internal)
 
@@ -662,7 +673,7 @@ def build_arm_module(contract: Any) -> ArmBuildResult:
         TendonChannel(
             name=f"tendon_{index:02d}",
             angle_deg=angle_deg,
-            samples=_channel_samples(contract, planes, angle_deg),
+            samples=_channel_samples(contract, planes, angle_deg, boundary_z),
         )
         for index, angle_deg in enumerate((0.0, 120.0, 240.0), start=1)
     )

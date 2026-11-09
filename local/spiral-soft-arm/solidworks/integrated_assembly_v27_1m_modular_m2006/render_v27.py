@@ -222,7 +222,7 @@ def _electronics_review(result: Any, path: Path) -> None:
 
 
 def _dovetail_review(result: Any, path: Path) -> None:
-    figure = plt.figure(figsize=(15, 5.5), dpi=130, facecolor="#eef3f6")
+    figure = plt.figure(figsize=(15, 6.5), dpi=130, facecolor="#eef3f6")
     segment_shapes = tuple(result.arm.print_segments.values())
     for index, (joint, lock) in enumerate(
         zip(result.arm.dovetails, result.arm.lock_features), start=1

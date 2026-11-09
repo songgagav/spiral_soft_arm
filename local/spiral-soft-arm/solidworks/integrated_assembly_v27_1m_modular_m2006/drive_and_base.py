@@ -350,7 +350,11 @@ def build_fixed_base(
         radial = _unit_radial(angle_deg)
         center = (dowel_radius * radial[0], dowel_radius * radial[1], 0.0)
         components[f"fixed_drive_plate_dowel_socket_{index:02d}"] = _vertical_ring(
-            center, 3.5, 3.1, -106.0, -98.0
+            center,
+            float(contract.integration["fixed_drive_plate_dowel_socket_outer_radius_mm"]),
+            float(contract.integration["fixed_drive_plate_dowel_socket_inner_radius_mm"]),
+            -106.0,
+            -98.0,
         )
     support_pairs: list[tuple[str, str]] = []
     for axis in axes:
