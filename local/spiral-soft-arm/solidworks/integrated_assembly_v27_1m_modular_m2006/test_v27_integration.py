@@ -46,7 +46,7 @@ class V27ZZDeliveryTests(unittest.TestCase):
             if path.is_file()
             and path.name != self.manifest.name
             and path.suffix.lower()
-            in {".py", ".json", ".step", ".stl", ".png", ".md", ".docx"}
+            in {".py", ".json", ".step", ".stl", ".png", ".md", ".docx", ".pdf"}
         }
         expected.add("README.md")
         contract = load_contract()

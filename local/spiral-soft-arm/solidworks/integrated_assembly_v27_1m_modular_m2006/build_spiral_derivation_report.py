@@ -13,6 +13,7 @@ from docx.shared import Cm, Inches, Pt, RGBColor
 
 HERE = Path(__file__).resolve().parent
 TITLE = "5 m 水深工况下 1 m 三缆对数螺旋机械臂几何推导与模型更新"
+REPORT_DATE = "2026-11-10"
 OUTPUT_MD = HERE / "V27_5m水深_1m三缆臂螺旋函数推导.md"
 OUTPUT_DOCX = HERE / "V27_5m水深_1m三缆臂螺旋函数推导.docx"
 
@@ -171,7 +172,7 @@ def _markdown(p: dict, segment_data: dict) -> str:
 
 **候选版本：** V27-1M-M2006<br>
 **文档性质：** 工程几何推导稿，不是期刊发表稿，也不是水下验证报告<br>
-**日期：** 2026-11-08
+**日期：** {REPORT_DATE}
 
 ## 摘要
 
@@ -319,6 +320,22 @@ V27 连续螺旋函数及 42 区间配置由论文的端点宽度比、中心线
 
 1. Wang, Z., Freris, N. M., & Wei, X. *SpiRobs: Logarithmic spiral-shaped robots for versatile grasping across scales*. Device, 3(4), 100646 (2025). https://doi.org/10.1016/j.device.2024.100646.
 2. 作者预印本：arXiv:2303.09861, https://arxiv.org/abs/2303.09861.
+
+## 附录：复算数据与复现文件
+
+| 项目 | 复算值 |
+|---|---:|
+| 根尖宽度比 | {p['root_width_mm'] / p['tip_width_mm']:.0f}:1 |
+| 原始螺旋系数 `a` | {p['a_mm']:.12f} mm |
+| 中心螺旋系数 `a₁` | {p['a1_mm']:.12f} mm |
+| 增长参数 `b` | {p['b']:.12f} |
+| 根部相位 `θ₀` | {p['theta0_rad']:.12f} rad |
+| 单元角步长 `Δθ` | {p['delta_theta_deg']:.12f}° |
+| 相邻单元比例 `β` | {p['beta']:.12f} |
+| 中心线弧长 | {p['centerline_length_reconstructed_mm']:.6f} mm |
+| 单元弧长范围 | {min(p['unit_interval_lengths_mm']):.3f}–{max(p['unit_interval_lengths_mm']):.3f} mm |
+
+数值记录位于 `V27螺旋参数.json`，计算实现位于 `spiral_parameters.py`。`build_spiral_derivation_report.py` 生成本报告的 Markdown 与 DOCX，`generate_v27_assembly.py` 生成 V27 的 CAD 文件。重新导出后仍需检查切片、材料试件、受力、密封和水下运行；报告中的公式回算不替代这些实体验证。
 """
 
 
@@ -359,7 +376,7 @@ def _configure_document(doc: Document) -> None:
     _set_run_font(header_run, size_pt=8.5, color="52616B")
     footer = section.footer.paragraphs[0]
     footer.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    footer_run = footer.add_run("工程推导稿  |  2026-11-08  |  非水下验证报告")
+    footer_run = footer.add_run(f"工程推导稿  |  {REPORT_DATE}  |  非水下验证报告")
     _set_run_font(footer_run, size_pt=8.2, color="52616B")
 
 
@@ -392,7 +409,7 @@ def _build_docx(p: dict, segment_data: dict) -> None:
     title.paragraph_format.space_after = Pt(6)
     title_run = title.add_run(TITLE)
     _set_run_font(title_run, size_pt=20.5, bold=True)
-    subtitle = _add_text(doc, "V27-1M-M2006  ·  工程几何推导稿  ·  2026-11-08", size=10, color="52616B", align=WD_ALIGN_PARAGRAPH.LEFT)
+    subtitle = _add_text(doc, f"V27-1M-M2006  ·  工程几何推导稿  ·  {REPORT_DATE}", size=10, color="52616B", align=WD_ALIGN_PARAGRAPH.LEFT)
     subtitle.paragraph_format.space_after = Pt(10)
 
     _heading(doc, "摘要", 1)
@@ -479,7 +496,7 @@ def _build_docx(p: dict, segment_data: dict) -> None:
     assembly_image = HERE / "V27_总装半透明审查.png"
     assembly_p = doc.add_paragraph()
     assembly_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    assembly_inline = assembly_p.add_run().add_picture(str(assembly_image), width=Inches(3.7))
+    assembly_inline = assembly_p.add_run().add_picture(str(assembly_image), width=Inches(3.2))
     assembly_inline._inline.docPr.set("descr", "V27 一米机械臂、根部基座与电子仓的半透明总装预览")
     cap = _add_text(doc, "图 2  更新后的 V27 一米模块化总装 CAD 预览", size=9, align=WD_ALIGN_PARAGRAPH.CENTER)
     cap.paragraph_format.space_after = Pt(4)
@@ -491,6 +508,37 @@ def _build_docx(p: dict, segment_data: dict) -> None:
     _heading(doc, "参考文献", 1)
     _add_text(doc, "[1] Wang, Z., Freris, N. M., & Wei, X. SpiRobs: Logarithmic spiral-shaped robots for versatile grasping across scales. Device 3(4), 100646 (2025). DOI: 10.1016/j.device.2024.100646.", size=8.5)
     _add_text(doc, "[2] 作者预印本，arXiv:2303.09861（https://arxiv.org/abs/2303.09861）；本文引用其几何定义、长度关系和单元比例式。", size=8.5)
+    _heading(doc, "附录  复算数据与复现文件", 1)
+    _add_table(
+        doc,
+        [
+            ("根尖宽度比", f"{p['root_width_mm'] / p['tip_width_mm']:.0f}:1"),
+            ("原始螺旋系数 a", f"{p['a_mm']:.12f} mm"),
+            ("中心螺旋系数 a₁", f"{p['a1_mm']:.12f} mm"),
+            ("增长参数 b", f"{p['b']:.12f}"),
+            ("根部相位 θ₀", f"{p['theta0_rad']:.12f} rad"),
+            ("单元角步长 Δθ", f"{p['delta_theta_deg']:.12f}°"),
+            ("相邻单元比例 β", f"{p['beta']:.12f}"),
+            (
+                "中心线弧长",
+                f"{p['centerline_length_reconstructed_mm']:.6f} mm",
+            ),
+            (
+                "单元弧长范围",
+                f"{min(p['unit_interval_lengths_mm']):.3f}–"
+                f"{max(p['unit_interval_lengths_mm']):.3f} mm",
+            ),
+        ],
+        headers=("项目", "复算值"),
+    )
+    _add_text(
+        doc,
+        "数值记录位于 V27螺旋参数.json，计算实现位于 spiral_parameters.py。"
+        "build_spiral_derivation_report.py 生成本报告的 Markdown 与 DOCX，"
+        "generate_v27_assembly.py 生成 V27 CAD 文件。公式回算不替代切片、"
+        "材料试件、受力、密封和水下运行验证。",
+        size=9.5,
+    )
     doc.save(OUTPUT_DOCX)
 
 
