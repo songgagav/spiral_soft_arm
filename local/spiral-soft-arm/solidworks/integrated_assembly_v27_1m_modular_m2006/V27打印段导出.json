@@ -1,0 +1,214 @@
+{
+  "candidate_id": "V27-1M-M2006",
+  "coordinate_frame": "each part translated so local zmin equals 0; XY remains arm-centered",
+  "dovetail_interfaces": [
+    {
+      "boundary_z_mm": 249.78041228899622,
+      "clearance_per_side_mm": 0.3,
+      "engagement_mm": 12.0,
+      "lock_pin_azimuth_deg": 30.0,
+      "lock_pin_length_mm": 90.66098591342956,
+      "minimum_tendon_clearance_mm": 17.770385390506277,
+      "name": "dovetail_01",
+      "profile_rotation_deg": 8.0,
+      "split_joint_unit": 5
+    },
+    {
+      "boundary_z_mm": 501.6350641747386,
+      "clearance_per_side_mm": 0.3,
+      "engagement_mm": 12.0,
+      "lock_pin_azimuth_deg": 30.0,
+      "lock_pin_length_mm": 62.73257487285673,
+      "minimum_tendon_clearance_mm": 9.852320944983635,
+      "name": "dovetail_02",
+      "profile_rotation_deg": 8.0,
+      "split_joint_unit": 10
+    },
+    {
+      "boundary_z_mm": 744.3429387535533,
+      "clearance_per_side_mm": 0.3,
+      "engagement_mm": 12.0,
+      "lock_pin_azimuth_deg": 30.0,
+      "lock_pin_length_mm": 35.153113075122896,
+      "minimum_tendon_clearance_mm": 2.477804829393571,
+      "name": "dovetail_03",
+      "profile_rotation_deg": 8.0,
+      "split_joint_unit": 18
+    }
+  ],
+  "global_segment_boundary_planes_mm": [
+    249.78041228899622,
+    501.6350641747386,
+    744.3429387535533
+  ],
+  "lock_pins": [
+    {
+      "axis_azimuth_deg": 30.0,
+      "center_z_mm": 255.78041228899622,
+      "diameter_mm": 3.0,
+      "hole_diameter_mm": 3.3,
+      "length_mm": 90.66098591342956,
+      "minimum_tendon_clearance_mm": 10.405472230680239,
+      "name": "dovetail_lock_01",
+      "split_joint_unit": 5
+    },
+    {
+      "axis_azimuth_deg": 30.0,
+      "center_z_mm": 507.6350641747386,
+      "diameter_mm": 3.0,
+      "hole_diameter_mm": 3.3,
+      "length_mm": 62.73257487285673,
+      "minimum_tendon_clearance_mm": 6.423020547736943,
+      "name": "dovetail_lock_02",
+      "split_joint_unit": 10
+    },
+    {
+      "axis_azimuth_deg": 30.0,
+      "center_z_mm": 750.3429387535533,
+      "diameter_mm": 3.0,
+      "hole_diameter_mm": 3.3,
+      "length_mm": 35.153113075122896,
+      "minimum_tendon_clearance_mm": 2.5852022809594355,
+      "name": "dovetail_lock_03",
+      "split_joint_unit": 18
+    }
+  ],
+  "max_segment_height_mm": 300.0,
+  "segmentation_policy": "cut through the actual CAD profiles at the midpoints of units 5, 10, and 18; neighboring print segments share the split unit; ideal spiral arc intervals remain mathematical reference data",
+  "segments": [
+    {
+      "angular_tolerance_rad": 0.1,
+      "degenerate_stl_facets_removed": 12,
+      "file": "SpiRobs_v27_打印段01_单元01-05.stl",
+      "finished_print_height_mm": 261.78041228899633,
+      "global_body_z_range_mm": [
+        0.0,
+        249.78041228899622
+      ],
+      "local_bounds_mm": {
+        "x": [
+          -60.0,
+          60.0
+        ],
+        "y": [
+          -60.0,
+          60.0
+        ],
+        "z": [
+          0.0,
+          261.78041228899633
+        ]
+      },
+      "split_joint_units": [
+        5
+      ],
+      "step_file": "SpiRobs_v27_打印段01_单元01-05.step",
+      "triangulation_tolerance_mm": 0.08,
+      "unit_range_in_arm": [
+        1,
+        5
+      ]
+    },
+    {
+      "angular_tolerance_rad": 0.1,
+      "degenerate_stl_facets_removed": 0,
+      "file": "SpiRobs_v27_打印段02_单元05-10.stl",
+      "finished_print_height_mm": 263.8546519857424,
+      "global_body_z_range_mm": [
+        249.78041228899622,
+        501.6350641747386
+      ],
+      "local_bounds_mm": {
+        "x": [
+          -44.33049305671475,
+          44.33049305671481
+        ],
+        "y": [
+          -44.33049305671478,
+          44.33049305671478
+        ],
+        "z": [
+          -1.0858491009964983e-14,
+          263.8546519857424
+        ]
+      },
+      "split_joint_units": [
+        5,
+        10
+      ],
+      "step_file": "SpiRobs_v27_打印段02_单元05-10.step",
+      "triangulation_tolerance_mm": 0.08,
+      "unit_range_in_arm": [
+        5,
+        10
+      ]
+    },
+    {
+      "angular_tolerance_rad": 0.1,
+      "degenerate_stl_facets_removed": 0,
+      "file": "SpiRobs_v27_打印段03_单元10-18.stl",
+      "finished_print_height_mm": 254.7078746788147,
+      "global_body_z_range_mm": [
+        501.6350641747386,
+        744.3429387535533
+      ],
+      "local_bounds_mm": {
+        "x": [
+          -30.36628753642831,
+          30.366287536428423
+        ],
+        "y": [
+          -30.366287536428366,
+          30.366287536428366
+        ],
+        "z": [
+          1.9113556667493302e-14,
+          254.70787467881473
+        ]
+      },
+      "split_joint_units": [
+        10,
+        18
+      ],
+      "step_file": "SpiRobs_v27_打印段03_单元10-18.step",
+      "triangulation_tolerance_mm": 0.08,
+      "unit_range_in_arm": [
+        10,
+        18
+      ]
+    },
+    {
+      "angular_tolerance_rad": 0.1,
+      "degenerate_stl_facets_removed": 0,
+      "file": "SpiRobs_v27_打印段04_单元18-42.stl",
+      "finished_print_height_mm": 255.65706144644668,
+      "global_body_z_range_mm": [
+        744.3429387535533,
+        1000.0
+      ],
+      "local_bounds_mm": {
+        "x": [
+          -16.576556637561367,
+          16.576556637561534
+        ],
+        "y": [
+          -16.57655663756145,
+          16.57655663756145
+        ],
+        "z": [
+          -3.524670546087191e-14,
+          255.65706144644665
+        ]
+      },
+      "split_joint_units": [
+        18
+      ],
+      "step_file": "SpiRobs_v27_打印段04_单元18-42.step",
+      "triangulation_tolerance_mm": 0.08,
+      "unit_range_in_arm": [
+        18,
+        42
+      ]
+    }
+  ]
+}

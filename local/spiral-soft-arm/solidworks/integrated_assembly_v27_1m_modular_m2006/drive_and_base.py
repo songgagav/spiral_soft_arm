@@ -103,6 +103,22 @@ def _vertical_ring(
     return outer.cut(inner)
 
 
+def _radial_cylinder(
+    angle_deg: float,
+    radius_mm: float,
+    r0_mm: float,
+    r1_mm: float,
+    z_mm: float,
+) -> cq.Shape:
+    radial = _unit_radial(angle_deg)
+    return cq.Solid.makeCylinder(
+        radius_mm,
+        r1_mm - r0_mm,
+        cq.Vector(r0_mm * radial[0], r0_mm * radial[1], z_mm),
+        cq.Vector(radial[0], radial[1], 0.0),
+    )
+
+
 def _hex_prism(circumradius_mm: float, z0_mm: float, height_mm: float) -> cq.Shape:
     points = [
         (
@@ -122,14 +138,15 @@ def _hex_prism(circumradius_mm: float, z0_mm: float, height_mm: float) -> cq.Sha
 
 
 def optimize_drive_axes(contract: Any, root: Any) -> tuple[DriveAxis, DriveAxis, DriveAxis]:
-    tangent_radius_mm = 103.0
-    effective_radius_mm = 10.0
+    tangent_radius_mm = float(contract.drive.tendon_tangent_radius_mm)
+    effective_radius_mm = float(contract.drive.spool_effective_radius_mm)
+    tangent_z_mm = float(contract.drive.spool_tangent_z_mm)
     axes: list[DriveAxis] = []
     for index, terminal in enumerate(root.tendon_terminals, start=1):
         angle_deg = float(terminal.angle_deg)
         radial = _unit_radial(angle_deg)
         tangent = _unit_tangent(angle_deg)
-        tangent_point = _combine(radial, tangent, tangent_radius_mm, 0.0, 0.0)
+        tangent_point = _combine(radial, tangent, tangent_radius_mm, 0.0, tangent_z_mm)
         spool_center = _combine(
             radial, tangent, tangent_radius_mm, effective_radius_mm, 0.0
         )
@@ -181,7 +198,7 @@ def audit_tendon_alignment(
         expected_norm = math.sqrt(sum(value * value for value in expected))
         entry_dot = sum(a * b for a, b in zip(delta, expected))
         entry_angle = math.degrees(
-            math.acos(max(-1.0, min(1.0, entry_dot / (delta_norm * expected_norm))))
+            math.acos(max(-1.0, min(1.0, abs(entry_dot) / (delta_norm * expected_norm))))
         )
         alignments.append(
             TendonAlignment(
@@ -213,12 +230,40 @@ def build_drive_module(
     official_solid_count = len(official_shape.Solids())
 
     plate = _hex_prism(118.0, -108.0, 6.0)
-    center_clearance = _vertical_cylinder((0.0, 0.0, 0.0), 75.0, -109.0, -101.0)
+    center_clearance = _vertical_cylinder(
+        (0.0, 0.0, 0.0),
+        float(contract.integration["drive_plate_clearance_radius_mm"]),
+        -109.0,
+        -101.0,
+    )
     plate = plate.cut(center_clearance).clean()
-    for angle_deg in (17.0, 157.0):
+    dowel_radius = float(contract.integration["drive_plate_dowel_radius_mm"])
+    dowel_angles = tuple(
+        float(value) for value in contract.integration["drive_plate_dowel_angles_deg"]
+    )
+    dowel_hole_radius = float(
+        contract.integration["drive_plate_dowel_hole_diameter_mm"]
+    ) / 2.0
+    dowel_pin_radius = float(
+        contract.integration["drive_plate_dowel_pin_diameter_mm"]
+    ) / 2.0
+    for angle_deg in dowel_angles:
         radial = _unit_radial(angle_deg)
-        center = (85.0 * radial[0], 85.0 * radial[1], 0.0)
-        plate = plate.cut(_vertical_cylinder(center, 3.6, -109.0, -101.0)).clean()
+        center = (dowel_radius * radial[0], dowel_radius * radial[1], 0.0)
+        plate = plate.cut(
+            _vertical_cylinder(center, dowel_hole_radius, -109.0, -101.0)
+        ).clean()
+    register_z0, register_z1 = (
+        float(value) for value in contract.integration["drive_register_z_mm"]
+    )
+    register = _vertical_ring(
+        (0.0, 0.0, 0.0),
+        float(contract.integration["drive_register_outer_radius_mm"]),
+        float(contract.integration["drive_register_inner_radius_mm"]),
+        register_z0,
+        register_z1,
+    )
+    plate = plate.fuse(register).clean()
     components: dict[str, cq.Shape] = {"removable_motor_plate": plate}
     motor_names: list[str] = []
     for axis in axes:
@@ -230,14 +275,11 @@ def build_drive_module(
         components[f"removable_coupling_sleeve_{axis.axis_index:02d}"] = coupling
         components[f"removable_motor_cradle_{axis.axis_index:02d}"] = cradle
         motor_names.append(name)
-    components["removable_plate_register"] = _vertical_ring(
-        (0.0, 0.0, 0.0), 75.1, 72.5, -106.0, -100.0
-    )
-    for index, angle_deg in enumerate((17.0, 157.0), start=1):
+    for index, angle_deg in enumerate(dowel_angles, start=1):
         radial = _unit_radial(angle_deg)
-        center = (85.0 * radial[0], 85.0 * radial[1], 0.0)
+        center = (dowel_radius * radial[0], dowel_radius * radial[1], 0.0)
         components[f"removable_plate_dowel_{index:02d}"] = _vertical_cylinder(
-            center, 3.0, -106.0, -98.0
+            center, dowel_pin_radius, -106.0, -98.0
         )
     return DriveModuleResult(
         components=components,
@@ -272,15 +314,41 @@ def build_fixed_base(
     }
     outer_shell = _vertical_ring((0.0, 0.0, 0.0), 124.0, 120.0, -110.0, -8.0)
     inner_shell = _vertical_ring((0.0, 0.0, 0.0), 72.0, 68.5, -110.0, -8.0)
+    relief_radius = float(
+        contract.integration["canister_motor_port_relief_diameter_mm"]
+    ) / 2.0
+    relief_z = float(contract.integration["canister_motor_port_relief_z_mm"])
+    relief_start, relief_end = (
+        float(value)
+        for value in contract.integration["canister_motor_port_relief_radial_range_mm"]
+    )
+    for angle_deg in contract.integration["canister_motor_port_relief_angles_deg"]:
+        inner_shell = inner_shell.cut(
+            _radial_cylinder(
+                float(angle_deg), relief_radius, relief_start, relief_end, relief_z
+            )
+        ).clean()
     components["fixed_common_motor_chamber"] = cq.Compound.makeCompound(
         [outer_shell, inner_shell]
     )
-    components["fixed_drive_plate_register_seat"] = _vertical_ring(
-        (0.0, 0.0, 0.0), 75.5, 75.25, -100.0, -96.0
+    seat_z0, seat_z1 = (
+        float(value)
+        for value in contract.integration["fixed_drive_register_seat_z_mm"]
     )
-    for index, angle_deg in enumerate((17.0, 157.0), start=1):
+    components["fixed_drive_plate_register_seat"] = _vertical_ring(
+        (0.0, 0.0, 0.0),
+        float(contract.integration["fixed_drive_register_seat_outer_radius_mm"]),
+        float(contract.integration["fixed_drive_register_seat_inner_radius_mm"]),
+        seat_z0,
+        seat_z1,
+    )
+    dowel_radius = float(contract.integration["drive_plate_dowel_radius_mm"])
+    dowel_angles = tuple(
+        float(value) for value in contract.integration["drive_plate_dowel_angles_deg"]
+    )
+    for index, angle_deg in enumerate(dowel_angles, start=1):
         radial = _unit_radial(angle_deg)
-        center = (85.0 * radial[0], 85.0 * radial[1], 0.0)
+        center = (dowel_radius * radial[0], dowel_radius * radial[1], 0.0)
         components[f"fixed_drive_plate_dowel_socket_{index:02d}"] = _vertical_ring(
             center, 3.5, 3.1, -106.0, -98.0
         )
@@ -290,7 +358,12 @@ def build_fixed_base(
         center = axis.spool_center
         wet_tunnel = _vertical_cylinder(center, 13.2, -8.2, 0.2)
         top_plate = top_plate.cut(wet_tunnel)
-        spool_core = _vertical_cylinder(center, 10.0, -1.0, 6.0)
+        spool_core = _vertical_cylinder(
+            center,
+            float(contract.drive.spool_core_radius_mm),
+            -1.0,
+            6.0,
+        )
         lower_flange = _vertical_cylinder(center, 12.0, -2.5, -1.0)
         upper_flange = _vertical_cylinder(center, 12.0, 6.0, 7.5)
         spool = spool_core.fuse(lower_flange, upper_flange).clean()
@@ -301,15 +374,11 @@ def build_fixed_base(
         components[f"fixed_shaft_{index:02d}"] = shaft
         components[bearing_inner_name] = _vertical_ring(center, 11.0, 5.05, -24.0, -18.0)
         components[bearing_outer_name] = _vertical_ring(center, 11.0, 5.05, -17.0, -11.0)
-        components[f"fixed_bearing_inner_housing_{index:02d}"] = _vertical_ring(
-            center, 13.0, 11.05, -24.0, -18.0
-        )
-        components[f"fixed_bearing_outer_housing_{index:02d}"] = _vertical_ring(
-            center, 13.0, 11.05, -17.0, -11.0
-        )
-        components[f"fixed_seal_housing_{index:02d}"] = _vertical_ring(
-            center, 13.0, 11.05, -11.0, -2.75
-        )
+        # Continuous support bores hold both bearing outer races and the seal
+        # stack.  The 0.3 mm overlap into the plate's 13.2 mm tunnel fuses the
+        # support into the fixed base rather than leaving a floating seat.
+        support_housing = _vertical_ring(center, 13.5, 11.05, -24.0, -2.75)
+        top_plate = top_plate.fuse(support_housing).clean()
         components[f"fixed_oil_seal_{index:02d}"] = _vertical_ring(
             center, 11.0, 5.05, -10.0, -7.0
         )
@@ -331,6 +400,6 @@ def build_fixed_base(
             contract.root_interface.top_plate_circumdiameter_mm
         ),
         axes=tuple(axes),
-        shafts_supported_without_drive=True,
+        shafts_supported_without_drive=(len(support_pairs) == 3),
         shaft_support_pairs=tuple(support_pairs),
     )

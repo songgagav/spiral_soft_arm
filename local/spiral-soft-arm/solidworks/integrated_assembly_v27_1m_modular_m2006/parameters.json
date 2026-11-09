@@ -12,7 +12,37 @@
     "root_diameter_mm": 120.0,
     "tendon_material": "UHMWPE",
     "tendon_diameter_mm": 0.5,
-    "max_segment_height_mm": 300.0
+    "max_segment_height_mm": 300.0,
+    "split_unit_indices": [
+      5,
+      10,
+      18
+    ],
+    "split_unit_offsets_mm": [
+      0.0,
+      0.0,
+      -6.0
+    ],
+    "dovetail": {
+      "bottom_width_mm": 10.0,
+      "top_width_mm": 14.0,
+      "profile_height_mm": 8.0,
+      "rotation_deg": 8.0,
+      "engagement_mm": 12.0,
+      "clearance_per_side_mm": 0.3,
+      "lock_pin_diameter_mm": 3.0,
+      "lock_pin_hole_diameter_mm": 3.3,
+      "lock_pin_azimuth_deg": 30.0
+    }
+  },
+  "spiral_design": {
+    "equation_source": "SpiRobs paper equations (1)-(5) and (9)",
+    "unit_interval_convention": "one angular interval per quadrilateral unit",
+    "unit_interval_count": 42,
+    "unit_boundary_ray_count": 43,
+    "reference_step_deg": 30.0,
+    "step_policy": "derive from exact centerline length and tip/root dimensions",
+    "water_depth_changes_spiral_parameters": false
   },
   "root_interface": {
     "top_plate_circumdiameter_mm": 250.0,
@@ -21,7 +51,10 @@
     "register_height_mm": 5.0,
     "dowel_count": 2,
     "dowel_diameter_mm": 6.0,
-    "dowel_angles_deg": [18.0, 153.0],
+    "dowel_angles_deg": [
+      18.0,
+      153.0
+    ],
     "fastener_count": 6,
     "fastener_thread": "M5",
     "fastener_clearance_diameter_mm": 5.5,
@@ -39,10 +72,89 @@
       "wet_spools"
     ],
     "tendon_alignment_lateral_tolerance_mm": 0.25,
-    "tendon_alignment_angular_tolerance_deg": 0.5
+    "tendon_alignment_angular_tolerance_deg": 0.5,
+    "tendon_tangent_radius_mm": 103.0,
+    "spool_core_radius_mm": 10.0,
+    "spool_effective_radius_mm": 10.25,
+    "spool_tangent_z_mm": 2.5
+  },
+  "integration": {
+    "drive_plate_clearance_radius_mm": 82.0,
+    "drive_register_inner_radius_mm": 80.0,
+    "drive_register_outer_radius_mm": 82.25,
+    "drive_register_z_mm": [
+      -106.0,
+      -98.0
+    ],
+    "fixed_drive_register_seat_inner_radius_mm": 82.5,
+    "fixed_drive_register_seat_outer_radius_mm": 84.5,
+    "fixed_drive_register_seat_z_mm": [
+      -100.0,
+      -96.0
+    ],
+    "drive_plate_dowel_radius_mm": 90.0,
+    "drive_plate_dowel_angles_deg": [
+      17.0,
+      157.0
+    ],
+    "drive_plate_dowel_hole_diameter_mm": 8.2,
+    "drive_plate_dowel_pin_diameter_mm": 6.0,
+    "canister_motor_port_relief_angles_deg": [
+      0.0,
+      120.0,
+      240.0
+    ],
+    "canister_motor_port_relief_diameter_mm": 15.0,
+    "canister_motor_port_relief_z_mm": -76.0,
+    "canister_motor_port_relief_radial_range_mm": [
+      62.0,
+      80.0
+    ],
+    "cell_stack_adjustment_z_mm": -3.0,
+    "cell_pack_adjustment_x_mm": 1.5,
+    "cell_shelf_adjustment_z_mm": 0.0,
+    "cell_shelf_relief_slots_x_mm": [
+      [
+        -51.0,
+        -43.0
+      ],
+      [
+        5.0,
+        9.0
+      ]
+    ],
+    "ups_assembly_adjustment_x_mm": 2.0,
+    "c610_board_center_radius_mm": 48.0,
+    "c610_board_size_mm": [
+      22.0,
+      7.25,
+      44.8
+    ],
+    "c610_backing_center_radius_mm": 60.0,
+    "c610_backing_size_mm": [
+      2.0,
+      10.25,
+      48.8
+    ],
+    "c610_stack_center_z_mm": -55.0,
+    "c610_board_angles_deg": [
+      0.0,
+      120.0,
+      240.0
+    ],
+    "c610_harness_notch_width_mm": 6.0,
+    "c610_harness_notch_top_z_mm": -72.0,
+    "root_tendon_entry_radius_mm": 55.0,
+    "root_tendon_entry_z_mm": 2.5,
+    "root_tendon_transition_join_z_mm": 60.0,
+    "root_tendon_transition_start_handle_mm": 20.0,
+    "root_tendon_transition_end_handle_mm": 30.0
   },
   "environment": {
-    "media": ["freshwater", "seawater"],
+    "media": [
+      "freshwater",
+      "seawater"
+    ],
     "max_depth_m": 5.0,
     "run_time_min": 30.0,
     "payload_mass_kg": 1.0,
@@ -62,21 +174,9 @@
       "path": "../../../../hardware/reference/RoboMaster_C610.STEP",
       "role": "c610_step"
     },
-    "v25_generator": {
-      "path": "../electronics_enclosure_v25_power_input_and_m28/generate_power_input.py",
-      "role": "v25_generator"
-    },
-    "v25_parameters": {
-      "path": "../electronics_enclosure_v25_power_input_and_m28/parameters.json",
-      "role": "v25_parameters"
-    },
-    "v24_parameters": {
-      "path": "../electronics_enclosure_v24_selected_hardware/parameters.json",
-      "role": "v24_parameters"
-    },
-    "v26_parameters": {
-      "path": "../integrated_assembly_v26_arm_and_v25_electronics/parameters.json",
-      "role": "v26_parameters"
+    "electronics_snapshot_manifest": {
+      "path": "../../../../v27_electronics_snapshot/V27电子件快照.json",
+      "role": "electronics_snapshot_manifest"
     }
   }
 }

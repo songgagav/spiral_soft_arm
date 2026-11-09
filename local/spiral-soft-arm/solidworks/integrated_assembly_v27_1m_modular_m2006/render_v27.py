@@ -7,6 +7,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import cadquery as cq
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
 
@@ -63,8 +64,24 @@ def _group_style(result: Any, name: str) -> tuple[str, float]:
         return "#7a8790", 0.34
     if "canister" in name or "bottom_lid" in name:
         return "#66a6b8", 0.22
-    if "C610" in name:
+    if "21700" in name:
+        return "#2caa74", 0.90
+    if "C610" in name or "controller" in name:
         return "#20262d", 0.90
+    if "UPS" in name:
+        return "#c24c55", 0.90
+    if "regulator" in name:
+        return "#d18b32", 0.90
+    if "PD1002" in name:
+        return "#7758ad", 0.90
+    if "ideal_diode" in name:
+        return "#37a6a1", 0.90
+    if "BMS" in name:
+        return "#c5a735", 0.90
+    if "M28" in name or "M12" in name:
+        return "#168b87", 0.92
+    if "carrier" in name or "shelf" in name or "backing" in name or "rail" in name:
+        return "#526875", 0.70
     return "#80a86b", 0.72
 
 
@@ -150,14 +167,13 @@ def _root_review(result: Any, path: Path) -> None:
 
 
 def _drive_section_review(result: Any, path: Path) -> None:
-    figure, ax = _figure("V27 drive chain section — M2006 / coupling / fixed bearings / seal / wet spool")
+    figure, ax = _figure("V27 drive chain section — M2006 / coupling / fixed bearing and seal support / wet spool")
     names = [
         "removable_M2006_01",
         "removable_coupling_sleeve_01",
         "fixed_shaft_01",
         "fixed_bearing_inner_01",
         "fixed_bearing_outer_01",
-        "fixed_seal_housing_01",
         "fixed_oil_seal_01",
         "fixed_labyrinth_01",
         "fixed_axial_retainer_01",
@@ -187,6 +203,62 @@ def _drive_section_review(result: Any, path: Path) -> None:
     _save(figure, path)
 
 
+def _electronics_review(result: Any, path: Path) -> None:
+    figure, ax = _figure("V27 electronics bay — selected hardware and service interfaces")
+    for name in result.electronics_component_names:
+        color, alpha = _group_style(result, name)
+        if "canister" in name or "bottom_lid" in name:
+            alpha = 0.12
+        _add(ax, result.components[name], color, alpha)
+    for shape in result.service_clearance_shapes.values():
+        _add(ax, shape, "#d23d38", 0.10)
+    ax.text(-72, -72, -310, "Red: M28 plug service envelope", color="#a12623")
+    ax.set_xlim(-78, 78)
+    ax.set_ylim(-78, 78)
+    ax.set_zlim(-330, -10)
+    ax.set_box_aspect((156, 156, 320))
+    ax.view_init(elev=13, azim=36)
+    _save(figure, path)
+
+
+def _dovetail_review(result: Any, path: Path) -> None:
+    figure = plt.figure(figsize=(15, 5.5), dpi=130, facecolor="#eef3f6")
+    segment_shapes = tuple(result.arm.print_segments.values())
+    for index, (joint, lock) in enumerate(
+        zip(result.arm.dovetails, result.arm.lock_features), start=1
+    ):
+        ax = figure.add_subplot(1, 3, index, projection="3d")
+        boundary = joint.boundary_z_mm
+        crop = cq.Solid.makeBox(
+            180.0,
+            180.0,
+            joint.engagement_mm + 18.0,
+            cq.Vector(-90.0, -90.0, boundary - 8.0),
+        )
+        lower = segment_shapes[index - 1].intersect(crop).translate((0.0, 0.0, -boundary))
+        upper = segment_shapes[index].intersect(crop).translate((0.0, 0.0, -boundary))
+        pin = lock.proxy.translate((0.0, 0.0, -boundary))
+        _add(ax, lower, "#d3a849", 0.94)
+        _add(ax, upper, "#5d9db1", 0.34)
+        _add(ax, pin, "#50565a", 0.98)
+        radius = 0.5 * lock.length_mm - 1.0
+        view_radius = min(52.0, radius + 7.0)
+        ax.set_xlim(-view_radius, view_radius)
+        ax.set_ylim(-view_radius, view_radius)
+        ax.set_zlim(-8.0, joint.engagement_mm + 6.0)
+        ax.set_box_aspect((2.0 * view_radius, 2.0 * view_radius, 34.0))
+        ax.set_title(
+            f"Unit {joint.unit_index} split | {joint.engagement_mm:.0f} mm | "
+            f"pin Ø{lock.diameter_mm:.0f}",
+            fontsize=10,
+        )
+        ax.set_axis_off()
+        ax.view_init(elev=23, azim=36)
+    figure.suptitle("V27 internal joint dovetails — gold lower tongue, transparent blue socket, gray lock pin", y=0.98)
+    figure.tight_layout()
+    _save(figure, path)
+
+
 def render_v27(result: Any) -> dict[str, Path]:
     directory = result.contract.output_directory
     paths = {
@@ -194,9 +266,13 @@ def render_v27(result: Any) -> dict[str, Path]:
         "exploded_modules": directory / "V27_三模块分解审查.png",
         "root_quick_change": directory / "V27_根部快换近景.png",
         "drive_section": directory / "V27_M2006传动密封剖视.png",
+        "electronics_bay": directory / "V27_电子仓半透明布局.png",
+        "dovetail_joints": directory / "V27_燕尾榫装配近景.png",
     }
     _full_review(result, paths["full_transparent"])
     _exploded_review(result, paths["exploded_modules"])
     _root_review(result, paths["root_quick_change"])
     _drive_section_review(result, paths["drive_section"])
+    _electronics_review(result, paths["electronics_bay"])
+    _dovetail_review(result, paths["dovetail_joints"])
     return paths

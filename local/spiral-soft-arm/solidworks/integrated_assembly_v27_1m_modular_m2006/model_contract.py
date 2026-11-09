@@ -18,6 +18,19 @@ class SourceRecord:
 
 
 @dataclass(frozen=True)
+class DovetailContract:
+    bottom_width_mm: float
+    top_width_mm: float
+    profile_height_mm: float
+    rotation_deg: float
+    engagement_mm: float
+    clearance_per_side_mm: float
+    lock_pin_diameter_mm: float
+    lock_pin_hole_diameter_mm: float
+    lock_pin_azimuth_deg: float
+
+
+@dataclass(frozen=True)
 class ArmContract:
     nominal_length_mm: float
     unit_count: int
@@ -28,6 +41,9 @@ class ArmContract:
     tendon_material: str
     tendon_diameter_mm: float
     max_segment_height_mm: float
+    split_unit_indices: tuple[int, ...]
+    split_unit_offsets_mm: tuple[float, ...]
+    dovetail: DovetailContract
 
 
 @dataclass(frozen=True)
@@ -54,6 +70,10 @@ class DriveContract:
     fixed_transmission_members: tuple[str, ...]
     tendon_alignment_lateral_tolerance_mm: float
     tendon_alignment_angular_tolerance_deg: float
+    tendon_tangent_radius_mm: float
+    spool_core_radius_mm: float
+    spool_effective_radius_mm: float
+    spool_tangent_z_mm: float
 
 
 @dataclass(frozen=True)
@@ -76,6 +96,7 @@ class V27Contract:
     arm: ArmContract
     root_interface: RootInterfaceContract
     drive: DriveContract
+    integration: dict[str, Any]
     environment: EnvironmentContract
     source_specs: dict[str, dict[str, str]]
 
@@ -87,7 +108,11 @@ def _tupled(data: dict[str, Any], key: str) -> tuple[Any, ...]:
 def load_contract(path: Path | None = None) -> V27Contract:
     parameter_path = (path or PARAMETERS_PATH).resolve()
     raw = json.loads(parameter_path.read_text(encoding="utf-8"))
-    arm = ArmContract(**raw["arm"])
+    arm_raw = dict(raw["arm"])
+    arm_raw["split_unit_indices"] = _tupled(arm_raw, "split_unit_indices")
+    arm_raw["split_unit_offsets_mm"] = _tupled(arm_raw, "split_unit_offsets_mm")
+    arm_raw["dovetail"] = DovetailContract(**arm_raw["dovetail"])
+    arm = ArmContract(**arm_raw)
     root_raw = dict(raw["root_interface"])
     root_raw["dowel_angles_deg"] = _tupled(root_raw, "dowel_angles_deg")
     root = RootInterfaceContract(**root_raw)
@@ -108,6 +133,7 @@ def load_contract(path: Path | None = None) -> V27Contract:
         arm=arm,
         root_interface=root,
         drive=drive,
+        integration=dict(raw["integration"]),
         environment=environment,
         source_specs=raw["sources"],
     )
@@ -131,8 +157,70 @@ def validate_contract(contract: V27Contract) -> None:
         raise ValueError("fixed transmission members are incomplete")
     if contract.arm.unit_count != 42 or contract.arm.segment_count != 4:
         raise ValueError("paper geometry requires 42 units and four print segments")
+    if len(contract.arm.split_unit_indices) != contract.arm.segment_count - 1:
+        raise ValueError("one internal profile cut is required per adjacent segment pair")
+    if len(contract.arm.split_unit_offsets_mm) != len(contract.arm.split_unit_indices):
+        raise ValueError("each internal profile cut requires one axial offset")
+    if tuple(sorted(set(contract.arm.split_unit_indices))) != contract.arm.split_unit_indices:
+        raise ValueError("dovetail split-unit indices must be strictly increasing")
+    if any(index < 2 or index > contract.arm.unit_count for index in contract.arm.split_unit_indices):
+        raise ValueError("dovetail split-unit indices must identify existing arm units")
+    if any(abs(offset) > 10.0 for offset in contract.arm.split_unit_offsets_mm):
+        raise ValueError("split-unit offsets must stay within the selected profile unit")
+    joint = contract.arm.dovetail
+    if (
+        joint.bottom_width_mm <= 0.0
+        or joint.top_width_mm <= joint.bottom_width_mm
+        or joint.profile_height_mm <= 0.0
+        or joint.engagement_mm <= 0.0
+        or joint.clearance_per_side_mm < 0.0
+        or joint.lock_pin_diameter_mm <= 0.0
+        or joint.lock_pin_hole_diameter_mm < joint.lock_pin_diameter_mm
+    ):
+        raise ValueError("dovetail and locking-pin dimensions are not physically ordered")
     if contract.root_interface.top_plate_circumdiameter_mm != 250.0:
         raise ValueError("the 250 mm top-plate envelope is frozen")
+    integration = contract.integration
+    if not (
+        0.0 < integration["drive_register_inner_radius_mm"]
+        < integration["drive_plate_clearance_radius_mm"]
+        < integration["drive_register_outer_radius_mm"]
+        < integration["fixed_drive_register_seat_inner_radius_mm"]
+        < integration["fixed_drive_register_seat_outer_radius_mm"]
+    ):
+        raise ValueError("drive-register radii do not preserve fit and service clearance")
+    if (
+        len(integration["drive_register_z_mm"]) != 2
+        or len(integration["fixed_drive_register_seat_z_mm"]) != 2
+        or integration["drive_register_z_mm"][0]
+        >= integration["drive_register_z_mm"][1]
+        or integration["fixed_drive_register_seat_z_mm"][0]
+        >= integration["fixed_drive_register_seat_z_mm"][1]
+    ):
+        raise ValueError("drive-register axial ranges must be increasing pairs")
+    if integration["canister_motor_port_relief_diameter_mm"] <= 14.0:
+        raise ValueError("canister motor-port relief must clear the 14 mm source bosses")
+    if len(integration["cell_shelf_relief_slots_x_mm"]) != 2:
+        raise ValueError("cell shelf requires reliefs at both crossing support backings")
+    if len(integration["c610_board_angles_deg"]) != 3:
+        raise ValueError("three C610 board angles are required")
+    if not (
+        0.0 < integration["root_tendon_entry_radius_mm"]
+        < 0.5 * contract.arm.root_diameter_mm
+        < contract.drive.tendon_tangent_radius_mm
+    ):
+        raise ValueError("root tendon route radii are not ordered")
+    if (
+        integration["root_tendon_entry_z_mm"] != contract.drive.spool_tangent_z_mm
+        or integration["root_tendon_transition_join_z_mm"] <= 0.0
+    ):
+        raise ValueError("spool, root entrance and transition Z coordinates disagree")
+    if (
+        integration["drive_plate_dowel_radius_mm"]
+        - integration["drive_plate_dowel_hole_diameter_mm"] / 2.0
+        <= integration["fixed_drive_register_seat_outer_radius_mm"]
+    ):
+        raise ValueError("drive-plate dowels must clear the central register seat")
 
 
 def _sha256(path: Path) -> str:

@@ -5,6 +5,7 @@ import math
 from typing import Any
 
 import cadquery as cq
+from arm_module import make_root_transition_passage
 
 
 @dataclass(frozen=True)
@@ -164,12 +165,20 @@ def build_root_interface(contract: Any, arm: Any) -> RootInterfaceResult:
     ):
         key_code = f"K{index}-{3.0 + 0.5 * (index - 1):.1f}"
         capture = _oriented_box(18.0, 7.0 + index, 8.0, 75.0, angle_deg)
-        delta = tuple(
-            float(second - first)
-            for first, second in zip(channel.samples[0], channel.samples[1])
+        angle = math.radians(angle_deg)
+        axis = (math.cos(angle), math.sin(angle), 0.0)
+        route_radius = max(
+            0.40,
+            0.5 * float(contract.arm.tendon_diameter_mm) + 0.15,
         )
-        norm = math.sqrt(sum(value * value for value in delta))
-        axis = tuple(value / norm for value in delta)
+        route_z = float(contract.integration["root_tendon_entry_z_mm"])
+        entry_radius = float(contract.integration["root_tendon_entry_radius_mm"])
+        capture_bore = _cylinder_between(
+            route_radius,
+            _radial_point(64.0, angle_deg, route_z),
+            _radial_point(86.0, angle_deg, route_z),
+        )
+        capture = capture.cut(capture_bore).clean()
         adjustment = _cylinder_between(
             2.0,
             _radial_point(63.0, angle_deg),
@@ -195,7 +204,7 @@ def build_root_interface(contract: Any, arm: Any) -> RootInterfaceResult:
                 capture_block=capture,
                 adjustment_envelope=adjustment,
                 secondary_retention=retention,
-                inlet_point=tuple(float(value) for value in channel.samples[0]),
+                inlet_point=_radial_point(entry_radius, angle_deg, route_z),
                 axis_direction=axis,
                 adjustment_stroke_mm=12.0,
                 future_load_cell_straight_length_mm=20.0,
@@ -210,6 +219,26 @@ def build_root_interface(contract: Any, arm: Any) -> RootInterfaceResult:
         ).cut(terminal.secondary_retention)
         register = register.cut(terminal.adjustment_envelope)
         arm_flange = arm_flange.cut(terminal.adjustment_envelope)
+
+    # Keep the external spool tangent straight through the root flange and
+    # capture sleeve, then blend into the native tendon channel with a swept
+    # 60 mm fairlead.  The same bore size is used in every intersected part.
+    passage_radius = max(
+        0.40,
+        0.5 * float(contract.arm.tendon_diameter_mm) + 0.15,
+    )
+    tangent_radius = float(contract.drive.tendon_tangent_radius_mm)
+    for terminal in terminals:
+        straight = _cylinder_between(
+            passage_radius,
+            terminal.inlet_point,
+            _radial_point(tangent_radius, terminal.angle_deg, terminal.inlet_point[2]),
+        )
+        transition = make_root_transition_passage(
+            contract, terminal.angle_deg, passage_radius
+        )
+        arm_flange = arm_flange.cut(straight).cut(transition).clean()
+        arm_capture_sleeve = arm_capture_sleeve.cut(straight).cut(transition).clean()
 
     return RootInterfaceResult(
         arm_side_flange=arm_flange.clean(),

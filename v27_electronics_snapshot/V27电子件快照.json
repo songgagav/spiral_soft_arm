@@ -1,0 +1,318 @@
+{
+  "components": [
+    {
+      "file": "v24_central_electronics_canister.step",
+      "name": "v24_central_electronics_canister",
+      "sha256": "e213415b16b9ce011bca0463dead6ce652e7b57821410f9bddbff3df22f45a87"
+    },
+    {
+      "file": "v24_21700_cell_1.step",
+      "name": "v24_21700_cell_1",
+      "sha256": "7ee75491892617bf475d44fa2b122dececc5b66479b296378d8c24a7dbd2bb98"
+    },
+    {
+      "file": "v24_21700_cell_2.step",
+      "name": "v24_21700_cell_2",
+      "sha256": "a80040442bba099f9187e0cb1a9a61918cb9884f56698d03c6d510e6f2a6c13d"
+    },
+    {
+      "file": "v24_21700_cell_3.step",
+      "name": "v24_21700_cell_3",
+      "sha256": "75075136f1f07155d9cd2bf66bddcbd4ca5bd4c4f4a0b2e0185ceecc88348007"
+    },
+    {
+      "file": "v24_21700_cell_4.step",
+      "name": "v24_21700_cell_4",
+      "sha256": "a3e908e48e69d8151f038ff491998de301b0f00ecaee1af5372626249752cf61"
+    },
+    {
+      "file": "v24_4S_cell_carrier.step",
+      "name": "v24_4S_cell_carrier",
+      "sha256": "1871d80399202305e74f4e7be42277de5bc5c74d154517d8484088bf3d35db85"
+    },
+    {
+      "file": "v24_ups_envelope.step",
+      "name": "v24_ups_envelope",
+      "sha256": "f64a894daef307ed3b73760124f968dcedccdef550817fdf2481823d9483c30b"
+    },
+    {
+      "file": "v24_regulator_envelope.step",
+      "name": "v24_regulator_envelope",
+      "sha256": "d6edcb85ffbff2a3f372b5db11d27069b486685314a7588a23706425df3e6f8f"
+    },
+    {
+      "file": "v24_pd1002_envelope.step",
+      "name": "v24_pd1002_envelope",
+      "sha256": "0594ce8c98eee634bddbd7bbfb61402c6bfad3ad4166c6b6463bdf77955267d8"
+    },
+    {
+      "file": "v24_ideal_diode_envelope.step",
+      "name": "v24_ideal_diode_envelope",
+      "sha256": "f7b097b952a7dd76646a0d295b3dd4ed5baaf4760f6569c8f3de2fcea6f5bc2d"
+    },
+    {
+      "file": "v24_bms_envelope.step",
+      "name": "v24_bms_envelope",
+      "sha256": "1c35126805a7af1636c5140fa59a9203749f2f04241cfda8d3d9d1966ea8103c"
+    },
+    {
+      "file": "v24_controller_backing.step",
+      "name": "v24_controller_backing",
+      "sha256": "46601a7914881282a9d570e3304afd580266e5df4c9724788d82648e63b41753"
+    },
+    {
+      "file": "v24_UPS_backing.step",
+      "name": "v24_UPS_backing",
+      "sha256": "13d4912f26b9d422d397b547441a58e6e3e0af5dbe63db08ec61611e7ad79fed"
+    },
+    {
+      "file": "v24_regulator_backing.step",
+      "name": "v24_regulator_backing",
+      "sha256": "30f469a9431b2458aa8643958291cc79731f058e2f9fa69330d2efc1e24c727a"
+    },
+    {
+      "file": "v24_PD1002_shelf.step",
+      "name": "v24_PD1002_shelf",
+      "sha256": "e9ba8af8aacb6b262964d8ad99ccf1202e8adeb480dd2f548e52f3aaf63a1c97"
+    },
+    {
+      "file": "v24_ideal_diode_shelf.step",
+      "name": "v24_ideal_diode_shelf",
+      "sha256": "ae647f1ce52c5b73f67454a57538d5573fd6c75f9fb100070566bf99e8bfdbe3"
+    },
+    {
+      "file": "v24_BMS_shelf.step",
+      "name": "v24_BMS_shelf",
+      "sha256": "5bd11d2e285e88a5b9ccc48381ec3859be966d4bcf0e638b7ba5c4718e682717"
+    },
+    {
+      "file": "v24_M12_USB_C_inside_stem_proxy.step",
+      "name": "v24_M12_USB_C_inside_stem_proxy",
+      "sha256": "4ddfd480d6784c8a7e2c30bb7b9a702559805f536a6d5282d5abd11dc0d93cf1"
+    },
+    {
+      "file": "v24_M12_USB_C_outside_flange_proxy.step",
+      "name": "v24_M12_USB_C_outside_flange_proxy",
+      "sha256": "d9555988b74ad0f7a961808919f3ee4bb69b32b9b55be4a26c1ef2772f654353"
+    },
+    {
+      "file": "v25_bottom_lid_with_M28_recess.step",
+      "name": "v25_bottom_lid_with_M28_recess",
+      "sha256": "f91ab2eafba7c015bc88cff21074dccc4e8fe7b918f01cea130ffae317062b6f"
+    },
+    {
+      "file": "v25_M28_male_plug_envelope.step",
+      "name": "v25_M28_male_plug_envelope",
+      "sha256": "0c5ea82b4f86ed79ff19764b9050b22dd3bf0ddee23d946a42b9320635bb1a5b"
+    },
+    {
+      "file": "v25_buck_5v_envelope.step",
+      "name": "v25_buck_5v_envelope",
+      "sha256": "caf75022d9dc03045522f702a6fefe9101f04a18858b83e494b81de1a2cb74ca"
+    },
+    {
+      "file": "v25_buck_5v_shelf.step",
+      "name": "v25_buck_5v_shelf",
+      "sha256": "ae3f8c02191c46af05ef1d62c084533566932e0360bc7dcde6f21926101c0aa3"
+    },
+    {
+      "file": "v27_STM32F407_controller_envelope.step",
+      "name": "v27_STM32F407_controller_envelope",
+      "sha256": "cbf54d7044ba364fc3f3179d81b1c99c98abf7ce63ff3ccf0d2fcecbaba453c5"
+    },
+    {
+      "file": "v27_C610_controller_01_envelope.step",
+      "name": "v27_C610_controller_01_envelope",
+      "sha256": "a44a18717aa0a9f10313c4eb9a26ea6a0811b770ffbde9f2587f3789d0e02752"
+    },
+    {
+      "file": "v27_C610_controller_01_backing.step",
+      "name": "v27_C610_controller_01_backing",
+      "sha256": "8e609cc01bbb2fa7c654b20d0624fad9cf60596a2dace32dce5e26fec7501f54"
+    },
+    {
+      "file": "v27_C610_controller_02_envelope.step",
+      "name": "v27_C610_controller_02_envelope",
+      "sha256": "40838618c7197e843c28da846a542a6bdf57bc33921f0da8abd6f5d47bfc67af"
+    },
+    {
+      "file": "v27_C610_controller_02_backing.step",
+      "name": "v27_C610_controller_02_backing",
+      "sha256": "2f39994e15e4da7fbe104ac2f6adc10e6f776a8a5110c142c472a0b21f84cdd3"
+    },
+    {
+      "file": "v27_C610_controller_03_envelope.step",
+      "name": "v27_C610_controller_03_envelope",
+      "sha256": "835d1344339a1334d0ff2a56fcebb3ee49aebdd49de33aad9218cd329fcfb94e"
+    },
+    {
+      "file": "v27_C610_controller_03_backing.step",
+      "name": "v27_C610_controller_03_backing",
+      "sha256": "1f53afe7c33cd8401783106cb58e6e9275862b47e5c3fd19a19675b547867b30"
+    },
+    {
+      "file": "v25_M28_panel_socket_assembly.step",
+      "name": "v25_M28_panel_socket_assembly",
+      "sha256": "6f98485a2453f5a0fa5a2f333a611b125943ce074d9c1756a6824a5afbb6bc7f"
+    }
+  ],
+  "coordinate_frame": "V27 assembly coordinates in mm",
+  "runtime_note": "V27 rebuild imports these 31 hashed electronic component STEP files and one service-clearance STEP without invoking V24/V25 scripts. Refreshing geometry from upstream V24/V25 source still requires its original dependency closure.",
+  "schema_version": "1.0.0",
+  "service_clearances": [
+    {
+      "file": "v25_M28_service_clearance.step",
+      "name": "v25_M28_service_clearance",
+      "sha256": "875b052cc3839c46364b7d4cdbe4602bdfd94e05ca5a90a75851a89f7b450478"
+    }
+  ],
+  "source_files": {
+    "v24_parameters": {
+      "path": "local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/parameters.json",
+      "sha256": "77f92050a2025c48d1435af7c85b8354f79049bef1138c459dbfce396971ca49",
+      "original_authoring_path": "E:/Spiral_Robots/.worktrees/spiral-soft-arm-v27/local/spiral-soft-arm/solidworks/electronics_enclosure_v24_selected_hardware/parameters.json",
+      "source_path_status": "present in checkout; provenance hash recorded"
+    },
+    "v25_generator": {
+      "path": "local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/generate_power_input.py",
+      "sha256": "c0060764a140ee3b057c5b4f5d034089041f574109c26ed25ef0b749b1c38a27",
+      "original_authoring_path": "E:/Spiral_Robots/.worktrees/spiral-soft-arm-v27/local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/generate_power_input.py",
+      "source_path_status": "present in checkout; provenance hash recorded"
+    },
+    "v25_parameters": {
+      "path": "local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/parameters.json",
+      "sha256": "68168d7b020510fd31accc70344a331352cf7e3e2b6d6e88f41c425685469840",
+      "original_authoring_path": "E:/Spiral_Robots/.worktrees/spiral-soft-arm-v27/local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/parameters.json",
+      "source_path_status": "present in checkout; provenance hash recorded"
+    }
+  },
+  "source_v25_audit": {
+    "buck_to_v24_hardware_volume_overlaps": [],
+    "c610_backing_count": 3,
+    "c610_controller_count": 3,
+    "excluded_obsolete_c620_count": 6,
+    "hardware_to_hardware_volume_overlaps": [],
+    "internal_to_shell_volume_overlaps": {},
+    "m28_mount_land_mm": 5.0,
+    "m28_opening_bounds_mm": [
+      26.2,
+      28.0
+    ],
+    "m28_retained_load_annulus_bounds_mm": [
+      56.0,
+      56.0,
+      10.0
+    ],
+    "m28_to_hardware_volume_overlaps": [],
+    "selected_component_count": 31,
+    "selected_component_names": [
+      "v24_21700_cell_1",
+      "v24_21700_cell_2",
+      "v24_21700_cell_3",
+      "v24_21700_cell_4",
+      "v24_4S_cell_carrier",
+      "v24_BMS_shelf",
+      "v24_M12_USB_C_inside_stem_proxy",
+      "v24_M12_USB_C_outside_flange_proxy",
+      "v24_PD1002_shelf",
+      "v24_UPS_backing",
+      "v24_bms_envelope",
+      "v24_central_electronics_canister",
+      "v24_controller_backing",
+      "v24_ideal_diode_envelope",
+      "v24_ideal_diode_shelf",
+      "v24_pd1002_envelope",
+      "v24_regulator_backing",
+      "v24_regulator_envelope",
+      "v24_ups_envelope",
+      "v25_M28_male_plug_envelope",
+      "v25_M28_panel_socket_assembly",
+      "v25_bottom_lid_with_M28_recess",
+      "v25_buck_5v_envelope",
+      "v25_buck_5v_shelf",
+      "v27_C610_controller_01_backing",
+      "v27_C610_controller_01_envelope",
+      "v27_C610_controller_02_backing",
+      "v27_C610_controller_02_envelope",
+      "v27_C610_controller_03_backing",
+      "v27_C610_controller_03_envelope",
+      "v27_STM32F407_controller_envelope"
+    ],
+    "source_generator": "E:/Spiral_Robots/.worktrees/spiral-soft-arm-v27/local/spiral-soft-arm/solidworks/electronics_enclosure_v25_power_input_and_m28/generate_power_input.py",
+    "unverified": [
+      "M28 gasket groove and compression",
+      "M28 nut, cap tether and terminal-tail production dimensions",
+      "buck mounting holes, connector heights and 20 A thermal performance",
+      "wire bend radii and strain relief"
+    ],
+    "v27_electronics_adaptations": {
+      "battery_pack_x_adjustment_mm": 1.5,
+      "battery_stack_z_adjustment_mm": -3.0,
+      "c610_board_angles_deg": [
+        0.0,
+        120.0,
+        240.0
+      ],
+      "c610_centres_rotated_once_from_local_radial_coordinates": true,
+      "c610_harness_backing_notch_top_z_mm": -72.0,
+      "c610_harness_backing_notch_width_mm": 6.0,
+      "c610_harness_port_azimuth_offset_deg": 0.0,
+      "cell_shelf_support_relief_slots_x_mm": [
+        [
+          -51.0,
+          -43.0
+        ],
+        [
+          5.0,
+          9.0
+        ]
+      ],
+      "cell_shelf_z_adjustment_mm": 0.0,
+      "m28_body_and_inside_flange_combined": true,
+      "m28_body_clearance_nominal_mm": 0.1,
+      "m28_body_diameter_mm": 27.8,
+      "m28_body_flat_width_mm": 26.0,
+      "m28_panel_cutout_bounds_mm": [
+        26.2,
+        28.0
+      ],
+      "support_rail_fused_into_backings": 3,
+      "ups_assembly_x_adjustment_mm": 2.0
+    }
+  },
+  "status": "frozen V25-derived V27 electronics geometry inputs; generator runtime does not load the older V5-V25 dependency chain",
+  "v27_electronics_adaptations": {
+    "battery_pack_x_adjustment_mm": 1.5,
+    "battery_stack_z_adjustment_mm": -3.0,
+    "c610_board_angles_deg": [
+      0.0,
+      120.0,
+      240.0
+    ],
+    "c610_centres_rotated_once_from_local_radial_coordinates": true,
+    "c610_harness_backing_notch_top_z_mm": -72.0,
+    "c610_harness_backing_notch_width_mm": 6.0,
+    "c610_harness_port_azimuth_offset_deg": 0.0,
+    "cell_shelf_support_relief_slots_x_mm": [
+      [
+        -51.0,
+        -43.0
+      ],
+      [
+        5.0,
+        9.0
+      ]
+    ],
+    "cell_shelf_z_adjustment_mm": 0.0,
+    "m28_body_and_inside_flange_combined": true,
+    "m28_body_clearance_nominal_mm": 0.1,
+    "m28_body_diameter_mm": 27.8,
+    "m28_body_flat_width_mm": 26.0,
+    "m28_panel_cutout_bounds_mm": [
+      26.2,
+      28.0
+    ],
+    "support_rail_fused_into_backings": 3,
+    "ups_assembly_x_adjustment_mm": 2.0
+  }
+}
