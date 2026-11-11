@@ -204,6 +204,12 @@ $py = 'C:\Users\MOSS\.cache\codex-cadquery-py312\Scripts\python.exe'
 
 CAD does not prove printing, strength, 5 m water-tightness, 30-minute thermal behavior or 1 kg task success.
 
+### 待实测工程矩阵与走线边界
+
+`V27工程审计.json` 现在为湿态重量/浮力、动态根部载荷、螺栓组承载、低速全行程电流、传动效率、轴封阻力、拉索摩擦和线盘可用圈数逐项给出所需输入、台架方法和证据形式。它们的状态均为 `pending_physical_measurement`，所以总体 `qualified` 仍为 `false`。
+
+`V27装配审查.json` 增加三条电机线束的走线审查：以 Ø2 mm 直线路径探针检查电子仓至电机仓的受约束穿舱段，逐路对所有非端点实体做干涉检查。M28 电源服务净空和 M12 Type-C 外侧包络也被记录。该检查不代表生产线束已定型：实际导线外径、弯曲半径、端子尾部、应力释放、插头拔插空间和水密压紧仍需实物验证。
+
 具体仍需完成：
 
 - 用目标切片器检查四段的打印方向、支撑、薄壁、拉索孔道和燕尾/横销路径，并打印尺寸试块与根部样件。

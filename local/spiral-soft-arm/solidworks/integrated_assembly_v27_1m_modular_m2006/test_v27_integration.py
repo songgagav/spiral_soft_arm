@@ -114,6 +114,22 @@ class V27ZZDeliveryTests(unittest.TestCase):
         self.assertIn("fixed_root_guard_hex", text)
         self.assertIn("69.5 mm", text)
 
+    def test_delivery_records_measurement_matrix_and_wiring_limits(self) -> None:
+        engineering = json.loads(
+            (self.directory / "V27工程审计.json").read_text(encoding="utf-8")
+        )
+        assembly = json.loads(
+            (self.directory / "V27装配审查.json").read_text(encoding="utf-8")
+        )
+        self.assertIn("measurement_plan", engineering)
+        self.assertIn("wiring_accessibility", assembly["service"])
+        review = (self.directory / "preprint_review" / "V27打印前审查.md").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("待实测", review)
+        self.assertIn("线束", review)
+        self.assertIn("弯曲半径", review)
+
     def test_root_readme_links_v27_without_replacing_v26(self) -> None:
         text = self.root_readme.read_text(encoding="utf-8")
         self.assertIn("integrated_assembly_v27_1m_modular_m2006", text)
