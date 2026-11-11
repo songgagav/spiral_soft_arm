@@ -137,6 +137,27 @@ class V27EngineeringBoundaryTests(unittest.TestCase):
         self.assertIn("arm_wet_mass_and_buoyancy", payload["missing_measurements"])
         self.assertIn("bolt_group_capacity", payload["missing_measurements"])
 
+    def test_measurement_plan_keeps_unmeasured_systems_pending(self) -> None:
+        audit = generate_v27_engineering_audit(load_contract())
+        plan = audit["measurement_plan"]
+        expected = {
+            "wet_mass_and_buoyancy",
+            "dynamic_root_load",
+            "bolt_group_capacity",
+            "low_speed_full_travel_current",
+            "drivetrain_efficiency",
+            "seal_drag",
+            "tendon_friction",
+            "spool_usable_turns",
+        }
+        self.assertEqual(set(plan), expected)
+        for name, item in plan.items():
+            self.assertEqual(item["status"], "pending_physical_measurement", name)
+            self.assertTrue(item["required_inputs"], name)
+            self.assertTrue(item["bench_method"], name)
+            self.assertTrue(item["acceptance_evidence"], name)
+        self.assertFalse(audit["qualified"])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -290,6 +290,96 @@ def _constant_curvature_state(
     return tuple(transformed)
 
 
+def build_measurement_plan() -> dict[str, dict[str, Any]]:
+    """List physical measurements that proxy calculations cannot replace."""
+    pending = "pending_physical_measurement"
+    return {
+        "wet_mass_and_buoyancy": {
+            "status": pending,
+            "required_inputs": [
+                "measured_arm_wet_mass_kg",
+                "measured_displaced_volume_m3",
+                "freshwater_and_seawater_density_kg_m3",
+            ],
+            "bench_method": "Weigh the fully assembled dry and flooded machine, then measure displaced volume in fresh and salt water.",
+            "acceptance_evidence": "Recorded mass, displacement and residual buoyancy for each medium.",
+        },
+        "dynamic_root_load": {
+            "status": pending,
+            "required_inputs": [
+                "measured_tip_load_N",
+                "motion_profile",
+                "root_acceleration_or_strain_trace",
+            ],
+            "bench_method": "Run constrained low-speed and start-stop motions with a root load cell or strain-gauged fixture.",
+            "acceptance_evidence": "Peak root force and moment traces linked to the motion profile.",
+        },
+        "bolt_group_capacity": {
+            "status": pending,
+            "required_inputs": [
+                "fastener_grade",
+                "thread_engagement_mm",
+                "printed_or_metal_mate_material",
+                "torque_and_preload",
+            ],
+            "bench_method": "Confirm the installed bolt stack, then load the root interface in the documented worst-case direction.",
+            "acceptance_evidence": "Fastener specification, torque record and static/fatigue load result.",
+        },
+        "low_speed_full_travel_current": {
+            "status": pending,
+            "required_inputs": [
+                "bus_voltage_V",
+                "per_motor_current_A",
+                "motor_and_C610_temperature_C",
+                "full_tendon_travel_command",
+            ],
+            "bench_method": "Log each C610 current and temperature through complete low-speed payout and take-up cycles.",
+            "acceptance_evidence": "Time-aligned current, voltage and temperature log for all three routes.",
+        },
+        "drivetrain_efficiency": {
+            "status": pending,
+            "required_inputs": [
+                "motor_input_torque_or_current_calibration",
+                "spool_output_torque",
+                "gear_lubrication_state",
+            ],
+            "bench_method": "Compare calibrated motor input torque with output torque at the spool under representative low-speed load.",
+            "acceptance_evidence": "Efficiency versus load trace with the fitted gear pair installed.",
+        },
+        "seal_drag": {
+            "status": pending,
+            "required_inputs": [
+                "seal_part_and_material",
+                "journal_surface_finish",
+                "dry_and_wet_breakaway_torque",
+            ],
+            "bench_method": "Measure breakaway and running torque of the completed shaft, seal and labyrinth assembly dry and submerged.",
+            "acceptance_evidence": "Torque trace, leakage observation and test duration for both media.",
+        },
+        "tendon_friction": {
+            "status": pending,
+            "required_inputs": [
+                "actual_tendon_diameter_mm",
+                "route_tension_in_N",
+                "route_tension_out_N",
+                "bend_state",
+            ],
+            "bench_method": "Pull each actual tendon route at low speed through straight and bent arm states while measuring both-end tension.",
+            "acceptance_evidence": "Per-route friction ratio, sliding observation, slack and rebound record.",
+        },
+        "spool_usable_turns": {
+            "status": pending,
+            "required_inputs": [
+                "actual_tendon_diameter_mm",
+                "first_and_last_layer_radius_mm",
+                "retained_turns_before_flange_contact",
+            ],
+            "bench_method": "Wind the production tendon across the full spool width and count stable turns before flange contact or cross-over instability.",
+            "acceptance_evidence": "Video or photographs plus turn count and layered-radius measurement for each spool.",
+        },
+    }
+
+
 def generate_v27_engineering_audit(contract: Any) -> dict[str, Any]:
     from arm_module import build_arm_module
 
@@ -350,6 +440,7 @@ def generate_v27_engineering_audit(contract: Any) -> dict[str, Any]:
         "spool_capacity": asdict(capacity),
         "force_budget": asdict(force),
         "root_load": asdict(root_load),
+        "measurement_plan": build_measurement_plan(),
     }
 
 
