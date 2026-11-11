@@ -111,6 +111,36 @@ class V27DriveAndBaseTests(unittest.TestCase):
         self.assertAlmostEqual(bounds.xlen, 250.0, places=5)
         self.assertLessEqual(bounds.ylen, 250.0 + 1e-6)
 
+    def test_top_plate_receives_guard_insert_pockets_and_alignment_tabs(self) -> None:
+        drive, _, _, base = self.build()
+        cfg = self.contract.integration["root_cover"]
+        plate = base.components["fixed_top_plate"]
+        pocket_radius = 0.5 * cfg["root_guard_insert_pocket_diameter_mm"] - 0.2
+        for angle_deg in cfg["root_guard_fastener_angles_deg"]:
+            radial = (math.cos(math.radians(angle_deg)), math.sin(math.radians(angle_deg)))
+            center = (
+                cfg["root_guard_fastener_center_radius_mm"] * radial[0],
+                cfg["root_guard_fastener_center_radius_mm"] * radial[1],
+                0.0,
+            )
+            pocket = drive._vertical_cylinder(center, pocket_radius, -5.8, -0.1)
+            self.assertLess(plate.intersect(pocket).Volume(), 1e-3)
+        for angle_deg in cfg["root_guard_alignment_tab_angles_deg"]:
+            radial = (math.cos(math.radians(angle_deg)), math.sin(math.radians(angle_deg)))
+            center = (
+                cfg["root_guard_alignment_tab_center_radius_mm"] * radial[0],
+                cfg["root_guard_alignment_tab_center_radius_mm"] * radial[1],
+                -2.0,
+            )
+            slot = drive._oriented_box(
+                center,
+                cfg["root_guard_alignment_tab_radial_width_mm"],
+                cfg["root_guard_alignment_tab_tangent_width_mm"],
+                3.5,
+                angle_deg,
+            )
+            self.assertLess(plate.intersect(slot).Volume(), 1e-3)
+
     def test_wet_spools_clear_root_flange(self) -> None:
         _, axes, _, _ = self.build()
         flange_radius = 0.5 * self.contract.root_interface.flange_max_diameter_mm

@@ -415,6 +415,138 @@ def _drive_section_review(result: Any, path: Path) -> None:
     _save(figure, path)
 
 
+def _drive_details_sheet(result: Any, path: Path) -> None:
+    figure = plt.figure(figsize=(20, 9), dpi=190, facecolor="#f1f4f6")
+    figure.suptitle(
+        "V27 M2006—轴套—直角齿轮—轴封—湿侧线盘｜CAD 细节审查",
+        fontsize=18,
+        y=0.97,
+        color="#263746",
+    )
+    axes = [
+        figure.add_subplot(1, 3, index, projection="3d")
+        for index in (1, 2, 3)
+    ]
+    view_parts = [
+        (
+            "01  M2006 电机与 D6 轴套",
+            [
+                ("removable_M2006_01", "#315d78", 0.66),
+                ("removable_M2006_cross_pin_01", "#cf5548", 1.0),
+                ("fixed_coupling_sleeve_01", "#8c63a9", 0.98),
+                ("fixed_coupling_lock_screw_01", "#54595c", 1.0),
+                ("fixed_shaft_01", "#d3a53a", 0.82),
+            ],
+            "发布外形代理：电机壳 Ø24.4 × 47.8；D6 轴伸 17 mm\n"
+            "CNC 轴套：Ø15 外径，D6 Ø6.2 × 13 深；Ø2.8 可拆横销\n"
+            "套筒 D10 端以 M3 紧定螺钉留在固定轴上。",
+        ),
+        (
+            "02  90° 伞齿轮与阶梯轴",
+            [
+                ("fixed_bevel_pod_01", "#9aa4aa", 0.12),
+                ("fixed_output_support_pod_01", "#9aa4aa", 0.10),
+                ("fixed_shaft_01", "#d3a53a", 0.74),
+                ("fixed_output_shaft_01", "#c79a34", 0.54),
+                ("fixed_bevel_input_envelope_01", "#c24f38", 0.88),
+                ("fixed_bevel_output_envelope_01", "#dc8242", 0.78),
+                ("fixed_input_bearing_1_01", "#39434b", 0.86),
+                ("fixed_input_bearing_2_01", "#5a6770", 0.82),
+            ],
+            "KHK SM1.25-25H × 2：25 齿、1:1、90°；图中仅为无齿形目录包络\n"
+            "输入 Ø10 轴；输出 Ø10 轴，齿轮位为 Ø8 h6 D 平面 + M4 紧定。\n"
+            "输入轴竖直，输出/线盘轴水平且相互垂直。",
+        ),
+        (
+            "03  支承、双道轴封与湿侧线盘",
+            [
+                ("fixed_output_support_pod_01", "#9aa4aa", 0.10),
+                ("fixed_output_shaft_01", "#c79a34", 0.42),
+                ("fixed_bearing_inner_01", "#39434b", 0.94),
+                ("fixed_bearing_outer_01", "#5a6770", 0.94),
+                ("fixed_oil_seal_01", "#bf4b43", 0.88),
+                ("fixed_labyrinth_01", "#dc8b36", 0.92),
+                ("fixed_wet_spool_01", "#d4aa48", 0.66),
+            ],
+            "2 × 6900：10 × 22 × 6 mm；2 × NBR 油封候选：10 × 22 × 7 mm\n"
+            "外侧迷宫 + 湿侧 D10 线盘；拉索按切线直线进入根部线孔。\n"
+            "轴封阻力、耐海水性和 5 m 水压性能尚未实测。",
+        ),
+    ]
+    route_axis = result.fixed.axes[0]
+    route_start = route_axis.tangent_point
+    route_end = route_axis.root_inlet
+    for index, (ax, (title, parts, note)) in enumerate(zip(axes, view_parts)):
+        ax.set_facecolor("#f1f4f6")
+        ax.set_axis_off()
+        ax.set_proj_type("ortho")
+        shapes = []
+        for name, color, alpha in parts:
+            shape = result.components[name]
+            shapes.append(shape)
+            _add(ax, shape, color, alpha)
+        boxes = [shape.BoundingBox() for shape in shapes]
+        xmin = min(box.xmin for box in boxes)
+        xmax = max(box.xmax for box in boxes)
+        ymin = min(box.ymin for box in boxes)
+        ymax = max(box.ymax for box in boxes)
+        zmin = min(box.zmin for box in boxes)
+        zmax = max(box.zmax for box in boxes)
+        if index == 2:
+            xmin = min(xmin, route_start[0], route_end[0])
+            xmax = max(xmax, route_start[0], route_end[0])
+            ymin = min(ymin, route_start[1], route_end[1])
+            ymax = max(ymax, route_start[1], route_end[1])
+            zmin = min(zmin, route_start[2], route_end[2])
+            zmax = max(zmax, route_start[2], route_end[2])
+        span = max(xmax - xmin, ymax - ymin, zmax - zmin, 1.0)
+        margin = max(4.0, span * 0.10)
+        dx, dy, dz = (xmax - xmin + 2.0 * margin, ymax - ymin + 2.0 * margin, zmax - zmin + 2.0 * margin)
+        ax.set_xlim(xmin - margin, xmax + margin)
+        ax.set_ylim(ymin - margin, ymax + margin)
+        ax.set_zlim(zmin - margin, zmax + margin)
+        ax.set_box_aspect((dx, dy, dz))
+        ax.view_init(elev=24, azim=38)
+        ax.set_title(title, fontsize=12, color="#263746", pad=8)
+        ax.text2D(
+            0.02,
+            0.025,
+            note,
+            transform=ax.transAxes,
+            fontsize=9,
+            color="#263746",
+            bbox={"facecolor": "white", "alpha": 0.92, "edgecolor": "#cad3d9"},
+        )
+
+    start = route_start
+    end = route_end
+    axes[2].plot(
+        [start[0], end[0]],
+        [start[1], end[1]],
+        [start[2], end[2]],
+        color="#c73535",
+        linewidth=3.0,
+    )
+    axes[2].text(
+        start[0],
+        start[1],
+        start[2] + 2.0,
+        "切线拉索 → 根部孔",
+        color="#a42b2b",
+        fontsize=8,
+    )
+    figure.text(
+        0.5,
+        0.015,
+        "尺寸按当前 V27 CAD 合同值｜M2006 为发布尺寸包络代理｜伞齿轮未建齿形｜油封/迷宫未完成水下资格验证",
+        ha="center",
+        fontsize=10,
+        color="#52616a",
+    )
+    figure.subplots_adjust(left=0.015, right=0.985, top=0.88, bottom=0.12, wspace=0.04)
+    _save(figure, path)
+
+
 def _electronics_review(result: Any, path: Path) -> None:
     figure, ax = _figure("V27 electronics bay — selected hardware and service interfaces")
     for name in result.electronics_component_names:
@@ -556,6 +688,7 @@ def render_v27(result: Any) -> dict[str, Path]:
         "exploded_modules": directory / "V27_三模块分解审查.png",
         "root_quick_change": directory / "V27_根部快换近景.png",
         "drive_section": directory / "V27_M2006传动密封剖视.png",
+        "drive_details": directory / "V27_传动系统细节图.png",
         "electronics_bay": directory / "V27_电子仓半透明布局.png",
         "dovetail_joints": directory / "V27_燕尾榫装配近景.png",
         "root_cover_review": directory / "V27_半透明包覆件总装与拆卸.png",
@@ -565,6 +698,7 @@ def render_v27(result: Any) -> dict[str, Path]:
     _exploded_review(result, paths["exploded_modules"])
     _root_review(result, paths["root_quick_change"])
     _drive_section_review(result, paths["drive_section"])
+    _drive_details_sheet(result, paths["drive_details"])
     _electronics_review(result, paths["electronics_bay"])
     _dovetail_review(result, paths["dovetail_joints"])
     _cover_review(result, paths["root_cover_review"], paths["root_cover_only"])

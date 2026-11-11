@@ -13892,12 +13892,19 @@
   },
   "cover_layout": {
     "floodable_openings": true,
+    "frame_outer_circumradii_mm": [
+      102.0,
+      166.0,
+      166.0,
+      166.0
+    ],
+    "frame_radial_thickness_mm": 4.0,
     "motor_window_center_z_mm": -1.0,
     "motor_window_mm": [
       72.0,
       82.0
     ],
-    "outer_circumdiameter_mm": 324.0,
+    "outer_circumdiameter_mm": 332.0,
     "panel_count": 12,
     "panel_profile_stations_mm": [
       [
@@ -13921,7 +13928,9 @@
       -236.0,
       64.0
     ],
-    "pressure_boundary": false
+    "pressure_boundary": false,
+    "window_surround_proud_mm": 2.5,
+    "window_surround_width_mm": 8.0
   },
   "electronics": {
     "buck_to_v24_hardware_volume_overlaps": [],
@@ -14628,6 +14637,17 @@
       ]
     },
     "root_fastener_tool_envelopes": 6,
+    "root_guard_attachment": {
+      "alignment_slot_clearance_mm": 0.3,
+      "alignment_tab_count": 2,
+      "base_receiver": "fixed_top_plate",
+      "fastener_clearance_diameter_mm": 3.4,
+      "fastener_count": 3,
+      "fastener_thread": "M3",
+      "load_boundary": "alignment_and_cover_retention_only",
+      "part_count": 1,
+      "removal_direction": "positive_z"
+    },
     "tendon_root_route": {
       "cable_diameter_mm": 0.5,
       "clearance_to_non_spool_components": true,

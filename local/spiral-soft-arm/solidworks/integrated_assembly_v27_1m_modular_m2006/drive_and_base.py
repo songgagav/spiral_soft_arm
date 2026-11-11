@@ -1150,6 +1150,33 @@ def build_fixed_base(
         components["fixed_top_plate"] = components["fixed_top_plate"].cut(
             _vertical_cylinder(center, 1.6, -8.1, 0.1)
         ).clean()
+    guard_cfg = contract.integration["root_cover"]
+    fastener_radius = float(guard_cfg["root_guard_fastener_center_radius_mm"])
+    pocket_radius = 0.5 * float(guard_cfg["root_guard_insert_pocket_diameter_mm"])
+    pocket_depth = float(guard_cfg["root_guard_insert_pocket_depth_mm"])
+    for angle_deg in guard_cfg["root_guard_fastener_angles_deg"]:
+        radial = _unit_radial(float(angle_deg))
+        center = (fastener_radius * radial[0], fastener_radius * radial[1], 0.0)
+        components["fixed_top_plate"] = components["fixed_top_plate"].cut(
+            _vertical_cylinder(center, pocket_radius, -pocket_depth, 0.1)
+        ).clean()
+    tab_radius = float(guard_cfg["root_guard_alignment_tab_center_radius_mm"])
+    tab_clearance = float(guard_cfg["root_guard_alignment_slot_clearance_mm"])
+    tab_radial_width = float(guard_cfg["root_guard_alignment_tab_radial_width_mm"])
+    tab_tangent_width = float(guard_cfg["root_guard_alignment_tab_tangent_width_mm"])
+    tab_z0, _ = (float(value) for value in guard_cfg["root_guard_alignment_tab_z_bounds_mm"])
+    for angle_deg in guard_cfg["root_guard_alignment_tab_angles_deg"]:
+        radial = _unit_radial(float(angle_deg))
+        center = (tab_radius * radial[0], tab_radius * radial[1], 0.5 * tab_z0)
+        components["fixed_top_plate"] = components["fixed_top_plate"].cut(
+            _oriented_box(
+                center,
+                tab_radial_width + 2.0 * tab_clearance,
+                tab_tangent_width + 2.0 * tab_clearance,
+                -tab_z0 + 0.2,
+                float(angle_deg),
+            )
+        ).clean()
     return FixedBaseResult(
         components=components,
         top_plate=components["fixed_top_plate"],

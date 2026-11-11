@@ -288,6 +288,15 @@ class V27IntegrationTests(unittest.TestCase):
             service["arm_module_removal_sequence"],
         )
 
+    def test_arm_service_audit_records_selected_single_piece_keyed_guard(self) -> None:
+        guard = self.audit["service"]["root_guard_attachment"]
+        self.assertEqual(guard["part_count"], 1)
+        self.assertEqual(guard["removal_direction"], "positive_z")
+        self.assertEqual(guard["fastener_thread"], "M3")
+        self.assertEqual(guard["fastener_count"], 3)
+        self.assertEqual(guard["alignment_tab_count"], 2)
+        self.assertEqual(guard["base_receiver"], "fixed_top_plate")
+
     def test_drive_plate_can_translate_out_after_cross_pins_removed(self) -> None:
         service = self.audit["service"]
         self.assertTrue(service["drive_negative_z_removal_clear"])
@@ -379,7 +388,11 @@ class V27IntegrationTests(unittest.TestCase):
             self.assertIn(key, self.audit)
         self.assertEqual(len(self.audit["alignment"]), 3)
         cover = self.audit["cover_layout"]
-        self.assertEqual(cover["outer_circumdiameter_mm"], 324.0)
+        self.assertEqual(cover["outer_circumdiameter_mm"], 332.0)
+        self.assertEqual(cover["frame_outer_circumradii_mm"], [102.0, 166.0, 166.0, 166.0])
+        self.assertEqual(cover["frame_radial_thickness_mm"], 4.0)
+        self.assertEqual(cover["window_surround_width_mm"], 8.0)
+        self.assertEqual(cover["window_surround_proud_mm"], 2.5)
         self.assertEqual(cover["panel_profile_stations_mm"], [[-236.0, 98.0], [-110.0, 162.0], [-80.0, 162.0], [64.0, 162.0]])
         self.assertEqual(cover["motor_window_mm"], [72.0, 82.0])
         self.assertFalse(self.audit["engineering"]["qualified"])
@@ -426,6 +439,7 @@ class V27IntegrationTests(unittest.TestCase):
                 "exploded_modules",
                 "root_quick_change",
                 "drive_section",
+                "drive_details",
                 "electronics_bay",
                 "dovetail_joints",
                 "root_cover_review",
@@ -437,6 +451,12 @@ class V27IntegrationTests(unittest.TestCase):
             with Image.open(path) as image:
                 self.assertGreaterEqual(image.width, 1200)
                 self.assertGreaterEqual(image.height, 800)
+        with Image.open(self.images["drive_details"]) as image:
+            self.assertGreaterEqual(image.width, 1600)
+            self.assertGreaterEqual(image.height, 900)
+        readme = (self.contract.output_directory / "README.md").read_text(encoding="utf-8")
+        self.assertIn("无齿形目录包络", readme)
+        self.assertIn("油封水下性能未验证", readme)
 
 
 if __name__ == "__main__":

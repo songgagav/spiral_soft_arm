@@ -760,7 +760,10 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         [float(z_mm), float(radius_mm)]
         for z_mm, radius_mm in cover_cfg["panel_profile_stations_mm"]
     ]
-    cover_max_radius = max(radius_mm for _, radius_mm in cover_profile)
+    cover_max_radius = max(
+        max(radius_mm for _, radius_mm in cover_profile),
+        *(float(value) for value in cover_cfg["frame_circumradii_mm"]),
+    )
     moving_register_z = tuple(
         float(value) for value in contract.integration["drive_register_z_mm"]
     )
@@ -798,6 +801,21 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             "remove_six_root_M5_fasteners",
             "translate_entire_arm_module_along_positive_z",
         ],
+        "root_guard_attachment": {
+            "part_count": 1,
+            "removal_direction": "positive_z",
+            "fastener_thread": "M3",
+            "fastener_count": len(cover_cfg["root_guard_fastener_angles_deg"]),
+            "fastener_clearance_diameter_mm": float(
+                cover_cfg["root_guard_fastener_clearance_diameter_mm"]
+            ),
+            "alignment_tab_count": len(cover_cfg["root_guard_alignment_tab_angles_deg"]),
+            "alignment_slot_clearance_mm": float(
+                cover_cfg["root_guard_alignment_slot_clearance_mm"]
+            ),
+            "base_receiver": "fixed_top_plate",
+            "load_boundary": "alignment_and_cover_retention_only",
+        },
         "drive_negative_z_removal_clear": drive_sweep["passes"],
         "drive_removal_sweep": drive_sweep,
         "drive_sweep_type": drive_sweep["sweep_type"],
@@ -867,6 +885,18 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             ],
             "panel_profile_stations_mm": cover_profile,
             "panel_count": 12,
+            "frame_outer_circumradii_mm": [
+                float(value) for value in cover_cfg["frame_circumradii_mm"]
+            ],
+            "frame_radial_thickness_mm": float(
+                cover_cfg["frame_radial_thickness_mm"]
+            ),
+            "window_surround_width_mm": float(
+                cover_cfg["window_surround_width_mm"]
+            ),
+            "window_surround_proud_mm": float(
+                cover_cfg["window_surround_proud_mm"]
+            ),
             "motor_window_mm": [
                 float(value) for value in cover_cfg["motor_window_mm"]
             ],
