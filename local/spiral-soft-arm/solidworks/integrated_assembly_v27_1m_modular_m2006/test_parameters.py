@@ -64,8 +64,36 @@ class V27ParameterContractTests(unittest.TestCase):
         self.assertFalse(drive.c610_part_of_removable_module)
         self.assertEqual(
             set(drive.fixed_transmission_members),
-            {"seal_housings", "bearings", "shafts", "wet_spools"},
+            {"seal_housings", "bearings", "shafts", "wet_spools", "coupling_sleeves"},
         )
+
+    def test_coupling_and_seal_fits_are_explicitly_reviewed(self) -> None:
+        _, contract = self.get_contract()
+        integration = contract.integration
+        shaft_bore = integration["motor_coupling_shaft_bore_diameter_mm"]
+        fixed_shaft = integration["fixed_shaft_diameter_mm"]
+        seal = integration["pressure_seal_dimensions_mm"]
+        self.assertLessEqual(shaft_bore - fixed_shaft, 0.10)
+        self.assertEqual(seal, [10.0, 22.0, 7.0])
+        self.assertEqual(integration["pressure_seal_housing_bore_tolerance"], "H8")
+        self.assertEqual(integration["pressure_seal_shaft_tolerance"], "h11")
+
+    def test_selected_catalog_gear_and_stepped_8mm_journal(self) -> None:
+        _, contract = self.get_contract()
+        review = contract.integration["gear_hardware_review"]
+        self.assertEqual(review["installed_geometry_status"], "catalog_envelope_proxy_no_tooth_profile")
+        self.assertEqual(review["selected_pair"], "KHK SM1.25-25H x 2 per drive")
+        self.assertEqual(review["gear_module_mm"], 1.25)
+        self.assertEqual(review["tooth_count_per_gear"], 25)
+        self.assertEqual(review["ratio"], 1.0)
+        self.assertEqual(review["bore_diameter_mm"], 8.0)
+        self.assertEqual(review["outside_diameter_mm"], 33.02)
+        self.assertEqual(review["catalog_surface_durability_torque_H_Nm"], 1.35)
+        self.assertEqual(review["gear_journal_diameter_mm"], 8.0)
+        self.assertEqual(review["gear_journal_flat_from_axis_mm"], 3.2)
+        self.assertEqual(review["set_screw_diameter_mm"], 4.0)
+        self.assertFalse(review["tooth_profile_imported"])
+        self.assertEqual(review["candidate_fit_status"], "compact_candidate_layout_reworked_review_required")
 
     def test_water_and_payload_contract(self) -> None:
         _, contract = self.get_contract()

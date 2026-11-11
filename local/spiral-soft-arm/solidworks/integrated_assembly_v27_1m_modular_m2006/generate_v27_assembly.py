@@ -24,6 +24,7 @@ from drive_and_base import (
 from engineering_audit import generate_v27_engineering_audit
 from model_contract import V27Contract, build_source_manifest
 from root_quick_change import RootInterfaceResult, build_root_interface
+from root_cover import build_root_cover
 from spiral_parameters import derive_from_contract
 
 
@@ -173,9 +174,11 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
     axes = optimize_drive_axes(contract, root)
     drive = build_drive_module(contract, root, axes)
     fixed = build_fixed_base(contract, root, axes)
+    cover = build_root_cover(contract)
     arm_components = _arm_components(arm, root)
     drive_components = dict(drive.components)
     fixed_components = dict(fixed.components)
+    fixed_components.update(cover.components)
     for index, dowel in enumerate(root.dowel_proxies, start=1):
         fixed_components[f"fixed_root_dowel_{index:02d}"] = dowel
     (
@@ -215,18 +218,76 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
                 (f"arm_terminal_adjustment_{index:02d}", f"arm_terminal_secondary_retention_{index:02d}"),
             ]
         )
+        # The top plate, chamber wall, input bearing post, and two gear pods
+        # are modeled as overlapping lands for a single integrated fixed base.
+        intentional.extend(
+            [
+                ("fixed_top_plate", f"fixed_bevel_pod_{index:02d}"),
+                ("fixed_top_plate", f"fixed_output_support_pod_{index:02d}"),
+                ("fixed_common_motor_chamber", f"fixed_bevel_pod_{index:02d}"),
+                (
+                    "fixed_common_motor_chamber",
+                    f"fixed_output_support_pod_{index:02d}",
+                ),
+                (
+                    f"fixed_input_support_post_{index:02d}",
+                    f"fixed_bevel_pod_{index:02d}",
+                ),
+            ]
+        )
+    # The cover panels overlap their hex frames at the fastened lands so that
+    # the countersunk panel holes remain supported by the frame faces.
+    for index in range(1, 7):
+        intentional.extend(
+            [
+                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_03"),
+                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_04"),
+                (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_01"),
+                (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_02"),
+            ]
+        )
     for index in range(1, 4):
-        intentional.append(
-            (f"removable_coupling_sleeve_{index:02d}", f"fixed_shaft_{index:02d}")
-        )
-        intentional.append(
-            (f"removable_M2006_{index:02d}", f"removable_coupling_sleeve_{index:02d}")
-        )
-        intentional.append(
-            ("removable_motor_plate", f"removable_motor_cradle_{index:02d}")
-        )
-        intentional.append(
-            (f"fixed_wet_spool_{index:02d}", f"fixed_shaft_{index:02d}")
+        intentional.extend(
+            [
+                (
+                    f"fixed_coupling_sleeve_{index:02d}",
+                    f"fixed_shaft_{index:02d}",
+                ),
+                (
+                    f"fixed_coupling_sleeve_{index:02d}",
+                    f"removable_M2006_{index:02d}",
+                ),
+                (
+                    f"fixed_coupling_sleeve_{index:02d}",
+                    f"removable_M2006_cross_pin_{index:02d}",
+                ),
+                (
+                    f"removable_M2006_{index:02d}",
+                    f"removable_M2006_cross_pin_{index:02d}",
+                ),
+                (
+                    f"fixed_coupling_lock_screw_{index:02d}",
+                    f"fixed_coupling_sleeve_{index:02d}",
+                ),
+                (
+                    f"fixed_coupling_lock_screw_{index:02d}",
+                    f"fixed_shaft_{index:02d}",
+                ),
+                (
+                    f"removable_motor_cradle_{index:02d}",
+                    f"removable_M2006_{index:02d}",
+                ),
+                (
+                    f"removable_motor_cradle_{index:02d}",
+                    "removable_motor_plate",
+                ),
+                # These toothless conical solids are pitch-envelope proxies;
+                # their expected overlap is not a verified gear mesh.
+                (
+                    f"fixed_bevel_input_envelope_{index:02d}",
+                    f"fixed_bevel_output_envelope_{index:02d}",
+                ),
+            ]
         )
     return V27AssemblyResult(
         contract=contract,
@@ -297,15 +358,33 @@ def _all_component_collisions(result: V27AssemblyResult) -> tuple[list[dict[str,
 
 def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
     """Exact swept volume for the current Z-prismatic removable motor module."""
-    moving_names = tuple(
-        name for name in result.drive_component_names if "coupling_sleeve" not in name
+    removed_drive_names = tuple(
+        name for name in result.drive_component_names if "cross_pin" in name
     )
-    obstacles = (*result.fixed_component_names, *result.electronics_component_names)
+    moving_names = tuple(
+        name
+        for name in result.drive_component_names
+        if "coupling_sleeve" not in name and "cross_pin" not in name
+    )
+    removable_cover_names = {
+        name
+        for name in result.fixed_component_names
+        if name.startswith("fixed_cover_lower_panel_") or name == "fixed_cover_frame_01"
+    }
+    obstacles = tuple(
+        name
+        for name in (*result.fixed_component_names, *result.electronics_component_names)
+        if name not in removable_cover_names
+    )
     travel_mm = 280.0
+    initial_release_gap_mm = 0.5
     minimum_clearance = float("inf")
     collisions: list[dict[str, Any]] = []
     for moving_name in moving_names:
-        moving = result.components[moving_name]
+        moving = result.components[moving_name].translate(
+            cq.Vector(0.0, 0.0, -initial_release_gap_mm)
+        )
+        sweep_travel_mm = travel_mm - initial_release_gap_mm
         sweep_faces = []
         for face in moving.Faces():
             if face.geomType() != "PLANE":
@@ -317,7 +396,7 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
                 cq.Solid.extrudeLinear(
                     face.outerWire(),
                     list(face.innerWires()),
-                    cq.Vector(0.0, 0.0, -travel_mm),
+                    cq.Vector(0.0, 0.0, -sweep_travel_mm),
                 )
             )
         if not sweep_faces:
@@ -350,13 +429,148 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
             else:
                 minimum_clearance = min(minimum_clearance, swept.distance(obstacle))
     return {
-        "sweep_type": "exact horizontal-face extrusion for Z-prismatic parts",
+        "direction": "negative_z",
+        "sweep_type": "exact horizontal-face extrusion after removing lower cover panels and bottom frame, then releasing coupling",
         "travel_mm": travel_mm,
+        "initial_release_gap_mm": initial_release_gap_mm,
         "moving_component_count": len(moving_names),
+        "moving_component_names": list(moving_names),
+        "removed_drive_component_names": list(removed_drive_names),
+        "removed_fixed_component_names": sorted(removable_cover_names),
         "fixed_obstacle_count": len(obstacles),
+        "fixed_obstacle_names": list(obstacles),
         "minimum_clearance_mm": minimum_clearance,
         "collisions": collisions,
         "passes": not collisions,
+    }
+
+
+def _arm_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
+    """Audit the complete positive-Z arm extraction after its root hardware is released."""
+    removed_names = tuple(
+        name
+        for name in result.arm_component_names
+        if name == "arm_tendon_terminals"
+        or name.startswith("arm_terminal_adjustment_")
+        or name.startswith("arm_terminal_secondary_retention_")
+    )
+    removed = set(removed_names)
+    moving_names = tuple(
+        name for name in result.arm_component_names if name not in removed
+    )
+    removed_fixed_names = ("fixed_root_guard_hex",)
+    removed_fixed = set(removed_fixed_names)
+    obstacle_names = tuple(
+        name
+        for name in (
+            *result.fixed_component_names,
+            *result.drive_component_names,
+            *result.electronics_component_names,
+        )
+        if name not in removed and name not in removed_fixed
+    )
+    initial_release_gap_mm = 0.5
+    final_clearance_mm = 0.5
+    highest_obstacle_z_mm = max(
+        result.components[name].BoundingBox().zmax for name in obstacle_names
+    )
+    lowest_moving_z_mm = min(
+        result.components[name].BoundingBox().zmin for name in moving_names
+    )
+    travel_mm = max(
+        initial_release_gap_mm,
+        highest_obstacle_z_mm - lowest_moving_z_mm + final_clearance_mm,
+    )
+    sweep_travel_mm = travel_mm - initial_release_gap_mm
+    minimum_clearance_mm = float("inf")
+    collisions: list[dict[str, Any]] = []
+    swept_names: list[str] = []
+
+    for moving_name in moving_names:
+        original = result.components[moving_name]
+        original_box = original.BoundingBox()
+        # Parts that begin above every fixed obstacle only move farther away.
+        if original_box.zmin >= highest_obstacle_z_mm:
+            continue
+        clip_height_mm = highest_obstacle_z_mm - original_box.zmin
+        if clip_height_mm <= 1.0e-6:
+            continue
+        clip = cq.Solid.makeBox(
+            max(original_box.xlen, 1.0) + 2.0,
+            max(original_box.ylen, 1.0) + 2.0,
+            clip_height_mm,
+            cq.Vector(original_box.xmin - 1.0, original_box.ymin - 1.0, original_box.zmin),
+        )
+        sweep_source = original.intersect(clip)
+        if sweep_source.isNull() or sweep_source.Volume() <= 1.0e-9:
+            continue
+        moving = sweep_source.translate(cq.Vector(0.0, 0.0, initial_release_gap_mm))
+        sweep_faces = []
+        for face in moving.Faces():
+            if face.geomType() != "PLANE":
+                continue
+            normal = face.normalAt()
+            if abs(abs(normal.z) - 1.0) > 1.0e-7:
+                continue
+            sweep_faces.append(
+                cq.Solid.extrudeLinear(
+                    face.outerWire(),
+                    list(face.innerWires()),
+                    cq.Vector(0.0, 0.0, sweep_travel_mm),
+                )
+            )
+        if not sweep_faces:
+            raise ValueError(
+                f"continuous arm removal sweep lacks horizontal faces: {moving_name}"
+            )
+        swept = moving.fuse(*sweep_faces).clean()
+        if not swept.isValid():
+            raise ValueError(f"invalid continuous arm removal sweep for {moving_name}")
+        swept_names.append(moving_name)
+        swept_box = swept.BoundingBox()
+        for obstacle_name in obstacle_names:
+            obstacle = result.components[obstacle_name]
+            if not _aabb_overlap(swept, obstacle):
+                continue
+            obstacle_box = obstacle.BoundingBox()
+            dx = max(obstacle_box.xmin - swept_box.xmax, swept_box.xmin - obstacle_box.xmax, 0.0)
+            dy = max(obstacle_box.ymin - swept_box.ymax, swept_box.ymin - obstacle_box.ymax, 0.0)
+            dz = max(obstacle_box.zmin - swept_box.zmax, swept_box.zmin - obstacle_box.zmax, 0.0)
+            lower_bound = math.sqrt(dx * dx + dy * dy + dz * dz)
+            if lower_bound >= minimum_clearance_mm:
+                continue
+            volume = swept.intersect(obstacle).Volume()
+            if volume > 0.02:
+                collisions.append(
+                    {
+                        "moving_component": moving_name,
+                        "fixed_component": obstacle_name,
+                        "volume_mm3": round(volume, 4),
+                    }
+                )
+                minimum_clearance_mm = 0.0
+            else:
+                minimum_clearance_mm = min(
+                    minimum_clearance_mm, swept.distance(obstacle)
+                )
+
+    if not math.isfinite(minimum_clearance_mm):
+        minimum_clearance_mm = None
+    return {
+        "direction": "positive_z",
+        "sweep_type": "continuous horizontal-face extrusion after removing the root guard; side cover retained",
+        "travel_mm": round(travel_mm, 3),
+        "initial_release_gap_mm": initial_release_gap_mm,
+        "final_clearance_mm": final_clearance_mm,
+        "moving_component_names": list(moving_names),
+        "swept_component_names": swept_names,
+        "removed_before_sweep": list(removed_names),
+        "removed_fixed_component_names": list(removed_fixed_names),
+        "fixed_obstacle_names": list(obstacle_names),
+        "fixed_obstacle_count": len(obstacle_names),
+        "minimum_clearance_mm": minimum_clearance_mm,
+        "collisions": collisions,
+        "passes": not collisions and bool(swept_names),
     }
 
 
@@ -460,7 +674,9 @@ def _motor_port_harness_audit(result: V27AssemblyResult) -> dict[str, Any]:
 
 def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     contract = result.contract
-    alignment = audit_tendon_alignment(contract, result.root, result.fixed.axes)
+    alignment = audit_tendon_alignment(
+        contract, result.root, result.fixed.axes, result.fixed.components
+    )
     engineering = generate_v27_engineering_audit(contract)
     sources = build_source_manifest(contract)
     collisions, checked_pair_count, checked_same_group = _all_component_collisions(result)
@@ -470,9 +686,16 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         for item in collisions
         if any(name in arm_names for name in item["components"])
     ]
+    arm_sweep = _arm_removal_sweep(result)
     drive_sweep = _drive_removal_sweep(result)
     tendon_route = _tendon_root_route_audit(result)
     motor_ports = _motor_port_harness_audit(result)
+    cover_cfg = contract.integration["root_cover"]
+    cover_profile = [
+        [float(z_mm), float(radius_mm)]
+        for z_mm, radius_mm in cover_cfg["panel_profile_stations_mm"]
+    ]
+    cover_max_radius = max(radius_mm for _, radius_mm in cover_profile)
     moving_register_z = tuple(
         float(value) for value in contract.integration["drive_register_z_mm"]
     )
@@ -501,11 +724,20 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                     }
                 )
     service = {
-        "arm_positive_z_removal_clear": not arm_forbidden
-        and result.root.register_height_mm > 0.0,
+        "arm_positive_z_removal_clear": not arm_forbidden and arm_sweep["passes"],
+        "arm_removal_sweep": arm_sweep,
+        "arm_module_removal_sequence": [
+            "deenergize_all_power_sources_and_unload_tendons",
+            "release_and_remove_three_tendon_terminals_adjusters_and_retentions",
+            "remove_fixed_hexagonal_root_guard",
+            "remove_six_root_M5_fasteners",
+            "translate_entire_arm_module_along_positive_z",
+        ],
         "drive_negative_z_removal_clear": drive_sweep["passes"],
+        "drive_removal_sweep": drive_sweep,
         "drive_sweep_type": drive_sweep["sweep_type"],
         "drive_sweep_travel_mm": drive_sweep["travel_mm"],
+        "drive_sweep_initial_release_gap_mm": drive_sweep["initial_release_gap_mm"],
         "drive_sweep_moving_component_count": drive_sweep["moving_component_count"],
         "drive_sweep_fixed_obstacle_count": drive_sweep["fixed_obstacle_count"],
         "drive_sweep_min_clearance_mm": drive_sweep["minimum_clearance_mm"],
@@ -518,6 +750,23 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         "all_tool_envelopes_valid": all(shape.isValid() for shape in result.root.tool_envelopes),
         "fixed_shafts_supported_without_drive": result.fixed.shafts_supported_without_drive,
         "fixed_shaft_support_pair_count": len(result.fixed.shaft_support_pairs),
+        "drive_module_removal_sequence": list(result.drive.removal_sequence),
+        "m2006_coupling_interface": {
+            "output_projection_mm": float(contract.drive.m2006_output_projection_mm),
+            "output_crosshole_center_from_tip_mm": float(
+                contract.drive.m2006_crosshole_center_from_tip_mm
+            ),
+            "motor_socket_engagement_mm": float(
+                contract.integration["motor_coupling_motor_socket_depth_mm"]
+            ),
+            "fixed_shaft_engagement_mm": round(
+                float(contract.integration["input_shaft_bearing_z_ranges_mm"][0][0])
+                - float(contract.drive.m2006_output_tip_z_mm),
+                3,
+            ),
+            "coupling_sleeves_stay_with_fixed_base": True,
+            "removable_cross_pin_count": 3,
+        },
         "electronics_connector_clearance_hits": connector_clearance_hits,
         "electronics_connector_clearance_passes": not connector_clearance_hits,
     }
@@ -545,6 +794,22 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             "checked_same_group_pairs": checked_same_group,
         },
         "service": service,
+        "cover_layout": {
+            "outer_circumdiameter_mm": round(2.0 * cover_max_radius, 3),
+            "panel_z_bounds_mm": [
+                float(value) for value in cover_cfg["panel_z_bounds_mm"]
+            ],
+            "panel_profile_stations_mm": cover_profile,
+            "panel_count": 12,
+            "motor_window_mm": [
+                float(value) for value in cover_cfg["motor_window_mm"]
+            ],
+            "motor_window_center_z_mm": float(
+                cover_cfg["motor_window_center_z_mm"]
+            ),
+            "floodable_openings": True,
+            "pressure_boundary": False,
+        },
     }
 
 
@@ -673,11 +938,18 @@ def export_v27(result: V27AssemblyResult) -> dict[str, Path]:
         "arm_module": directory / "SpiRobs_v27_1m_四段臂体模块.step",
         "drive_module": directory / "SpiRobs_v27_M2006三电机驱动模块.step",
         "fixed_base": directory / "SpiRobs_v27_固定传动密封基座.step",
+        "root_cover": directory / "SpiRobs_v27_开放式六边形包覆附件.step",
         "full_assembly": directory / "SpiRobs_v27_1m模块化总装.step",
     }
     _export_assembly(result.arm_component_names, result, outputs["arm_module"])
     _export_assembly(result.drive_component_names, result, outputs["drive_module"])
     _export_assembly(result.fixed_component_names, result, outputs["fixed_base"])
+    cover_names = tuple(
+        name
+        for name in result.fixed_component_names
+        if name.startswith("fixed_cover_") or name == "fixed_root_guard_hex"
+    )
+    _export_assembly(cover_names, result, outputs["root_cover"])
     _export_assembly(result.components, result, outputs["full_assembly"])
     segment_export_records = []
     segment_step_paths: list[Path] = []

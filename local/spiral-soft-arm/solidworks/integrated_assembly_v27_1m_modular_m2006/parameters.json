@@ -64,21 +64,30 @@
   "drive": {
     "motor_model": "DJI RoboMaster M2006 P36",
     "motor_count": 3,
+    "m2006_total_length_mm": 64.8,
+    "m2006_output_projection_mm": 17.0,
+    "m2006_output_shaft_diameter_mm": 6.0,
+    "m2006_crosshole_diameter_mm": 3.0,
+    "m2006_crosshole_center_from_tip_mm": 9.0,
+    "m2006_output_tip_z_mm": -37.2,
     "c610_part_of_removable_module": false,
     "fixed_transmission_members": [
       "seal_housings",
       "bearings",
       "shafts",
-      "wet_spools"
+      "wet_spools",
+      "coupling_sleeves"
     ],
     "tendon_alignment_lateral_tolerance_mm": 0.25,
     "tendon_alignment_angular_tolerance_deg": 0.5,
-    "tendon_tangent_radius_mm": 103.0,
+    "tendon_tangent_radius_mm": 110.0,
     "spool_core_radius_mm": 10.0,
     "spool_effective_radius_mm": 10.25,
     "spool_tangent_z_mm": 2.5
   },
   "integration": {
+    "motor_tangent_offset_mm": 29.0,
+    "drive_module_plate_circumradius_mm": 127.0,
     "drive_plate_clearance_radius_mm": 82.0,
     "drive_register_inner_radius_mm": 80.0,
     "drive_register_outer_radius_mm": 82.25,
@@ -129,8 +138,8 @@
     "c610_board_center_radius_mm": 48.0,
     "c610_board_size_mm": [
       22.0,
-      7.25,
-      44.8
+      7.3,
+      50.0
     ],
     "c610_backing_center_radius_mm": 60.0,
     "c610_backing_size_mm": [
@@ -146,11 +155,192 @@
     ],
     "c610_harness_notch_width_mm": 6.0,
     "c610_harness_notch_top_z_mm": -72.0,
+    "fixed_shaft_diameter_mm": 10.0,
+    "fixed_shaft_material_candidate": "316L stainless steel; polished seal journal",
+    "bearing_candidate": "NSK 6900",
+    "bearing_dimensions_mm": [
+      10.0,
+      22.0,
+      6.0
+    ],
+    "bearing_outer_seat_diameter_mm": 22.02,
+    "bearing_radial_clearance_mm": 0.05,
+    "input_shaft_bearing_z_ranges_mm": [
+      [
+        -35.0,
+        -29.0
+      ],
+      [
+        -27.0,
+        -21.0
+      ]
+    ],
+    "output_shaft_bearing_ranges_mm": [
+      [-61.0, -55.0],
+      [13.5, 19.5]
+    ],
+    "pressure_seal_candidate": "Trelleborg Stefa TRP000100",
+    "pressure_seal_dimensions_mm": [
+      10.0,
+      22.0,
+      7.0
+    ],
+    "pressure_seal_housing_bore_diameter_mm": 22.0,
+    "pressure_seal_housing_bore_tolerance": "H8",
+    "pressure_seal_journal_diameter_mm": 10.0,
+    "pressure_seal_shaft_tolerance": "h11",
+    "seal_retaining_shoulder_outer_diameter_mm": 23.0,
+    "seal_retaining_shoulder_opening_diameter_mm": 20.5,
+    "seal_retaining_shoulder_axial_width_mm": 1.5,
+    "pressure_seal_material": "NBR",
+    "pressure_seal_pressure_rating_mpa": 0.5,
+    "output_shaft_seal_ranges_mm": [
+      [-11.7, -4.7],
+      [4.7, 11.7]
+    ],
+    "output_shaft_labyrinth_ranges_mm": [
+      [-4.7, -3.7],
+      [3.7, 4.7]
+    ],
+    "wet_spool_bore_diameter_mm": 10.1,
+    "wet_spool_bore_flat_from_axis_mm": 4.05,
+    "output_shaft_spool_flat_from_axis_mm": 4.0,
+    "labyrinth_outer_radius_mm": 8.0,
+    "labyrinth_radial_clearance_mm": 0.5,
+    "spool_flange_radius_mm": 12.0,
+    "spool_axial_ranges_mm": [
+      [
+        -3.5,
+        -2.5
+      ],
+      [
+        -2.5,
+        2.5
+      ],
+      [
+        2.5,
+        3.5
+      ]
+    ],
+    "input_support_post_outer_radius_mm": 12.5,
+    "input_support_post_inner_radius_mm": 11.1,
+    "input_support_post_z_bounds_mm": [-36.0, -13.125],
+    "bevel_gear_envelope_radius_mm": 16.51,
+    "bevel_gear_envelope_height_mm": 4.95,
+    "gear_hardware_review": {
+      "installed_geometry_status": "catalog_envelope_proxy_no_tooth_profile",
+      "selected_pair": "KHK SM1.25-25H x 2 per drive",
+      "quantity_total": 6,
+      "gear_module_mm": 1.25,
+      "tooth_count_per_gear": 25,
+      "ratio": 1.0,
+      "shaft_angle_deg": 90.0,
+      "material": "KHK S45C steel, Hardened Plus H series",
+      "bore_diameter_mm": 8.0,
+      "bore_fit": "AH7 plain bore; use 8 mm h6 gear journal with D-flat and M4 radial set screw",
+      "gear_journal_diameter_mm": 8.0,
+      "gear_journal_flat_from_axis_mm": 3.2,
+      "set_screw_diameter_mm": 4.0,
+      "face_width_mm": 7.0,
+      "pitch_diameter_mm": 31.25,
+      "outside_diameter_mm": 33.02,
+      "hub_diameter_mm": 25.0,
+      "hub_width_mm": 9.25,
+      "mounting_distance_mm": 28.0,
+      "overall_length_mm": 17.88,
+      "catalog_bending_torque_Nm": 2.75,
+      "catalog_surface_durability_torque_Nm": 0.28,
+      "catalog_surface_durability_torque_H_Nm": 1.35,
+      "design_input_torque_Nm": 1.0,
+      "surface_torque_ratio_to_motor": 1.35,
+      "candidate_fit_status": "compact_candidate_layout_reworked_review_required",
+      "catalog_candidate_dimensions_mm": {
+        "bore": 8.0,
+        "hub_diameter": 25.0,
+        "outside_diameter": 33.02,
+        "mounting_distance": 28.0,
+        "overall_length": 17.88,
+        "face_width": 7.0
+      },
+      "tooth_profile_imported": false,
+      "shaft_locking": "M4 set screw onto 8 mm stepped D-flat shaft journal; confirm H-series hub machinability before tapping",
+      "requires_grease": true
+    },
+    "bevel_pod_radial_width_mm": 38.0,
+    "drive_bevel_pod_tangent_bounds_mm": [
+      -63.0,
+      -4.7
+    ],
+    "far_support_pod_tangent_bounds_mm": [
+      4.7,
+      27.5
+    ],
+    "bevel_pod_z_bounds_mm": [
+      -38.0,
+      36.0
+    ],
+    "drive_bevel_pod_cavity_tangent_bounds_mm": [
+      -61.0,
+      -11.5
+    ],
+    "far_support_pod_cavity_tangent_bounds_mm": [
+      11.5,
+      27.0
+    ],
+    "bevel_pod_cavity_z_bounds_mm": [
+      -35.5,
+      33.5
+    ],
+    "m2006_motor_casing_diameter_mm": 24.4,
+    "motor_coupling_outer_radius_mm": 7.5,
+    "motor_coupling_material_candidate": "CNC 7075-T6 aluminium; dry-side, supplier to confirm finish",
+    "motor_coupling_pin_material_candidate": "stainless removable 2.8 mm cross-pin with keeper",
+    "motor_coupling_motor_bore_diameter_mm": 6.2,
+    "motor_coupling_motor_socket_depth_mm": 13.0,
+    "motor_coupling_shaft_bore_diameter_mm": 10.1,
+    "motor_coupling_shaft_flat_from_axis_mm": 4.05,
+    "fixed_shaft_flat_from_axis_mm": 4.0,
+    "motor_coupling_pin_diameter_mm": 2.8,
+    "motor_coupling_pin_hole_diameter_mm": 3.2,
+    "motor_coupling_pin_length_mm": 16.0,
+    "motor_coupling_sleeve_end_clearance_mm": 0.0,
+    "motor_coupling_set_screw_diameter_mm": 3.0,
+    "motor_coupling_set_screw_z_mm": -42.0,
+    "motor_coupling_set_screw_tip_radius_mm": 4.0,
     "root_tendon_entry_radius_mm": 55.0,
     "root_tendon_entry_z_mm": 2.5,
     "root_tendon_transition_join_z_mm": 60.0,
     "root_tendon_transition_start_handle_mm": 20.0,
-    "root_tendon_transition_end_handle_mm": 30.0
+    "root_tendon_transition_end_handle_mm": 30.0,
+    "root_cover": {
+      "outer_circumradius_mm": 162.0,
+      "panel_thickness_mm": 2.4,
+      "panel_z_bounds_mm": [-236.0, 64.0],
+      "panel_split_z_mm": -80.0,
+      "panel_profile_stations_mm": [
+        [-236.0, 98.0],
+        [-110.0, 162.0],
+        [-80.0, 162.0],
+        [64.0, 162.0]
+      ],
+      "panel_edge_gap_mm": 4.0,
+      "frame_radial_thickness_mm": 5.5,
+      "frame_height_mm": 8.0,
+      "frame_z_centers_mm": [-232.0, -84.0, -76.0, 60.0],
+      "frame_circumradii_mm": [98.0, 162.0, 162.0, 162.0],
+      "panel_fastener_diameter_mm": 3.2,
+      "panel_fastener_tangent_offsets_mm": [-50.0, 50.0],
+      "motor_window_mm": [72.0, 82.0],
+      "motor_window_center_z_mm": -1.0,
+      "observation_window_mm": [54.0, 42.0],
+      "observation_window_center_z_mm": -150.0,
+      "m12_service_window_mm": [54.0, 44.0],
+      "m12_service_window_center_z_mm": -205.0,
+      "root_guard_outer_circumradius_mm": 76.0,
+      "root_guard_inner_circumradius_mm": 72.5,
+      "root_guard_z_bounds_mm": [12.0, 32.0],
+      "root_guard_window_mm": [30.0, 10.0]
+    }
   },
   "environment": {
     "media": [

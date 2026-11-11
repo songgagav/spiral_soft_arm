@@ -66,6 +66,12 @@ class RootInterfaceContract:
 class DriveContract:
     motor_model: str
     motor_count: int
+    m2006_total_length_mm: float
+    m2006_output_projection_mm: float
+    m2006_output_shaft_diameter_mm: float
+    m2006_crosshole_diameter_mm: float
+    m2006_crosshole_center_from_tip_mm: float
+    m2006_output_tip_z_mm: float
     c610_part_of_removable_module: bool
     fixed_transmission_members: tuple[str, ...]
     tendon_alignment_lateral_tolerance_mm: float
@@ -152,9 +158,23 @@ def validate_contract(contract: V27Contract) -> None:
         raise ValueError("segment print-height limit may not exceed 300 mm")
     if contract.drive.motor_count != 3:
         raise ValueError("V27 requires exactly three M2006 motors")
-    required_fixed = {"seal_housings", "bearings", "shafts", "wet_spools"}
+    required_fixed = {
+        "seal_housings",
+        "bearings",
+        "shafts",
+        "wet_spools",
+        "coupling_sleeves",
+    }
     if set(contract.drive.fixed_transmission_members) != required_fixed:
         raise ValueError("fixed transmission members are incomplete")
+    if not (
+        contract.drive.m2006_total_length_mm > contract.drive.m2006_output_projection_mm > 0.0
+        and contract.drive.m2006_output_shaft_diameter_mm == 6.0
+        and contract.drive.m2006_crosshole_diameter_mm == 3.0
+        and 0.0 < contract.drive.m2006_crosshole_center_from_tip_mm
+        < contract.drive.m2006_output_projection_mm
+    ):
+        raise ValueError("M2006 drawing interface dimensions are inconsistent")
     if contract.arm.unit_count != 42 or contract.arm.segment_count != 4:
         raise ValueError("paper geometry requires 42 units and four print segments")
     if len(contract.arm.split_unit_indices) != contract.arm.segment_count - 1:

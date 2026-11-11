@@ -123,7 +123,7 @@
     {
       "file": "v27_C610_controller_01_envelope.step",
       "name": "v27_C610_controller_01_envelope",
-      "sha256": "a44a18717aa0a9f10313c4eb9a26ea6a0811b770ffbde9f2587f3789d0e02752"
+      "sha256": "4323b57a247b5ea8d68e82c55134d3db03c308da68173245a7447586ee8fb33c"
     },
     {
       "file": "v27_C610_controller_01_backing.step",
@@ -133,7 +133,7 @@
     {
       "file": "v27_C610_controller_02_envelope.step",
       "name": "v27_C610_controller_02_envelope",
-      "sha256": "40838618c7197e843c28da846a542a6bdf57bc33921f0da8abd6f5d47bfc67af"
+      "sha256": "6e82a59445939a796dfaeeabb7d04120d9a9b96a9a15402eceac852eb7109d16"
     },
     {
       "file": "v27_C610_controller_02_backing.step",
@@ -143,7 +143,7 @@
     {
       "file": "v27_C610_controller_03_envelope.step",
       "name": "v27_C610_controller_03_envelope",
-      "sha256": "835d1344339a1334d0ff2a56fcebb3ee49aebdd49de33aad9218cd329fcfb94e"
+      "sha256": "8e327fc51f4f8b754ca19108ed7edea1e006836f0ab151dcfcff4b8251144fc3"
     },
     {
       "file": "v27_C610_controller_03_backing.step",
@@ -313,6 +313,17 @@
       28.0
     ],
     "support_rail_fused_into_backings": 3,
-    "ups_assembly_x_adjustment_mm": 2.0
+    "ups_assembly_x_adjustment_mm": 2.0,
+    "c610_board_size_mm": [
+      22.0,
+      7.3,
+      50.0
+    ],
+    "c610_board_dimensions_source": "official RoboMaster C610 specification; user-provided official STEP non-wire component cluster measures about 49.67 x 22.14 x 6.90 mm",
+    "c610_backing_size_mm": [
+      2.0,
+      10.25,
+      48.8
+    ]
   }
 }

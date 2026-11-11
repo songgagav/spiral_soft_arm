@@ -90,6 +90,9 @@ class V27ZZDeliveryTests(unittest.TestCase):
         text = self.local_readme.read_text(encoding="utf-8")
         self.assertIn("更换整根四段臂体模块", text)
         self.assertIn("更换三台 M2006 整板驱动模块", text)
+        self.assertIn("拆下固定六边形根部护圈", text)
+        self.assertIn("臂体正 Z 连续抽出扫掠", text)
+        self.assertIn("驱动板负 Z 连续抽出扫掠", text)
         self.assertIn("零位/预紧标定", text)
         self.assertIn("C610 固定在电子/控制侧", text)
         self.assertIn("固定密封边界", text)
@@ -103,6 +106,14 @@ class V27ZZDeliveryTests(unittest.TestCase):
         for item in ("切片", "打印", "强度", "5 m", "30 分钟", "1 kg"):
             self.assertIn(item, text)
 
+    def test_preprint_review_records_both_removal_path_sweeps(self) -> None:
+        review = self.directory / "preprint_review" / "V27打印前审查.md"
+        text = review.read_text(encoding="utf-8")
+        self.assertIn("臂体正 Z 连续抽出扫掠", text)
+        self.assertIn("驱动板负 Z 连续抽出扫掠", text)
+        self.assertIn("fixed_root_guard_hex", text)
+        self.assertIn("69.5 mm", text)
+
     def test_root_readme_links_v27_without_replacing_v26(self) -> None:
         text = self.root_readme.read_text(encoding="utf-8")
         self.assertIn("integrated_assembly_v27_1m_modular_m2006", text)
@@ -115,6 +126,27 @@ class V27PlacementHelperTests(unittest.TestCase):
         self.assertAlmostEqual(x_mm, -24.0)
         self.assertAlmostEqual(y_mm, 24.0 * 3.0**0.5)
         self.assertEqual(z_mm, -55.0)
+
+
+class V27CoverIntegrationTests(unittest.TestCase):
+    def test_flat_cover_is_present_and_clear_in_full_assembly(self) -> None:
+        result = build_v27_assembly(load_contract())
+        upper_panel_names = tuple(
+            name for name in result.components if name.startswith("fixed_cover_upper_panel_")
+        )
+        lower_panel_names = tuple(
+            name for name in result.components if name.startswith("fixed_cover_lower_panel_")
+        )
+        frame_names = tuple(
+            name for name in result.components if name.startswith("fixed_cover_frame_")
+        )
+        self.assertEqual(len(upper_panel_names), 6)
+        self.assertEqual(len(lower_panel_names), 6)
+        self.assertEqual(len(frame_names), 4)
+        self.assertIn("fixed_root_guard_hex", result.components)
+        audit = preflight_v27(result)
+        self.assertEqual(audit["collisions"]["forbidden"], [])
+        self.assertTrue(audit["service"]["drive_negative_z_removal_clear"])
 
 
 class V27StepDeterminismTests(unittest.TestCase):
@@ -151,7 +183,33 @@ class V27IntegrationTests(unittest.TestCase):
         )
         self.assertIn("removable_motor_plate", self.result.drive_component_names)
         self.assertEqual(
-            len([name for name in self.result.drive_component_names if name.startswith("removable_M2006_")]),
+            len(
+                [
+                    name
+                    for name in self.result.drive_component_names
+                    if name in {f"removable_M2006_{index:02d}" for index in range(1, 4)}
+                ]
+            ),
+            3,
+        )
+        self.assertEqual(
+            len(
+                [
+                    name
+                    for name in self.result.drive_component_names
+                    if name.startswith("removable_M2006_cross_pin_")
+                ]
+            ),
+            3,
+        )
+        self.assertEqual(
+            len(
+                [
+                    name
+                    for name in self.result.fixed_component_names
+                    if name.startswith("fixed_coupling_sleeve_")
+                ]
+            ),
             3,
         )
         self.assertEqual(
@@ -193,14 +251,55 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertTrue(self.audit["collisions"]["intentional_contacts"])
 
     def test_arm_can_translate_out_after_fasteners_and_terminals_removed(self) -> None:
-        self.assertTrue(self.audit["service"]["arm_positive_z_removal_clear"])
-
-    def test_drive_plate_can_translate_out_after_couplings_released(self) -> None:
-        self.assertTrue(self.audit["service"]["drive_negative_z_removal_clear"])
-        self.assertEqual(self.audit["service"]["drive_sweep_travel_mm"], 280.0)
-        self.assertAlmostEqual(
-            self.audit["service"]["drive_sweep_min_clearance_mm"], 0.25, places=6
+        service = self.audit["service"]
+        self.assertTrue(service["arm_positive_z_removal_clear"])
+        sweep = service["arm_removal_sweep"]
+        self.assertEqual(sweep["direction"], "positive_z")
+        self.assertTrue(sweep["passes"])
+        self.assertEqual(sweep["collisions"], [])
+        self.assertGreater(sweep["travel_mm"], sweep["initial_release_gap_mm"])
+        self.assertGreater(sweep["minimum_clearance_mm"], 0.0)
+        self.assertIn("arm_module_arm_segment_01", sweep["moving_component_names"])
+        self.assertNotIn("arm_tendon_terminals", sweep["moving_component_names"])
+        self.assertIn("arm_tendon_terminals", sweep["removed_before_sweep"])
+        self.assertIn("fixed_root_guard_hex", sweep["removed_fixed_component_names"])
+        self.assertIn("fixed_root_dowel_01", sweep["fixed_obstacle_names"])
+        self.assertIn("fixed_cover_upper_panel_01", sweep["fixed_obstacle_names"])
+        self.assertIn("fixed_cover_lower_panel_01", sweep["fixed_obstacle_names"])
+        self.assertIn("remove_fixed_hexagonal_root_guard", service["arm_module_removal_sequence"])
+        self.assertIn(
+            "translate_entire_arm_module_along_positive_z",
+            service["arm_module_removal_sequence"],
         )
+
+    def test_drive_plate_can_translate_out_after_cross_pins_removed(self) -> None:
+        service = self.audit["service"]
+        self.assertTrue(service["drive_negative_z_removal_clear"])
+        self.assertEqual(service["drive_sweep_collisions"], [])
+        self.assertEqual(service["drive_sweep_travel_mm"], 280.0)
+        self.assertEqual(service["drive_sweep_initial_release_gap_mm"], 0.5)
+        sweep = service["drive_removal_sweep"]
+        self.assertEqual(sweep["direction"], "negative_z")
+        self.assertTrue(sweep["passes"])
+        self.assertEqual(sweep["collisions"], [])
+        self.assertEqual(sweep["travel_mm"], 280.0)
+        self.assertTrue(
+            {
+                "removable_motor_plate",
+                "removable_M2006_01",
+                "removable_M2006_02",
+                "removable_M2006_03",
+            }.issubset(sweep["moving_component_names"])
+        )
+        self.assertEqual(len(sweep["removed_drive_component_names"]), 3)
+        self.assertEqual(len(sweep["removed_fixed_component_names"]), 7)
+        self.assertAlmostEqual(
+            service["drive_sweep_min_clearance_mm"], 0.1, places=6
+        )
+        sequence = service["drive_module_removal_sequence"]
+        self.assertIn("remove_lower_cover_panels_and_bottom_frame", sequence)
+        self.assertIn("remove_three_motor_cross_pins", sequence)
+        self.assertIn("translate_plate_downward_to_withdraw_D6_shafts", sequence[-1])
 
     def test_all_service_fasteners_have_tool_envelopes(self) -> None:
         self.assertEqual(self.audit["service"]["root_fastener_tool_envelopes"], 6)
@@ -242,9 +341,13 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertLessEqual(bounds.zmin, -239.0)
 
     def test_audit_contains_alignment_load_and_source_sections(self) -> None:
-        for key in ("alignment", "engineering", "sources", "collisions", "service"):
+        for key in ("alignment", "engineering", "sources", "collisions", "service", "cover_layout"):
             self.assertIn(key, self.audit)
         self.assertEqual(len(self.audit["alignment"]), 3)
+        cover = self.audit["cover_layout"]
+        self.assertEqual(cover["outer_circumdiameter_mm"], 324.0)
+        self.assertEqual(cover["panel_profile_stations_mm"], [[-236.0, 98.0], [-110.0, 162.0], [-80.0, 162.0], [64.0, 162.0]])
+        self.assertEqual(cover["motor_window_mm"], [72.0, 82.0])
         self.assertFalse(self.audit["engineering"]["qualified"])
         self.assertTrue(all(len(record["sha256"]) == 64 for record in self.audit["sources"].values()))
         audit_path = self.contract.output_directory / "V27装配审查.json"
@@ -281,7 +384,7 @@ class V27IntegrationTests(unittest.TestCase):
         for forbidden in ("validated", "qualified", "print-ready", "waterproof"):
             self.assertNotIn(forbidden, status)
 
-    def test_four_review_images_are_nonempty(self) -> None:
+    def test_review_images_are_nonempty(self) -> None:
         self.assertEqual(
             set(self.images),
             {
@@ -291,6 +394,8 @@ class V27IntegrationTests(unittest.TestCase):
                 "drive_section",
                 "electronics_bay",
                 "dovetail_joints",
+                "root_cover_review",
+                "root_cover_only",
             },
         )
         for path in self.images.values():
