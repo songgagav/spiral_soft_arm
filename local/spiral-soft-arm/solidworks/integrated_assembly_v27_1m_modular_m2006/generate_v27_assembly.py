@@ -621,6 +621,12 @@ def _tendon_root_route_audit(result: V27AssemblyResult) -> dict[str, Any]:
 
 
 def _motor_port_harness_audit(result: V27AssemblyResult) -> dict[str, Any]:
+    """Check three 2 mm cable probes through the motor-port reliefs.
+
+    The straight probes represent only the rigidly constrained portion between
+    the electronics-canister wall and motor-chamber side.  They deliberately
+    exclude connector tails and flexible service loops from the claim.
+    """
     integration = result.contract.integration
     z_mm = float(integration["canister_motor_port_relief_z_mm"])
     start_radius, end_radius = (
@@ -630,13 +636,14 @@ def _motor_port_harness_audit(result: V27AssemblyResult) -> dict[str, Any]:
     angles = tuple(
         float(value) for value in integration["canister_motor_port_relief_angles_deg"]
     )
-    electronic_names = set(result.electronics_component_names)
     backings = tuple(
         name
-        for name in electronic_names
+        for name in result.electronics_component_names
         if name.startswith("v27_C610_controller_") and name.endswith("_backing")
     )
     hits: list[dict[str, Any]] = []
+    routes: list[dict[str, Any]] = []
+    checked_nonendpoint_names: set[str] = set()
     for route_index, angle_deg in enumerate(angles, start=1):
         angle = math.radians(angle_deg)
         start = (
@@ -650,25 +657,82 @@ def _motor_port_harness_audit(result: V27AssemblyResult) -> dict[str, Any]:
             z_mm,
         )
         harness = _cylinder_between(1.0, start, end)
-        for backing_name in backings:
-            backing = result.components[backing_name]
-            if not _aabb_overlap(harness, backing):
+        endpoint_names = {
+            f"v27_C610_controller_{route_index:02d}_envelope",
+            f"v27_C610_controller_{route_index:02d}_backing",
+            f"removable_M2006_{route_index:02d}",
+        }
+        route_hits: list[dict[str, Any]] = []
+        obstacle_names = tuple(
+            name for name in result.components if name not in endpoint_names
+        )
+        checked_nonendpoint_names.update(obstacle_names)
+        for obstacle_name in obstacle_names:
+            obstacle = result.components[obstacle_name]
+            if not _aabb_overlap(harness, obstacle):
                 continue
-            overlap = harness.intersect(backing).Volume()
+            overlap = harness.intersect(obstacle).Volume()
             if overlap > 0.01:
-                hits.append(
-                    {
-                        "route_index": route_index,
-                        "backing": backing_name,
-                        "overlap_mm3": round(overlap, 5),
-                    }
-                )
+                hit = {
+                    "route_index": route_index,
+                    "component": obstacle_name,
+                    "overlap_mm3": round(overlap, 5),
+                }
+                hits.append(hit)
+                route_hits.append(hit)
+        routes.append(
+            {
+                "name": f"motor_harness_{route_index:02d}",
+                "angle_deg": angle_deg,
+                "endpoint_components": sorted(endpoint_names),
+                "collisions": route_hits,
+            }
+        )
     return {
         "route_count": len(angles),
         "checked_backing_count": len(backings),
+        "checked_nonendpoint_component_count": len(checked_nonendpoint_names),
         "probe_diameter_mm": 2.0,
         "clearance_passes": not hits,
         "hits": hits,
+        "collisions": hits,
+        "routes": routes,
+        "physical_limitations": [
+            "probe covers only the constrained straight relief passage",
+            "production wire outer diameter, bend radius, connector tails and strain relief require physical verification",
+        ],
+    }
+
+
+def _wiring_accessibility_audit(
+    result: V27AssemblyResult, motor_harness: dict[str, Any]
+) -> dict[str, Any]:
+    components = result.components
+    m28_clearances = tuple(
+        name for name in result.service_clearance_shapes if "M28" in name
+    )
+    m12_components = tuple(name for name in components if "M12_USB_C" in name)
+    return {
+        "motor_harness": motor_harness,
+        "external_connectors": {
+            "M28_power_service": {
+                "passes": not result.electronics_audit[
+                    "m28_to_hardware_volume_overlaps"
+                ],
+                "service_clearance_shapes": list(m28_clearances),
+                "physical_limitations": [
+                    "production M28 plug tail, cable bend radius and strain relief require physical verification"
+                ],
+            },
+            "M12_typec_envelope": {
+                "present": bool(m12_components),
+                "component_names": list(m12_components),
+                "physical_limitations": [
+                    "no mating plug sweep or cable bend-radius model is included",
+                    "panel gasket compression and service access require physical verification",
+                ],
+            },
+        },
     }
 
 
@@ -690,6 +754,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     drive_sweep = _drive_removal_sweep(result)
     tendon_route = _tendon_root_route_audit(result)
     motor_ports = _motor_port_harness_audit(result)
+    wiring_accessibility = _wiring_accessibility_audit(result, motor_ports)
     cover_cfg = contract.integration["root_cover"]
     cover_profile = [
         [float(z_mm), float(radius_mm)]
@@ -746,6 +811,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         "drive_register_engagement_passes": axial_register_engagement > 0.0,
         "tendon_root_route": tendon_route,
         "motor_port_harness": motor_ports,
+        "wiring_accessibility": wiring_accessibility,
         "root_fastener_tool_envelopes": len(result.root.tool_envelopes),
         "all_tool_envelopes_valid": all(shape.isValid() for shape in result.root.tool_envelopes),
         "fixed_shafts_supported_without_drive": result.fixed.shafts_supported_without_drive,

@@ -301,6 +301,24 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertIn("remove_three_motor_cross_pins", sequence)
         self.assertIn("translate_plate_downward_to_withdraw_D6_shafts", sequence[-1])
 
+    def test_wiring_accessibility_audits_motor_and_external_service_routes(self) -> None:
+        wiring = self.audit["service"]["wiring_accessibility"]
+        motor = wiring["motor_harness"]
+        self.assertEqual(motor["route_count"], 3)
+        self.assertEqual(motor["probe_diameter_mm"], 2.0)
+        self.assertTrue(motor["clearance_passes"])
+        self.assertEqual(motor["collisions"], [])
+        self.assertEqual(
+            [route["name"] for route in motor["routes"]],
+            ["motor_harness_01", "motor_harness_02", "motor_harness_03"],
+        )
+        self.assertGreater(motor["checked_nonendpoint_component_count"], 20)
+        self.assertTrue(motor["physical_limitations"])
+        connectors = wiring["external_connectors"]
+        self.assertTrue(connectors["M28_power_service"]["passes"])
+        self.assertTrue(connectors["M12_typec_envelope"]["present"])
+        self.assertTrue(connectors["M12_typec_envelope"]["physical_limitations"])
+
     def test_all_service_fasteners_have_tool_envelopes(self) -> None:
         self.assertEqual(self.audit["service"]["root_fastener_tool_envelopes"], 6)
         self.assertTrue(self.audit["service"]["all_tool_envelopes_valid"])
