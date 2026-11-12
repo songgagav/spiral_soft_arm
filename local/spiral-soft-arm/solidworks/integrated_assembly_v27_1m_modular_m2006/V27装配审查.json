@@ -13893,10 +13893,28 @@
   "cover_layout": {
     "floodable_openings": true,
     "frame_outer_circumradii_mm": [
-      102.0,
+      104.03174603174602,
       166.0,
       166.0,
       166.0
+    ],
+    "frame_outer_circumradius_ranges_mm": [
+      [
+        102.0,
+        106.06349206349206
+      ],
+      [
+        166.0,
+        166.0
+      ],
+      [
+        166.0,
+        166.0
+      ],
+      [
+        166.0,
+        166.0
+      ]
     ],
     "frame_radial_thickness_mm": 4.0,
     "motor_window_center_z_mm": -1.0,
@@ -13930,6 +13948,7 @@
     ],
     "pressure_boundary": false,
     "window_surround_proud_mm": 2.5,
+    "window_surround_reveal_mm": 1.5,
     "window_surround_width_mm": 8.0
   },
   "electronics": {

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import csv
 from dataclasses import asdict, dataclass
 import hashlib
 import json
@@ -760,9 +761,34 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         [float(z_mm), float(radius_mm)]
         for z_mm, radius_mm in cover_cfg["panel_profile_stations_mm"]
     ]
+    cover_frame_height = float(cover_cfg["frame_height_mm"])
+    cover_frame_thickness = float(cover_cfg["frame_radial_thickness_mm"])
+
+    def cover_radius_at(z_mm: float) -> float:
+        for (za, ra), (zb, rb) in zip(cover_profile, cover_profile[1:]):
+            if za - 1e-8 <= z_mm <= zb + 1e-8:
+                return ra + (rb - ra) * (z_mm - za) / (zb - za)
+        raise ValueError(f"cover profile does not define z={z_mm:g} mm")
+
+    cover_frame_centers = [
+        float(value) for value in cover_cfg["frame_z_centers_mm"]
+    ]
+    cover_frame_outer_radii = [
+        cover_radius_at(center_z) + cover_frame_thickness
+        for center_z in cover_frame_centers
+    ]
+    cover_frame_outer_radius_ranges = [
+        [
+            cover_radius_at(center_z - cover_frame_height / 2.0)
+            + cover_frame_thickness,
+            cover_radius_at(center_z + cover_frame_height / 2.0)
+            + cover_frame_thickness,
+        ]
+        for center_z in cover_frame_centers
+    ]
     cover_max_radius = max(
         max(radius_mm for _, radius_mm in cover_profile),
-        *(float(value) for value in cover_cfg["frame_circumradii_mm"]),
+        *cover_frame_outer_radii,
     )
     moving_register_z = tuple(
         float(value) for value in contract.integration["drive_register_z_mm"]
@@ -885,11 +911,11 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             ],
             "panel_profile_stations_mm": cover_profile,
             "panel_count": 12,
-            "frame_outer_circumradii_mm": [
-                float(value) for value in cover_cfg["frame_circumradii_mm"]
-            ],
-            "frame_radial_thickness_mm": float(
-                cover_cfg["frame_radial_thickness_mm"]
+            "frame_outer_circumradii_mm": cover_frame_outer_radii,
+            "frame_outer_circumradius_ranges_mm": cover_frame_outer_radius_ranges,
+            "frame_radial_thickness_mm": cover_frame_thickness,
+            "window_surround_reveal_mm": float(
+                cover_cfg["window_surround_reveal_mm"]
             ),
             "window_surround_width_mm": float(
                 cover_cfg["window_surround_width_mm"]
@@ -1009,6 +1035,57 @@ def _remove_degenerate_binary_stl_facets(path: Path) -> int:
         output.extend(b"".join(kept))
         path.write_bytes(output)
     return removed
+
+
+def _write_delivery_manifest(contract: V27Contract) -> Path:
+    directory = contract.output_directory.resolve()
+    repo_root = directory.parents[3]
+    manifest_path = directory / "来源与SHA256.csv"
+    included_suffixes = {".py", ".json", ".step", ".stl", ".png", ".md", ".docx", ".pdf"}
+    paths = {
+        path.resolve()
+        for path in directory.rglob("*")
+        if path.is_file()
+        and path != manifest_path
+        and path.suffix.lower() in included_suffixes
+    }
+    paths.add(repo_root / "README.md")
+    for spec in contract.source_specs.values():
+        paths.add((directory / spec["path"]).resolve())
+
+    snapshot_path = repo_root / "v27_electronics_snapshot" / "V27电子件快照.json"
+    snapshot = json.loads(snapshot_path.read_text(encoding="utf-8"))
+    for collection in ("components", "service_clearances"):
+        for component in snapshot[collection]:
+            paths.add((snapshot_path.parent / component["file"]).resolve())
+    for source in snapshot["source_files"].values():
+        paths.add((repo_root / source["path"]).resolve())
+    paths.add(
+        directory.parent
+        / "integrated_assembly_v26_arm_and_v25_electronics"
+        / "parameters.json"
+    )
+
+    rows = []
+    for path in sorted(paths, key=lambda value: value.relative_to(repo_root).as_posix()):
+        if not path.is_file():
+            raise FileNotFoundError(f"delivery manifest source is missing: {path}")
+        rows.append(
+            {
+                "relative_path": path.relative_to(repo_root).as_posix(),
+                "sha256": _sha256(path),
+                "size_bytes": path.stat().st_size,
+            }
+        )
+    with manifest_path.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(
+            stream,
+            fieldnames=("relative_path", "sha256", "size_bytes"),
+            lineterminator="\n",
+        )
+        writer.writeheader()
+        writer.writerows(rows)
+    return manifest_path
 
 
 def export_v27(result: V27AssemblyResult) -> dict[str, Path]:
@@ -1168,3 +1245,4 @@ if __name__ == "__main__":
     renders = render_v27(assembly_result)
     for key, path in {**exported, **renders}.items():
         print(f"{key}: {path}")
+    print(f"delivery_manifest: {_write_delivery_manifest(active_contract)}")

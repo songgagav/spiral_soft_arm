@@ -1,0 +1,139 @@
+{
+  "all_segment_meshes_pass": true,
+  "candidate_id": "V27-1M-M2006",
+  "root_cover_step": {
+    "bounds_mm": {
+      "x": [
+        -162.00000000002683,
+        162.0
+      ],
+      "y": [
+        -140.29611551300005,
+        140.29611551307
+      ],
+      "z": [
+        -236.0000001,
+        64.0000001
+      ]
+    },
+    "file": "SpiRobs_v27_开放式六边形包覆附件.step",
+    "size_mm": [
+      324.00000000002683,
+      280.59223102607007,
+      300.0000002
+    ],
+    "solid_count": 17,
+    "valid": true
+  },
+  "scope": "binary STL edge incidence/orientation/connectivity plus root-cover STEP readback",
+  "segments": [
+    {
+      "boundary_edges": 0,
+      "bounds_mm": {
+        "x": [
+          -59.98134994506836,
+          59.98134994506836
+        ],
+        "y": [
+          -60.0,
+          60.0
+        ],
+        "z": [
+          2.070463885698046e-18,
+          261.7804260253906
+        ]
+      },
+      "closed_oriented_single_component": true,
+      "connected_components": 1,
+      "degenerate_faces": 0,
+      "duplicate_faces": 0,
+      "file": "SpiRobs_v27_打印段01_单元01-05.stl",
+      "nonmanifold_edges": 0,
+      "orientation_conflict_edges": 0,
+      "size_bytes": 5526584,
+      "triangle_count": 110530,
+      "unique_vertices": 55247
+    },
+    {
+      "boundary_edges": 0,
+      "bounds_mm": {
+        "x": [
+          -44.316715240478516,
+          44.316715240478516
+        ],
+        "y": [
+          -44.33049392700195,
+          44.33049392700195
+        ],
+        "z": [
+          9.999998695775503e-08,
+          263.8546447753906
+        ]
+      },
+      "closed_oriented_single_component": true,
+      "connected_components": 1,
+      "degenerate_faces": 0,
+      "duplicate_faces": 0,
+      "file": "SpiRobs_v27_打印段02_单元05-10.stl",
+      "nonmanifold_edges": 0,
+      "orientation_conflict_edges": 0,
+      "size_bytes": 1312884,
+      "triangle_count": 26256,
+      "unique_vertices": 13088
+    },
+    {
+      "boundary_edges": 0,
+      "bounds_mm": {
+        "x": [
+          -30.356849670410156,
+          30.356849670410156
+        ],
+        "y": [
+          -30.366287231445312,
+          30.366287231445312
+        ],
+        "z": [
+          1.0000002248489182e-07,
+          254.70787048339844
+        ]
+      },
+      "closed_oriented_single_component": true,
+      "connected_components": 1,
+      "degenerate_faces": 0,
+      "duplicate_faces": 0,
+      "file": "SpiRobs_v27_打印段03_单元10-18.stl",
+      "nonmanifold_edges": 0,
+      "orientation_conflict_edges": 0,
+      "size_bytes": 1964984,
+      "triangle_count": 39298,
+      "unique_vertices": 19591
+    },
+    {
+      "boundary_edges": 0,
+      "bounds_mm": {
+        "x": [
+          -16.57140350341797,
+          16.57140350341797
+        ],
+        "y": [
+          -16.576557159423828,
+          16.576557159423828
+        ],
+        "z": [
+          9.999996564147295e-08,
+          255.6570587158203
+        ]
+      },
+      "closed_oriented_single_component": true,
+      "connected_components": 1,
+      "degenerate_faces": 0,
+      "duplicate_faces": 0,
+      "file": "SpiRobs_v27_打印段04_单元18-42.stl",
+      "nonmanifold_edges": 0,
+      "orientation_conflict_edges": 0,
+      "size_bytes": 5449884,
+      "triangle_count": 108996,
+      "unique_vertices": 54346
+    }
+  ]
+}

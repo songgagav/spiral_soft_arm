@@ -101,3 +101,15 @@ Expected: PASS, including no forbidden collisions, all tendon routes, and both m
 git add docs/superpowers/specs/2026-11-12-v27-faceted-cover-and-drive-details-design.md docs/superpowers/plans/2026-11-12-v27-faceted-cover-and-drive-details.md local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006
 git commit -m "feat(v27): refine cover and render drive details"
 ```
+
+### Task 3: Independent geometry review corrections and clone-complete package
+
+**Files:**
+- Modify: `local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/root_cover.py`
+- Modify: `local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/parameters.json`
+- Modify: the V27 cover/integration tests, README, review note, generated STEP/PNG/audit/hash manifest.
+
+- [x] Replace the constant-radius lower band with a profile-following loft and notch its Type-C side under the tall service surround.
+- [x] Increase radial window reveal from 0.5 mm to 1.5 mm per side while preserving the 8 mm border; test a 30 mm deep near-full gauge.
+- [x] Regenerate CAD and imagery, run the complete V27 test suite (98/98 PASS), reconcile every hash-manifest path with Git (111/111 tracked), and obtain a fresh independent review (no material geometry issue found).
+- [x] Commit the corrected geometry and force-add only the 16 V27 manifest-listed paths hidden by the repository `local/` ignore rule; do not add unrelated local files.

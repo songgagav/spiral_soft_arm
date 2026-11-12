@@ -1,0 +1,127 @@
+{
+  "candidate_id": "V27-1M-M2006",
+  "status": "CAD coupon candidates; no slicer or physical test was performed",
+  "records": [
+    {
+      "name": "V27_coupon_dovetail_lock_pin_ladder",
+      "status": "CAD coupon candidate; not sliced or physically tested",
+      "solid_count": 4,
+      "bounds_mm": {
+        "x": 228.0,
+        "y": 36.0,
+        "z": 16.0
+      },
+      "build_volume_envelope_mm": [
+        350.0,
+        350.0,
+        320.0
+      ],
+      "step": "V27_coupon_dovetail_lock_pin_ladder.step",
+      "stl": "V27_coupon_dovetail_lock_pin_ladder.stl",
+      "sha256": {
+        "step": "f9adeb46a827ea5ffe6d36988be687dce18b97171557dd8399a9f084506f37f5",
+        "stl": "cdb908cd077ab3c7042e36e7e8bf7785694a7cc10448a1a684c220e82914741c"
+      },
+      "purpose": "Compare V27 trapezoid socket clearances and the 3.3 mm cross-pin bore.",
+      "male_profile": {
+        "bottom_width_mm": 10.0,
+        "top_width_mm": 14.0,
+        "profile_height_mm": 8.0,
+        "rotation_deg": 8.0,
+        "engagement_mm": 12.0
+      },
+      "female_clearance_per_side_mm": [
+        0.2,
+        0.3,
+        0.4
+      ],
+      "female_coupon_x_offsets_mm": [
+        60.0,
+        120.0,
+        180.0
+      ],
+      "pin_hole_diameter_mm": 3.3,
+      "assembly_note": "The three female sockets are separate variants. Pair each with the shared male gauge; use the specified 3 mm metal pin only after the dovetail fit is checked.",
+      "limitations": [
+        "does not reproduce the surrounding spiral-cell wall",
+        "does not establish joint strength or fatigue life"
+      ]
+    },
+    {
+      "name": "V27_coupon_root_register_radial_clearance_ladder",
+      "status": "CAD coupon candidate; not sliced or physically tested",
+      "solid_count": 4,
+      "bounds_mm": {
+        "x": 232.60546307104147,
+        "y": 79.48788963498073,
+        "z": 8.0
+      },
+      "build_volume_envelope_mm": [
+        350.0,
+        350.0,
+        320.0
+      ],
+      "step": "V27_coupon_root_register_radial_clearance_ladder.step",
+      "stl": "V27_coupon_root_register_radial_clearance_ladder.stl",
+      "sha256": {
+        "step": "04ac2de88fe205e991559d3293a7008622c7f8d2081f604ffbc1d86a82b33e2c",
+        "stl": "4fbfe7aaaa3cebe7e04036bd03a121bdcf80197b4f06a35ecb57054ba22028db"
+      },
+      "purpose": "Compare local arc fit around the 130 mm register.",
+      "male_register_diameter_mm": 130.0,
+      "nominal_model_radial_clearance_mm": 0.25,
+      "female_radial_clearance_variants_mm": [
+        0.15,
+        0.25,
+        0.35
+      ],
+      "female_coupon_x_offsets_mm": [
+        70.0,
+        140.0,
+        210.0
+      ],
+      "limitations": [
+        "arc coupons measure local radial fit only",
+        "do not check full-circle ovality, dowel alignment, bolt-group load, or flange flatness"
+      ]
+    },
+    {
+      "name": "V27_coupon_tendon_transition_diameter_ladder",
+      "status": "CAD coupon candidate; not sliced or physically tested",
+      "solid_count": 3,
+      "bounds_mm": {
+        "x": 153.0,
+        "y": 16.0,
+        "z": 75.0
+      },
+      "build_volume_envelope_mm": [
+        350.0,
+        350.0,
+        320.0
+      ],
+      "step": "V27_coupon_tendon_transition_diameter_ladder.step",
+      "stl": "V27_coupon_tendon_transition_diameter_ladder.stl",
+      "sha256": {
+        "step": "4eeb04fcaadd25a6799c764e34441cf17fb2c9bc1c59c5a1214f6616278f3be8",
+        "stl": "20b43bf792ef13f59ac7a8f9d5b1fc472a454cc34d0bbe69560d876391b717c4"
+      },
+      "purpose": "Compare tendon passage diameters along the V27 root fairlead curve.",
+      "tendon_nominal_diameter_mm": 0.5,
+      "passage_diameter_variants_mm": [
+        0.8,
+        1.0,
+        1.2
+      ],
+      "coupon_x_offsets_mm": [
+        0.0,
+        55.0,
+        110.0
+      ],
+      "current_model_passage_diameter_mm": 0.8,
+      "limitations": [
+        "one radial route is represented because the three routes are rotational copies",
+        "does not reproduce a flexible spiral arm or quantify UHMWPE wear"
+      ]
+    }
+  ]
+}

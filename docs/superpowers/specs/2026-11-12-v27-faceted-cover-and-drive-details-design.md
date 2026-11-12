@@ -20,15 +20,21 @@ Give the V27 base cover a more deliberate, finished six-sided appearance and pro
 ## Goals and constraints
 
 - Keep all printed cover panels planar and individually removable.
-- Keep the existing panel profile stations, Z split, and service-window clear dimensions; form the new outline with a lower/upper hexagonal armor band at outer circumradius 166 mm and a base band at 102 mm, while their inner radii remain 162 mm and 98 mm respectively.
+- Keep the existing panel profile stations, Z split, and service-window clear dimensions; use profile-following hexagonal armor bands with 4 mm radial thickness. The three straight-wall bands have 166 mm outer circumradius. The base band follows the sloped panel from 102 mm at Z=-236 mm to 106.063 mm at Z=-228 mm, with a local Type-C clearance notch.
 - Keep the largest outside diameter at 332 mm, leaving 18 mm total nominal XY platform margin on the 350 mm printer.
-- Make window surrounds 8 mm wide and 2.5 mm proud, with clipped outer corners; preserve the existing aperture dimensions and keep all added geometry outside the current panel face.
+- Make window surrounds 8 mm wide and 2.5 mm proud, with clipped outer corners and 1.5 mm per-side reveal; expand the outer profile to retain the full 8 mm border, preserve aperture dimensions, and keep added geometry outside the panel face.
 - Keep the current panel count, split location, inspection/service openings, and cover mounting interfaces unless local exterior geometry alone can change them safely.
 - Add visual structure only outward of the current panel surfaces; do not intrude into the verified component envelope.
 - Keep the maximum printed footprint within the 350×350 mm printer platform.
 - Preserve the single-piece hexagonal root guard with its three M3 fasteners and two locator ears from the current V27 worktree.
 - Add CAD-derived detail views: a three-quarter installed overall render; an opened/exploded cover view; a single-drive isometric showing motor, sleeve, shaft, bevel gears, supports, seals, labyrinth, spool and straight tendon; and a coupling/spool interface close-up showing the D interfaces and cross-pin retention.
 - Do not use illustrative geometry as evidence of actual gear-tooth engagement, seal performance, or material strength. Existing parts remain dimensioned proxies where the repository labels them as such.
+
+## Independent review corrections
+
+- The first fixed-radius base band overlapped the tapered lower panels. Replace it with a loft that follows the panel profile while maintaining the 4 mm external offset. The Type-C outer surround overlaps this band in Z, so provide a local through-clearance notch beneath it and preserve the two side flanks and radial fastener axes. If the notch is incorrectly sized, the local border may be obstructed or weakened.
+- The original 0.5 mm surround reveal obstructed a 30 mm deep near-full radial gauge by 21.27 mm³. Use 1.5 mm per-side reveal and preserve the full 8 mm surround width by expanding the surround outward.
+- The repository-wide `local/` ignore rule hides the V27 source, review assets, and coupon files from Git. Force-add only the files listed in the V27 source/hash manifest so a clean clone contains the referenced deliverables without exposing unrelated local artifacts.
 
 ## Out of scope
 
@@ -40,4 +46,6 @@ Give the V27 base cover a more deliberate, finished six-sided appearance and pro
 
 - Updated STEP for the cover and updated full assembly use the revised exterior geometry.
 - Views clearly show the cover styling and the requested motor/sleeve/shaft/spool details.
+- Boolean checks show no volume intersection between the profile-following base band and any lower panel, and a 30 mm deep near-full gauge passes through the lower inspection and Type-C windows.
+- Every V27 source-manifest path exists in the commit, including the local CAD generator, review assets, and coupon files.
 - Existing CAD clearance and service-path checks continue to pass; report nominal CAD evidence separately from physical print, load, and underwater qualification.

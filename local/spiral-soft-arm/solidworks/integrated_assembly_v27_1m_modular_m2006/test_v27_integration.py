@@ -389,8 +389,11 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertEqual(len(self.audit["alignment"]), 3)
         cover = self.audit["cover_layout"]
         self.assertEqual(cover["outer_circumdiameter_mm"], 332.0)
-        self.assertEqual(cover["frame_outer_circumradii_mm"], [102.0, 166.0, 166.0, 166.0])
+        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 104.031746, places=5)
+        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
+        self.assertEqual(cover["frame_outer_circumradius_ranges_mm"][1:], [[166.0, 166.0]] * 3)
         self.assertEqual(cover["frame_radial_thickness_mm"], 4.0)
+        self.assertEqual(cover["window_surround_reveal_mm"], 1.5)
         self.assertEqual(cover["window_surround_width_mm"], 8.0)
         self.assertEqual(cover["window_surround_proud_mm"], 2.5)
         self.assertEqual(cover["panel_profile_stations_mm"], [[-236.0, 98.0], [-110.0, 162.0], [-80.0, 162.0], [64.0, 162.0]])
