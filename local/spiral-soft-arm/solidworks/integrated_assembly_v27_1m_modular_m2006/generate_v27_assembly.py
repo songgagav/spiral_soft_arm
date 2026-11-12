@@ -224,11 +224,11 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
         intentional.extend(
             [
                 ("fixed_top_plate", f"fixed_bevel_pod_{index:02d}"),
-                ("fixed_top_plate", f"fixed_output_support_pod_{index:02d}"),
+                ("fixed_top_plate", f"fixed_output_support_land_{index:02d}"),
                 ("fixed_common_motor_chamber", f"fixed_bevel_pod_{index:02d}"),
                 (
                     "fixed_common_motor_chamber",
-                    f"fixed_output_support_pod_{index:02d}",
+                    f"fixed_output_support_land_{index:02d}",
                 ),
                 (
                     f"fixed_input_support_post_{index:02d}",
@@ -727,7 +727,9 @@ def _spool_removal_sweeps(result: V27AssemblyResult) -> list[dict[str, Any]]:
         index = axis.axis_index
         spool_name = f"fixed_wet_spool_{index:02d}"
         removed_names = [
-            f"fixed_output_support_pod_{index:02d}",
+            f"fixed_output_support_cartridge_{index:02d}",
+            f"fixed_output_support_cartridge_screw_{index:02d}_01",
+            f"fixed_output_support_cartridge_screw_{index:02d}_02",
             f"fixed_bearing_outer_{index:02d}",
             f"fixed_oil_seal_outboard_{index:02d}",
             f"fixed_labyrinth_outboard_{index:02d}",
@@ -799,7 +801,113 @@ def _spool_removal_sweeps(result: V27AssemblyResult) -> list[dict[str, Any]]:
                 "minimum_clearance_mm": minimum_clearance,
                 "collisions": collisions,
                 "passes": not collisions,
+                "fixed_obstacle_names": list(obstacles),
+                "retained_support_land_name": f"fixed_output_support_land_{index:02d}",
                 "sweep_type": "continuous axial extrusion of spool end profiles",
+            }
+        )
+    return paths
+
+
+def _output_support_cartridge_removal_sweeps(
+    result: V27AssemblyResult,
+) -> list[dict[str, Any]]:
+    """Sweep each outboard support cartridge out of its fixed through-bored land."""
+    travel_mm = float(
+        result.contract.integration["output_support_cartridge_service_travel_mm"]
+    )
+    paths: list[dict[str, Any]] = []
+    for axis in result.fixed.axes:
+        index = axis.axis_index
+        cartridge_name = f"fixed_output_support_cartridge_{index:02d}"
+        removed_names = [
+            f"fixed_output_support_cartridge_screw_{index:02d}_01",
+            f"fixed_output_support_cartridge_screw_{index:02d}_02",
+            f"fixed_bearing_outer_{index:02d}",
+            f"fixed_oil_seal_outboard_{index:02d}",
+            f"fixed_labyrinth_outboard_{index:02d}",
+        ]
+        missing = [name for name in [cartridge_name, *removed_names] if name not in result.components]
+        if missing:
+            raise ValueError(f"output support cartridge {index} removal prerequisites are missing: {missing}")
+        removed = set(removed_names)
+        obstacles = tuple(
+            name
+            for name in result.components
+            if name != cartridge_name and name not in removed
+        )
+        direction = cq.Vector(*axis.spool_axis).normalized()
+        cartridge = result.components[cartridge_name]
+        end_faces = []
+        for face in cartridge.Faces():
+            if face.geomType() != "PLANE":
+                continue
+            normal = face.normalAt()
+            dot = normal.x * direction.x + normal.y * direction.y + normal.z * direction.z
+            if abs(abs(dot) - 1.0) > 1e-7:
+                continue
+            end_faces.append(
+                cq.Solid.extrudeLinear(
+                    face.outerWire(),
+                    list(face.innerWires()),
+                    direction.multiply(travel_mm),
+                )
+            )
+        if not end_faces:
+            raise ValueError(f"output support cartridge {index} has no axial end face for service sweep")
+        swept = cartridge.fuse(*end_faces).clean()
+        if not swept.isValid():
+            raise ValueError(f"invalid output support cartridge {index} extraction sweep")
+        collisions: list[dict[str, Any]] = []
+        minimum_clearance = float("inf")
+        for obstacle_name in obstacles:
+            obstacle = result.components[obstacle_name]
+            if not _aabb_overlap(swept, obstacle):
+                continue
+            overlap = swept.intersect(obstacle).Volume()
+            if overlap > 0.02:
+                collisions.append(
+                    {
+                        "moving_component": cartridge_name,
+                        "fixed_component": obstacle_name,
+                        "volume_mm3": round(overlap, 4),
+                    }
+                )
+                minimum_clearance = 0.0
+            else:
+                minimum_clearance = min(minimum_clearance, swept.distance(obstacle))
+        if not math.isfinite(minimum_clearance):
+            minimum_clearance = None
+        paths.append(
+            {
+                "axis_index": index,
+                "removed_component_names": removed_names,
+                "direction": "positive_spool_axis",
+                "travel_mm": travel_mm,
+                "minimum_clearance_mm": minimum_clearance,
+                "collisions": collisions,
+                "collision_volume_threshold_mm3": 0.02,
+                "passes": not collisions,
+                "fixed_obstacle_names": list(obstacles),
+                "retained_support_land_name": f"fixed_output_support_land_{index:02d}",
+                "initial_face_contact_expected": True,
+                "initial_radial_clearance_mm": round(
+                    (
+                        float(
+                            result.contract.integration[
+                                "output_support_cartridge_bore_diameter_mm"
+                            ]
+                        )
+                        - float(
+                            result.contract.integration[
+                                "output_support_cartridge_outer_diameter_mm"
+                            ]
+                        )
+                    )
+                    / 2.0,
+                    3,
+                ),
+                "sweep_type": "continuous axial extrusion of cartridge end profiles",
             }
         )
     return paths
@@ -821,6 +929,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     ]
     arm_sweep = _arm_removal_sweep(result)
     drive_sweep = _drive_removal_sweep(result)
+    support_cartridge_removal = _output_support_cartridge_removal_sweeps(result)
     spool_removal = _spool_removal_sweeps(result)
     tendon_route = _tendon_root_route_audit(result)
     motor_ports = _motor_port_harness_audit(result)
@@ -935,10 +1044,79 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             "detach_and_unwind_the_tendon_from_the_spool",
             "withdraw_the_radial_spool_drive_pin",
             "remove_the_spool_retaining_ring",
-            "remove_the_outboard_oil_seal_and_labyrinth",
-            "remove_the_outboard_6900_bearing_and_support_pod",
-            "slide_the_wet_spool_32_mm_along_the_positive_spool_axis",
+            "remove_the_outboard_6900_bearing_labyrinth_and_oil_seal_from_the_cartridge",
+            "remove_two_M2_5_output_support_cartridge_screws",
+            "withdraw_the_output_support_cartridge_32_mm_along_the_positive_spool_axis",
+            "slide_the_wet_spool_32_mm_through_the_fixed_support_land_tunnel",
         ],
+        "output_support_cartridge_interface": {
+            "outer_diameter_mm": float(
+                contract.integration["output_support_cartridge_outer_diameter_mm"]
+            ),
+            "inner_diameter_mm": float(
+                contract.integration["output_support_cartridge_inner_diameter_mm"]
+            ),
+            "bearing_outer_seat_diameter_mm": float(
+                contract.integration["bearing_outer_seat_diameter_mm"]
+            ),
+            "bearing_nominal_radial_clearance_mm": round(
+                (
+                    float(
+                        contract.integration[
+                            "output_support_cartridge_inner_diameter_mm"
+                        ]
+                    )
+                    - float(contract.integration["bearing_dimensions_mm"][1])
+                )
+                / 2.0,
+                3,
+            ),
+            "seal_housing_bore_diameter_mm": float(
+                contract.integration["pressure_seal_housing_bore_diameter_mm"]
+            ),
+            "outboard_seal_retainer_shoulder": {
+                "outer_diameter_mm": float(
+                    contract.integration["seal_retaining_shoulder_outer_diameter_mm"]
+                ),
+                "opening_diameter_mm": float(
+                    contract.integration["seal_retaining_shoulder_opening_diameter_mm"]
+                ),
+                "axial_width_mm": float(
+                    contract.integration["seal_retaining_shoulder_axial_width_mm"]
+                ),
+                "range_mm": [
+                    float(contract.integration["output_shaft_seal_ranges_mm"][1][1]),
+                    float(contract.integration["output_shaft_seal_ranges_mm"][1][1])
+                    + float(
+                        contract.integration[
+                            "seal_retaining_shoulder_axial_width_mm"
+                        ]
+                    ),
+                ],
+                "integral_with_removable_cartridge": True,
+            },
+            "fixed_land_bore_diameter_mm": float(
+                contract.integration["output_support_cartridge_bore_diameter_mm"]
+            ),
+            "radial_clearance_mm": round(
+                (
+                    float(contract.integration["output_support_cartridge_bore_diameter_mm"])
+                    - float(contract.integration["output_support_cartridge_outer_diameter_mm"])
+                )
+                / 2.0,
+                3,
+            ),
+            "fastener_thread_candidate": "M2.5",
+            "fastener_count": int(
+                contract.integration["output_support_cartridge_fastener_count"]
+            ),
+            "thread_engagement_mm": float(
+                contract.integration["output_support_cartridge_fastener_engagement_mm"]
+            ),
+            "fixed_land_remains_installed_during_spool_service": True,
+            "fit_and_fastener_strength_status": "nominal CAD only; machine and verify the cartridge fit and fastener access",
+        },
+        "output_support_cartridge_removal": support_cartridge_removal,
         "wet_spool_interface": {
             "bore_shape": "circular_clearance_bore",
             "bore_diameter_mm": float(
@@ -1108,6 +1286,11 @@ def preflight_v27(result: V27AssemblyResult) -> dict[str, Any]:
         failures.append("drive register engagement")
     if not all(path["passes"] for path in audit["service"]["spool_removal"]):
         failures.append("spool removal sweep")
+    if not all(
+        path["passes"]
+        for path in audit["service"]["output_support_cartridge_removal"]
+    ):
+        failures.append("output support cartridge removal sweep")
     if not audit["service"]["tendon_root_route"]["clearance_to_non_spool_components"]:
         failures.append("tendon root route clearance")
     if not audit["service"]["motor_port_harness"]["clearance_passes"]:

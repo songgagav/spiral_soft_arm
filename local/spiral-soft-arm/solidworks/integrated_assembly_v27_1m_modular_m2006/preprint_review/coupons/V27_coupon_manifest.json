@@ -19,7 +19,7 @@
       "step": "V27_coupon_dovetail_lock_pin_ladder.step",
       "stl": "V27_coupon_dovetail_lock_pin_ladder.stl",
       "sha256": {
-        "step": "f9adeb46a827ea5ffe6d36988be687dce18b97171557dd8399a9f084506f37f5",
+        "step": "fda9237406540c16f187ae38e00785d3b36e20475b5e8e10712e055967105703",
         "stl": "cdb908cd077ab3c7042e36e7e8bf7785694a7cc10448a1a684c220e82914741c"
       },
       "purpose": "Compare V27 trapezoid socket clearances and the 3.3 mm cross-pin bore.",
@@ -64,7 +64,7 @@
       "step": "V27_coupon_root_register_radial_clearance_ladder.step",
       "stl": "V27_coupon_root_register_radial_clearance_ladder.stl",
       "sha256": {
-        "step": "04ac2de88fe205e991559d3293a7008622c7f8d2081f604ffbc1d86a82b33e2c",
+        "step": "bb3aae52845e2f3e07e9337f40e90d17c9db9b7687c676c546d03330e61093ba",
         "stl": "4fbfe7aaaa3cebe7e04036bd03a121bdcf80197b4f06a35ecb57054ba22028db"
       },
       "purpose": "Compare local arc fit around the 130 mm register.",
@@ -90,9 +90,9 @@
       "status": "CAD coupon candidate; not sliced or physically tested",
       "solid_count": 3,
       "bounds_mm": {
-        "x": 153.0,
+        "x": 153.0000001,
         "y": 16.0,
-        "z": 75.0
+        "z": 75.0000001
       },
       "build_volume_envelope_mm": [
         350.0,
@@ -102,8 +102,8 @@
       "step": "V27_coupon_tendon_transition_diameter_ladder.step",
       "stl": "V27_coupon_tendon_transition_diameter_ladder.stl",
       "sha256": {
-        "step": "4eeb04fcaadd25a6799c764e34441cf17fb2c9bc1c59c5a1214f6616278f3be8",
-        "stl": "20b43bf792ef13f59ac7a8f9d5b1fc472a454cc34d0bbe69560d876391b717c4"
+        "step": "1e760c7723ed63d9347c128bdf4e658d75200451d4225187f3eaaa2534d5d091",
+        "stl": "60e44b71ad5fdef7734e1f401774e780938ce43010ac04ecd2a7695a59656eff"
       },
       "purpose": "Compare tendon passage diameters along the V27 root fairlead curve.",
       "tendon_nominal_diameter_mm": 0.5,

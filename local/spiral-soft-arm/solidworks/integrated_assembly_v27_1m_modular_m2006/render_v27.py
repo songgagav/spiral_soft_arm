@@ -140,7 +140,9 @@ def _full_review(result: Any, path: Path) -> None:
         *(f"fixed_wet_spool_{index:02d}" for index in range(1, 4)),
         *(f"fixed_output_shaft_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_pod_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_output_support_pod_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_land_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_cartridge_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_cartridge_screw_{index:02d}_{screw:02d}" for index in range(1, 4) for screw in range(1, 3)),
         *(f"fixed_bevel_input_envelope_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_output_envelope_{index:02d}" for index in range(1, 4)),
         *(f"fixed_oil_seal_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
@@ -239,7 +241,9 @@ def _exploded_review(result: Any, path: Path) -> None:
         *(f"fixed_wet_spool_{index:02d}" for index in range(1, 4)),
         *(f"fixed_output_shaft_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_pod_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_output_support_pod_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_land_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_cartridge_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_cartridge_screw_{index:02d}_{screw:02d}" for index in range(1, 4) for screw in range(1, 3)),
         *(f"fixed_bevel_input_envelope_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_output_envelope_{index:02d}" for index in range(1, 4)),
         *(f"fixed_oil_seal_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
@@ -322,7 +326,10 @@ def _drive_section_review(result: Any, path: Path) -> None:
         "fixed_shaft_01",
         "fixed_output_shaft_01",
         "fixed_bevel_pod_01",
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_01_02",
         "fixed_bevel_input_envelope_01",
         "fixed_bevel_output_envelope_01",
         "fixed_bearing_inner_01",
@@ -450,7 +457,10 @@ def _drive_details_sheet(result: Any, path: Path) -> None:
             "02  90° 伞齿轮与阶梯轴",
             [
                 ("fixed_bevel_pod_01", "#9aa4aa", 0.12),
-                ("fixed_output_support_pod_01", "#9aa4aa", 0.10),
+                ("fixed_output_support_land_01", "#9aa4aa", 0.10),
+                ("fixed_output_support_cartridge_01", "#687d88", 0.92),
+                ("fixed_output_support_cartridge_screw_01_01", "#42484c", 1.0),
+                ("fixed_output_support_cartridge_screw_01_02", "#42484c", 1.0),
                 ("fixed_shaft_01", "#d3a53a", 0.74),
                 ("fixed_output_shaft_01", "#c79a34", 0.54),
                 ("fixed_bevel_input_envelope_01", "#c24f38", 0.88),
@@ -465,7 +475,10 @@ def _drive_details_sheet(result: Any, path: Path) -> None:
         (
             "03  支承、双道轴封与湿侧线盘",
             [
-                ("fixed_output_support_pod_01", "#9aa4aa", 0.10),
+                ("fixed_output_support_land_01", "#9aa4aa", 0.10),
+                ("fixed_output_support_cartridge_01", "#687d88", 0.90),
+                ("fixed_output_support_cartridge_screw_01_01", "#42484c", 1.0),
+                ("fixed_output_support_cartridge_screw_01_02", "#42484c", 1.0),
                 ("fixed_output_shaft_01", "#c79a34", 0.42),
                 ("fixed_bearing_inner_01", "#39434b", 0.94),
                 ("fixed_bearing_outer_01", "#5a6770", 0.94),
@@ -477,6 +490,8 @@ def _drive_details_sheet(result: Any, path: Path) -> None:
                 ("fixed_spool_drive_pin_01", "#2b8b8b", 0.98),
                 ("fixed_wet_spool_01", "#d4aa48", 0.66),
             ],
+            "固定土地留在基座；Ø26.8 通孔装 Ø26.4/Ø22.02 轴承筒，2 × M2.5 锁止\n"
+            "Ø23/Ø20.5 × 1.5 油封止肩与轴承筒一体\n"
             "2 × 6900：10 × 22 × 6 mm；2 × NBR 油封：10 × 22 × 7 mm\n"
             "迷宫在油封外侧；线盘由 10.8×0.8 mm 轴肩与卡簧轴向保持，径向销传扭，端隙 0.2 mm。\n"
             "拆卸需先拔销；卡簧/槽尺寸仍须按供货件复核。\n"
@@ -594,7 +609,8 @@ def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
         "fixed_root_receiver",
         *(f"fixed_wet_spool_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_pod_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_output_support_pod_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_land_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_output_support_cartridge_{index:02d}" for index in range(1, 4)),
         *(f"fixed_oil_seal_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
         *(f"fixed_labyrinth_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
         *(f"fixed_spool_retainer_{index:02d}" for index in range(1, 4)),

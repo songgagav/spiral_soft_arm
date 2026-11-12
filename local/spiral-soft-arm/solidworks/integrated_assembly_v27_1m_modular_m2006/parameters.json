@@ -295,8 +295,25 @@
     ],
     "far_support_pod_cavity_tangent_bounds_mm": [
       11.5,
-      27.0
+      22.5
     ],
+    "output_support_cartridge_outer_diameter_mm": 26.4,
+    "output_support_cartridge_inner_diameter_mm": 22.02,
+    "output_support_cartridge_bore_diameter_mm": 26.8,
+    "output_support_cartridge_end_lug_thickness_mm": 2.5,
+    "output_support_cartridge_lug_radial_width_mm": 6.0,
+    "output_support_cartridge_lug_height_mm": 5.0,
+    "output_support_cartridge_lug_z_offset_mm": 14.5,
+    "output_support_cartridge_service_travel_mm": 32.0,
+    "output_support_cartridge_fastener_count": 2,
+    "output_support_cartridge_fastener_diameter_mm": 2.5,
+    "output_support_cartridge_fastener_clearance_diameter_mm": 2.7,
+    "output_support_cartridge_fastener_shank_diameter_mm": 2.0,
+    "output_support_cartridge_fastener_tap_drill_diameter_mm": 2.1,
+    "output_support_cartridge_fastener_head_diameter_mm": 4.0,
+    "output_support_cartridge_fastener_head_depth_mm": 1.2,
+    "output_support_cartridge_fastener_engagement_mm": 5.0,
+    "output_support_cartridge_material_candidate": "CNC 316L or aluminum sleeve; bearing and seal seat fits require post-machining",
     "bevel_pod_cavity_z_bounds_mm": [
       -35.5,
       33.5

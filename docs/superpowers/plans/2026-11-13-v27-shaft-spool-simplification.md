@@ -4,7 +4,7 @@
 
 **Goal:** Replace each separate dry-side coupling sleeve with one stepped M2006 input shaft and add a positive, serviceable retainer while keeping each wet-side spool independently replaceable.
 
-**Architecture:** Build the motor D6 socket, cross-pin collar, vertical input shaft, and 8 mm bevel-gear journal as one fixed-base solid. Keep the wet spool independently replaceable with a circular clearance bore and removable radial drive pin; capture it between a small integral shaft shoulder and a removable stainless retaining-ring envelope, and validate the outboard service path after removing the far support hardware.
+**Architecture:** Build the motor D6 socket, cross-pin collar, vertical input shaft, and 8 mm bevel-gear journal as one fixed-base solid. Keep the wet spool independently replaceable with a circular clearance bore and removable radial drive pin; capture it between a small integral shaft shoulder and a removable stainless retaining-ring envelope. The fixed output support land remains installed with a Ø26.8 mm axial through-bore; its outboard bearing/seal cartridge is separately removable with two M2.5 screws before the spool slides through the land.
 
 **Tech Stack:** Python 3.12.2, CadQuery 2.8.0, `unittest`, STEP export, Pillow/Matplotlib render generation.
 
@@ -19,6 +19,7 @@
 - Remove the separate coupling sleeve and its ineffective M3 screw geometry; do not add a coupling fastener.
 - Keep the spool a separate replaceable part with a Ø10.1 mm circular clearance bore and removable Ø2.5 mm radial drive pin. Use a nominal Ø10.8 mm integral shoulder, a 10 mm-shaft retaining-ring envelope (Ø9.6 mm groove, 1.0 mm axial width, Ø16 mm outer envelope), and 0.2 mm nominal spool-side clearances. These are CAD candidates, not supplier-approved tolerances.
 - Keep the seal journal Ø10 mm. For the retention layout, place the two 10×22×7 mm seal envelopes at `[-12,-5]` and `[5,12]` mm, and the two labyrinth envelopes at `[-13.1,-12.1]` and `[12.1,13.1]` mm along the output-shaft axis. Preserve the existing output-bearing stations.
+- Keep the fixed output support land and give it a Ø26.8 mm through-bore; use a separate OD Ø26.4/ID Ø22.02 mm cartridge with two M2.5 fasteners and 5 mm nominal thread engagement. Integrate the Ø23/Ø20.5 × 1.5 mm outboard seal-retaining shoulder into that cartridge. Treat these as machinable CAD candidates only.
 - Keep the V26 snapshot and unrelated untracked files unchanged. Update generated V27 outputs only through the V27 generator.
 - CAD-only evidence must remain separate from CNC fit, strength, corrosion, sealing, and underwater validation.
 - Run PowerShell commands from the V27 model directory after setting `$py = 'C:\Users\MOSS\.cache\codex-cadquery-py312\Scripts\python.exe'`.
@@ -29,7 +30,7 @@
 - One-piece validity and removal of the obsolete coupling/screw components: `test_input_shaft_is_single_fixed_part_without_loose_coupler`.
 - Gear journal, bearing stations, and input/output axes must stay at the approved geometry: `test_input_shaft_change_preserves_drive_datums`.
 - Shoulder, groove, retaining-ring fit, drive-pin fit, spool endplay, seals, and labyrinths must not overlap: `test_spool_retainer_and_seal_stack_have_clearance`.
-- The spool must slide clear after the documented outboard support parts are released: `test_wet_spool_service_sweep_is_clear_after_release_sequence`.
+- The outboard support cartridge and wet spool must each have a clear, collision-checked 32 mm extraction: `test_output_support_cartridge_removal_path_is_clear` and `test_wet_spool_service_sweep_is_clear_after_release_sequence`.
 
 ---
 
@@ -95,7 +96,7 @@ Stage only `parameters.json`, `model_contract.py`, `drive_and_base.py`, `generat
 
 - [x] **Step 1: Write failing retainer and service-path tests**
 
-Add `test_spool_retainer_and_seal_stack_have_clearance` to `test_drive_and_base.py` and `test_wet_spool_service_sweep_is_clear_after_release_sequence` to `test_v27_integration.py`. Require the ring/shaft groove match, positive shoulder overlap beyond the circular bore, removable drive-pin fit, 0.2 mm spool-side clearances, the stated seal/labyrinth ranges, separate spool solids, a 32 mm positive-axis extraction, and no sweep collision after removing only `fixed_output_support_pod_*`, `fixed_bearing_outer_*`, `fixed_oil_seal_outboard_*`, `fixed_labyrinth_outboard_*`, `fixed_spool_retainer_*`, and `fixed_spool_drive_pin_*`. The cable must be detached and unwrapped before service.
+Add `test_spool_retainer_and_seal_stack_have_clearance` to `test_drive_and_base.py` and service-path tests to `test_v27_integration.py`. Require the ring/shaft groove match, positive shoulder overlap beyond the circular bore, removable drive-pin fit, 0.2 mm spool-side clearances, the stated seal/labyrinth ranges, separate spool solids, a 32 mm positive-axis extraction, and no sweep collision after removing the outboard cartridge, its two screws, `fixed_bearing_outer_*`, `fixed_oil_seal_outboard_*`, `fixed_labyrinth_outboard_*`, `fixed_spool_retainer_*`, and `fixed_spool_drive_pin_*`. Retain the fixed support land and validate cartridge removal independently. The cable must be detached and unwrapped before service.
 
 - [x] **Step 2: Run the new tests and observe the expected failure**
 
@@ -109,11 +110,11 @@ Add the Ø10.8×0.8 mm inboard shoulder to the output shaft over `[-4.5,-3.7]` m
 
 - [x] **Step 4: Implement and test the spool extraction sweep**
 
-Translate each spool 32 mm along its own positive tangent axis after removing only the documented outboard service components, including the removable drive pin. Record `axis_index`, `tendon_detached_required`, `removed_component_names`, `direction`, `travel_mm`, `minimum_clearance_mm`, `collisions`, and `passes` for each path in `audit_v27_assembly`; make `preflight_v27` reject any failed spool extraction path.
+Translate each spool 32 mm along its own positive tangent axis after removing only the documented outboard service components, including the removable drive pin. Separately sweep the outboard cartridge 32 mm after removing its two screws, bearing, oil seal and labyrinth. Record obstacle names, release sequence, clearances and collisions for each path in `audit_v27_assembly`; make `preflight_v27` reject any failed spool or cartridge extraction path.
 
 - [x] **Step 5: Update drawing and service documentation**
 
-Revise `_drive_details_sheet` to show the integrated dry-side shaft, cross-pin, separate wet spool, shoulder, retaining-ring envelope, and relocated seal/labyrinth stack. Update both READMEs with the motor replacement sequence, spool replacement sequence, nominal clearances, and the warning that ring/groove dimensions need supplier/CNC confirmation.
+Revise the drive details sheet to show the integrated dry-side shaft, cross-pin, separate wet spool, shoulder, retaining-ring envelope, fixed support land, removable cartridge and its screws, and relocated seal/labyrinth stack. Update the V27 README with both service sequences, nominal clearances, and the warning that ring/groove and cartridge dimensions need supplier/CNC confirmation.
 
 - [x] **Step 6: Regenerate V27 deliverables and run verification**
 
@@ -130,3 +131,10 @@ Stage only this plan, its spec, the V27 source/docs/tests, and regenerated deliv
 - The first 32 mm spool sweep failed because a D-bore spool cannot pass over the round Ø10 mm seal journal. To preserve round seal surfaces and the replaceable-spool path, use a Ø10.1 mm circular clearance bore and one removable Ø2.5 mm radial pin through the spool hub and output shaft; withdraw the pin and unload/unwrap the cable before axial extraction. This adds one service pin per spool and requires torque/shear, corrosion, and retention validation. The pin sits below the cable winding surface.
 - Final review found the original socket cut was round despite the approved D6 interface. The official STEP section has a 2.5 mm flat offset; model the matching motor proxy and cut a 2.6 mm D socket flat aligned to the radial cross-pin axis. The nominal 0.1 mm fit requires a CNC coupon check. Keep the printed spool's 0.05 mm radial hole/shaft clearance explicitly gated by a fit coupon and post-processing as needed.
 - Task 1 and Task 2 are committed together in one atomic change because the input-shaft geometry, spool service path, audit schema, tests, and generated STEP outputs share the same V27 source and final regeneration. This keeps the published candidate internally consistent; the tradeoff is that Git history has no intermediate shaft-only checkpoint.
+
+## Post-review correction pass
+
+- [x] Open the spool radial-pin channel through both faces and verify the removable cartridge is a single connected solid with its lugs joined to the sleeve.
+- [x] Keep the fixed support land installed, add its Ø26.8 mm through-bore and the OD Ø26.4/ID Ø22 mm removable cartridge with two M2.5 fasteners, and collision-check both 32 mm extraction paths.
+- [x] Extend the tendon-transition coupon's radial entry and axial exit channels through the host faces.
+- [x] Make V27 preflight reject cartridge-removal collisions, update documentation/renders, regenerate outputs and rerun the full suite before commit.

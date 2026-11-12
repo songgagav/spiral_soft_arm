@@ -762,6 +762,48 @@ def build_fixed_base(
     pod_cavity_z_bounds = tuple(
         float(value) for value in contract.integration["bevel_pod_cavity_z_bounds_mm"]
     )
+    output_support_cartridge_outer_radius = float(
+        contract.integration["output_support_cartridge_outer_diameter_mm"]
+    ) / 2.0
+    output_support_cartridge_inner_radius = float(
+        contract.integration["output_support_cartridge_inner_diameter_mm"]
+    ) / 2.0
+    output_support_cartridge_bore_radius = float(
+        contract.integration["output_support_cartridge_bore_diameter_mm"]
+    ) / 2.0
+    output_support_cartridge_lug_length = float(
+        contract.integration["output_support_cartridge_end_lug_thickness_mm"]
+    )
+    output_support_cartridge_lug_radial_width = float(
+        contract.integration["output_support_cartridge_lug_radial_width_mm"]
+    )
+    output_support_cartridge_lug_height = float(
+        contract.integration["output_support_cartridge_lug_height_mm"]
+    )
+    output_support_cartridge_lug_z_offset = float(
+        contract.integration["output_support_cartridge_lug_z_offset_mm"]
+    )
+    output_support_cartridge_service_travel = float(
+        contract.integration["output_support_cartridge_service_travel_mm"]
+    )
+    output_support_screw_radius = float(
+        contract.integration["output_support_cartridge_fastener_shank_diameter_mm"]
+    ) / 2.0
+    output_support_screw_tap_radius = float(
+        contract.integration["output_support_cartridge_fastener_tap_drill_diameter_mm"]
+    ) / 2.0
+    output_support_screw_clearance_radius = float(
+        contract.integration["output_support_cartridge_fastener_clearance_diameter_mm"]
+    ) / 2.0
+    output_support_screw_head_radius = float(
+        contract.integration["output_support_cartridge_fastener_head_diameter_mm"]
+    ) / 2.0
+    output_support_screw_head_depth = float(
+        contract.integration["output_support_cartridge_fastener_head_depth_mm"]
+    )
+    output_support_screw_engagement = float(
+        contract.integration["output_support_cartridge_fastener_engagement_mm"]
+    )
 
     for axis in axes:
         index = axis.axis_index
@@ -926,6 +968,98 @@ def build_fixed_base(
             else:
                 far_pod = far_pod.fuse(support).clean()
 
+        far_pod = far_pod.cut(
+            _axis_cylinder(
+                spool_center,
+                tangent,
+                output_support_cartridge_bore_radius,
+                far_pod_bounds[0] - 0.2,
+                far_pod_bounds[1] + 0.2,
+            )
+        ).clean()
+        output_support_cartridge = _axis_ring(
+            spool_center,
+            tangent,
+            output_support_cartridge_outer_radius,
+            output_support_cartridge_inner_radius,
+            far_pod_bounds[0],
+            far_pod_bounds[1],
+        )
+        outboard_seal_retainer_start = output_seal_ranges[1][1]
+        output_support_cartridge = output_support_cartridge.fuse(
+            _axis_ring(
+                spool_center,
+                tangent,
+                seal_retainer_outer_radius,
+                seal_retainer_inner_radius,
+                outboard_seal_retainer_start,
+                outboard_seal_retainer_start + seal_retainer_width,
+            )
+        ).clean()
+        cartridge_end = far_pod_bounds[1]
+        bolt_centers = (
+            (spool_center[0], spool_center[1], spool_center[2] - output_support_cartridge_lug_z_offset),
+            (spool_center[0], spool_center[1], spool_center[2] + output_support_cartridge_lug_z_offset),
+        )
+        support_screws: list[cq.Shape] = []
+        for screw_index, bolt_center in enumerate(bolt_centers, start=1):
+            lug_center = (
+                bolt_center[0] + tangent[0] * (cartridge_end + output_support_cartridge_lug_length / 2.0),
+                bolt_center[1] + tangent[1] * (cartridge_end + output_support_cartridge_lug_length / 2.0),
+                bolt_center[2],
+            )
+            lug = _oriented_box(
+                lug_center,
+                output_support_cartridge_lug_radial_width,
+                output_support_cartridge_lug_length,
+                output_support_cartridge_lug_height,
+                axis.angle_deg,
+            )
+            output_support_cartridge = output_support_cartridge.fuse(lug).clean()
+            output_support_cartridge = output_support_cartridge.cut(
+                _axis_cylinder(
+                    bolt_center,
+                    tangent,
+                    output_support_screw_clearance_radius,
+                    cartridge_end - 0.1,
+                    cartridge_end + output_support_cartridge_lug_length + 0.1,
+                )
+            ).cut(
+                _axis_cylinder(
+                    bolt_center,
+                    tangent,
+                    output_support_screw_head_radius + 0.1,
+                    cartridge_end + output_support_cartridge_lug_length - output_support_screw_head_depth,
+                    cartridge_end + output_support_cartridge_lug_length + 0.1,
+                )
+            ).clean()
+            far_pod = far_pod.cut(
+                _axis_cylinder(
+                    bolt_center,
+                    tangent,
+                    output_support_screw_tap_radius,
+                    cartridge_end - output_support_screw_engagement,
+                    cartridge_end + 0.1,
+                )
+            ).clean()
+            screw_shank_end = cartridge_end + output_support_cartridge_lug_length - output_support_screw_head_depth
+            screw = _axis_cylinder(
+                bolt_center,
+                tangent,
+                output_support_screw_radius,
+                cartridge_end - output_support_screw_engagement,
+                screw_shank_end,
+            ).fuse(
+                _axis_cylinder(
+                    bolt_center,
+                    tangent,
+                    output_support_screw_head_radius,
+                    screw_shank_end,
+                    cartridge_end + output_support_cartridge_lug_length,
+                )
+            ).clean()
+            support_screws.append(screw)
+
         vertical_gear = _catalog_miter_envelope(
             gear_apex,
             input_gear_axis,
@@ -995,6 +1129,39 @@ def build_fixed_base(
                 0.0,
             )
             top_plate = top_plate.cut(gear_relief).clean()
+
+        # Clear the fixed plate through the full cartridge path. The bore
+        # relieves the sleeve; the narrow lower slot relieves its mounting lug.
+        support_path_start = far_pod_bounds[0] - 0.2
+        support_path_end = (
+            far_pod_bounds[1]
+            + output_support_cartridge_lug_length
+            + output_support_cartridge_service_travel
+            + 0.2
+        )
+        top_plate = top_plate.cut(
+            _axis_cylinder(
+                spool_center,
+                tangent,
+                output_support_cartridge_bore_radius,
+                support_path_start,
+                support_path_end,
+            )
+        ).clean()
+        lower_lug_clearance = _oriented_box(
+            _combine(
+                motor_radial,
+                tangent,
+                float(contract.drive.tendon_tangent_radius_mm),
+                0.5 * (support_path_start + support_path_end),
+                spool_center[2] - output_support_cartridge_lug_z_offset,
+            ),
+            output_support_cartridge_lug_radial_width + 0.4,
+            support_path_end - support_path_start,
+            output_support_cartridge_lug_height + 0.4,
+            axis.angle_deg,
+        )
+        top_plate = top_plate.cut(lower_lug_clearance).clean()
 
         output_shaft = _axis_cylinder(
             spool_center,
@@ -1107,8 +1274,8 @@ def build_fixed_base(
                 spool_center,
                 axis.angle_deg,
                 spool_drive_pin_hole_radius,
-                -spool_core_radius + 0.1,
-                spool_core_radius - 0.1,
+                -spool_core_radius - 0.2,
+                spool_core_radius + 0.2,
                 spool_center[2],
             )
         ).clean()
@@ -1175,7 +1342,12 @@ def build_fixed_base(
         ).clean()
         components[f"fixed_input_support_post_{index:02d}"] = input_post
         components[f"fixed_bevel_pod_{index:02d}"] = drive_pod
-        components[f"fixed_output_support_pod_{index:02d}"] = far_pod
+        components[f"fixed_output_support_land_{index:02d}"] = far_pod
+        components[f"fixed_output_support_cartridge_{index:02d}"] = output_support_cartridge
+        for screw_index, screw in enumerate(support_screws, start=1):
+            components[
+                f"fixed_output_support_cartridge_screw_{index:02d}_{screw_index:02d}"
+            ] = screw
         components[f"fixed_bevel_input_envelope_{index:02d}"] = vertical_gear
         components[f"fixed_bevel_output_envelope_{index:02d}"] = horizontal_gear
         components[f"fixed_wet_spool_{index:02d}"] = spool

@@ -39,7 +39,7 @@
   ],
   "candidate_id": "V27-1M-M2006",
   "collisions": {
-    "checked_pair_count": 10153,
+    "checked_pair_count": 11476,
     "checked_same_group_pairs": [
       [
         "arm_module_arm_segment_01",
@@ -1215,7 +1215,19 @@
       ],
       [
         "fixed_top_plate",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_top_plate",
@@ -1287,7 +1299,19 @@
       ],
       [
         "fixed_top_plate",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_top_plate",
@@ -1359,7 +1383,19 @@
       ],
       [
         "fixed_top_plate",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_top_plate",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_top_plate",
@@ -1523,7 +1559,19 @@
       ],
       [
         "fixed_root_receiver",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_root_receiver",
@@ -1595,7 +1643,19 @@
       ],
       [
         "fixed_root_receiver",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_root_receiver",
@@ -1667,7 +1727,19 @@
       ],
       [
         "fixed_root_receiver",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_root_receiver",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_root_receiver",
@@ -1827,7 +1899,19 @@
       ],
       [
         "fixed_common_motor_chamber",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_common_motor_chamber",
@@ -1899,7 +1983,19 @@
       ],
       [
         "fixed_common_motor_chamber",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_common_motor_chamber",
@@ -1971,7 +2067,19 @@
       ],
       [
         "fixed_common_motor_chamber",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_common_motor_chamber",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_common_motor_chamber",
@@ -2127,7 +2235,19 @@
       ],
       [
         "fixed_drive_plate_register_seat",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_drive_plate_register_seat",
@@ -2199,7 +2319,19 @@
       ],
       [
         "fixed_drive_plate_register_seat",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_drive_plate_register_seat",
@@ -2271,7 +2403,19 @@
       ],
       [
         "fixed_drive_plate_register_seat",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_drive_plate_register_seat",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_drive_plate_register_seat",
@@ -2423,7 +2567,19 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_drive_plate_dowel_socket_01",
@@ -2495,7 +2651,19 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_drive_plate_dowel_socket_01",
@@ -2567,7 +2735,19 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_drive_plate_dowel_socket_01",
@@ -2715,7 +2895,19 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_02",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_drive_plate_dowel_socket_02",
@@ -2787,7 +2979,19 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_drive_plate_dowel_socket_02",
@@ -2859,7 +3063,19 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_drive_plate_dowel_socket_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_drive_plate_dowel_socket_02",
@@ -3003,7 +3219,19 @@
       ],
       [
         "fixed_bearing_inner_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_bearing_inner_01",
@@ -3075,7 +3303,19 @@
       ],
       [
         "fixed_bearing_inner_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bearing_inner_01",
@@ -3147,7 +3387,19 @@
       ],
       [
         "fixed_bearing_inner_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bearing_inner_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bearing_inner_01",
@@ -3287,7 +3539,19 @@
       ],
       [
         "fixed_bearing_outer_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_bearing_outer_01",
@@ -3359,7 +3623,19 @@
       ],
       [
         "fixed_bearing_outer_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bearing_outer_01",
@@ -3431,7 +3707,19 @@
       ],
       [
         "fixed_bearing_outer_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bearing_outer_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bearing_outer_01",
@@ -3567,7 +3855,19 @@
       ],
       [
         "fixed_oil_seal_drive_side_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_oil_seal_drive_side_01",
@@ -3639,7 +3939,19 @@
       ],
       [
         "fixed_oil_seal_drive_side_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_oil_seal_drive_side_01",
@@ -3711,7 +4023,19 @@
       ],
       [
         "fixed_oil_seal_drive_side_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_oil_seal_drive_side_01",
@@ -3843,7 +4167,19 @@
       ],
       [
         "fixed_labyrinth_drive_side_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_labyrinth_drive_side_01",
@@ -3915,7 +4251,19 @@
       ],
       [
         "fixed_labyrinth_drive_side_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_labyrinth_drive_side_01",
@@ -3987,7 +4335,19 @@
       ],
       [
         "fixed_labyrinth_drive_side_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_labyrinth_drive_side_01",
@@ -4115,7 +4475,19 @@
       ],
       [
         "fixed_oil_seal_outboard_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_oil_seal_outboard_01",
@@ -4187,7 +4559,19 @@
       ],
       [
         "fixed_oil_seal_outboard_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_oil_seal_outboard_01",
@@ -4259,7 +4643,19 @@
       ],
       [
         "fixed_oil_seal_outboard_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_oil_seal_outboard_01",
@@ -4383,7 +4779,19 @@
       ],
       [
         "fixed_labyrinth_outboard_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_labyrinth_outboard_01",
@@ -4455,7 +4863,19 @@
       ],
       [
         "fixed_labyrinth_outboard_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_labyrinth_outboard_01",
@@ -4527,7 +4947,19 @@
       ],
       [
         "fixed_labyrinth_outboard_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_labyrinth_outboard_01",
@@ -4647,7 +5079,19 @@
       ],
       [
         "fixed_spool_retainer_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_spool_retainer_01",
@@ -4719,7 +5163,19 @@
       ],
       [
         "fixed_spool_retainer_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_spool_retainer_01",
@@ -4791,7 +5247,19 @@
       ],
       [
         "fixed_spool_retainer_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_spool_retainer_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_spool_retainer_01",
@@ -4907,7 +5375,19 @@
       ],
       [
         "fixed_spool_drive_pin_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_spool_drive_pin_01",
@@ -4979,7 +5459,19 @@
       ],
       [
         "fixed_spool_drive_pin_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_spool_drive_pin_01",
@@ -5051,7 +5543,19 @@
       ],
       [
         "fixed_spool_drive_pin_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_spool_drive_pin_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_spool_drive_pin_01",
@@ -5163,7 +5667,19 @@
       ],
       [
         "fixed_input_bearing_1_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_input_bearing_1_01",
@@ -5235,7 +5751,19 @@
       ],
       [
         "fixed_input_bearing_1_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_input_bearing_1_01",
@@ -5307,7 +5835,19 @@
       ],
       [
         "fixed_input_bearing_1_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_bearing_1_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_bearing_1_01",
@@ -5415,7 +5955,19 @@
       ],
       [
         "fixed_input_bearing_2_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_input_bearing_2_01",
@@ -5487,7 +6039,19 @@
       ],
       [
         "fixed_input_bearing_2_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_input_bearing_2_01",
@@ -5559,7 +6123,19 @@
       ],
       [
         "fixed_input_bearing_2_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_bearing_2_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_bearing_2_01",
@@ -5663,7 +6239,19 @@
       ],
       [
         "fixed_input_support_post_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_input_support_post_01",
@@ -5735,7 +6323,19 @@
       ],
       [
         "fixed_input_support_post_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_input_support_post_01",
@@ -5807,7 +6407,19 @@
       ],
       [
         "fixed_input_support_post_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_support_post_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_support_post_01",
@@ -5907,7 +6519,19 @@
       ],
       [
         "fixed_bevel_pod_01",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_screw_01_02"
       ],
       [
         "fixed_bevel_pod_01",
@@ -5979,7 +6603,19 @@
       ],
       [
         "fixed_bevel_pod_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bevel_pod_01",
@@ -6051,7 +6687,19 @@
       ],
       [
         "fixed_bevel_pod_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bevel_pod_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bevel_pod_01",
@@ -6150,243 +6798,1083 @@
         "fixed_root_dowel_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_01"
+      ],
+      [
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_screw_01_02"
+      ],
+      [
+        "fixed_output_support_land_01",
         "fixed_bevel_input_envelope_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bevel_output_envelope_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_wet_spool_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_shaft_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_output_shaft_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bearing_inner_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bearing_outer_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_oil_seal_drive_side_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_labyrinth_drive_side_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_oil_seal_outboard_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_labyrinth_outboard_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_spool_retainer_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_spool_drive_pin_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_input_bearing_1_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_input_bearing_2_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_input_support_post_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bevel_pod_02"
       ],
       [
-        "fixed_output_support_pod_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_01",
+        "fixed_output_support_land_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_screw_02_02"
+      ],
+      [
+        "fixed_output_support_land_01",
         "fixed_bevel_input_envelope_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bevel_output_envelope_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_wet_spool_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_shaft_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_output_shaft_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bearing_inner_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bearing_outer_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_oil_seal_drive_side_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_labyrinth_drive_side_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_oil_seal_outboard_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_labyrinth_outboard_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_spool_retainer_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_spool_drive_pin_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_input_bearing_1_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_input_bearing_2_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_input_support_post_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bevel_pod_03"
       ],
       [
-        "fixed_output_support_pod_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_01",
+        "fixed_output_support_land_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_land_01",
         "fixed_bevel_input_envelope_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_bevel_output_envelope_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_wet_spool_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_shaft_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_output_shaft_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_upper_panel_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_lower_panel_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_upper_panel_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_lower_panel_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_upper_panel_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_lower_panel_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_upper_panel_04"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_lower_panel_04"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_upper_panel_05"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_lower_panel_05"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_upper_panel_06"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_lower_panel_06"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_frame_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_frame_02"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_frame_03"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_cover_frame_04"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_root_guard_hex"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
         "fixed_root_dowel_01"
       ],
       [
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_01_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_01_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_input_envelope_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_output_envelope_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_wet_spool_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_shaft_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_shaft_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bearing_inner_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bearing_outer_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_oil_seal_drive_side_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_labyrinth_drive_side_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_oil_seal_outboard_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_labyrinth_outboard_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_spool_retainer_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_spool_drive_pin_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_input_bearing_1_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_input_bearing_2_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_input_support_post_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_pod_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_02_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_input_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_output_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_wet_spool_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bearing_inner_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bearing_outer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_oil_seal_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_labyrinth_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_oil_seal_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_labyrinth_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_spool_retainer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_spool_drive_pin_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_input_bearing_1_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_input_bearing_2_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_input_support_post_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_pod_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_01",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_01_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_input_envelope_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_output_envelope_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_wet_spool_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_shaft_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_shaft_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bearing_inner_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bearing_outer_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_oil_seal_drive_side_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_labyrinth_drive_side_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_oil_seal_outboard_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_labyrinth_outboard_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_spool_retainer_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_spool_drive_pin_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_input_bearing_1_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_input_bearing_2_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_input_support_post_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_pod_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_02_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_input_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_output_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_wet_spool_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bearing_inner_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bearing_outer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_oil_seal_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_labyrinth_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_oil_seal_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_labyrinth_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_spool_retainer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_spool_drive_pin_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_input_bearing_1_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_input_bearing_2_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_input_support_post_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_pod_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_input_envelope_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_output_envelope_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_wet_spool_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_shaft_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_shaft_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bearing_inner_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bearing_outer_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_oil_seal_drive_side_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_labyrinth_drive_side_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_oil_seal_outboard_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_labyrinth_outboard_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_spool_retainer_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_spool_drive_pin_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_input_bearing_1_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_input_bearing_2_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_input_support_post_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_pod_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_cartridge_screw_02_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_input_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_output_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_wet_spool_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bearing_inner_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bearing_outer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_oil_seal_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_labyrinth_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_oil_seal_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_labyrinth_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_spool_retainer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_spool_drive_pin_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_input_bearing_1_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_input_bearing_2_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_input_support_post_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_pod_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_01_02",
         "fixed_root_dowel_02"
       ],
       [
@@ -6455,7 +7943,19 @@
       ],
       [
         "fixed_bevel_input_envelope_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bevel_input_envelope_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bevel_input_envelope_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bevel_input_envelope_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bevel_input_envelope_01",
@@ -6527,7 +8027,19 @@
       ],
       [
         "fixed_bevel_input_envelope_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bevel_input_envelope_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bevel_input_envelope_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bevel_input_envelope_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bevel_input_envelope_01",
@@ -6687,7 +8199,19 @@
       ],
       [
         "fixed_bevel_output_envelope_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bevel_output_envelope_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bevel_output_envelope_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bevel_output_envelope_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bevel_output_envelope_01",
@@ -6759,7 +8283,19 @@
       ],
       [
         "fixed_bevel_output_envelope_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bevel_output_envelope_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bevel_output_envelope_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bevel_output_envelope_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bevel_output_envelope_01",
@@ -6915,7 +8451,19 @@
       ],
       [
         "fixed_wet_spool_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_wet_spool_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_wet_spool_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_wet_spool_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_wet_spool_01",
@@ -6987,7 +8535,19 @@
       ],
       [
         "fixed_wet_spool_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_wet_spool_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_wet_spool_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_wet_spool_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_wet_spool_01",
@@ -7139,7 +8699,19 @@
       ],
       [
         "fixed_shaft_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_shaft_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_shaft_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_shaft_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_shaft_01",
@@ -7211,7 +8783,19 @@
       ],
       [
         "fixed_shaft_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_shaft_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_shaft_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_shaft_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_shaft_01",
@@ -7359,7 +8943,19 @@
       ],
       [
         "fixed_output_shaft_01",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_output_shaft_01",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_output_shaft_01",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_output_shaft_01",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_output_shaft_01",
@@ -7431,7 +9027,19 @@
       ],
       [
         "fixed_output_shaft_01",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_shaft_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_shaft_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_shaft_01",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_output_shaft_01",
@@ -7575,7 +9183,19 @@
       ],
       [
         "fixed_bearing_inner_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bearing_inner_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bearing_inner_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bearing_inner_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bearing_inner_02",
@@ -7647,7 +9267,19 @@
       ],
       [
         "fixed_bearing_inner_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bearing_inner_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bearing_inner_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bearing_inner_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bearing_inner_02",
@@ -7787,7 +9419,19 @@
       ],
       [
         "fixed_bearing_outer_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bearing_outer_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bearing_outer_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bearing_outer_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bearing_outer_02",
@@ -7859,7 +9503,19 @@
       ],
       [
         "fixed_bearing_outer_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bearing_outer_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bearing_outer_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bearing_outer_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bearing_outer_02",
@@ -7995,7 +9651,19 @@
       ],
       [
         "fixed_oil_seal_drive_side_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_oil_seal_drive_side_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_oil_seal_drive_side_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_oil_seal_drive_side_02",
@@ -8067,7 +9735,19 @@
       ],
       [
         "fixed_oil_seal_drive_side_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_oil_seal_drive_side_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_oil_seal_drive_side_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_oil_seal_drive_side_02",
@@ -8199,7 +9879,19 @@
       ],
       [
         "fixed_labyrinth_drive_side_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_labyrinth_drive_side_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_labyrinth_drive_side_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_labyrinth_drive_side_02",
@@ -8271,7 +9963,19 @@
       ],
       [
         "fixed_labyrinth_drive_side_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_labyrinth_drive_side_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_labyrinth_drive_side_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_labyrinth_drive_side_02",
@@ -8399,7 +10103,19 @@
       ],
       [
         "fixed_oil_seal_outboard_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_oil_seal_outboard_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_oil_seal_outboard_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_oil_seal_outboard_02",
@@ -8471,7 +10187,19 @@
       ],
       [
         "fixed_oil_seal_outboard_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_oil_seal_outboard_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_oil_seal_outboard_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_oil_seal_outboard_02",
@@ -8595,7 +10323,19 @@
       ],
       [
         "fixed_labyrinth_outboard_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_labyrinth_outboard_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_labyrinth_outboard_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_labyrinth_outboard_02",
@@ -8667,7 +10407,19 @@
       ],
       [
         "fixed_labyrinth_outboard_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_labyrinth_outboard_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_labyrinth_outboard_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_labyrinth_outboard_02",
@@ -8787,7 +10539,19 @@
       ],
       [
         "fixed_spool_retainer_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_spool_retainer_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_spool_retainer_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_spool_retainer_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_spool_retainer_02",
@@ -8859,7 +10623,19 @@
       ],
       [
         "fixed_spool_retainer_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_spool_retainer_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_spool_retainer_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_spool_retainer_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_spool_retainer_02",
@@ -8975,7 +10751,19 @@
       ],
       [
         "fixed_spool_drive_pin_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_spool_drive_pin_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_spool_drive_pin_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_spool_drive_pin_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_spool_drive_pin_02",
@@ -9047,7 +10835,19 @@
       ],
       [
         "fixed_spool_drive_pin_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_spool_drive_pin_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_spool_drive_pin_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_spool_drive_pin_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_spool_drive_pin_02",
@@ -9159,7 +10959,19 @@
       ],
       [
         "fixed_input_bearing_1_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_input_bearing_1_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_input_bearing_1_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_input_bearing_1_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_input_bearing_1_02",
@@ -9231,7 +11043,19 @@
       ],
       [
         "fixed_input_bearing_1_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_bearing_1_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_bearing_1_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_bearing_1_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_bearing_1_02",
@@ -9339,7 +11163,19 @@
       ],
       [
         "fixed_input_bearing_2_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_input_bearing_2_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_input_bearing_2_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_input_bearing_2_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_input_bearing_2_02",
@@ -9411,7 +11247,19 @@
       ],
       [
         "fixed_input_bearing_2_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_bearing_2_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_bearing_2_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_bearing_2_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_bearing_2_02",
@@ -9515,7 +11363,19 @@
       ],
       [
         "fixed_input_support_post_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_input_support_post_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_input_support_post_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_input_support_post_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_input_support_post_02",
@@ -9587,7 +11447,19 @@
       ],
       [
         "fixed_input_support_post_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_support_post_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_support_post_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_support_post_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_support_post_02",
@@ -9687,7 +11559,19 @@
       ],
       [
         "fixed_bevel_pod_02",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
+      ],
+      [
+        "fixed_bevel_pod_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_bevel_pod_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_bevel_pod_02",
+        "fixed_output_support_cartridge_screw_02_02"
       ],
       [
         "fixed_bevel_pod_02",
@@ -9759,7 +11643,19 @@
       ],
       [
         "fixed_bevel_pod_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bevel_pod_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bevel_pod_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bevel_pod_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bevel_pod_02",
@@ -9858,171 +11754,747 @@
         "fixed_root_dowel_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_02"
+      ],
+      [
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_screw_02_02"
+      ],
+      [
+        "fixed_output_support_land_02",
         "fixed_bevel_input_envelope_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_bevel_output_envelope_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_wet_spool_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_shaft_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_output_shaft_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_bearing_inner_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_bearing_outer_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_oil_seal_drive_side_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_labyrinth_drive_side_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_oil_seal_outboard_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_labyrinth_outboard_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_spool_retainer_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_spool_drive_pin_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_input_bearing_1_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_input_bearing_2_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_input_support_post_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_bevel_pod_03"
       ],
       [
-        "fixed_output_support_pod_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_02",
+        "fixed_output_support_land_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_land_02",
         "fixed_bevel_input_envelope_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_bevel_output_envelope_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_wet_spool_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_shaft_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_output_shaft_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_upper_panel_01"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_lower_panel_01"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_upper_panel_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_lower_panel_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_upper_panel_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_lower_panel_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_upper_panel_04"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_lower_panel_04"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_upper_panel_05"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_lower_panel_05"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_upper_panel_06"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_lower_panel_06"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_frame_01"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_frame_02"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_frame_03"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_cover_frame_04"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_root_guard_hex"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
         "fixed_root_dowel_01"
       ],
       [
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_cartridge_screw_02_01"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_cartridge_screw_02_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_bevel_input_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_bevel_output_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_wet_spool_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_bearing_inner_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_bearing_outer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_oil_seal_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_labyrinth_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_oil_seal_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_labyrinth_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_spool_retainer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_spool_drive_pin_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_input_bearing_1_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_input_bearing_2_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_input_support_post_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_bevel_pod_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_02",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_support_cartridge_screw_02_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_bevel_input_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_bevel_output_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_wet_spool_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_bearing_inner_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_bearing_outer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_oil_seal_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_labyrinth_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_oil_seal_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_labyrinth_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_spool_retainer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_spool_drive_pin_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_input_bearing_1_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_input_bearing_2_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_input_support_post_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_bevel_pod_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_bevel_input_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_bevel_output_envelope_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_wet_spool_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_output_shaft_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_bearing_inner_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_bearing_outer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_oil_seal_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_labyrinth_drive_side_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_oil_seal_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_labyrinth_outboard_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_spool_retainer_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_spool_drive_pin_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_input_bearing_1_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_input_bearing_2_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_input_support_post_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_bevel_pod_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_02_02",
         "fixed_root_dowel_02"
       ],
       [
@@ -10091,7 +12563,19 @@
       ],
       [
         "fixed_bevel_input_envelope_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bevel_input_envelope_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bevel_input_envelope_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bevel_input_envelope_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bevel_input_envelope_02",
@@ -10251,7 +12735,19 @@
       ],
       [
         "fixed_bevel_output_envelope_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bevel_output_envelope_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bevel_output_envelope_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bevel_output_envelope_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bevel_output_envelope_02",
@@ -10407,7 +12903,19 @@
       ],
       [
         "fixed_wet_spool_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_wet_spool_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_wet_spool_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_wet_spool_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_wet_spool_02",
@@ -10559,7 +13067,19 @@
       ],
       [
         "fixed_shaft_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_shaft_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_shaft_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_shaft_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_shaft_02",
@@ -10707,7 +13227,19 @@
       ],
       [
         "fixed_output_shaft_02",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_output_shaft_02",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_shaft_02",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_shaft_02",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_output_shaft_02",
@@ -10851,7 +13383,19 @@
       ],
       [
         "fixed_bearing_inner_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bearing_inner_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bearing_inner_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bearing_inner_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bearing_inner_03",
@@ -10991,7 +13535,19 @@
       ],
       [
         "fixed_bearing_outer_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bearing_outer_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bearing_outer_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bearing_outer_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bearing_outer_03",
@@ -11127,7 +13683,19 @@
       ],
       [
         "fixed_oil_seal_drive_side_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_oil_seal_drive_side_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_oil_seal_drive_side_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_oil_seal_drive_side_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_oil_seal_drive_side_03",
@@ -11259,7 +13827,19 @@
       ],
       [
         "fixed_labyrinth_drive_side_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_labyrinth_drive_side_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_labyrinth_drive_side_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_labyrinth_drive_side_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_labyrinth_drive_side_03",
@@ -11387,7 +13967,19 @@
       ],
       [
         "fixed_oil_seal_outboard_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_oil_seal_outboard_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_oil_seal_outboard_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_oil_seal_outboard_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_oil_seal_outboard_03",
@@ -11511,7 +14103,19 @@
       ],
       [
         "fixed_labyrinth_outboard_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_labyrinth_outboard_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_labyrinth_outboard_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_labyrinth_outboard_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_labyrinth_outboard_03",
@@ -11631,7 +14235,19 @@
       ],
       [
         "fixed_spool_retainer_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_spool_retainer_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_spool_retainer_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_spool_retainer_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_spool_retainer_03",
@@ -11747,7 +14363,19 @@
       ],
       [
         "fixed_spool_drive_pin_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_spool_drive_pin_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_spool_drive_pin_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_spool_drive_pin_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_spool_drive_pin_03",
@@ -11859,7 +14487,19 @@
       ],
       [
         "fixed_input_bearing_1_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_bearing_1_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_bearing_1_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_bearing_1_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_bearing_1_03",
@@ -11967,7 +14607,19 @@
       ],
       [
         "fixed_input_bearing_2_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_bearing_2_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_bearing_2_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_bearing_2_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_bearing_2_03",
@@ -12071,7 +14723,19 @@
       ],
       [
         "fixed_input_support_post_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_input_support_post_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_input_support_post_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_input_support_post_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_input_support_post_03",
@@ -12171,7 +14835,19 @@
       ],
       [
         "fixed_bevel_pod_03",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
+      ],
+      [
+        "fixed_bevel_pod_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_bevel_pod_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_bevel_pod_03",
+        "fixed_output_support_cartridge_screw_03_02"
       ],
       [
         "fixed_bevel_pod_03",
@@ -12270,99 +14946,411 @@
         "fixed_root_dowel_02"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
+        "fixed_output_support_cartridge_03"
+      ],
+      [
+        "fixed_output_support_land_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_land_03",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_land_03",
         "fixed_bevel_input_envelope_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_bevel_output_envelope_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_wet_spool_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_shaft_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_output_shaft_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_upper_panel_01"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_lower_panel_01"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_upper_panel_02"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_lower_panel_02"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_upper_panel_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_lower_panel_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_upper_panel_04"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_lower_panel_04"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_upper_panel_05"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_lower_panel_05"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_upper_panel_06"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_lower_panel_06"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_frame_01"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_frame_02"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_frame_03"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_cover_frame_04"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_root_guard_hex"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
         "fixed_root_dowel_01"
       ],
       [
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_output_support_cartridge_screw_03_01"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_03",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_output_support_cartridge_screw_03_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_root_dowel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_bevel_input_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_bevel_output_envelope_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_wet_spool_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_output_shaft_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_upper_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_lower_panel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_upper_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_lower_panel_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_upper_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_lower_panel_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_upper_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_lower_panel_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_upper_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_lower_panel_05"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_upper_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_lower_panel_06"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_frame_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_frame_02"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_frame_03"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_cover_frame_04"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_root_guard_hex"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
+        "fixed_root_dowel_01"
+      ],
+      [
+        "fixed_output_support_cartridge_screw_03_02",
         "fixed_root_dowel_02"
       ],
       [
@@ -15394,7 +18382,7 @@
       ],
       [
         "fixed_top_plate",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
       ],
       [
         "fixed_common_motor_chamber",
@@ -15402,7 +18390,7 @@
       ],
       [
         "fixed_common_motor_chamber",
-        "fixed_output_support_pod_01"
+        "fixed_output_support_land_01"
       ],
       [
         "fixed_input_support_post_01",
@@ -15438,7 +18426,7 @@
       ],
       [
         "fixed_top_plate",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
       ],
       [
         "fixed_common_motor_chamber",
@@ -15446,7 +18434,7 @@
       ],
       [
         "fixed_common_motor_chamber",
-        "fixed_output_support_pod_02"
+        "fixed_output_support_land_02"
       ],
       [
         "fixed_input_support_post_02",
@@ -15482,7 +18470,7 @@
       ],
       [
         "fixed_top_plate",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
       ],
       [
         "fixed_common_motor_chamber",
@@ -15490,7 +18478,7 @@
       ],
       [
         "fixed_common_motor_chamber",
-        "fixed_output_support_pod_03"
+        "fixed_output_support_land_03"
       ],
       [
         "fixed_input_support_post_03",
@@ -16064,7 +19052,7 @@
       "collisions": [],
       "direction": "positive_z",
       "final_clearance_mm": 0.5,
-      "fixed_obstacle_count": 121,
+      "fixed_obstacle_count": 130,
       "fixed_obstacle_names": [
         "fixed_top_plate",
         "fixed_root_receiver",
@@ -16084,7 +19072,10 @@
         "fixed_input_bearing_2_01",
         "fixed_input_support_post_01",
         "fixed_bevel_pod_01",
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_01_02",
         "fixed_bevel_input_envelope_01",
         "fixed_bevel_output_envelope_01",
         "fixed_wet_spool_01",
@@ -16102,7 +19093,10 @@
         "fixed_input_bearing_2_02",
         "fixed_input_support_post_02",
         "fixed_bevel_pod_02",
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_support_cartridge_screw_02_02",
         "fixed_bevel_input_envelope_02",
         "fixed_bevel_output_envelope_02",
         "fixed_wet_spool_02",
@@ -16120,7 +19114,10 @@
         "fixed_input_bearing_2_03",
         "fixed_input_support_post_03",
         "fixed_bevel_pod_03",
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
+        "fixed_output_support_cartridge_03",
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_output_support_cartridge_screw_03_02",
         "fixed_bevel_input_envelope_03",
         "fixed_bevel_output_envelope_03",
         "fixed_wet_spool_03",
@@ -16241,7 +19238,7 @@
     "drive_removal_sweep": {
       "collisions": [],
       "direction": "negative_z",
-      "fixed_obstacle_count": 103,
+      "fixed_obstacle_count": 112,
       "fixed_obstacle_names": [
         "fixed_top_plate",
         "fixed_root_receiver",
@@ -16261,7 +19258,10 @@
         "fixed_input_bearing_2_01",
         "fixed_input_support_post_01",
         "fixed_bevel_pod_01",
-        "fixed_output_support_pod_01",
+        "fixed_output_support_land_01",
+        "fixed_output_support_cartridge_01",
+        "fixed_output_support_cartridge_screw_01_01",
+        "fixed_output_support_cartridge_screw_01_02",
         "fixed_bevel_input_envelope_01",
         "fixed_bevel_output_envelope_01",
         "fixed_wet_spool_01",
@@ -16279,7 +19279,10 @@
         "fixed_input_bearing_2_02",
         "fixed_input_support_post_02",
         "fixed_bevel_pod_02",
-        "fixed_output_support_pod_02",
+        "fixed_output_support_land_02",
+        "fixed_output_support_cartridge_02",
+        "fixed_output_support_cartridge_screw_02_01",
+        "fixed_output_support_cartridge_screw_02_02",
         "fixed_bevel_input_envelope_02",
         "fixed_bevel_output_envelope_02",
         "fixed_wet_spool_02",
@@ -16297,7 +19300,10 @@
         "fixed_input_bearing_2_03",
         "fixed_input_support_post_03",
         "fixed_bevel_pod_03",
-        "fixed_output_support_pod_03",
+        "fixed_output_support_land_03",
+        "fixed_output_support_cartridge_03",
+        "fixed_output_support_cartridge_screw_03_01",
+        "fixed_output_support_cartridge_screw_03_02",
         "fixed_bevel_input_envelope_03",
         "fixed_bevel_output_envelope_03",
         "fixed_wet_spool_03",
@@ -16380,7 +19386,7 @@
       "travel_mm": 280.0
     },
     "drive_sweep_collisions": [],
-    "drive_sweep_fixed_obstacle_count": 103,
+    "drive_sweep_fixed_obstacle_count": 112,
     "drive_sweep_initial_release_gap_mm": 0.5,
     "drive_sweep_min_clearance_mm": 0.09999995800743518,
     "drive_sweep_moving_component_count": 9,
@@ -16412,7 +19418,7 @@
     },
     "motor_port_harness": {
       "checked_backing_count": 3,
-      "checked_nonendpoint_component_count": 143,
+      "checked_nonendpoint_component_count": 152,
       "clearance_passes": true,
       "collisions": [],
       "hits": [],
@@ -16455,6 +19461,536 @@
         }
       ]
     },
+    "output_support_cartridge_interface": {
+      "bearing_nominal_radial_clearance_mm": 0.01,
+      "bearing_outer_seat_diameter_mm": 22.02,
+      "fastener_count": 2,
+      "fastener_thread_candidate": "M2.5",
+      "fit_and_fastener_strength_status": "nominal CAD only; machine and verify the cartridge fit and fastener access",
+      "fixed_land_bore_diameter_mm": 26.8,
+      "fixed_land_remains_installed_during_spool_service": true,
+      "inner_diameter_mm": 22.02,
+      "outboard_seal_retainer_shoulder": {
+        "axial_width_mm": 1.5,
+        "integral_with_removable_cartridge": true,
+        "opening_diameter_mm": 20.5,
+        "outer_diameter_mm": 23.0,
+        "range_mm": [
+          12.0,
+          13.5
+        ]
+      },
+      "outer_diameter_mm": 26.4,
+      "radial_clearance_mm": 0.2,
+      "seal_housing_bore_diameter_mm": 22.0,
+      "thread_engagement_mm": 5.0
+    },
+    "output_support_cartridge_removal": [
+      {
+        "axis_index": 1,
+        "collision_volume_threshold_mm3": 0.02,
+        "collisions": [],
+        "direction": "positive_spool_axis",
+        "fixed_obstacle_names": [
+          "arm_module_arm_segment_01",
+          "arm_module_arm_segment_02",
+          "arm_module_arm_segment_03",
+          "arm_module_arm_segment_04",
+          "arm_root_flange",
+          "arm_root_backing",
+          "arm_register",
+          "arm_capture_sleeve",
+          "arm_tendon_terminals",
+          "arm_dovetail_lock_01",
+          "arm_dovetail_lock_02",
+          "arm_dovetail_lock_03",
+          "arm_tip_tendon_anchor_01",
+          "arm_tip_tendon_anchor_02",
+          "arm_tip_tendon_anchor_03",
+          "arm_terminal_adjustment_01",
+          "arm_terminal_secondary_retention_01",
+          "arm_terminal_adjustment_02",
+          "arm_terminal_secondary_retention_02",
+          "arm_terminal_adjustment_03",
+          "arm_terminal_secondary_retention_03",
+          "removable_motor_plate",
+          "removable_M2006_01",
+          "removable_M2006_cross_pin_01",
+          "removable_motor_cradle_01",
+          "removable_M2006_02",
+          "removable_M2006_cross_pin_02",
+          "removable_motor_cradle_02",
+          "removable_M2006_03",
+          "removable_M2006_cross_pin_03",
+          "removable_motor_cradle_03",
+          "removable_plate_dowel_01",
+          "removable_plate_dowel_02",
+          "fixed_top_plate",
+          "fixed_root_receiver",
+          "fixed_common_motor_chamber",
+          "fixed_drive_plate_register_seat",
+          "fixed_drive_plate_dowel_socket_01",
+          "fixed_drive_plate_dowel_socket_02",
+          "fixed_bearing_inner_01",
+          "fixed_oil_seal_drive_side_01",
+          "fixed_labyrinth_drive_side_01",
+          "fixed_spool_retainer_01",
+          "fixed_spool_drive_pin_01",
+          "fixed_input_bearing_1_01",
+          "fixed_input_bearing_2_01",
+          "fixed_input_support_post_01",
+          "fixed_bevel_pod_01",
+          "fixed_output_support_land_01",
+          "fixed_bevel_input_envelope_01",
+          "fixed_bevel_output_envelope_01",
+          "fixed_wet_spool_01",
+          "fixed_shaft_01",
+          "fixed_output_shaft_01",
+          "fixed_bearing_inner_02",
+          "fixed_bearing_outer_02",
+          "fixed_oil_seal_drive_side_02",
+          "fixed_labyrinth_drive_side_02",
+          "fixed_oil_seal_outboard_02",
+          "fixed_labyrinth_outboard_02",
+          "fixed_spool_retainer_02",
+          "fixed_spool_drive_pin_02",
+          "fixed_input_bearing_1_02",
+          "fixed_input_bearing_2_02",
+          "fixed_input_support_post_02",
+          "fixed_bevel_pod_02",
+          "fixed_output_support_land_02",
+          "fixed_output_support_cartridge_02",
+          "fixed_output_support_cartridge_screw_02_01",
+          "fixed_output_support_cartridge_screw_02_02",
+          "fixed_bevel_input_envelope_02",
+          "fixed_bevel_output_envelope_02",
+          "fixed_wet_spool_02",
+          "fixed_shaft_02",
+          "fixed_output_shaft_02",
+          "fixed_bearing_inner_03",
+          "fixed_bearing_outer_03",
+          "fixed_oil_seal_drive_side_03",
+          "fixed_labyrinth_drive_side_03",
+          "fixed_oil_seal_outboard_03",
+          "fixed_labyrinth_outboard_03",
+          "fixed_spool_retainer_03",
+          "fixed_spool_drive_pin_03",
+          "fixed_input_bearing_1_03",
+          "fixed_input_bearing_2_03",
+          "fixed_input_support_post_03",
+          "fixed_bevel_pod_03",
+          "fixed_output_support_land_03",
+          "fixed_output_support_cartridge_03",
+          "fixed_output_support_cartridge_screw_03_01",
+          "fixed_output_support_cartridge_screw_03_02",
+          "fixed_bevel_input_envelope_03",
+          "fixed_bevel_output_envelope_03",
+          "fixed_wet_spool_03",
+          "fixed_shaft_03",
+          "fixed_output_shaft_03",
+          "fixed_cover_upper_panel_01",
+          "fixed_cover_lower_panel_01",
+          "fixed_cover_upper_panel_02",
+          "fixed_cover_lower_panel_02",
+          "fixed_cover_upper_panel_03",
+          "fixed_cover_lower_panel_03",
+          "fixed_cover_upper_panel_04",
+          "fixed_cover_lower_panel_04",
+          "fixed_cover_upper_panel_05",
+          "fixed_cover_lower_panel_05",
+          "fixed_cover_upper_panel_06",
+          "fixed_cover_lower_panel_06",
+          "fixed_cover_frame_01",
+          "fixed_cover_frame_02",
+          "fixed_cover_frame_03",
+          "fixed_cover_frame_04",
+          "fixed_root_guard_hex",
+          "fixed_root_dowel_01",
+          "fixed_root_dowel_02",
+          "v24_central_electronics_canister",
+          "v24_21700_cell_1",
+          "v24_21700_cell_2",
+          "v24_21700_cell_3",
+          "v24_21700_cell_4",
+          "v24_4S_cell_carrier",
+          "v24_ups_envelope",
+          "v24_regulator_envelope",
+          "v24_pd1002_envelope",
+          "v24_ideal_diode_envelope",
+          "v24_bms_envelope",
+          "v24_controller_backing",
+          "v24_UPS_backing",
+          "v24_regulator_backing",
+          "v24_PD1002_shelf",
+          "v24_ideal_diode_shelf",
+          "v24_BMS_shelf",
+          "v24_M12_USB_C_inside_stem_proxy",
+          "v24_M12_USB_C_outside_flange_proxy",
+          "v25_bottom_lid_with_M28_recess",
+          "v25_M28_male_plug_envelope",
+          "v25_buck_5v_envelope",
+          "v25_buck_5v_shelf",
+          "v27_STM32F407_controller_envelope",
+          "v27_C610_controller_01_envelope",
+          "v27_C610_controller_01_backing",
+          "v27_C610_controller_02_envelope",
+          "v27_C610_controller_02_backing",
+          "v27_C610_controller_03_envelope",
+          "v27_C610_controller_03_backing",
+          "v25_M28_panel_socket_assembly"
+        ],
+        "initial_face_contact_expected": true,
+        "initial_radial_clearance_mm": 0.2,
+        "minimum_clearance_mm": 0.0,
+        "passes": true,
+        "removed_component_names": [
+          "fixed_output_support_cartridge_screw_01_01",
+          "fixed_output_support_cartridge_screw_01_02",
+          "fixed_bearing_outer_01",
+          "fixed_oil_seal_outboard_01",
+          "fixed_labyrinth_outboard_01"
+        ],
+        "retained_support_land_name": "fixed_output_support_land_01",
+        "sweep_type": "continuous axial extrusion of cartridge end profiles",
+        "travel_mm": 32.0
+      },
+      {
+        "axis_index": 2,
+        "collision_volume_threshold_mm3": 0.02,
+        "collisions": [],
+        "direction": "positive_spool_axis",
+        "fixed_obstacle_names": [
+          "arm_module_arm_segment_01",
+          "arm_module_arm_segment_02",
+          "arm_module_arm_segment_03",
+          "arm_module_arm_segment_04",
+          "arm_root_flange",
+          "arm_root_backing",
+          "arm_register",
+          "arm_capture_sleeve",
+          "arm_tendon_terminals",
+          "arm_dovetail_lock_01",
+          "arm_dovetail_lock_02",
+          "arm_dovetail_lock_03",
+          "arm_tip_tendon_anchor_01",
+          "arm_tip_tendon_anchor_02",
+          "arm_tip_tendon_anchor_03",
+          "arm_terminal_adjustment_01",
+          "arm_terminal_secondary_retention_01",
+          "arm_terminal_adjustment_02",
+          "arm_terminal_secondary_retention_02",
+          "arm_terminal_adjustment_03",
+          "arm_terminal_secondary_retention_03",
+          "removable_motor_plate",
+          "removable_M2006_01",
+          "removable_M2006_cross_pin_01",
+          "removable_motor_cradle_01",
+          "removable_M2006_02",
+          "removable_M2006_cross_pin_02",
+          "removable_motor_cradle_02",
+          "removable_M2006_03",
+          "removable_M2006_cross_pin_03",
+          "removable_motor_cradle_03",
+          "removable_plate_dowel_01",
+          "removable_plate_dowel_02",
+          "fixed_top_plate",
+          "fixed_root_receiver",
+          "fixed_common_motor_chamber",
+          "fixed_drive_plate_register_seat",
+          "fixed_drive_plate_dowel_socket_01",
+          "fixed_drive_plate_dowel_socket_02",
+          "fixed_bearing_inner_01",
+          "fixed_bearing_outer_01",
+          "fixed_oil_seal_drive_side_01",
+          "fixed_labyrinth_drive_side_01",
+          "fixed_oil_seal_outboard_01",
+          "fixed_labyrinth_outboard_01",
+          "fixed_spool_retainer_01",
+          "fixed_spool_drive_pin_01",
+          "fixed_input_bearing_1_01",
+          "fixed_input_bearing_2_01",
+          "fixed_input_support_post_01",
+          "fixed_bevel_pod_01",
+          "fixed_output_support_land_01",
+          "fixed_output_support_cartridge_01",
+          "fixed_output_support_cartridge_screw_01_01",
+          "fixed_output_support_cartridge_screw_01_02",
+          "fixed_bevel_input_envelope_01",
+          "fixed_bevel_output_envelope_01",
+          "fixed_wet_spool_01",
+          "fixed_shaft_01",
+          "fixed_output_shaft_01",
+          "fixed_bearing_inner_02",
+          "fixed_oil_seal_drive_side_02",
+          "fixed_labyrinth_drive_side_02",
+          "fixed_spool_retainer_02",
+          "fixed_spool_drive_pin_02",
+          "fixed_input_bearing_1_02",
+          "fixed_input_bearing_2_02",
+          "fixed_input_support_post_02",
+          "fixed_bevel_pod_02",
+          "fixed_output_support_land_02",
+          "fixed_bevel_input_envelope_02",
+          "fixed_bevel_output_envelope_02",
+          "fixed_wet_spool_02",
+          "fixed_shaft_02",
+          "fixed_output_shaft_02",
+          "fixed_bearing_inner_03",
+          "fixed_bearing_outer_03",
+          "fixed_oil_seal_drive_side_03",
+          "fixed_labyrinth_drive_side_03",
+          "fixed_oil_seal_outboard_03",
+          "fixed_labyrinth_outboard_03",
+          "fixed_spool_retainer_03",
+          "fixed_spool_drive_pin_03",
+          "fixed_input_bearing_1_03",
+          "fixed_input_bearing_2_03",
+          "fixed_input_support_post_03",
+          "fixed_bevel_pod_03",
+          "fixed_output_support_land_03",
+          "fixed_output_support_cartridge_03",
+          "fixed_output_support_cartridge_screw_03_01",
+          "fixed_output_support_cartridge_screw_03_02",
+          "fixed_bevel_input_envelope_03",
+          "fixed_bevel_output_envelope_03",
+          "fixed_wet_spool_03",
+          "fixed_shaft_03",
+          "fixed_output_shaft_03",
+          "fixed_cover_upper_panel_01",
+          "fixed_cover_lower_panel_01",
+          "fixed_cover_upper_panel_02",
+          "fixed_cover_lower_panel_02",
+          "fixed_cover_upper_panel_03",
+          "fixed_cover_lower_panel_03",
+          "fixed_cover_upper_panel_04",
+          "fixed_cover_lower_panel_04",
+          "fixed_cover_upper_panel_05",
+          "fixed_cover_lower_panel_05",
+          "fixed_cover_upper_panel_06",
+          "fixed_cover_lower_panel_06",
+          "fixed_cover_frame_01",
+          "fixed_cover_frame_02",
+          "fixed_cover_frame_03",
+          "fixed_cover_frame_04",
+          "fixed_root_guard_hex",
+          "fixed_root_dowel_01",
+          "fixed_root_dowel_02",
+          "v24_central_electronics_canister",
+          "v24_21700_cell_1",
+          "v24_21700_cell_2",
+          "v24_21700_cell_3",
+          "v24_21700_cell_4",
+          "v24_4S_cell_carrier",
+          "v24_ups_envelope",
+          "v24_regulator_envelope",
+          "v24_pd1002_envelope",
+          "v24_ideal_diode_envelope",
+          "v24_bms_envelope",
+          "v24_controller_backing",
+          "v24_UPS_backing",
+          "v24_regulator_backing",
+          "v24_PD1002_shelf",
+          "v24_ideal_diode_shelf",
+          "v24_BMS_shelf",
+          "v24_M12_USB_C_inside_stem_proxy",
+          "v24_M12_USB_C_outside_flange_proxy",
+          "v25_bottom_lid_with_M28_recess",
+          "v25_M28_male_plug_envelope",
+          "v25_buck_5v_envelope",
+          "v25_buck_5v_shelf",
+          "v27_STM32F407_controller_envelope",
+          "v27_C610_controller_01_envelope",
+          "v27_C610_controller_01_backing",
+          "v27_C610_controller_02_envelope",
+          "v27_C610_controller_02_backing",
+          "v27_C610_controller_03_envelope",
+          "v27_C610_controller_03_backing",
+          "v25_M28_panel_socket_assembly"
+        ],
+        "initial_face_contact_expected": true,
+        "initial_radial_clearance_mm": 0.2,
+        "minimum_clearance_mm": 0.0,
+        "passes": true,
+        "removed_component_names": [
+          "fixed_output_support_cartridge_screw_02_01",
+          "fixed_output_support_cartridge_screw_02_02",
+          "fixed_bearing_outer_02",
+          "fixed_oil_seal_outboard_02",
+          "fixed_labyrinth_outboard_02"
+        ],
+        "retained_support_land_name": "fixed_output_support_land_02",
+        "sweep_type": "continuous axial extrusion of cartridge end profiles",
+        "travel_mm": 32.0
+      },
+      {
+        "axis_index": 3,
+        "collision_volume_threshold_mm3": 0.02,
+        "collisions": [],
+        "direction": "positive_spool_axis",
+        "fixed_obstacle_names": [
+          "arm_module_arm_segment_01",
+          "arm_module_arm_segment_02",
+          "arm_module_arm_segment_03",
+          "arm_module_arm_segment_04",
+          "arm_root_flange",
+          "arm_root_backing",
+          "arm_register",
+          "arm_capture_sleeve",
+          "arm_tendon_terminals",
+          "arm_dovetail_lock_01",
+          "arm_dovetail_lock_02",
+          "arm_dovetail_lock_03",
+          "arm_tip_tendon_anchor_01",
+          "arm_tip_tendon_anchor_02",
+          "arm_tip_tendon_anchor_03",
+          "arm_terminal_adjustment_01",
+          "arm_terminal_secondary_retention_01",
+          "arm_terminal_adjustment_02",
+          "arm_terminal_secondary_retention_02",
+          "arm_terminal_adjustment_03",
+          "arm_terminal_secondary_retention_03",
+          "removable_motor_plate",
+          "removable_M2006_01",
+          "removable_M2006_cross_pin_01",
+          "removable_motor_cradle_01",
+          "removable_M2006_02",
+          "removable_M2006_cross_pin_02",
+          "removable_motor_cradle_02",
+          "removable_M2006_03",
+          "removable_M2006_cross_pin_03",
+          "removable_motor_cradle_03",
+          "removable_plate_dowel_01",
+          "removable_plate_dowel_02",
+          "fixed_top_plate",
+          "fixed_root_receiver",
+          "fixed_common_motor_chamber",
+          "fixed_drive_plate_register_seat",
+          "fixed_drive_plate_dowel_socket_01",
+          "fixed_drive_plate_dowel_socket_02",
+          "fixed_bearing_inner_01",
+          "fixed_bearing_outer_01",
+          "fixed_oil_seal_drive_side_01",
+          "fixed_labyrinth_drive_side_01",
+          "fixed_oil_seal_outboard_01",
+          "fixed_labyrinth_outboard_01",
+          "fixed_spool_retainer_01",
+          "fixed_spool_drive_pin_01",
+          "fixed_input_bearing_1_01",
+          "fixed_input_bearing_2_01",
+          "fixed_input_support_post_01",
+          "fixed_bevel_pod_01",
+          "fixed_output_support_land_01",
+          "fixed_output_support_cartridge_01",
+          "fixed_output_support_cartridge_screw_01_01",
+          "fixed_output_support_cartridge_screw_01_02",
+          "fixed_bevel_input_envelope_01",
+          "fixed_bevel_output_envelope_01",
+          "fixed_wet_spool_01",
+          "fixed_shaft_01",
+          "fixed_output_shaft_01",
+          "fixed_bearing_inner_02",
+          "fixed_bearing_outer_02",
+          "fixed_oil_seal_drive_side_02",
+          "fixed_labyrinth_drive_side_02",
+          "fixed_oil_seal_outboard_02",
+          "fixed_labyrinth_outboard_02",
+          "fixed_spool_retainer_02",
+          "fixed_spool_drive_pin_02",
+          "fixed_input_bearing_1_02",
+          "fixed_input_bearing_2_02",
+          "fixed_input_support_post_02",
+          "fixed_bevel_pod_02",
+          "fixed_output_support_land_02",
+          "fixed_output_support_cartridge_02",
+          "fixed_output_support_cartridge_screw_02_01",
+          "fixed_output_support_cartridge_screw_02_02",
+          "fixed_bevel_input_envelope_02",
+          "fixed_bevel_output_envelope_02",
+          "fixed_wet_spool_02",
+          "fixed_shaft_02",
+          "fixed_output_shaft_02",
+          "fixed_bearing_inner_03",
+          "fixed_oil_seal_drive_side_03",
+          "fixed_labyrinth_drive_side_03",
+          "fixed_spool_retainer_03",
+          "fixed_spool_drive_pin_03",
+          "fixed_input_bearing_1_03",
+          "fixed_input_bearing_2_03",
+          "fixed_input_support_post_03",
+          "fixed_bevel_pod_03",
+          "fixed_output_support_land_03",
+          "fixed_bevel_input_envelope_03",
+          "fixed_bevel_output_envelope_03",
+          "fixed_wet_spool_03",
+          "fixed_shaft_03",
+          "fixed_output_shaft_03",
+          "fixed_cover_upper_panel_01",
+          "fixed_cover_lower_panel_01",
+          "fixed_cover_upper_panel_02",
+          "fixed_cover_lower_panel_02",
+          "fixed_cover_upper_panel_03",
+          "fixed_cover_lower_panel_03",
+          "fixed_cover_upper_panel_04",
+          "fixed_cover_lower_panel_04",
+          "fixed_cover_upper_panel_05",
+          "fixed_cover_lower_panel_05",
+          "fixed_cover_upper_panel_06",
+          "fixed_cover_lower_panel_06",
+          "fixed_cover_frame_01",
+          "fixed_cover_frame_02",
+          "fixed_cover_frame_03",
+          "fixed_cover_frame_04",
+          "fixed_root_guard_hex",
+          "fixed_root_dowel_01",
+          "fixed_root_dowel_02",
+          "v24_central_electronics_canister",
+          "v24_21700_cell_1",
+          "v24_21700_cell_2",
+          "v24_21700_cell_3",
+          "v24_21700_cell_4",
+          "v24_4S_cell_carrier",
+          "v24_ups_envelope",
+          "v24_regulator_envelope",
+          "v24_pd1002_envelope",
+          "v24_ideal_diode_envelope",
+          "v24_bms_envelope",
+          "v24_controller_backing",
+          "v24_UPS_backing",
+          "v24_regulator_backing",
+          "v24_PD1002_shelf",
+          "v24_ideal_diode_shelf",
+          "v24_BMS_shelf",
+          "v24_M12_USB_C_inside_stem_proxy",
+          "v24_M12_USB_C_outside_flange_proxy",
+          "v25_bottom_lid_with_M28_recess",
+          "v25_M28_male_plug_envelope",
+          "v25_buck_5v_envelope",
+          "v25_buck_5v_shelf",
+          "v27_STM32F407_controller_envelope",
+          "v27_C610_controller_01_envelope",
+          "v27_C610_controller_01_backing",
+          "v27_C610_controller_02_envelope",
+          "v27_C610_controller_02_backing",
+          "v27_C610_controller_03_envelope",
+          "v27_C610_controller_03_backing",
+          "v25_M28_panel_socket_assembly"
+        ],
+        "initial_face_contact_expected": true,
+        "initial_radial_clearance_mm": 0.2,
+        "minimum_clearance_mm": 0.0,
+        "passes": true,
+        "removed_component_names": [
+          "fixed_output_support_cartridge_screw_03_01",
+          "fixed_output_support_cartridge_screw_03_02",
+          "fixed_bearing_outer_03",
+          "fixed_oil_seal_outboard_03",
+          "fixed_labyrinth_outboard_03"
+        ],
+        "retained_support_land_name": "fixed_output_support_land_03",
+        "sweep_type": "continuous axial extrusion of cartridge end profiles",
+        "travel_mm": 32.0
+      }
+    ],
     "root_fastener_tool_envelopes": 6,
     "root_guard_attachment": {
       "alignment_slot_clearance_mm": 0.3,
@@ -16472,16 +20008,164 @@
         "axis_index": 1,
         "collisions": [],
         "direction": "positive_spool_axis",
+        "fixed_obstacle_names": [
+          "arm_module_arm_segment_01",
+          "arm_module_arm_segment_02",
+          "arm_module_arm_segment_03",
+          "arm_module_arm_segment_04",
+          "arm_root_flange",
+          "arm_root_backing",
+          "arm_register",
+          "arm_capture_sleeve",
+          "arm_tendon_terminals",
+          "arm_dovetail_lock_01",
+          "arm_dovetail_lock_02",
+          "arm_dovetail_lock_03",
+          "arm_tip_tendon_anchor_01",
+          "arm_tip_tendon_anchor_02",
+          "arm_tip_tendon_anchor_03",
+          "arm_terminal_adjustment_01",
+          "arm_terminal_secondary_retention_01",
+          "arm_terminal_adjustment_02",
+          "arm_terminal_secondary_retention_02",
+          "arm_terminal_adjustment_03",
+          "arm_terminal_secondary_retention_03",
+          "removable_motor_plate",
+          "removable_M2006_01",
+          "removable_M2006_cross_pin_01",
+          "removable_motor_cradle_01",
+          "removable_M2006_02",
+          "removable_M2006_cross_pin_02",
+          "removable_motor_cradle_02",
+          "removable_M2006_03",
+          "removable_M2006_cross_pin_03",
+          "removable_motor_cradle_03",
+          "removable_plate_dowel_01",
+          "removable_plate_dowel_02",
+          "fixed_top_plate",
+          "fixed_root_receiver",
+          "fixed_common_motor_chamber",
+          "fixed_drive_plate_register_seat",
+          "fixed_drive_plate_dowel_socket_01",
+          "fixed_drive_plate_dowel_socket_02",
+          "fixed_bearing_inner_01",
+          "fixed_oil_seal_drive_side_01",
+          "fixed_labyrinth_drive_side_01",
+          "fixed_input_bearing_1_01",
+          "fixed_input_bearing_2_01",
+          "fixed_input_support_post_01",
+          "fixed_bevel_pod_01",
+          "fixed_output_support_land_01",
+          "fixed_bevel_input_envelope_01",
+          "fixed_bevel_output_envelope_01",
+          "fixed_shaft_01",
+          "fixed_output_shaft_01",
+          "fixed_bearing_inner_02",
+          "fixed_bearing_outer_02",
+          "fixed_oil_seal_drive_side_02",
+          "fixed_labyrinth_drive_side_02",
+          "fixed_oil_seal_outboard_02",
+          "fixed_labyrinth_outboard_02",
+          "fixed_spool_retainer_02",
+          "fixed_spool_drive_pin_02",
+          "fixed_input_bearing_1_02",
+          "fixed_input_bearing_2_02",
+          "fixed_input_support_post_02",
+          "fixed_bevel_pod_02",
+          "fixed_output_support_land_02",
+          "fixed_output_support_cartridge_02",
+          "fixed_output_support_cartridge_screw_02_01",
+          "fixed_output_support_cartridge_screw_02_02",
+          "fixed_bevel_input_envelope_02",
+          "fixed_bevel_output_envelope_02",
+          "fixed_wet_spool_02",
+          "fixed_shaft_02",
+          "fixed_output_shaft_02",
+          "fixed_bearing_inner_03",
+          "fixed_bearing_outer_03",
+          "fixed_oil_seal_drive_side_03",
+          "fixed_labyrinth_drive_side_03",
+          "fixed_oil_seal_outboard_03",
+          "fixed_labyrinth_outboard_03",
+          "fixed_spool_retainer_03",
+          "fixed_spool_drive_pin_03",
+          "fixed_input_bearing_1_03",
+          "fixed_input_bearing_2_03",
+          "fixed_input_support_post_03",
+          "fixed_bevel_pod_03",
+          "fixed_output_support_land_03",
+          "fixed_output_support_cartridge_03",
+          "fixed_output_support_cartridge_screw_03_01",
+          "fixed_output_support_cartridge_screw_03_02",
+          "fixed_bevel_input_envelope_03",
+          "fixed_bevel_output_envelope_03",
+          "fixed_wet_spool_03",
+          "fixed_shaft_03",
+          "fixed_output_shaft_03",
+          "fixed_cover_upper_panel_01",
+          "fixed_cover_lower_panel_01",
+          "fixed_cover_upper_panel_02",
+          "fixed_cover_lower_panel_02",
+          "fixed_cover_upper_panel_03",
+          "fixed_cover_lower_panel_03",
+          "fixed_cover_upper_panel_04",
+          "fixed_cover_lower_panel_04",
+          "fixed_cover_upper_panel_05",
+          "fixed_cover_lower_panel_05",
+          "fixed_cover_upper_panel_06",
+          "fixed_cover_lower_panel_06",
+          "fixed_cover_frame_01",
+          "fixed_cover_frame_02",
+          "fixed_cover_frame_03",
+          "fixed_cover_frame_04",
+          "fixed_root_guard_hex",
+          "fixed_root_dowel_01",
+          "fixed_root_dowel_02",
+          "v24_central_electronics_canister",
+          "v24_21700_cell_1",
+          "v24_21700_cell_2",
+          "v24_21700_cell_3",
+          "v24_21700_cell_4",
+          "v24_4S_cell_carrier",
+          "v24_ups_envelope",
+          "v24_regulator_envelope",
+          "v24_pd1002_envelope",
+          "v24_ideal_diode_envelope",
+          "v24_bms_envelope",
+          "v24_controller_backing",
+          "v24_UPS_backing",
+          "v24_regulator_backing",
+          "v24_PD1002_shelf",
+          "v24_ideal_diode_shelf",
+          "v24_BMS_shelf",
+          "v24_M12_USB_C_inside_stem_proxy",
+          "v24_M12_USB_C_outside_flange_proxy",
+          "v25_bottom_lid_with_M28_recess",
+          "v25_M28_male_plug_envelope",
+          "v25_buck_5v_envelope",
+          "v25_buck_5v_shelf",
+          "v27_STM32F407_controller_envelope",
+          "v27_C610_controller_01_envelope",
+          "v27_C610_controller_01_backing",
+          "v27_C610_controller_02_envelope",
+          "v27_C610_controller_02_backing",
+          "v27_C610_controller_03_envelope",
+          "v27_C610_controller_03_backing",
+          "v25_M28_panel_socket_assembly"
+        ],
         "minimum_clearance_mm": 0.049999971919945374,
         "passes": true,
         "removed_component_names": [
-          "fixed_output_support_pod_01",
+          "fixed_output_support_cartridge_01",
+          "fixed_output_support_cartridge_screw_01_01",
+          "fixed_output_support_cartridge_screw_01_02",
           "fixed_bearing_outer_01",
           "fixed_oil_seal_outboard_01",
           "fixed_labyrinth_outboard_01",
           "fixed_spool_retainer_01",
           "fixed_spool_drive_pin_01"
         ],
+        "retained_support_land_name": "fixed_output_support_land_01",
         "sweep_type": "continuous axial extrusion of spool end profiles",
         "tendon_detached_required": true,
         "travel_mm": 32.0
@@ -16490,16 +20174,164 @@
         "axis_index": 2,
         "collisions": [],
         "direction": "positive_spool_axis",
+        "fixed_obstacle_names": [
+          "arm_module_arm_segment_01",
+          "arm_module_arm_segment_02",
+          "arm_module_arm_segment_03",
+          "arm_module_arm_segment_04",
+          "arm_root_flange",
+          "arm_root_backing",
+          "arm_register",
+          "arm_capture_sleeve",
+          "arm_tendon_terminals",
+          "arm_dovetail_lock_01",
+          "arm_dovetail_lock_02",
+          "arm_dovetail_lock_03",
+          "arm_tip_tendon_anchor_01",
+          "arm_tip_tendon_anchor_02",
+          "arm_tip_tendon_anchor_03",
+          "arm_terminal_adjustment_01",
+          "arm_terminal_secondary_retention_01",
+          "arm_terminal_adjustment_02",
+          "arm_terminal_secondary_retention_02",
+          "arm_terminal_adjustment_03",
+          "arm_terminal_secondary_retention_03",
+          "removable_motor_plate",
+          "removable_M2006_01",
+          "removable_M2006_cross_pin_01",
+          "removable_motor_cradle_01",
+          "removable_M2006_02",
+          "removable_M2006_cross_pin_02",
+          "removable_motor_cradle_02",
+          "removable_M2006_03",
+          "removable_M2006_cross_pin_03",
+          "removable_motor_cradle_03",
+          "removable_plate_dowel_01",
+          "removable_plate_dowel_02",
+          "fixed_top_plate",
+          "fixed_root_receiver",
+          "fixed_common_motor_chamber",
+          "fixed_drive_plate_register_seat",
+          "fixed_drive_plate_dowel_socket_01",
+          "fixed_drive_plate_dowel_socket_02",
+          "fixed_bearing_inner_01",
+          "fixed_bearing_outer_01",
+          "fixed_oil_seal_drive_side_01",
+          "fixed_labyrinth_drive_side_01",
+          "fixed_oil_seal_outboard_01",
+          "fixed_labyrinth_outboard_01",
+          "fixed_spool_retainer_01",
+          "fixed_spool_drive_pin_01",
+          "fixed_input_bearing_1_01",
+          "fixed_input_bearing_2_01",
+          "fixed_input_support_post_01",
+          "fixed_bevel_pod_01",
+          "fixed_output_support_land_01",
+          "fixed_output_support_cartridge_01",
+          "fixed_output_support_cartridge_screw_01_01",
+          "fixed_output_support_cartridge_screw_01_02",
+          "fixed_bevel_input_envelope_01",
+          "fixed_bevel_output_envelope_01",
+          "fixed_wet_spool_01",
+          "fixed_shaft_01",
+          "fixed_output_shaft_01",
+          "fixed_bearing_inner_02",
+          "fixed_oil_seal_drive_side_02",
+          "fixed_labyrinth_drive_side_02",
+          "fixed_input_bearing_1_02",
+          "fixed_input_bearing_2_02",
+          "fixed_input_support_post_02",
+          "fixed_bevel_pod_02",
+          "fixed_output_support_land_02",
+          "fixed_bevel_input_envelope_02",
+          "fixed_bevel_output_envelope_02",
+          "fixed_shaft_02",
+          "fixed_output_shaft_02",
+          "fixed_bearing_inner_03",
+          "fixed_bearing_outer_03",
+          "fixed_oil_seal_drive_side_03",
+          "fixed_labyrinth_drive_side_03",
+          "fixed_oil_seal_outboard_03",
+          "fixed_labyrinth_outboard_03",
+          "fixed_spool_retainer_03",
+          "fixed_spool_drive_pin_03",
+          "fixed_input_bearing_1_03",
+          "fixed_input_bearing_2_03",
+          "fixed_input_support_post_03",
+          "fixed_bevel_pod_03",
+          "fixed_output_support_land_03",
+          "fixed_output_support_cartridge_03",
+          "fixed_output_support_cartridge_screw_03_01",
+          "fixed_output_support_cartridge_screw_03_02",
+          "fixed_bevel_input_envelope_03",
+          "fixed_bevel_output_envelope_03",
+          "fixed_wet_spool_03",
+          "fixed_shaft_03",
+          "fixed_output_shaft_03",
+          "fixed_cover_upper_panel_01",
+          "fixed_cover_lower_panel_01",
+          "fixed_cover_upper_panel_02",
+          "fixed_cover_lower_panel_02",
+          "fixed_cover_upper_panel_03",
+          "fixed_cover_lower_panel_03",
+          "fixed_cover_upper_panel_04",
+          "fixed_cover_lower_panel_04",
+          "fixed_cover_upper_panel_05",
+          "fixed_cover_lower_panel_05",
+          "fixed_cover_upper_panel_06",
+          "fixed_cover_lower_panel_06",
+          "fixed_cover_frame_01",
+          "fixed_cover_frame_02",
+          "fixed_cover_frame_03",
+          "fixed_cover_frame_04",
+          "fixed_root_guard_hex",
+          "fixed_root_dowel_01",
+          "fixed_root_dowel_02",
+          "v24_central_electronics_canister",
+          "v24_21700_cell_1",
+          "v24_21700_cell_2",
+          "v24_21700_cell_3",
+          "v24_21700_cell_4",
+          "v24_4S_cell_carrier",
+          "v24_ups_envelope",
+          "v24_regulator_envelope",
+          "v24_pd1002_envelope",
+          "v24_ideal_diode_envelope",
+          "v24_bms_envelope",
+          "v24_controller_backing",
+          "v24_UPS_backing",
+          "v24_regulator_backing",
+          "v24_PD1002_shelf",
+          "v24_ideal_diode_shelf",
+          "v24_BMS_shelf",
+          "v24_M12_USB_C_inside_stem_proxy",
+          "v24_M12_USB_C_outside_flange_proxy",
+          "v25_bottom_lid_with_M28_recess",
+          "v25_M28_male_plug_envelope",
+          "v25_buck_5v_envelope",
+          "v25_buck_5v_shelf",
+          "v27_STM32F407_controller_envelope",
+          "v27_C610_controller_01_envelope",
+          "v27_C610_controller_01_backing",
+          "v27_C610_controller_02_envelope",
+          "v27_C610_controller_02_backing",
+          "v27_C610_controller_03_envelope",
+          "v27_C610_controller_03_backing",
+          "v25_M28_panel_socket_assembly"
+        ],
         "minimum_clearance_mm": 0.04999998731539822,
         "passes": true,
         "removed_component_names": [
-          "fixed_output_support_pod_02",
+          "fixed_output_support_cartridge_02",
+          "fixed_output_support_cartridge_screw_02_01",
+          "fixed_output_support_cartridge_screw_02_02",
           "fixed_bearing_outer_02",
           "fixed_oil_seal_outboard_02",
           "fixed_labyrinth_outboard_02",
           "fixed_spool_retainer_02",
           "fixed_spool_drive_pin_02"
         ],
+        "retained_support_land_name": "fixed_output_support_land_02",
         "sweep_type": "continuous axial extrusion of spool end profiles",
         "tendon_detached_required": true,
         "travel_mm": 32.0
@@ -16508,16 +20340,164 @@
         "axis_index": 3,
         "collisions": [],
         "direction": "positive_spool_axis",
+        "fixed_obstacle_names": [
+          "arm_module_arm_segment_01",
+          "arm_module_arm_segment_02",
+          "arm_module_arm_segment_03",
+          "arm_module_arm_segment_04",
+          "arm_root_flange",
+          "arm_root_backing",
+          "arm_register",
+          "arm_capture_sleeve",
+          "arm_tendon_terminals",
+          "arm_dovetail_lock_01",
+          "arm_dovetail_lock_02",
+          "arm_dovetail_lock_03",
+          "arm_tip_tendon_anchor_01",
+          "arm_tip_tendon_anchor_02",
+          "arm_tip_tendon_anchor_03",
+          "arm_terminal_adjustment_01",
+          "arm_terminal_secondary_retention_01",
+          "arm_terminal_adjustment_02",
+          "arm_terminal_secondary_retention_02",
+          "arm_terminal_adjustment_03",
+          "arm_terminal_secondary_retention_03",
+          "removable_motor_plate",
+          "removable_M2006_01",
+          "removable_M2006_cross_pin_01",
+          "removable_motor_cradle_01",
+          "removable_M2006_02",
+          "removable_M2006_cross_pin_02",
+          "removable_motor_cradle_02",
+          "removable_M2006_03",
+          "removable_M2006_cross_pin_03",
+          "removable_motor_cradle_03",
+          "removable_plate_dowel_01",
+          "removable_plate_dowel_02",
+          "fixed_top_plate",
+          "fixed_root_receiver",
+          "fixed_common_motor_chamber",
+          "fixed_drive_plate_register_seat",
+          "fixed_drive_plate_dowel_socket_01",
+          "fixed_drive_plate_dowel_socket_02",
+          "fixed_bearing_inner_01",
+          "fixed_bearing_outer_01",
+          "fixed_oil_seal_drive_side_01",
+          "fixed_labyrinth_drive_side_01",
+          "fixed_oil_seal_outboard_01",
+          "fixed_labyrinth_outboard_01",
+          "fixed_spool_retainer_01",
+          "fixed_spool_drive_pin_01",
+          "fixed_input_bearing_1_01",
+          "fixed_input_bearing_2_01",
+          "fixed_input_support_post_01",
+          "fixed_bevel_pod_01",
+          "fixed_output_support_land_01",
+          "fixed_output_support_cartridge_01",
+          "fixed_output_support_cartridge_screw_01_01",
+          "fixed_output_support_cartridge_screw_01_02",
+          "fixed_bevel_input_envelope_01",
+          "fixed_bevel_output_envelope_01",
+          "fixed_wet_spool_01",
+          "fixed_shaft_01",
+          "fixed_output_shaft_01",
+          "fixed_bearing_inner_02",
+          "fixed_bearing_outer_02",
+          "fixed_oil_seal_drive_side_02",
+          "fixed_labyrinth_drive_side_02",
+          "fixed_oil_seal_outboard_02",
+          "fixed_labyrinth_outboard_02",
+          "fixed_spool_retainer_02",
+          "fixed_spool_drive_pin_02",
+          "fixed_input_bearing_1_02",
+          "fixed_input_bearing_2_02",
+          "fixed_input_support_post_02",
+          "fixed_bevel_pod_02",
+          "fixed_output_support_land_02",
+          "fixed_output_support_cartridge_02",
+          "fixed_output_support_cartridge_screw_02_01",
+          "fixed_output_support_cartridge_screw_02_02",
+          "fixed_bevel_input_envelope_02",
+          "fixed_bevel_output_envelope_02",
+          "fixed_wet_spool_02",
+          "fixed_shaft_02",
+          "fixed_output_shaft_02",
+          "fixed_bearing_inner_03",
+          "fixed_oil_seal_drive_side_03",
+          "fixed_labyrinth_drive_side_03",
+          "fixed_input_bearing_1_03",
+          "fixed_input_bearing_2_03",
+          "fixed_input_support_post_03",
+          "fixed_bevel_pod_03",
+          "fixed_output_support_land_03",
+          "fixed_bevel_input_envelope_03",
+          "fixed_bevel_output_envelope_03",
+          "fixed_shaft_03",
+          "fixed_output_shaft_03",
+          "fixed_cover_upper_panel_01",
+          "fixed_cover_lower_panel_01",
+          "fixed_cover_upper_panel_02",
+          "fixed_cover_lower_panel_02",
+          "fixed_cover_upper_panel_03",
+          "fixed_cover_lower_panel_03",
+          "fixed_cover_upper_panel_04",
+          "fixed_cover_lower_panel_04",
+          "fixed_cover_upper_panel_05",
+          "fixed_cover_lower_panel_05",
+          "fixed_cover_upper_panel_06",
+          "fixed_cover_lower_panel_06",
+          "fixed_cover_frame_01",
+          "fixed_cover_frame_02",
+          "fixed_cover_frame_03",
+          "fixed_cover_frame_04",
+          "fixed_root_guard_hex",
+          "fixed_root_dowel_01",
+          "fixed_root_dowel_02",
+          "v24_central_electronics_canister",
+          "v24_21700_cell_1",
+          "v24_21700_cell_2",
+          "v24_21700_cell_3",
+          "v24_21700_cell_4",
+          "v24_4S_cell_carrier",
+          "v24_ups_envelope",
+          "v24_regulator_envelope",
+          "v24_pd1002_envelope",
+          "v24_ideal_diode_envelope",
+          "v24_bms_envelope",
+          "v24_controller_backing",
+          "v24_UPS_backing",
+          "v24_regulator_backing",
+          "v24_PD1002_shelf",
+          "v24_ideal_diode_shelf",
+          "v24_BMS_shelf",
+          "v24_M12_USB_C_inside_stem_proxy",
+          "v24_M12_USB_C_outside_flange_proxy",
+          "v25_bottom_lid_with_M28_recess",
+          "v25_M28_male_plug_envelope",
+          "v25_buck_5v_envelope",
+          "v25_buck_5v_shelf",
+          "v27_STM32F407_controller_envelope",
+          "v27_C610_controller_01_envelope",
+          "v27_C610_controller_01_backing",
+          "v27_C610_controller_02_envelope",
+          "v27_C610_controller_02_backing",
+          "v27_C610_controller_03_envelope",
+          "v27_C610_controller_03_backing",
+          "v25_M28_panel_socket_assembly"
+        ],
         "minimum_clearance_mm": 0.04999998731540084,
         "passes": true,
         "removed_component_names": [
-          "fixed_output_support_pod_03",
+          "fixed_output_support_cartridge_03",
+          "fixed_output_support_cartridge_screw_03_01",
+          "fixed_output_support_cartridge_screw_03_02",
           "fixed_bearing_outer_03",
           "fixed_oil_seal_outboard_03",
           "fixed_labyrinth_outboard_03",
           "fixed_spool_retainer_03",
           "fixed_spool_drive_pin_03"
         ],
+        "retained_support_land_name": "fixed_output_support_land_03",
         "sweep_type": "continuous axial extrusion of spool end profiles",
         "tendon_detached_required": true,
         "travel_mm": 32.0
@@ -16528,9 +20508,10 @@
       "detach_and_unwind_the_tendon_from_the_spool",
       "withdraw_the_radial_spool_drive_pin",
       "remove_the_spool_retaining_ring",
-      "remove_the_outboard_oil_seal_and_labyrinth",
-      "remove_the_outboard_6900_bearing_and_support_pod",
-      "slide_the_wet_spool_32_mm_along_the_positive_spool_axis"
+      "remove_the_outboard_6900_bearing_labyrinth_and_oil_seal_from_the_cartridge",
+      "remove_two_M2_5_output_support_cartridge_screws",
+      "withdraw_the_output_support_cartridge_32_mm_along_the_positive_spool_axis",
+      "slide_the_wet_spool_32_mm_through_the_fixed_support_land_tunnel"
     ],
     "tendon_root_route": {
       "cable_diameter_mm": 0.5,
@@ -16579,7 +20560,7 @@
       },
       "motor_harness": {
         "checked_backing_count": 3,
-        "checked_nonendpoint_component_count": 143,
+        "checked_nonendpoint_component_count": 152,
         "clearance_passes": true,
         "collisions": [],
         "hits": [],

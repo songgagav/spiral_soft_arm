@@ -23,6 +23,8 @@ from generate_v27_assembly import (
 )
 from model_contract import load_contract
 from render_v27 import render_v27
+from arm_module import _root_transition_points
+from preprint_review.build_preprint_coupons import build_tendon_transition_ladder
 
 
 class V27ZZDeliveryTests(unittest.TestCase):
@@ -291,24 +293,31 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertEqual(interface["retainer_outer_diameter_mm"], 16.0)
         paths = service["spool_removal"]
         self.assertEqual(len(paths), 3)
-        removed = {
-            "fixed_output_support_pod_01",
-            "fixed_bearing_outer_01",
-            "fixed_oil_seal_outboard_01",
-            "fixed_labyrinth_outboard_01",
-            "fixed_spool_retainer_01",
-            "fixed_spool_drive_pin_01",
-        }
         for path in paths:
+            index = path["axis_index"]
             self.assertTrue(path["tendon_detached_required"])
             self.assertEqual(path["direction"], "positive_spool_axis")
             self.assertEqual(path["travel_mm"], 32.0)
-            self.assertEqual(set(path["removed_component_names"]), {
-                name.replace("_01", f"_{path['axis_index']:02d}") for name in removed
-            })
+            self.assertEqual(
+                set(path["removed_component_names"]),
+                {
+                    f"fixed_output_support_cartridge_{index:02d}",
+                    f"fixed_output_support_cartridge_screw_{index:02d}_01",
+                    f"fixed_output_support_cartridge_screw_{index:02d}_02",
+                    f"fixed_bearing_outer_{index:02d}",
+                    f"fixed_oil_seal_outboard_{index:02d}",
+                    f"fixed_labyrinth_outboard_{index:02d}",
+                    f"fixed_spool_retainer_{index:02d}",
+                    f"fixed_spool_drive_pin_{index:02d}",
+                },
+            )
             self.assertTrue(path["passes"])
             self.assertEqual(path["collisions"], [])
             self.assertGreater(path["minimum_clearance_mm"], 0.0)
+            self.assertIn(
+                f"fixed_output_support_land_{path['axis_index']:02d}",
+                [path["retained_support_land_name"]],
+            )
 
         failed_audit = dict(self.audit)
         failed_service = dict(self.audit["service"])
@@ -318,6 +327,50 @@ class V27IntegrationTests(unittest.TestCase):
         failed_audit["service"] = failed_service
         with patch("generate_v27_assembly.audit_v27_assembly", return_value=failed_audit):
             with self.assertRaisesRegex(ValueError, "spool removal"):
+                preflight_v27(self.result)
+
+    def test_output_support_cartridge_removal_path_is_clear(self) -> None:
+        service = self.audit["service"]
+        interface = service["output_support_cartridge_interface"]
+        self.assertEqual(interface["inner_diameter_mm"], 22.02)
+        self.assertEqual(interface["bearing_nominal_radial_clearance_mm"], 0.01)
+        self.assertEqual(interface["seal_housing_bore_diameter_mm"], 22.0)
+        shoulder = interface["outboard_seal_retainer_shoulder"]
+        self.assertEqual(shoulder["range_mm"], [12.0, 13.5])
+        self.assertTrue(shoulder["integral_with_removable_cartridge"])
+        paths = service["output_support_cartridge_removal"]
+        self.assertEqual(len(paths), 3)
+        for path in paths:
+            index = path["axis_index"]
+            self.assertEqual(path["travel_mm"], 32.0)
+            self.assertEqual(
+                set(path["removed_component_names"]),
+                {
+                    f"fixed_output_support_cartridge_screw_{index:02d}_01",
+                    f"fixed_output_support_cartridge_screw_{index:02d}_02",
+                    f"fixed_bearing_outer_{index:02d}",
+                    f"fixed_oil_seal_outboard_{index:02d}",
+                    f"fixed_labyrinth_outboard_{index:02d}",
+                },
+            )
+            self.assertTrue(path["passes"])
+            self.assertEqual(path["collisions"], [])
+            self.assertEqual(path["collision_volume_threshold_mm3"], 0.02)
+            self.assertEqual(path["initial_radial_clearance_mm"], 0.2)
+            self.assertTrue(path["initial_face_contact_expected"])
+            self.assertIn(
+                f"fixed_output_support_land_{index:02d}",
+                path["fixed_obstacle_names"],
+            )
+
+        failed_audit = dict(self.audit)
+        failed_service = dict(self.audit["service"])
+        failed_paths = [dict(path) for path in paths]
+        failed_paths[0]["passes"] = False
+        failed_service["output_support_cartridge_removal"] = failed_paths
+        failed_audit["service"] = failed_service
+        with patch("generate_v27_assembly.audit_v27_assembly", return_value=failed_audit):
+            with self.assertRaisesRegex(ValueError, "output support cartridge removal"):
                 preflight_v27(self.result)
 
     def test_no_forbidden_solid_intersections(self) -> None:
@@ -518,6 +571,45 @@ class V27IntegrationTests(unittest.TestCase):
         readme = (self.contract.output_directory / "README.md").read_text(encoding="utf-8")
         self.assertIn("无齿形目录包络", readme)
         self.assertIn("油封水下性能未验证", readme)
+
+
+class V27PreprintCouponTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls) -> None:
+        cls.contract = load_contract()
+
+    def test_tendon_transition_channels_open_through_both_host_faces(self) -> None:
+        coupons = build_tendon_transition_ladder(self.contract).Solids()
+        self.assertEqual(len(coupons), 3)
+        controls = _root_transition_points(self.contract, 0.0)
+        start, _, after_join, join = controls
+        end_direction = (join - after_join).normalized()
+        for index, (coupon, diameter) in enumerate(zip(coupons, (0.8, 1.0, 1.2))):
+            offset_x = 55.0 * index
+            radius = diameter / 2.0
+            radial_start = cq.Vector(67.0 + offset_x, 0.0, float(start.z))
+            radial_end = start + cq.Vector(offset_x, 0.0, 0.0)
+            radial_vector = radial_end - radial_start
+            radial_probe = cq.Solid.makeCylinder(
+                radius, radial_vector.Length, radial_start, radial_vector.normalized()
+            )
+            self.assertLess(
+                coupon.intersect(radial_probe).Volume(),
+                0.02,
+                f"coupon {index} has a blind radial entry",
+            )
+            top_distance = (75.0 - join.z) / end_direction.z
+            axial_start = join + cq.Vector(offset_x, 0.0, 0.0)
+            axial_end = axial_start + end_direction * (top_distance + 1.0)
+            axial_vector = axial_end - axial_start
+            axial_probe = cq.Solid.makeCylinder(
+                radius, axial_vector.Length, axial_start, axial_vector.normalized()
+            )
+            self.assertLess(
+                coupon.intersect(axial_probe).Volume(),
+                0.02,
+                f"coupon {index} has a blind axial exit",
+            )
 
 
 if __name__ == "__main__":

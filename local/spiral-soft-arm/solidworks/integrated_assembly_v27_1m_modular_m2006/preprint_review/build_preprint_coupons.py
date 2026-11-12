@@ -113,7 +113,7 @@ def build_tendon_transition_ladder(contract: Any) -> cq.Compound:
         radius = diameter / 2.0
         host = _box(43.0, 16.0, 75.0, (23.0, -8.0, 0.0))
         transition = make_root_transition_passage(contract, 0.0, radius)
-        radial_start = cq.Vector(65.0, 0.0, float(start.z))
+        radial_start = cq.Vector(67.0, 0.0, float(start.z))
         radial_end = start
         radial = cq.Solid.makeCylinder(
             radius,
@@ -121,7 +121,9 @@ def build_tendon_transition_ladder(contract: Any) -> cq.Compound:
             radial_start,
             (radial_end - radial_start).normalized(),
         )
-        axial_end = join_vector + end_direction * 8.0
+        host_top_z = 75.0
+        axial_exit_distance = (host_top_z + 1.0 - join_vector.z) / end_direction.z
+        axial_end = join_vector + end_direction * axial_exit_distance
         axial = cq.Solid.makeCylinder(
             radius,
             (axial_end - join_vector).Length,

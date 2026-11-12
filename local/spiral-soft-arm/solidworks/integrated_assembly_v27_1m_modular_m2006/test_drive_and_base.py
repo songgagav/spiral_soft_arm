@@ -86,7 +86,7 @@ class V27DriveAndBaseTests(unittest.TestCase):
             self.assertNotIn(f"fixed_coupling_lock_screw_{index:02d}", base.components)
             for station, housing_name in (
                 ("inner", "fixed_bevel_pod_01"),
-                ("outer", "fixed_output_support_pod_01"),
+                ("outer", "fixed_output_support_cartridge_01"),
             ):
                 bearing = base.components[f"fixed_bearing_{station}_{index:02d}"]
                 pod = base.components[
@@ -411,6 +411,66 @@ class V27DriveAndBaseTests(unittest.TestCase):
                 self.assertGreaterEqual(spool.distance(labyrinth), 0.19)
         self.assertEqual(cfg["wet_spool_bore_diameter_mm"], 10.1)
 
+    def test_wet_spool_drive_pin_entry_channel_opens_through_both_faces(self) -> None:
+        drive, axes, _, base = self.build()
+        cfg = self.contract.integration
+        pin_radius = 0.5 * cfg["wet_spool_drive_pin_diameter_mm"]
+        core_radius = self.contract.drive.spool_core_radius_mm
+        for index, axis in enumerate(axes, start=1):
+            spool = base.components[f"fixed_wet_spool_{index:02d}"]
+            full_radial_entry_path = drive._radial_cylinder_at(
+                axis.spool_center,
+                axis.angle_deg,
+                pin_radius,
+                -core_radius - 0.2,
+                core_radius + 0.2,
+                axis.spool_center[2],
+            )
+            self.assertLess(
+                spool.intersect(full_radial_entry_path).Volume(),
+                0.02,
+                f"spool {index} traps the pin behind a blind radial-hole end",
+            )
+
+    def test_fixed_output_support_land_has_a_removable_cartridge(self) -> None:
+        drive, axes, _, base = self.build()
+        cfg = self.contract.integration
+        self.assertEqual(
+            cfg["output_support_cartridge_inner_diameter_mm"],
+            cfg["bearing_outer_seat_diameter_mm"],
+        )
+        cartridge_radius = 0.5 * cfg["output_support_cartridge_outer_diameter_mm"]
+        for index, axis in enumerate(axes, start=1):
+            land = base.components[f"fixed_output_support_land_{index:02d}"]
+            cartridge = base.components[f"fixed_output_support_cartridge_{index:02d}"]
+            through_bore_probe = drive._axis_cylinder(
+                axis.spool_center,
+                axis.spool_axis,
+                cartridge_radius,
+                cfg["far_support_pod_tangent_bounds_mm"][0] - 0.2,
+                cfg["far_support_pod_tangent_bounds_mm"][1] + 0.2,
+            )
+            self.assertLess(land.intersect(through_bore_probe).Volume(), 0.02)
+            self.assertTrue(cartridge.isValid())
+            self.assertGreater(cartridge.Volume(), 0.0)
+            self.assertLess(land.intersect(cartridge).Volume(), 0.02)
+            self.assertEqual(len(cartridge.Solids()), 1)
+            top_plate = base.components["fixed_top_plate"]
+            self.assertLess(
+                top_plate.intersect(cartridge).Volume(),
+                0.02,
+                f"cartridge {index} overlaps the fixed top plate",
+            )
+            for screw_index in range(1, 3):
+                screw = base.components[
+                    f"fixed_output_support_cartridge_screw_{index:02d}_{screw_index:02d}"
+                ]
+                self.assertLess(
+                    top_plate.intersect(screw).Volume(),
+                    0.02,
+                    f"cartridge screw {index}/{screw_index} overlaps the fixed top plate",
+                )
+
     def test_seal_housing_seat_uses_22mm_nominal_bore(self) -> None:
         drive, axes, _, base = self.build()
         axis = axes[0]
@@ -430,7 +490,7 @@ class V27DriveAndBaseTests(unittest.TestCase):
             axis = axes[index - 1]
             radial = drive._unit_radial(axis.angle_deg)
             pod = base.components[f"fixed_bevel_pod_{index:02d}"]
-            far_pod = base.components[f"fixed_output_support_pod_{index:02d}"]
+            far_pod = base.components[f"fixed_output_support_cartridge_{index:02d}"]
             for s0, s1, housing in (
                 (-12.5, -12.4, pod),
                 (12.4, 12.5, far_pod),
@@ -457,7 +517,7 @@ class V27DriveAndBaseTests(unittest.TestCase):
             retainer = base.components[f"fixed_spool_retainer_{index:02d}"]
             pin = base.components[f"fixed_spool_drive_pin_{index:02d}"]
             drive_pod = base.components[f"fixed_bevel_pod_{index:02d}"]
-            outboard_pod = base.components[f"fixed_output_support_pod_{index:02d}"]
+            outboard_pod = base.components[f"fixed_output_support_land_{index:02d}"]
             radial = drive._unit_radial(axis.angle_deg)
             shoulder = drive._axis_cylinder(
                 axis.spool_center, axis.spool_axis, shoulder_radius,
@@ -500,7 +560,7 @@ class V27DriveAndBaseTests(unittest.TestCase):
         for index in range(1, 4):
             for station, housing_name in (
                 ("inner", f"fixed_bevel_pod_{index:02d}"),
-                ("outer", f"fixed_output_support_pod_{index:02d}"),
+                ("outer", f"fixed_output_support_cartridge_{index:02d}"),
             ):
                 bearing = base.components[f"fixed_bearing_{station}_{index:02d}"]
                 housing = base.components[housing_name]
