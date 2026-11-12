@@ -71,15 +71,19 @@ class V27DriveAndBaseTests(unittest.TestCase):
                 "fixed_shaft",
                 "fixed_bearing_inner",
                 "fixed_bearing_outer",
-                "fixed_oil_seal",
-                "fixed_labyrinth",
-                "fixed_coupling_sleeve",
-                "fixed_coupling_lock_screw",
             ):
                 name = f"{prefix}_{index:02d}"
                 self.assertIn(name, base.components)
                 self.assertNotIn(name, module.components)
                 self.assertTrue(base.components[name].isValid())
+            for side in ("drive_side", "outboard"):
+                for family in ("fixed_oil_seal", "fixed_labyrinth"):
+                    name = f"{family}_{side}_{index:02d}"
+                    self.assertIn(name, base.components)
+                    self.assertNotIn(name, module.components)
+                    self.assertTrue(base.components[name].isValid())
+            self.assertNotIn(f"fixed_coupling_sleeve_{index:02d}", base.components)
+            self.assertNotIn(f"fixed_coupling_lock_screw_{index:02d}", base.components)
             for station, housing_name in (
                 ("inner", "fixed_bevel_pod_01"),
                 ("outer", "fixed_output_support_pod_01"),
@@ -91,6 +95,107 @@ class V27DriveAndBaseTests(unittest.TestCase):
                 self.assertLess(bearing.intersect(pod).Volume(), 0.02)
                 self.assertLessEqual(bearing.distance(pod), 0.2)
         self.assertIn("fixed_common_motor_chamber", base.components)
+
+    def test_integrated_input_shaft_preserves_motor_socket_and_pin_interface(self) -> None:
+        drive, axes, module, base = self.build()
+        axis = axes[0]
+        shaft = base.components["fixed_shaft_01"]
+        socket_depth_mm = 13.0
+        socket_radius_mm = 6.2 / 2.0
+        motor_flat_from_axis_mm = self.contract.integration[
+            "m2006_motor_d6_flat_from_axis_mm"
+        ]
+        socket_flat_from_axis_mm = self.contract.integration[
+            "m2006_input_shaft_socket_flat_from_axis_mm"
+        ]
+        collar_radius_mm = 15.0 / 2.0
+        socket_start_z = self.contract.drive.m2006_output_tip_z_mm - socket_depth_mm
+        socket_probe = drive._vertical_d_bore(
+            axis.motor_center,
+            socket_radius_mm - 0.1,
+            motor_flat_from_axis_mm,
+            axis.angle_deg,
+            socket_start_z + 0.1,
+            socket_start_z + 2.0,
+        )
+        self.assertLess(shaft.intersect(socket_probe).Volume(), 1e-4)
+        circular_only_probe = drive._vertical_cylinder(
+            axis.motor_center,
+            self.contract.drive.m2006_output_shaft_diameter_mm / 2.0,
+            socket_start_z + 0.1,
+            socket_start_z + 2.0,
+        )
+        self.assertGreater(shaft.intersect(circular_only_probe).Volume(), 0.0)
+        motor = module.components["removable_M2006_01"]
+        radial = drive._unit_radial(axis.angle_deg)
+        flat_point = __import__("cadquery").Vertex.makeVertex(
+            axis.motor_center[0] + radial[0] * 2.7,
+            axis.motor_center[1] + radial[1] * 2.7,
+            self.contract.drive.m2006_output_tip_z_mm - 2.0,
+        )
+        self.assertAlmostEqual(motor.distance(flat_point), 0.2, places=5)
+        self.assertAlmostEqual(socket_flat_from_axis_mm - motor_flat_from_axis_mm, 0.1, places=6)
+        self.assertAlmostEqual(collar_radius_mm - socket_radius_mm, 4.4, places=6)
+
+        collar_surface = __import__("cadquery").Vertex.makeVertex(
+            axis.motor_center[0] + radial[0] * (collar_radius_mm - 0.01),
+            axis.motor_center[1] + radial[1] * (collar_radius_mm - 0.01),
+            socket_start_z + 1.0,
+        )
+        self.assertAlmostEqual(shaft.distance(collar_surface), 0.01, places=5)
+
+        crosshole_z = (
+            self.contract.drive.m2006_output_tip_z_mm
+            - self.contract.drive.m2006_crosshole_center_from_tip_mm
+        )
+        pin_probe = drive._radial_cylinder_at(
+            axis.motor_center,
+            axis.angle_deg,
+            1.5,
+            -collar_radius_mm - 0.1,
+            collar_radius_mm + 0.1,
+            crosshole_z,
+        )
+        self.assertLess(shaft.intersect(pin_probe).Volume(), 1e-4)
+        self.assertTrue(module.components["removable_M2006_cross_pin_01"].isValid())
+
+    def test_input_shaft_is_single_fixed_part_without_loose_coupler(self) -> None:
+        _, _, module, base = self.build()
+        self.assertFalse(any(name.startswith("fixed_coupling_sleeve_") for name in base.components))
+        self.assertFalse(any(name.startswith("fixed_coupling_lock_screw_") for name in base.components))
+        for index in range(1, 4):
+            shaft = base.components[f"fixed_shaft_{index:02d}"]
+            self.assertTrue(shaft.isValid())
+            self.assertEqual(len(shaft.Solids()), 1)
+            self.assertNotIn(f"fixed_shaft_{index:02d}", module.components)
+
+    def test_input_shaft_change_preserves_drive_datums(self) -> None:
+        drive, axes, _, base = self.build()
+        for axis in axes:
+            index = axis.axis_index
+            self.assertEqual(axis.motor_axis, (0.0, 0.0, 1.0))
+            self.assertAlmostEqual(
+                sum(a * b for a, b in zip(axis.motor_axis, axis.spool_axis)),
+                0.0,
+                places=8,
+            )
+            shaft = base.components[f"fixed_shaft_{index:02d}"]
+            for station in (1, 2):
+                bearing = base.components[f"fixed_input_bearing_{station}_{index:02d}"]
+                self.assertAlmostEqual(shaft.distance(bearing), 0.05, places=5)
+            gear = self.contract.integration["gear_hardware_review"]
+            outer_depth = 0.5 * gear["pitch_diameter_mm"]
+            inner_depth = outer_depth - gear["face_width_mm"] / math.sqrt(2.0)
+            total_depth = outer_depth + gear["hub_width_mm"]
+            journal_probe = drive._vertical_cylinder(
+                axis.motor_center,
+                3.0,
+                axis.spool_center[2] - total_depth,
+                axis.spool_center[2] - inner_depth,
+            )
+            self.assertGreater(shaft.intersect(journal_probe).Volume(), 0.0)
+        alignment = drive.audit_tendon_alignment(self.contract, self.root, axes, base.components)
+        self.assertTrue(all(item.passes for item in alignment))
 
     def test_motor_removal_does_not_remove_or_unseat_shafts(self) -> None:
         _, _, module, base = self.build()
@@ -267,35 +372,44 @@ class V27DriveAndBaseTests(unittest.TestCase):
         _, _, _, base = self.build()
         for index in range(1, 4):
             spool = base.components[f"fixed_wet_spool_{index:02d}"]
-            for stationary in ("fixed_oil_seal", "fixed_labyrinth"):
+            for stationary in (
+                "fixed_oil_seal_drive_side",
+                "fixed_oil_seal_outboard",
+                "fixed_labyrinth_drive_side",
+                "fixed_labyrinth_outboard",
+            ):
                 other = base.components[f"{stationary}_{index:02d}"]
                 self.assertLess(spool.intersect(other).Volume(), 0.02)
 
-    def test_wet_spool_has_d_drive_and_noncontact_labyrinth_clearance(self) -> None:
+    def test_wet_spool_round_clearance_bore_and_radial_pin_drive(self) -> None:
         drive, axes, _, base = self.build()
         cfg = self.contract.integration
         for index, axis in enumerate(axes, start=1):
             spool = base.components[f"fixed_wet_spool_{index:02d}"]
             shaft = base.components[f"fixed_output_shaft_{index:02d}"]
+            pin = base.components[f"fixed_spool_drive_pin_{index:02d}"]
             radial = drive._unit_radial(axis.angle_deg)
-            flat_probe = __import__("cadquery").Vertex.makeVertex(
-                axis.spool_center[0] + radial[0] * 4.08,
-                axis.spool_center[1] + radial[1] * 4.08,
-                axis.spool_center[2],
+            tangent = axis.spool_axis
+            bore_probe = __import__("cadquery").Vertex.makeVertex(
+                axis.spool_center[0] + 2.0 * tangent[0] + radial[0] * 5.02,
+                axis.spool_center[1] + 2.0 * tangent[1] + radial[1] * 5.02,
+                axis.spool_center[2] + 2.0 * tangent[2],
             )
-            self.assertAlmostEqual(spool.distance(flat_probe), 0.03, places=5)
-            shaft_flat_probe = __import__("cadquery").Vertex.makeVertex(
-                axis.spool_center[0] + radial[0] * 4.02,
-                axis.spool_center[1] + radial[1] * 4.02,
-                axis.spool_center[2],
-            )
-            self.assertAlmostEqual(shaft.distance(shaft_flat_probe), 0.02, places=5)
+            self.assertAlmostEqual(spool.distance(bore_probe), 0.03, places=5)
             self.assertLess(spool.intersect(shaft).Volume(), 0.02)
-            labyrinth = base.components[f"fixed_labyrinth_{index:02d}"]
-            self.assertGreaterEqual(spool.distance(labyrinth), 0.19)
+            self.assertLess(spool.intersect(pin).Volume(), 0.02)
+            self.assertLess(shaft.intersect(pin).Volume(), 0.02)
+            self.assertTrue(pin.isValid())
+            self.assertAlmostEqual(
+                pin.Volume(),
+                math.pi * (cfg["wet_spool_drive_pin_diameter_mm"] / 2.0) ** 2
+                * cfg["wet_spool_drive_pin_length_mm"],
+                places=4,
+            )
+            for side in ("drive_side", "outboard"):
+                labyrinth = base.components[f"fixed_labyrinth_{side}_{index:02d}"]
+                self.assertGreaterEqual(spool.distance(labyrinth), 0.19)
         self.assertEqual(cfg["wet_spool_bore_diameter_mm"], 10.1)
-        self.assertEqual(cfg["wet_spool_bore_flat_from_axis_mm"], 4.05)
-        self.assertEqual(cfg["output_shaft_spool_flat_from_axis_mm"], 4.0)
 
     def test_seal_housing_seat_uses_22mm_nominal_bore(self) -> None:
         drive, axes, _, base = self.build()
@@ -328,6 +442,58 @@ class V27DriveAndBaseTests(unittest.TestCase):
                 )
                 probe = drive._axis_cylinder(probe_center, axis.spool_axis, 0.05, s0, s1)
                 self.assertGreater(probe.intersect(housing).Volume(), 0.0)
+
+    def test_spool_retainer_and_seal_stack_have_clearance(self) -> None:
+        drive, axes, _, base = self.build()
+        integration = self.contract.integration
+        shoulder_radius = integration["wet_spool_inboard_shoulder_diameter_mm"] / 2.0
+        ring_outer_radius = integration["wet_spool_retainer_outer_diameter_mm"] / 2.0
+        ring_inner_radius = integration["wet_spool_retainer_groove_diameter_mm"] / 2.0
+        side_clearance = integration["wet_spool_side_clearance_mm"]
+        for axis in axes:
+            index = axis.axis_index
+            spool = base.components[f"fixed_wet_spool_{index:02d}"]
+            shaft = base.components[f"fixed_output_shaft_{index:02d}"]
+            retainer = base.components[f"fixed_spool_retainer_{index:02d}"]
+            pin = base.components[f"fixed_spool_drive_pin_{index:02d}"]
+            drive_pod = base.components[f"fixed_bevel_pod_{index:02d}"]
+            outboard_pod = base.components[f"fixed_output_support_pod_{index:02d}"]
+            radial = drive._unit_radial(axis.angle_deg)
+            shoulder = drive._axis_cylinder(
+                axis.spool_center, axis.spool_axis, shoulder_radius,
+                -4.5, -3.7,
+            )
+            self.assertEqual(len(spool.Solids()), 1)
+            self.assertAlmostEqual(spool.distance(shoulder), side_clearance, places=5)
+            self.assertAlmostEqual(spool.distance(retainer), side_clearance, places=5)
+            self.assertLess(spool.intersect(shaft).Volume(), 0.02)
+            self.assertLess(retainer.intersect(shaft).Volume(), 0.02)
+            self.assertLess(spool.intersect(pin).Volume(), 0.02)
+            self.assertLess(shaft.intersect(pin).Volume(), 0.02)
+            self.assertLess(drive_pod.intersect(shaft).Volume(), 0.02)
+            self.assertLess(outboard_pod.intersect(shaft).Volume(), 0.02)
+            self.assertAlmostEqual(
+                retainer.Volume(), math.pi * (ring_outer_radius**2 - ring_inner_radius**2), places=4
+            )
+            groove_probe = __import__("cadquery").Vertex.makeVertex(
+                axis.spool_center[0] + axis.spool_axis[0] * 4.2 + radial[0] * 4.75,
+                axis.spool_center[1] + axis.spool_axis[1] * 4.2 + radial[1] * 4.75,
+                axis.spool_center[2] + axis.spool_axis[2] * 4.2 + radial[2] * 4.75,
+            )
+            self.assertAlmostEqual(shaft.distance(groove_probe), 0.05, places=5)
+            shaft_point = __import__("cadquery").Vertex.makeVertex(
+                axis.spool_center[0] + axis.spool_axis[0] * 4.2 + radial[0] * 4.85,
+                axis.spool_center[1] + axis.spool_axis[1] * 4.2 + radial[1] * 4.85,
+                axis.spool_center[2] + axis.spool_axis[2] * 4.2 + radial[2] * 4.85,
+            )
+            self.assertAlmostEqual(shaft.distance(shaft_point), 0.05, places=5)
+            for side in ("drive_side", "outboard"):
+                seal = base.components[f"fixed_oil_seal_{side}_{index:02d}"]
+                labyrinth = base.components[f"fixed_labyrinth_{side}_{index:02d}"]
+                self.assertTrue(seal.isValid())
+                self.assertTrue(labyrinth.isValid())
+                self.assertLess(seal.intersect(labyrinth).Volume(), 0.02)
+                self.assertGreaterEqual(seal.distance(labyrinth), 0.09)
 
     def test_bearing_outer_races_have_fixed_housings(self) -> None:
         _, _, _, base = self.build()

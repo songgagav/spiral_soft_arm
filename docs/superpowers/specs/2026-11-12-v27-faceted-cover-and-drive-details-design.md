@@ -8,7 +8,7 @@ Give the V27 base cover a more deliberate, finished six-sided appearance and pro
 
 - V27 uses twelve flat printed cover panels, in upper/lower halves, with a nominal 324 mm maximum outer diameter, 300 mm height, and a split at Z=-80 mm.
 - The cover has three motor service openings, three inspection openings, and a Type-C access opening. The cover is floodable and is not a pressure boundary.
-- Three M2006 motors remain vertical and removable as one plate. Each drives a fixed vertical shaft through a D6 removable sleeve and cross pin, then a 90-degree 1:1 bevel pair. The horizontal Ø10 mm shaft has an Ø8 mm D-flat gear journal, paired 6900 supports, two 10×22×7 mm seal candidates with external labyrinths, and a wet-side D-bore spool. The tendon leaves the spool tangent in a straight radial path to the arm-root hole.
+- Three M2006 motors remain vertical and removable as one plate. Each drives a fixed one-piece D6 socket input shaft with a removable cross pin, then a 90-degree 1:1 bevel pair. The horizontal Ø10 mm shaft has an Ø8 mm D-flat gear journal, paired 6900 supports, two 10×22×7 mm seal candidates with external labyrinths, and an independently replaceable round-bore wet spool with radial drive pin and a positive retaining ring. The tendon leaves the spool tangent in a straight radial path to the arm-root hole.
 - The motor, coupling, shafts, bearing/seal layout, spool centers, tendon paths, electronics envelope, and arm/drive extraction paths are fixed interfaces for this scope.
 
 ## Approaches considered

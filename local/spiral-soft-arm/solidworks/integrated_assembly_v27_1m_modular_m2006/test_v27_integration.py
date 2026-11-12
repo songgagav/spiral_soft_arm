@@ -223,11 +223,12 @@ class V27IntegrationTests(unittest.TestCase):
                 [
                     name
                     for name in self.result.fixed_component_names
-                    if name.startswith("fixed_coupling_sleeve_")
+                    if name.startswith("fixed_spool_retainer_")
                 ]
             ),
             3,
         )
+        self.assertFalse(any(name.startswith("fixed_coupling_sleeve_") for name in self.result.fixed_component_names))
         self.assertEqual(
             len([name for name in self.result.fixed_component_names if name.startswith("fixed_root_dowel_")]),
             2,
@@ -261,6 +262,63 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertTrue(all(name.startswith("removable_") for name in self.result.drive_component_names))
         self.assertTrue(all(name.startswith("fixed_") for name in self.result.fixed_component_names))
         self.assertFalse(any("C610" in name for name in self.result.drive_component_names))
+
+    def test_input_shaft_audit_reports_integrated_socket_and_no_loose_sleeves(self) -> None:
+        interface = self.audit["service"]["m2006_coupling_interface"]
+        self.assertTrue(interface["integrated_input_shaft"])
+        self.assertEqual(interface["collar_diameter_mm"], 15.0)
+        self.assertEqual(interface["motor_socket_diameter_mm"], 6.2)
+        self.assertEqual(interface["motor_radial_nominal_clearance_mm"], 0.1)
+        self.assertEqual(interface["motor_socket_profile"], "D_bore")
+        self.assertEqual(interface["motor_output_flat_from_axis_mm"], 2.5)
+        self.assertEqual(interface["motor_socket_flat_from_axis_mm"], 2.6)
+        self.assertEqual(interface["motor_d_flat_nominal_clearance_mm"], 0.1)
+        self.assertIn("not modeled", interface["motor_cross_pin_retention_status"])
+        self.assertEqual(interface["motor_socket_engagement_mm"], 13.0)
+        self.assertEqual(interface["socket_wall_mm"], 4.4)
+        self.assertEqual(interface["collar_to_first_bearing_clearance_mm"], 0.2)
+        self.assertEqual(interface["loose_coupling_sleeve_count"], 0)
+        self.assertEqual(interface["coupling_set_screw_count"], 0)
+        self.assertEqual(interface["removable_cross_pin_count"], 3)
+
+    def test_wet_spool_service_sweep_is_clear_after_release_sequence(self) -> None:
+        service = self.audit["service"]
+        interface = service["wet_spool_interface"]
+        self.assertEqual(interface["bore_shape"], "circular_clearance_bore")
+        self.assertEqual(interface["bore_diameter_mm"], 10.1)
+        self.assertEqual(interface["radial_drive_pin_diameter_mm"], 2.5)
+        self.assertEqual(interface["radial_drive_pin_hole_diameter_mm"], 2.7)
+        self.assertEqual(interface["retainer_outer_diameter_mm"], 16.0)
+        paths = service["spool_removal"]
+        self.assertEqual(len(paths), 3)
+        removed = {
+            "fixed_output_support_pod_01",
+            "fixed_bearing_outer_01",
+            "fixed_oil_seal_outboard_01",
+            "fixed_labyrinth_outboard_01",
+            "fixed_spool_retainer_01",
+            "fixed_spool_drive_pin_01",
+        }
+        for path in paths:
+            self.assertTrue(path["tendon_detached_required"])
+            self.assertEqual(path["direction"], "positive_spool_axis")
+            self.assertEqual(path["travel_mm"], 32.0)
+            self.assertEqual(set(path["removed_component_names"]), {
+                name.replace("_01", f"_{path['axis_index']:02d}") for name in removed
+            })
+            self.assertTrue(path["passes"])
+            self.assertEqual(path["collisions"], [])
+            self.assertGreater(path["minimum_clearance_mm"], 0.0)
+
+        failed_audit = dict(self.audit)
+        failed_service = dict(self.audit["service"])
+        failed_paths = [dict(path) for path in paths]
+        failed_paths[0]["passes"] = False
+        failed_service["spool_removal"] = failed_paths
+        failed_audit["service"] = failed_service
+        with patch("generate_v27_assembly.audit_v27_assembly", return_value=failed_audit):
+            with self.assertRaisesRegex(ValueError, "spool removal"):
+                preflight_v27(self.result)
 
     def test_no_forbidden_solid_intersections(self) -> None:
         self.assertEqual(self.audit["collisions"]["forbidden"], [])

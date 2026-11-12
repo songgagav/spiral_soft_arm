@@ -507,15 +507,24 @@ def build_drive_module(
     )
     motor_radius = float(integration["m2006_motor_casing_diameter_mm"]) / 2.0
     motor_shaft_radius = float(contract.drive.m2006_output_shaft_diameter_mm) / 2.0
+    motor_d_flat_from_axis = float(integration["m2006_motor_d6_flat_from_axis_mm"])
     motor_crosshole_radius = float(contract.drive.m2006_crosshole_diameter_mm) / 2.0
-    pin_radius = float(integration["motor_coupling_pin_diameter_mm"]) / 2.0
-    pin_length = float(integration["motor_coupling_pin_length_mm"])
+    pin_radius = float(integration["m2006_input_shaft_cross_pin_diameter_mm"]) / 2.0
+    pin_length = float(integration["m2006_input_shaft_cross_pin_length_mm"])
     for axis in axes:
         name = f"removable_M2006_{axis.axis_index:02d}"
         motor = _vertical_cylinder(axis.motor_center, motor_radius, motor_back_z, motor_face_z)
         output_shaft = _vertical_cylinder(
             axis.motor_center, motor_shaft_radius, motor_face_z, motor_tip_z
-        )
+        ).cut(
+            _flat_cut(
+                axis.motor_center,
+                axis.angle_deg,
+                motor_d_flat_from_axis,
+                motor_face_z,
+                motor_tip_z,
+            )
+        ).clean()
         crosshole = _radial_cylinder_at(
             axis.motor_center,
             axis.angle_deg,
@@ -671,34 +680,27 @@ def build_fixed_base(
     )
     motor_tip_z = float(contract.drive.m2006_output_tip_z_mm)
     motor_projection = float(contract.drive.m2006_output_projection_mm)
-    coupling_start_z = motor_tip_z - float(
-        contract.integration["motor_coupling_motor_socket_depth_mm"]
+    socket_start_z = motor_tip_z - float(
+        contract.integration["m2006_input_shaft_socket_depth_mm"]
     )
-    coupling_end_z = input_bearing_ranges[0][0]
+    input_shaft_collar_end_z = input_bearing_ranges[0][0] - float(
+        contract.integration["m2006_input_shaft_collar_bearing_clearance_mm"]
+    )
     motor_crosshole_z = motor_tip_z - float(
         contract.drive.m2006_crosshole_center_from_tip_mm
     )
-    coupling_radius = float(contract.integration["motor_coupling_outer_radius_mm"])
-    motor_bore_radius = float(
-        contract.integration["motor_coupling_motor_bore_diameter_mm"]
+    input_collar_radius = float(
+        contract.integration["m2006_input_shaft_collar_diameter_mm"]
     ) / 2.0
-    fixed_shaft_bore_radius = float(
-        contract.integration["motor_coupling_shaft_bore_diameter_mm"]
+    motor_socket_radius = float(
+        contract.integration["m2006_input_shaft_socket_diameter_mm"]
     ) / 2.0
-    fixed_shaft_flat = float(contract.integration["fixed_shaft_flat_from_axis_mm"])
-    coupling_flat = float(
-        contract.integration["motor_coupling_shaft_flat_from_axis_mm"]
+    motor_socket_flat_from_axis = float(
+        contract.integration["m2006_input_shaft_socket_flat_from_axis_mm"]
     )
     crosshole_clearance = float(
-        contract.integration["motor_coupling_pin_hole_diameter_mm"]
+        contract.integration["m2006_input_shaft_cross_pin_hole_diameter_mm"]
     ) / 2.0
-    coupling_set_screw_radius = (
-        float(contract.integration["motor_coupling_set_screw_diameter_mm"]) / 2.0
-    )
-    coupling_set_screw_z = float(contract.integration["motor_coupling_set_screw_z_mm"])
-    coupling_set_screw_tip_radius = float(
-        contract.integration["motor_coupling_set_screw_tip_radius_mm"]
-    )
     input_post_outer = float(contract.integration["input_support_post_outer_radius_mm"])
     input_post_inner = float(contract.integration["input_support_post_inner_radius_mm"])
     gear_review = contract.integration["gear_hardware_review"]
@@ -714,6 +716,9 @@ def build_fixed_base(
     gear_inner_depth = gear_outer_depth - gear_face_width / math.sqrt(2.0)
     gear_total_depth = gear_outer_depth + gear_hub_width
     seal_outer_radius = float(contract.integration["pressure_seal_housing_bore_diameter_mm"]) / 2.0
+    seal_housing_axial_overrun = float(
+        contract.integration["pressure_seal_housing_axial_overrun_mm"]
+    )
     seal_retainer_outer_radius = float(
         contract.integration["seal_retaining_shoulder_outer_diameter_mm"]
     ) / 2.0
@@ -727,9 +732,14 @@ def build_fixed_base(
     spool_core_radius = float(contract.drive.spool_core_radius_mm)
     spool_flange_radius = float(contract.integration["spool_flange_radius_mm"])
     spool_bore_radius = float(contract.integration["wet_spool_bore_diameter_mm"]) / 2.0
-    spool_bore_flat = float(contract.integration["wet_spool_bore_flat_from_axis_mm"])
-    output_shaft_spool_flat = float(
-        contract.integration["output_shaft_spool_flat_from_axis_mm"]
+    spool_drive_pin_radius = float(
+        contract.integration["wet_spool_drive_pin_diameter_mm"]
+    ) / 2.0
+    spool_drive_pin_hole_radius = float(
+        contract.integration["wet_spool_drive_pin_hole_diameter_mm"]
+    ) / 2.0
+    spool_drive_pin_length = float(
+        contract.integration["wet_spool_drive_pin_length_mm"]
     )
     pod_radial_width = float(contract.integration["bevel_pod_radial_width_mm"])
     drive_pod_bounds = tuple(
@@ -767,8 +777,8 @@ def build_fixed_base(
         input_hub_z0 = spool_center[2] - gear_total_depth
         input_hub_z1 = spool_center[2] - gear_outer_depth
 
-        # The M2006 fixed shaft continues from the removable coupling into the
-        # Stepped 8 mm gear journal, ending at the small face of the gear.
+        # The M2006 D6 socket, cross-pin collar, vertical input shaft, and
+        # stepped 8 mm gear journal are one fixed-base part.
         input_shaft = _vertical_cylinder(
             center, shaft_radius, motor_tip_z, spool_center[2] - gear_inner_depth
         )
@@ -788,50 +798,33 @@ def build_fixed_base(
             )
         )
         input_shaft = input_shaft.cut(
-            _flat_cut(center, axis.angle_deg, fixed_shaft_flat, motor_tip_z, coupling_end_z)
-        )
-        input_shaft = input_shaft.cut(
             _flat_cut(center, axis.angle_deg, gear_journal_flat, input_hub_z0, input_hub_z1)
         ).clean()
-        coupling = _vertical_cylinder(
-            center, coupling_radius, coupling_start_z, coupling_end_z
-        )
-        coupling = coupling.cut(
+        input_shaft = input_shaft.fuse(
             _vertical_cylinder(
                 center,
-                motor_bore_radius,
-                coupling_start_z - 0.1,
-                motor_tip_z + 0.1,
+                input_collar_radius,
+                socket_start_z,
+                input_shaft_collar_end_z,
             )
-        )
-        coupling = coupling.cut(
+        ).clean()
+        input_shaft = input_shaft.cut(
             _vertical_d_bore(
                 center,
-                fixed_shaft_bore_radius,
-                coupling_flat,
+                motor_socket_radius,
+                motor_socket_flat_from_axis,
                 axis.angle_deg,
-                motor_tip_z - 0.1,
-                coupling_end_z + 0.1,
+                socket_start_z,
+                motor_tip_z,
             )
-        )
-        coupling = coupling.cut(
+        ).cut(
             _radial_cylinder_at(
                 center,
                 axis.angle_deg,
                 crosshole_clearance,
-                -coupling_radius - 0.5,
-                coupling_radius + 0.5,
+                -input_collar_radius - 0.5,
+                input_collar_radius + 0.5,
                 motor_crosshole_z,
-            )
-        )
-        coupling = coupling.cut(
-            _radial_cylinder_at(
-                center,
-                axis.angle_deg,
-                coupling_set_screw_radius + 0.15,
-                coupling_set_screw_tip_radius,
-                coupling_radius + 0.5,
-                coupling_set_screw_z,
             )
         ).clean()
 
@@ -881,8 +874,8 @@ def build_fixed_base(
                     spool_center,
                     tangent,
                     seal_outer_radius,
-                    seal_range[0] - 0.1,
-                    seal_range[1] + 0.1,
+                    seal_range[0] - seal_housing_axial_overrun,
+                    seal_range[1] + seal_housing_axial_overrun,
                 )
             )
             dry_face = seal_range[0] if seal_range[0] < 0.0 else seal_range[1]
@@ -903,7 +896,7 @@ def build_fixed_base(
                 shell = shell.cut(
             _vertical_cylinder(
                     center,
-                    coupling_radius + 0.25,
+                    input_collar_radius + 0.25,
                     pod_z_bounds[0] - 0.1,
                     pod_z_bounds[0] + 3.1,
                 )
@@ -1039,12 +1032,56 @@ def build_fixed_base(
             )
         )
         output_shaft = output_shaft.cut(
-            _axis_flat_cut(
+            _radial_cylinder_at(
                 spool_center,
                 axis.angle_deg,
-                output_shaft_spool_flat,
-                spool_ranges[0][0],
-                spool_ranges[2][1],
+                spool_drive_pin_hole_radius,
+                -shaft_radius - 0.1,
+                shaft_radius + 0.1,
+                spool_center[2],
+            )
+        ).clean()
+        shoulder_width = float(
+            contract.integration["wet_spool_inboard_shoulder_width_mm"]
+        )
+        shoulder_diameter = float(
+            contract.integration["wet_spool_inboard_shoulder_diameter_mm"]
+        )
+        spool_retainer_groove_diameter = float(
+            contract.integration["wet_spool_retainer_groove_diameter_mm"]
+        )
+        spool_retainer_groove_width = float(
+            contract.integration["wet_spool_retainer_groove_width_mm"]
+        )
+        spool_retainer_outer_diameter = float(
+            contract.integration["wet_spool_retainer_outer_diameter_mm"]
+        )
+        spool_side_clearance = float(
+            contract.integration["wet_spool_side_clearance_mm"]
+        )
+        spool_inner_face = spool_ranges[0][0]
+        spool_outer_face = spool_ranges[2][1]
+        shoulder_s1 = spool_inner_face - spool_side_clearance
+        shoulder_s0 = shoulder_s1 - shoulder_width
+        groove_s0 = spool_outer_face + spool_side_clearance
+        groove_s1 = groove_s0 + spool_retainer_groove_width
+        output_shaft = output_shaft.fuse(
+            _axis_cylinder(
+                spool_center,
+                tangent,
+                shoulder_diameter / 2.0,
+                shoulder_s0,
+                shoulder_s1,
+            )
+        ).clean()
+        output_shaft = output_shaft.cut(
+            _axis_ring(
+                spool_center,
+                tangent,
+                shaft_radius + 0.05,
+                spool_retainer_groove_diameter / 2.0,
+                groove_s0,
+                groove_s1,
             )
         ).clean()
         spool_core = _axis_cylinder(
@@ -1058,13 +1095,21 @@ def build_fixed_base(
         )
         spool = spool_core.fuse(spool_flange_a, spool_flange_b).clean()
         spool = spool.cut(
-            _axis_d_bore(
+            _axis_cylinder(
                 spool_center,
-                axis.angle_deg,
+                tangent,
                 spool_bore_radius,
-                spool_bore_flat,
                 spool_ranges[0][0] - 0.1,
                 spool_ranges[2][1] + 0.1,
+            )
+        ).cut(
+            _radial_cylinder_at(
+                spool_center,
+                axis.angle_deg,
+                spool_drive_pin_hole_radius,
+                -spool_core_radius + 0.1,
+                spool_core_radius - 0.1,
+                spool_center[2],
             )
         ).clean()
 
@@ -1084,26 +1129,38 @@ def build_fixed_base(
                 s0,
                 s1,
             )
-        components[f"fixed_oil_seal_{index:02d}"] = cq.Compound.makeCompound(
-            [
-                _axis_ring(
-                    spool_center, tangent, seal_outer_radius, seal_inner_radius, s0, s1
-                )
-                for s0, s1 in output_seal_ranges
-            ]
+        for side, seal_range, labyrinth_range in zip(
+            ("drive_side", "outboard"), output_seal_ranges, output_labyrinth_ranges
+        ):
+            components[f"fixed_oil_seal_{side}_{index:02d}"] = _axis_ring(
+                spool_center,
+                tangent,
+                seal_outer_radius,
+                seal_inner_radius,
+                *seal_range,
+            )
+            components[f"fixed_labyrinth_{side}_{index:02d}"] = _axis_ring(
+                spool_center,
+                tangent,
+                float(contract.integration["labyrinth_outer_radius_mm"]),
+                shaft_radius + float(contract.integration["labyrinth_radial_clearance_mm"]),
+                *labyrinth_range,
+            )
+        components[f"fixed_spool_retainer_{index:02d}"] = _axis_ring(
+            spool_center,
+            tangent,
+            spool_retainer_outer_diameter / 2.0,
+            spool_retainer_groove_diameter / 2.0,
+            groove_s0,
+            groove_s1,
         )
-        components[f"fixed_labyrinth_{index:02d}"] = cq.Compound.makeCompound(
-            [
-                _axis_ring(
-                    spool_center,
-                    tangent,
-                    float(contract.integration["labyrinth_outer_radius_mm"]),
-                    shaft_radius + float(contract.integration["labyrinth_radial_clearance_mm"]),
-                    s0,
-                    s1,
-                )
-                for s0, s1 in output_labyrinth_ranges
-            ]
+        components[f"fixed_spool_drive_pin_{index:02d}"] = _radial_cylinder_at(
+            spool_center,
+            axis.angle_deg,
+            spool_drive_pin_radius,
+            -spool_drive_pin_length / 2.0,
+            spool_drive_pin_length / 2.0,
+            spool_center[2],
         )
         for station, (s0, s1) in enumerate(input_bearing_ranges, start=1):
             components[f"fixed_input_bearing_{station}_{index:02d}"] = _vertical_ring(
@@ -1124,15 +1181,6 @@ def build_fixed_base(
         components[f"fixed_wet_spool_{index:02d}"] = spool
         components[f"fixed_shaft_{index:02d}"] = input_shaft
         components[f"fixed_output_shaft_{index:02d}"] = output_shaft
-        components[f"fixed_coupling_sleeve_{index:02d}"] = coupling
-        components[f"fixed_coupling_lock_screw_{index:02d}"] = _radial_cylinder_at(
-            center,
-            axis.angle_deg,
-            coupling_set_screw_radius - 0.1,
-            coupling_set_screw_tip_radius,
-            coupling_radius - 0.1,
-            coupling_set_screw_z,
-        )
         support_pairs.append((bearing_names[0], bearing_names[1]))
 
     components["fixed_top_plate"] = top_plate.clean()

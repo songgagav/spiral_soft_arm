@@ -163,7 +163,7 @@ def validate_contract(contract: V27Contract) -> None:
         "bearings",
         "shafts",
         "wet_spools",
-        "coupling_sleeves",
+        "integrated_input_shafts",
     }
     if set(contract.drive.fixed_transmission_members) != required_fixed:
         raise ValueError("fixed transmission members are incomplete")
@@ -175,6 +175,13 @@ def validate_contract(contract: V27Contract) -> None:
         < contract.drive.m2006_output_projection_mm
     ):
         raise ValueError("M2006 drawing interface dimensions are inconsistent")
+    integration = contract.integration
+    motor_flat = float(integration["m2006_motor_d6_flat_from_axis_mm"])
+    socket_radius = float(integration["m2006_input_shaft_socket_diameter_mm"]) / 2.0
+    socket_flat = float(integration["m2006_input_shaft_socket_flat_from_axis_mm"])
+    motor_radius = contract.drive.m2006_output_shaft_diameter_mm / 2.0
+    if not (0.0 < motor_flat < motor_radius and motor_flat < socket_flat < socket_radius):
+        raise ValueError("M2006 D6 shaft and input-socket flat profiles are inconsistent")
     if contract.arm.unit_count != 42 or contract.arm.segment_count != 4:
         raise ValueError("paper geometry requires 42 units and four print segments")
     if len(contract.arm.split_unit_indices) != contract.arm.segment_count - 1:
@@ -200,7 +207,6 @@ def validate_contract(contract: V27Contract) -> None:
         raise ValueError("dovetail and locking-pin dimensions are not physically ordered")
     if contract.root_interface.top_plate_circumdiameter_mm != 250.0:
         raise ValueError("the 250 mm top-plate envelope is frozen")
-    integration = contract.integration
     if not (
         0.0 < integration["drive_register_inner_radius_mm"]
         < integration["drive_plate_clearance_radius_mm"]

@@ -143,8 +143,10 @@ def _full_review(result: Any, path: Path) -> None:
         *(f"fixed_output_support_pod_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_input_envelope_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_output_envelope_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_oil_seal_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_labyrinth_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_oil_seal_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
+        *(f"fixed_labyrinth_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
+        *(f"fixed_spool_retainer_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_spool_drive_pin_{index:02d}" for index in range(1, 4)),
         *result.electronics_component_names,
     ]
     for name in root_names:
@@ -240,8 +242,10 @@ def _exploded_review(result: Any, path: Path) -> None:
         *(f"fixed_output_support_pod_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_input_envelope_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_output_envelope_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_oil_seal_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_labyrinth_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_oil_seal_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
+        *(f"fixed_labyrinth_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
+        *(f"fixed_spool_retainer_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_spool_drive_pin_{index:02d}" for index in range(1, 4)),
         *result.electronics_component_names,
     ]
     for name in root_names:
@@ -315,8 +319,6 @@ def _drive_section_review(result: Any, path: Path) -> None:
     names = [
         "removable_M2006_01",
         "removable_M2006_cross_pin_01",
-        "fixed_coupling_sleeve_01",
-        "fixed_coupling_lock_screw_01",
         "fixed_shaft_01",
         "fixed_output_shaft_01",
         "fixed_bevel_pod_01",
@@ -325,8 +327,12 @@ def _drive_section_review(result: Any, path: Path) -> None:
         "fixed_bevel_output_envelope_01",
         "fixed_bearing_inner_01",
         "fixed_bearing_outer_01",
-        "fixed_oil_seal_01",
-        "fixed_labyrinth_01",
+        "fixed_oil_seal_drive_side_01",
+        "fixed_oil_seal_outboard_01",
+        "fixed_labyrinth_drive_side_01",
+        "fixed_labyrinth_outboard_01",
+        "fixed_spool_retainer_01",
+        "fixed_spool_drive_pin_01",
         "fixed_wet_spool_01",
         "fixed_top_plate",
     ]
@@ -429,17 +435,16 @@ def _drive_details_sheet(result: Any, path: Path) -> None:
     ]
     view_parts = [
         (
-            "01  M2006 电机与 D6 轴套",
+            "01  M2006 电机与一体输入轴",
             [
                 ("removable_M2006_01", "#315d78", 0.66),
                 ("removable_M2006_cross_pin_01", "#cf5548", 1.0),
-                ("fixed_coupling_sleeve_01", "#8c63a9", 0.98),
-                ("fixed_coupling_lock_screw_01", "#54595c", 1.0),
                 ("fixed_shaft_01", "#d3a53a", 0.82),
             ],
             "发布外形代理：电机壳 Ø24.4 × 47.8；D6 轴伸 17 mm\n"
-            "CNC 轴套：Ø15 外径，D6 Ø6.2 × 13 深；Ø2.8 可拆横销\n"
-            "套筒 D10 端以 M3 紧定螺钉留在固定轴上。",
+            "一体输入轴：Ø15 座肩，D6 Ø6.2 × 13 深；平面 2.6 mm，轴平面 2.5 mm\n"
+            "Ø2.8 可拆横销沿 D 平面法向；名义平面间隙 0.1 mm\n"
+            "原独立套筒及 M3 紧定螺钉已取消；电机拆下后固定轴留在基座。",
         ),
         (
             "02  90° 伞齿轮与阶梯轴",
@@ -464,12 +469,18 @@ def _drive_details_sheet(result: Any, path: Path) -> None:
                 ("fixed_output_shaft_01", "#c79a34", 0.42),
                 ("fixed_bearing_inner_01", "#39434b", 0.94),
                 ("fixed_bearing_outer_01", "#5a6770", 0.94),
-                ("fixed_oil_seal_01", "#bf4b43", 0.88),
-                ("fixed_labyrinth_01", "#dc8b36", 0.92),
+                ("fixed_oil_seal_drive_side_01", "#bf4b43", 0.88),
+                ("fixed_oil_seal_outboard_01", "#cf6b5b", 0.88),
+                ("fixed_labyrinth_drive_side_01", "#dc8b36", 0.92),
+                ("fixed_labyrinth_outboard_01", "#e6a44f", 0.92),
+                ("fixed_spool_retainer_01", "#54595c", 0.96),
+                ("fixed_spool_drive_pin_01", "#2b8b8b", 0.98),
                 ("fixed_wet_spool_01", "#d4aa48", 0.66),
             ],
-            "2 × 6900：10 × 22 × 6 mm；2 × NBR 油封候选：10 × 22 × 7 mm\n"
-            "外侧迷宫 + 湿侧 D10 线盘；拉索按切线直线进入根部线孔。\n"
+            "2 × 6900：10 × 22 × 6 mm；2 × NBR 油封：10 × 22 × 7 mm\n"
+            "迷宫在油封外侧；线盘由 10.8×0.8 mm 轴肩与卡簧轴向保持，径向销传扭，端隙 0.2 mm。\n"
+            "拆卸需先拔销；卡簧/槽尺寸仍须按供货件复核。\n"
+            "拉索按切线直线进入根部线孔。\n"
             "轴封阻力、耐海水性和 5 m 水压性能尚未实测。",
         ),
     ]
@@ -584,8 +595,10 @@ def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
         *(f"fixed_wet_spool_{index:02d}" for index in range(1, 4)),
         *(f"fixed_bevel_pod_{index:02d}" for index in range(1, 4)),
         *(f"fixed_output_support_pod_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_oil_seal_{index:02d}" for index in range(1, 4)),
-        *(f"fixed_labyrinth_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_oil_seal_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
+        *(f"fixed_labyrinth_{side}_{index:02d}" for index in range(1, 4) for side in ("drive_side", "outboard")),
+        *(f"fixed_spool_retainer_{index:02d}" for index in range(1, 4)),
+        *(f"fixed_spool_drive_pin_{index:02d}" for index in range(1, 4)),
         *result.drive_component_names,
         *result.electronics_component_names,
     ]

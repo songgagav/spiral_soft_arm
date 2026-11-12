@@ -64,19 +64,56 @@ class V27ParameterContractTests(unittest.TestCase):
         self.assertFalse(drive.c610_part_of_removable_module)
         self.assertEqual(
             set(drive.fixed_transmission_members),
-            {"seal_housings", "bearings", "shafts", "wet_spools", "coupling_sleeves"},
+            {"seal_housings", "bearings", "shafts", "wet_spools", "integrated_input_shafts"},
         )
 
-    def test_coupling_and_seal_fits_are_explicitly_reviewed(self) -> None:
+    def test_integrated_motor_input_shaft_and_seal_fits_are_explicitly_reviewed(self) -> None:
         _, contract = self.get_contract()
         integration = contract.integration
-        shaft_bore = integration["motor_coupling_shaft_bore_diameter_mm"]
+        socket = integration["m2006_input_shaft_socket_diameter_mm"]
+        collar = integration["m2006_input_shaft_collar_diameter_mm"]
+        collar_bearing_clearance = integration[
+            "m2006_input_shaft_collar_bearing_clearance_mm"
+        ]
+        socket_depth = integration["m2006_input_shaft_socket_depth_mm"]
+        motor_flat = integration["m2006_motor_d6_flat_from_axis_mm"]
+        socket_flat = integration["m2006_input_shaft_socket_flat_from_axis_mm"]
+        pin = integration["m2006_input_shaft_cross_pin_diameter_mm"]
+        pin_hole = integration["m2006_input_shaft_cross_pin_hole_diameter_mm"]
         fixed_shaft = integration["fixed_shaft_diameter_mm"]
         seal = integration["pressure_seal_dimensions_mm"]
-        self.assertLessEqual(shaft_bore - fixed_shaft, 0.10)
+        self.assertEqual(socket, 6.2)
+        self.assertEqual(collar, 15.0)
+        self.assertEqual(collar_bearing_clearance, 0.2)
+        self.assertEqual(socket_depth, 13.0)
+        self.assertEqual(motor_flat, 2.5)
+        self.assertEqual(socket_flat, 2.6)
+        self.assertAlmostEqual(socket_flat - motor_flat, 0.1)
+        self.assertEqual(collar - socket, 8.8)
+        self.assertEqual(pin, 2.8)
+        self.assertEqual(pin_hole, 3.2)
+        self.assertEqual(fixed_shaft, 10.0)
+        self.assertNotIn("motor_coupling_set_screw_diameter_mm", integration)
         self.assertEqual(seal, [10.0, 22.0, 7.0])
         self.assertEqual(integration["pressure_seal_housing_bore_tolerance"], "H8")
         self.assertEqual(integration["pressure_seal_shaft_tolerance"], "h11")
+        self.assertEqual(integration["pressure_seal_housing_axial_overrun_mm"], 0.5)
+        self.assertEqual(integration["wet_spool_inboard_shoulder_diameter_mm"], 10.8)
+        self.assertEqual(integration["wet_spool_inboard_shoulder_width_mm"], 0.8)
+        self.assertEqual(integration["wet_spool_retainer_groove_diameter_mm"], 9.6)
+        self.assertEqual(integration["wet_spool_retainer_groove_width_mm"], 1.0)
+        self.assertEqual(integration["wet_spool_retainer_outer_diameter_mm"], 16.0)
+        self.assertEqual(integration["wet_spool_side_clearance_mm"], 0.2)
+        self.assertEqual(integration["wet_spool_drive_pin_diameter_mm"], 2.5)
+        self.assertEqual(integration["wet_spool_drive_pin_hole_diameter_mm"], 2.7)
+        self.assertEqual(integration["wet_spool_drive_pin_length_mm"], 19.0)
+        self.assertEqual(
+            integration["output_shaft_seal_ranges_mm"], [[-12.0, -5.0], [5.0, 12.0]]
+        )
+        self.assertEqual(
+            integration["output_shaft_labyrinth_ranges_mm"],
+            [[-13.1, -12.1], [12.1, 13.1]],
+        )
 
     def test_selected_catalog_gear_and_stepped_8mm_journal(self) -> None:
         _, contract = self.get_contract()

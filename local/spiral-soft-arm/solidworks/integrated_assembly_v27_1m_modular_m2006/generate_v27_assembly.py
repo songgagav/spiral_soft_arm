@@ -250,29 +250,11 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
     for index in range(1, 4):
         intentional.extend(
             [
-                (
-                    f"fixed_coupling_sleeve_{index:02d}",
-                    f"fixed_shaft_{index:02d}",
-                ),
-                (
-                    f"fixed_coupling_sleeve_{index:02d}",
-                    f"removable_M2006_{index:02d}",
-                ),
-                (
-                    f"fixed_coupling_sleeve_{index:02d}",
-                    f"removable_M2006_cross_pin_{index:02d}",
-                ),
+                (f"fixed_shaft_{index:02d}", f"removable_M2006_{index:02d}"),
+                (f"fixed_shaft_{index:02d}", f"removable_M2006_cross_pin_{index:02d}"),
                 (
                     f"removable_M2006_{index:02d}",
                     f"removable_M2006_cross_pin_{index:02d}",
-                ),
-                (
-                    f"fixed_coupling_lock_screw_{index:02d}",
-                    f"fixed_coupling_sleeve_{index:02d}",
-                ),
-                (
-                    f"fixed_coupling_lock_screw_{index:02d}",
-                    f"fixed_shaft_{index:02d}",
                 ),
                 (
                     f"removable_motor_cradle_{index:02d}",
@@ -365,7 +347,7 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
     moving_names = tuple(
         name
         for name in result.drive_component_names
-        if "coupling_sleeve" not in name and "cross_pin" not in name
+        if "cross_pin" not in name
     )
     removable_cover_names = {
         name
@@ -431,7 +413,7 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
                 minimum_clearance = min(minimum_clearance, swept.distance(obstacle))
     return {
         "direction": "negative_z",
-        "sweep_type": "exact horizontal-face extrusion after removing lower cover panels and bottom frame, then releasing coupling",
+        "sweep_type": "exact horizontal-face extrusion after removing lower cover panels and bottom frame, then withdrawing M2006 cross-pins",
         "travel_mm": travel_mm,
         "initial_release_gap_mm": initial_release_gap_mm,
         "moving_component_count": len(moving_names),
@@ -737,6 +719,92 @@ def _wiring_accessibility_audit(
     }
 
 
+def _spool_removal_sweeps(result: V27AssemblyResult) -> list[dict[str, Any]]:
+    """Sweep each wet spool along its output axis after releasing outboard hardware."""
+    travel_mm = 32.0
+    paths: list[dict[str, Any]] = []
+    for axis in result.fixed.axes:
+        index = axis.axis_index
+        spool_name = f"fixed_wet_spool_{index:02d}"
+        removed_names = [
+            f"fixed_output_support_pod_{index:02d}",
+            f"fixed_bearing_outer_{index:02d}",
+            f"fixed_oil_seal_outboard_{index:02d}",
+            f"fixed_labyrinth_outboard_{index:02d}",
+            f"fixed_spool_retainer_{index:02d}",
+            f"fixed_spool_drive_pin_{index:02d}",
+        ]
+        missing = [name for name in removed_names if name not in result.components]
+        if missing:
+            raise ValueError(f"spool {index} removal prerequisites are missing: {missing}")
+        removed = set(removed_names)
+        obstacles = tuple(
+            name
+            for name in result.components
+            if name != spool_name and name not in removed
+        )
+        direction = cq.Vector(*axis.spool_axis)
+        if abs(direction.Length - 1.0) > 1e-7:
+            direction = direction.normalized()
+        sweep_faces = []
+        spool = result.components[spool_name]
+        for face in spool.Faces():
+            if face.geomType() != "PLANE":
+                continue
+            normal = face.normalAt()
+            dot = normal.x * direction.x + normal.y * direction.y + normal.z * direction.z
+            if abs(abs(dot) - 1.0) > 1e-7:
+                continue
+            sweep_faces.append(
+                cq.Solid.extrudeLinear(
+                    face.outerWire(),
+                    list(face.innerWires()),
+                    direction.multiply(travel_mm),
+                )
+            )
+        if not sweep_faces:
+            raise ValueError(f"spool {index} has no end faces for an axial service sweep")
+        swept = spool.fuse(*sweep_faces).clean()
+        if not swept.isValid():
+            raise ValueError(f"invalid axial service sweep for spool {index}")
+        collisions: list[dict[str, Any]] = []
+        minimum_clearance = float("inf")
+        for obstacle_name in obstacles:
+            obstacle = result.components[obstacle_name]
+            if not _aabb_overlap(swept, obstacle):
+                continue
+            overlap = swept.intersect(obstacle).Volume()
+            if overlap > 0.02:
+                collisions.append(
+                    {
+                        "moving_component": spool_name,
+                        "fixed_component": obstacle_name,
+                        "volume_mm3": round(overlap, 4),
+                    }
+                )
+                minimum_clearance = 0.0
+            else:
+                minimum_clearance = min(
+                    minimum_clearance, swept.distance(obstacle)
+                )
+        if not math.isfinite(minimum_clearance):
+            minimum_clearance = None
+        paths.append(
+            {
+                "axis_index": index,
+                "tendon_detached_required": True,
+                "removed_component_names": removed_names,
+                "direction": "positive_spool_axis",
+                "travel_mm": travel_mm,
+                "minimum_clearance_mm": minimum_clearance,
+                "collisions": collisions,
+                "passes": not collisions,
+                "sweep_type": "continuous axial extrusion of spool end profiles",
+            }
+        )
+    return paths
+
+
 def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     contract = result.contract
     alignment = audit_tendon_alignment(
@@ -753,6 +821,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     ]
     arm_sweep = _arm_removal_sweep(result)
     drive_sweep = _drive_removal_sweep(result)
+    spool_removal = _spool_removal_sweeps(result)
     tendon_route = _tendon_root_route_audit(result)
     motor_ports = _motor_port_harness_audit(result)
     wiring_accessibility = _wiring_accessibility_audit(result, motor_ports)
@@ -861,20 +930,109 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         "fixed_shafts_supported_without_drive": result.fixed.shafts_supported_without_drive,
         "fixed_shaft_support_pair_count": len(result.fixed.shaft_support_pairs),
         "drive_module_removal_sequence": list(result.drive.removal_sequence),
+        "spool_removal_sequence": [
+            "deenergize_system_and_unload_the_selected_tendon",
+            "detach_and_unwind_the_tendon_from_the_spool",
+            "withdraw_the_radial_spool_drive_pin",
+            "remove_the_spool_retaining_ring",
+            "remove_the_outboard_oil_seal_and_labyrinth",
+            "remove_the_outboard_6900_bearing_and_support_pod",
+            "slide_the_wet_spool_32_mm_along_the_positive_spool_axis",
+        ],
+        "wet_spool_interface": {
+            "bore_shape": "circular_clearance_bore",
+            "bore_diameter_mm": float(
+                contract.integration["wet_spool_bore_diameter_mm"]
+            ),
+            "radial_drive_pin_diameter_mm": float(
+                contract.integration["wet_spool_drive_pin_diameter_mm"]
+            ),
+            "radial_drive_pin_hole_diameter_mm": float(
+                contract.integration["wet_spool_drive_pin_hole_diameter_mm"]
+            ),
+            "radial_drive_pin_length_mm": float(
+                contract.integration["wet_spool_drive_pin_length_mm"]
+            ),
+            "axial_retention": "integral inboard shoulder plus removable external retaining-ring envelope",
+            "inboard_shoulder_diameter_mm": float(
+                contract.integration["wet_spool_inboard_shoulder_diameter_mm"]
+            ),
+            "inboard_shoulder_width_mm": float(
+                contract.integration["wet_spool_inboard_shoulder_width_mm"]
+            ),
+            "retainer_groove_diameter_mm": float(
+                contract.integration["wet_spool_retainer_groove_diameter_mm"]
+            ),
+            "retainer_groove_width_mm": float(
+                contract.integration["wet_spool_retainer_groove_width_mm"]
+            ),
+            "retainer_outer_diameter_mm": float(
+                contract.integration["wet_spool_retainer_outer_diameter_mm"]
+            ),
+            "nominal_side_clearance_mm": float(
+                contract.integration["wet_spool_side_clearance_mm"]
+            ),
+            "physical_validation": "pin shear, shaft weakening, cable-winding profile, supplier ring dimensions and corrosion remain unverified",
+        },
+        "spool_removal": spool_removal,
         "m2006_coupling_interface": {
             "output_projection_mm": float(contract.drive.m2006_output_projection_mm),
             "output_crosshole_center_from_tip_mm": float(
                 contract.drive.m2006_crosshole_center_from_tip_mm
             ),
-            "motor_socket_engagement_mm": float(
-                contract.integration["motor_coupling_motor_socket_depth_mm"]
+            "integrated_input_shaft": True,
+            "collar_diameter_mm": float(
+                contract.integration["m2006_input_shaft_collar_diameter_mm"]
             ),
-            "fixed_shaft_engagement_mm": round(
-                float(contract.integration["input_shaft_bearing_z_ranges_mm"][0][0])
-                - float(contract.drive.m2006_output_tip_z_mm),
+            "collar_to_first_bearing_clearance_mm": float(
+                contract.integration["m2006_input_shaft_collar_bearing_clearance_mm"]
+            ),
+            "motor_socket_diameter_mm": float(
+                contract.integration["m2006_input_shaft_socket_diameter_mm"]
+            ),
+            "motor_radial_nominal_clearance_mm": round(
+                0.5
+                * (
+                    float(contract.integration["m2006_input_shaft_socket_diameter_mm"])
+                    - float(contract.drive.m2006_output_shaft_diameter_mm)
+                ),
                 3,
             ),
-            "coupling_sleeves_stay_with_fixed_base": True,
+            "motor_socket_profile": "D_bore",
+            "motor_socket_flat_from_axis_mm": float(
+                contract.integration["m2006_input_shaft_socket_flat_from_axis_mm"]
+            ),
+            "motor_output_flat_from_axis_mm": float(
+                contract.integration["m2006_motor_d6_flat_from_axis_mm"]
+            ),
+            "motor_d_flat_nominal_clearance_mm": round(
+                float(contract.integration["m2006_input_shaft_socket_flat_from_axis_mm"])
+                - float(contract.integration["m2006_motor_d6_flat_from_axis_mm"]),
+                3,
+            ),
+            "motor_d_flat_alignment": "flat normal aligned to radial cross-pin axis",
+            "motor_cross_pin_retention_status": str(
+                contract.integration["m2006_input_shaft_cross_pin_retainer_status"]
+            ),
+            "motor_socket_engagement_mm": float(
+                contract.integration["m2006_input_shaft_socket_depth_mm"]
+            ),
+            "socket_wall_mm": round(
+                0.5
+                * (
+                    float(contract.integration["m2006_input_shaft_collar_diameter_mm"])
+                    - float(contract.integration["m2006_input_shaft_socket_diameter_mm"])
+                ),
+                3,
+            ),
+            "loose_coupling_sleeve_count": sum(
+                name.startswith("fixed_coupling_sleeve_")
+                for name in result.fixed_component_names
+            ),
+            "coupling_set_screw_count": sum(
+                name.startswith("fixed_coupling_lock_screw_")
+                for name in result.fixed_component_names
+            ),
             "removable_cross_pin_count": 3,
         },
         "electronics_connector_clearance_hits": connector_clearance_hits,
@@ -948,6 +1106,8 @@ def preflight_v27(result: V27AssemblyResult) -> dict[str, Any]:
         failures.append("drive removal sweep")
     if not audit["service"]["drive_register_engagement_passes"]:
         failures.append("drive register engagement")
+    if not all(path["passes"] for path in audit["service"]["spool_removal"]):
+        failures.append("spool removal sweep")
     if not audit["service"]["tendon_root_route"]["clearance_to_non_spool_components"]:
         failures.append("tendon root route clearance")
     if not audit["service"]["motor_port_harness"]["clearance_passes"]:
