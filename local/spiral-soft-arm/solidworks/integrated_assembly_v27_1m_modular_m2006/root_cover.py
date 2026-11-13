@@ -11,16 +11,18 @@ import cadquery as cq
 class RootCoverResult:
     components: dict[str, cq.Shape]
     panel_names: tuple[str, ...]
-    upper_panel_names: tuple[str, ...]
     lower_panel_names: tuple[str, ...]
+    upper_panel_names: tuple[str, ...]
     motor_window_panels: tuple[str, ...]
     observation_window_panels: tuple[str, ...]
     type_c_service_panel: str
     frame_names: tuple[str, ...]
     root_guard_name: str
-    outer_circumdiameter_mm: float
+    nominal_profile_circumdiameter_mm: float
+    actual_panel_max_radial_diameter_mm: float
+    actual_panel_assembly_bounds_mm: tuple[float, float, float]
     panel_height_mm: float
-    print_envelope_mm: tuple[float, float, float]
+    nominal_profile_envelope_mm: tuple[float, float, float]
     profile_stations_mm: tuple[tuple[float, float], ...]
 
 
@@ -119,12 +121,50 @@ def _face_hole(
     return cq.Solid.makeCylinder(radius_mm, length_mm, start, direction)
 
 
+def _profile_face_slope(
+    profile_stations_mm: tuple[tuple[float, float], ...], z_mm: float
+) -> float:
+    for (za, ra), (zb, rb) in zip(
+        profile_stations_mm, profile_stations_mm[1:]
+    ):
+        if za - 1e-8 <= z_mm <= zb + 1e-8:
+            return math.cos(math.radians(30.0)) * (rb - ra) / (zb - za)
+    raise ValueError(f"cover profile does not define z={z_mm:g} mm")
+
+
+def _surface_outward_normal(normal_deg: float, face_slope: float) -> cq.Vector:
+    radial = _unit(normal_deg)
+    return cq.Vector(radial[0], radial[1], -face_slope).normalized()
+
+
+def _oriented_face_hole(
+    normal_deg: float,
+    normal_mm: float,
+    tangent_mm: float,
+    z_mm: float,
+    radius_mm: float,
+    length_mm: float,
+    outward_normal: cq.Vector,
+    start_outside_mm: float = 0.1,
+) -> cq.Shape:
+    radial = _unit(normal_deg)
+    tangent = _unit(normal_deg + 90.0)
+    face_point = cq.Vector(
+        normal_mm * radial[0] + tangent_mm * tangent[0],
+        normal_mm * radial[1] + tangent_mm * tangent[1],
+        z_mm,
+    )
+    start = face_point + outward_normal * start_outside_mm
+    return cq.Solid.makeCylinder(radius_mm, length_mm, start, -outward_normal)
+
+
 def _profile_frame(
     inner_radii_mm: tuple[float, float],
     outer_radii_mm: tuple[float, float],
     z_bounds_mm: tuple[float, float],
     bolt_radius_mm: float,
     bolt_offsets_mm: tuple[float, ...],
+    bolt_z_values_mm: tuple[float, ...],
 ) -> cq.Shape:
     z0, z1 = z_bounds_mm
     outer = cq.Solid.makeLoft(
@@ -142,21 +182,29 @@ def _profile_frame(
         ruled=True,
     )
     frame = outer.cut(inner)
-    center_z = (z0 + z1) / 2.0
-    center_outer_radius = (outer_radii_mm[0] + outer_radii_mm[1]) / 2.0
-    outer_apothem = center_outer_radius * math.cos(math.radians(30.0))
-    for normal_deg in (30.0, 90.0, 150.0, 210.0, 270.0, 330.0):
-        for offset in bolt_offsets_mm:
-            frame = frame.cut(
-                _face_hole(
-                    normal_deg,
-                    outer_apothem + 0.1,
-                    offset,
-                    center_z,
-                    bolt_radius_mm,
-                    18.0,
+    face_slope = math.cos(math.radians(30.0)) * (
+        outer_radii_mm[1] - outer_radii_mm[0]
+    ) / (z1 - z0)
+    for bolt_z in bolt_z_values_mm:
+        fraction = (bolt_z - z0) / (z1 - z0)
+        outer_radius = outer_radii_mm[0] + fraction * (
+            outer_radii_mm[1] - outer_radii_mm[0]
+        )
+        outer_apothem = outer_radius * math.cos(math.radians(30.0))
+        for normal_deg in (30.0, 90.0, 150.0, 210.0, 270.0, 330.0):
+            outward_normal = _surface_outward_normal(normal_deg, face_slope)
+            for offset in bolt_offsets_mm:
+                frame = frame.cut(
+                    _oriented_face_hole(
+                        normal_deg,
+                        outer_apothem,
+                        offset,
+                        bolt_z,
+                        bolt_radius_mm,
+                        18.0,
+                        outward_normal,
+                    )
                 )
-            )
     return frame.clean()
 
 
@@ -376,10 +424,15 @@ def build_root_cover(contract: Any) -> RootCoverResult:
 
     components: dict[str, cq.Shape] = {}
     panel_names: list[str] = []
-    upper_panel_names: list[str] = []
     lower_panel_names: list[str] = []
+    upper_panel_names: list[str] = []
     motor_window_panels: list[str] = []
     observation_window_panels: list[str] = []
+    clip_radius = max(radius for _, radius in profile_stations) + surround_proud + 10.0
+    region_specs = (
+        ("lower", z0, split_z, (frame_centers[0], frame_centers[1])),
+        ("upper", split_z, z1, (frame_centers[2], frame_centers[3])),
+    )
     normal_to_index = {normal: index for index, normal in enumerate(normals, start=1)}
     motor_normals = {90.0, 210.0, 330.0}
     observation_normals = {30.0, 150.0, 270.0}
@@ -390,103 +443,155 @@ def build_root_cover(contract: Any) -> RootCoverResult:
 
     for normal_deg in normals:
         index = normal_to_index[normal_deg]
-        upper_name = f"fixed_cover_upper_panel_{index:02d}"
-        upper = panel_solid(normal_deg, split_z, z1)
-        if normal_deg in motor_normals:
-            upper = cut_window(
-                upper,
-                normal_deg,
-                motor_z,
-                tuple(cfg["motor_window_mm"]),
-                (split_z, z1),
-            )
-            upper = add_window_surround(
-                upper,
-                normal_deg,
-                motor_z,
-                tuple(cfg["motor_window_mm"]),
-            )
-            motor_window_panels.append(upper_name)
-        for frame_z in frame_centers:
-            if split_z <= frame_z <= z1:
+        for region, panel_z0, panel_z1, region_frame_centers in region_specs:
+            panel_name = f"fixed_cover_{region}_panel_{index:02d}"
+            panel = panel_solid(normal_deg, panel_z0, panel_z1)
+            if region == "upper" and normal_deg in motor_normals:
+                panel = cut_window(
+                    panel,
+                    normal_deg,
+                    motor_z,
+                    tuple(cfg["motor_window_mm"]),
+                    (panel_z0, panel_z1),
+                )
+                panel = add_window_surround(
+                    panel,
+                    normal_deg,
+                    motor_z,
+                    tuple(cfg["motor_window_mm"]),
+                )
+                motor_window_panels.append(panel_name)
+            if region == "lower" and normal_deg in observation_normals:
+                panel = cut_window(
+                    panel,
+                    normal_deg,
+                    observation_z,
+                    tuple(cfg["observation_window_mm"]),
+                    (panel_z0, panel_z1),
+                )
+                panel = add_window_surround(
+                    panel,
+                    normal_deg,
+                    observation_z,
+                    tuple(cfg["observation_window_mm"]),
+                )
+                observation_window_panels.append(panel_name)
+            if region == "lower" and normal_deg == 270.0:
+                panel = cut_window(
+                    panel,
+                    normal_deg,
+                    service_z,
+                    tuple(cfg["m12_service_window_mm"]),
+                    (panel_z0, panel_z1),
+                )
+                panel = add_window_surround(
+                    panel,
+                    normal_deg,
+                    service_z,
+                    tuple(cfg["m12_service_window_mm"]),
+                )
+                type_c_service_panel = panel_name
+                # The lower screw row overlaps the proud M12 service-window
+                # surround. Recess only the raised surround around these two
+                # fastener axes so an external tool can approach the panel
+                # face; stop at the base panel plane to preserve its wall.
+                access_z = frame_centers[0]
+                access_normal = _surface_outward_normal(
+                    normal_deg,
+                    _profile_face_slope(tuple(profile_stations), access_z),
+                )
+                access_apothem = radius_at(access_z) * math.cos(
+                    math.radians(30.0)
+                )
+                access_radius = float(
+                    cfg["panel_tool_access_relief_diameter_mm"]
+                ) / 2.0
                 for offset in bolt_offsets:
-                    upper = upper.cut(
-                        _face_hole(
+                    panel = panel.cut(
+                        _oriented_face_hole(
                             normal_deg,
-                            radius_at(frame_z) * math.cos(math.radians(30.0)) + 0.1,
+                            access_apothem,
+                            offset,
+                            access_z,
+                            access_radius,
+                            surround_proud + 0.1,
+                            access_normal,
+                            start_outside_mm=surround_proud + 0.1,
+                        )
+                    )
+            for frame_z in region_frame_centers:
+                outward_normal = _surface_outward_normal(
+                    normal_deg, _profile_face_slope(tuple(profile_stations), frame_z)
+                )
+                radial = _unit(normal_deg)
+                radial_component = outward_normal.dot(
+                    cq.Vector(radial[0], radial[1], 0.0)
+                )
+                for offset in bolt_offsets:
+                    panel = panel.cut(
+                        _oriented_face_hole(
+                            normal_deg,
+                            radius_at(frame_z) * math.cos(math.radians(30.0)),
                             offset,
                             frame_z,
                             bolt_radius,
-                            panel_thickness + 0.2,
+                            panel_thickness / radial_component + 0.2,
+                            outward_normal,
                         )
                     )
-        upper = upper.clean()
-        components[upper_name] = upper
-        panel_names.append(upper_name)
-        upper_panel_names.append(upper_name)
+            panel_height_clip = cq.Solid.makeBox(
+                2.0 * clip_radius,
+                2.0 * clip_radius,
+                panel_z1 - panel_z0,
+                cq.Vector(-clip_radius, -clip_radius, panel_z0),
+            )
+            # Sloped-face bezels can extend slightly beyond the segment end
+            # planes; keep each printable piece within its nominal Z bounds.
+            panel = panel.intersect(panel_height_clip).clean()
+            components[panel_name] = panel
+            panel_names.append(panel_name)
+            (lower_panel_names if region == "lower" else upper_panel_names).append(
+                panel_name
+            )
 
-        lower_name = f"fixed_cover_lower_panel_{index:02d}"
-        lower = panel_solid(normal_deg, z0, split_z)
-        if normal_deg in observation_normals:
-            lower = cut_window(
-                lower,
-                normal_deg,
-                observation_z,
-                tuple(cfg["observation_window_mm"]),
-                (z0, split_z),
-            )
-            lower = add_window_surround(
-                lower,
-                normal_deg,
-                observation_z,
-                tuple(cfg["observation_window_mm"]),
-            )
-            observation_window_panels.append(lower_name)
-        if normal_deg == 270.0:
-            lower = cut_window(
-                lower,
-                normal_deg,
-                service_z,
-                tuple(cfg["m12_service_window_mm"]),
-                (z0, split_z),
-            )
-            lower = add_window_surround(
-                lower,
-                normal_deg,
-                service_z,
-                tuple(cfg["m12_service_window_mm"]),
-            )
-            type_c_service_panel = lower_name
-        for frame_z in frame_centers:
-            if z0 <= frame_z <= split_z:
-                for offset in bolt_offsets:
-                    lower = lower.cut(
-                        _face_hole(
-                            normal_deg,
-                            radius_at(frame_z) * math.cos(math.radians(30.0)) + 0.1,
-                            offset,
-                            frame_z,
-                            bolt_radius,
-                            panel_thickness + 0.2,
-                        )
-                    )
-        lower = lower.clean()
-        components[lower_name] = lower
-        panel_names.append(lower_name)
-        lower_panel_names.append(lower_name)
-
+    frame_specs = (
+        (
+            frame_centers[0],
+            frame_centers[0] - frame_height / 2.0,
+            frame_centers[0] + frame_height / 2.0,
+            (frame_centers[0],),
+        ),
+        (
+            0.5 * (frame_centers[1] + frame_centers[2]),
+            frame_centers[1] - frame_height / 2.0,
+            frame_centers[2] + frame_height / 2.0,
+            (frame_centers[1], frame_centers[2]),
+        ),
+        (
+            frame_centers[3],
+            frame_centers[3] - frame_height / 2.0,
+            frame_centers[3] + frame_height / 2.0,
+            (frame_centers[3],),
+        ),
+    )
     frame_names: list[str] = []
-    for index, frame_z in enumerate(frame_centers, start=1):
-        band_z0 = frame_z - frame_height / 2.0
-        band_z1 = frame_z + frame_height / 2.0
-        inner_radii = (radius_at(band_z0), radius_at(band_z1))
-        outer_radii = tuple(radius + frame_radial_thickness for radius in inner_radii)
+    for index, (frame_z, band_z0, band_z1, bolt_z_values) in enumerate(
+        frame_specs, start=1
+    ):
+        panel_inner_radii = tuple(
+            radius - panel_thickness / math.cos(math.radians(30.0))
+            for radius in (radius_at(band_z0), radius_at(band_z1))
+        )
+        frame_inner_radii = tuple(
+            radius - frame_radial_thickness for radius in panel_inner_radii
+        )
         frame = _profile_frame(
-            inner_radii,
-            (outer_radii[0], outer_radii[1]),
+            frame_inner_radii,
+            panel_inner_radii,
             (band_z0, band_z1),
             bolt_radius,
             bolt_offsets,
+            bolt_z_values,
         )
         if index == 1:
             # The low Type-C bezel runs through this band in Z. Relieve its
@@ -509,7 +614,7 @@ def build_root_cover(contract: Any) -> RootCoverResult:
             service_bezel_center_z = service_z - (
                 face_slope / normal_scale
             ) * (surround_proud / 2.0)
-            band_outer_center_radius = (outer_radii[0] + outer_radii[1]) / 2.0
+            band_outer_center_radius = (panel_inner_radii[0] + panel_inner_radii[1]) / 2.0
             frame = frame.cut(
                 _face_box(
                     270.0,
@@ -523,7 +628,7 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                 )
             )
         if abs(frame_z) < 1.0e-8:
-            outer_face_apothem = outer_radii[0] * math.cos(math.radians(30.0))
+            outer_face_apothem = panel_inner_radii[0] * math.cos(math.radians(30.0))
             anchor_z0 = frame_z - frame_height / 2.0
             anchor_height = frame_height / 2.0
             anchor_width = 10.0
@@ -664,24 +769,39 @@ def build_root_cover(contract: Any) -> RootCoverResult:
     root_guard_name = "fixed_root_guard_hex"
     components[root_guard_name] = guard.clean()
 
-    max_outer_radius = max(radius for _, radius in profile_stations) + frame_radial_thickness
-    print_envelope = (
+    max_outer_radius = max(radius for _, radius in profile_stations)
+    nominal_profile_envelope = (
         2.0 * max_outer_radius,
         math.sqrt(3.0) * max_outer_radius,
         height,
     )
+    panel_compound = cq.Compound.makeCompound(
+        [components[name] for name in panel_names]
+    )
+    panel_bounds = panel_compound.BoundingBox()
+    actual_panel_max_radius = max(
+        math.hypot(vertex.Center().x, vertex.Center().y)
+        for name in panel_names
+        for vertex in components[name].Vertices()
+    )
     return RootCoverResult(
         components=components,
         panel_names=tuple(panel_names),
-        upper_panel_names=tuple(upper_panel_names),
         lower_panel_names=tuple(lower_panel_names),
+        upper_panel_names=tuple(upper_panel_names),
         motor_window_panels=tuple(motor_window_panels),
         observation_window_panels=tuple(observation_window_panels),
         type_c_service_panel=type_c_service_panel,
         frame_names=tuple(frame_names),
         root_guard_name=root_guard_name,
-        outer_circumdiameter_mm=2.0 * max_outer_radius,
+        nominal_profile_circumdiameter_mm=2.0 * max_outer_radius,
+        actual_panel_max_radial_diameter_mm=2.0 * actual_panel_max_radius,
+        actual_panel_assembly_bounds_mm=(
+            panel_bounds.xlen,
+            panel_bounds.ylen,
+            panel_bounds.zlen,
+        ),
         panel_height_mm=height,
-        print_envelope_mm=print_envelope,
+        nominal_profile_envelope_mm=nominal_profile_envelope,
         profile_stations_mm=profile_stations,
     )

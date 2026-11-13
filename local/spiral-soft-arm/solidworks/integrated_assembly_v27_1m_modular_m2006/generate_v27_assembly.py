@@ -236,15 +236,14 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
                 ),
             ]
         )
-    # The cover panels overlap their hex frames at the fastened lands so that
-    # the countersunk panel holes remain supported by the frame faces.
+    # Lower/upper service panels share the merged seam support ring.
     for index in range(1, 7):
         intentional.extend(
             [
-                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_03"),
-                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_04"),
                 (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_01"),
                 (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_02"),
+                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_02"),
+                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_03"),
             ]
         )
     for index in range(1, 4):
@@ -352,7 +351,8 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
     removable_cover_names = {
         name
         for name in result.fixed_component_names
-        if name.startswith("fixed_cover_lower_panel_") or name == "fixed_cover_frame_01"
+        if name.startswith("fixed_cover_lower_panel_")
+        or name == "fixed_cover_frame_01"
     }
     obstacles = tuple(
         name
@@ -397,7 +397,7 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
             dy = max(obstacle_box.ymin - swept_box.ymax, swept_box.ymin - obstacle_box.ymax, 0.0)
             dz = max(obstacle_box.zmin - swept_box.zmax, swept_box.zmin - obstacle_box.zmax, 0.0)
             lower_bound = math.sqrt(dx * dx + dy * dy + dz * dz)
-            if lower_bound >= minimum_clearance:
+            if minimum_clearance > 0.0 and lower_bound >= minimum_clearance:
                 continue
             volume = swept.intersect(obstacle).Volume()
             if volume > 0.02:
@@ -413,7 +413,7 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
                 minimum_clearance = min(minimum_clearance, swept.distance(obstacle))
     return {
         "direction": "negative_z",
-        "sweep_type": "exact horizontal-face extrusion after removing lower cover panels and bottom frame, then withdrawing M2006 cross-pins",
+        "sweep_type": "exact horizontal-face extrusion after removing lower service panels and fixed_cover_frame_01, then withdrawing M2006 cross-pins",
         "travel_mm": travel_mm,
         "initial_release_gap_mm": initial_release_gap_mm,
         "moving_component_count": len(moving_names),
@@ -948,26 +948,71 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                 return ra + (rb - ra) * (z_mm - za) / (zb - za)
         raise ValueError(f"cover profile does not define z={z_mm:g} mm")
 
-    cover_frame_centers = [
+    cover_support_hole_centers = [
         float(value) for value in cover_cfg["frame_z_centers_mm"]
     ]
+    cover_frame_specs = (
+        (
+            cover_support_hole_centers[0],
+            cover_support_hole_centers[0] - cover_frame_height / 2.0,
+            cover_support_hole_centers[0] + cover_frame_height / 2.0,
+        ),
+        (
+            0.5 * (cover_support_hole_centers[1] + cover_support_hole_centers[2]),
+            cover_support_hole_centers[1] - cover_frame_height / 2.0,
+            cover_support_hole_centers[2] + cover_frame_height / 2.0,
+        ),
+        (
+            cover_support_hole_centers[3],
+            cover_support_hole_centers[3] - cover_frame_height / 2.0,
+            cover_support_hole_centers[3] + cover_frame_height / 2.0,
+        ),
+    )
+    cover_frame_centers = [spec[0] for spec in cover_frame_specs]
     cover_frame_outer_radii = [
-        cover_radius_at(center_z) + cover_frame_thickness
+        cover_radius_at(center_z)
+        - float(cover_cfg["panel_thickness_mm"]) / math.cos(math.radians(30.0))
         for center_z in cover_frame_centers
     ]
     cover_frame_outer_radius_ranges = [
         [
-            cover_radius_at(center_z - cover_frame_height / 2.0)
-            + cover_frame_thickness,
-            cover_radius_at(center_z + cover_frame_height / 2.0)
-            + cover_frame_thickness,
+            cover_radius_at(band_z0)
+            - float(cover_cfg["panel_thickness_mm"]) / math.cos(math.radians(30.0)),
+            cover_radius_at(band_z1)
+            - float(cover_cfg["panel_thickness_mm"]) / math.cos(math.radians(30.0)),
         ]
-        for center_z in cover_frame_centers
+        for _, band_z0, band_z1 in cover_frame_specs
     ]
-    cover_max_radius = max(
-        max(radius_mm for _, radius_mm in cover_profile),
-        *cover_frame_outer_radii,
+    cover_max_radius = max(radius_mm for _, radius_mm in cover_profile)
+    cover_lower_panel_names = tuple(
+        f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)
     )
+    cover_upper_panel_names = tuple(
+        f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)
+    )
+    cover_panel_names = (*cover_lower_panel_names, *cover_upper_panel_names)
+    cover_frame_names = tuple(
+        f"fixed_cover_frame_{index:02d}" for index in range(1, 4)
+    )
+    cover_panel_shapes = [result.components[name] for name in cover_panel_names]
+    cover_panel_compound = cq.Compound.makeCompound(cover_panel_shapes)
+    cover_panel_bounds = cover_panel_compound.BoundingBox()
+    cover_panel_max_radius = max(
+        math.hypot(vertex.Center().x, vertex.Center().y)
+        for shape in cover_panel_shapes
+        for vertex in shape.Vertices()
+    )
+
+    def component_bounds_mm(name: str) -> dict[str, Any]:
+        bounds = result.components[name].BoundingBox()
+        return {
+            "name": name,
+            "x_mm": round(bounds.xlen, 3),
+            "y_mm": round(bounds.ylen, 3),
+            "z_mm": round(bounds.zlen, 3),
+            "z_min_mm": round(bounds.zmin, 3),
+            "z_max_mm": round(bounds.zmax, 3),
+        }
     moving_register_z = tuple(
         float(value) for value in contract.integration["drive_register_z_mm"]
     )
@@ -1241,15 +1286,64 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         },
         "service": service,
         "cover_layout": {
-            "outer_circumdiameter_mm": round(2.0 * cover_max_radius, 3),
+            "nominal_profile_circumdiameter_mm": round(
+                2.0 * cover_max_radius, 3
+            ),
+            "actual_panel_max_radial_diameter_mm": round(
+                2.0 * cover_panel_max_radius, 3
+            ),
+            "actual_panel_assembly_bounds_mm": {
+                "x": round(cover_panel_bounds.xlen, 3),
+                "y": round(cover_panel_bounds.ylen, 3),
+                "z": round(cover_panel_bounds.zlen, 3),
+            },
+            "panel_height_mm": round(
+                float(cover_cfg["panel_z_bounds_mm"][1])
+                - float(cover_cfg["panel_z_bounds_mm"][0]),
+                3,
+            ),
             "panel_z_bounds_mm": [
                 float(value) for value in cover_cfg["panel_z_bounds_mm"]
             ],
             "panel_profile_stations_mm": cover_profile,
-            "panel_count": 12,
+            "panel_count": len(cover_panel_names),
+            "upper_panel_count": len(cover_upper_panel_names),
+            "lower_service_panel_count": len(cover_lower_panel_names),
+            "service_split_z_mm": float(cover_cfg["panel_split_z_mm"]),
+            "panel_component_bounds_mm": [
+                component_bounds_mm(name) for name in cover_panel_names
+            ],
+            "frame_component_bounds_mm": [
+                component_bounds_mm(name) for name in cover_frame_names
+            ],
             "frame_outer_circumradii_mm": cover_frame_outer_radii,
             "frame_outer_circumradius_ranges_mm": cover_frame_outer_radius_ranges,
+            "frame_z_centers_mm": cover_frame_centers,
+            "support_hole_z_centers_mm": cover_support_hole_centers,
             "frame_radial_thickness_mm": cover_frame_thickness,
+            "panel_fastener_interface": {
+                "thread": "M3",
+                "clearance_diameter_mm": float(
+                    cover_cfg["panel_fastener_diameter_mm"]
+                ),
+                "tangent_offsets_mm": [
+                    float(value)
+                    for value in cover_cfg["panel_fastener_tangent_offsets_mm"]
+                ],
+                "hole_count": 6
+                * len(cover_support_hole_centers)
+                * len(cover_cfg["panel_fastener_tangent_offsets_mm"]),
+                "tool_envelope_diameter_mm": 8.0,
+                "relieved_tool_access_count": 2,
+                "tool_access_relief_diameter_mm": float(
+                    cover_cfg["panel_tool_access_relief_diameter_mm"]
+                ),
+                "tool_access_relief_depth_mm": float(
+                    cover_cfg["window_surround_proud_mm"]
+                ),
+                "tool_access_relief_location": "lower_panel_05_bottom_support_row",
+                "receiver_hardware": "not modeled; M3 nut or insert method remains to be selected",
+            },
             "window_surround_reveal_mm": float(
                 cover_cfg["window_surround_reveal_mm"]
             ),

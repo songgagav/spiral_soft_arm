@@ -201,11 +201,22 @@ class V27DriveAndBaseTests(unittest.TestCase):
         _, _, module, base = self.build()
         self.assertTrue(base.shafts_supported_without_drive)
         self.assertEqual(
-            module.removal_sequence[0], "remove_lower_cover_panels_and_bottom_frame"
+            module.removal_sequence[:9],
+            (
+                "deenergize_all_power_sources_and_unload_tendons",
+                "remove_24_M3_lower_cover_fasteners",
+                "remove_fixed_cover_lower_panel_01",
+                "remove_fixed_cover_lower_panel_02",
+                "remove_fixed_cover_lower_panel_03",
+                "remove_fixed_cover_lower_panel_04",
+                "remove_fixed_cover_lower_panel_05",
+                "remove_fixed_cover_lower_panel_06",
+                "remove_bottom_cover_frame_01",
+            ),
         )
-        self.assertEqual(module.removal_sequence[1], "disconnect_motor_harnesses")
-        self.assertEqual(module.removal_sequence[2], "remove_three_motor_cross_pins")
-        self.assertIn("withdraw_D6_shafts", module.removal_sequence[3])
+        self.assertEqual(module.removal_sequence[9], "disconnect_motor_harnesses")
+        self.assertEqual(module.removal_sequence[10], "remove_three_motor_cross_pins")
+        self.assertIn("withdraw_D6_shafts", module.removal_sequence[11])
         self.assertEqual(len(base.shaft_support_pairs), 3)
         self.assertTrue(all(len(pair) == 2 for pair in base.shaft_support_pairs))
 

@@ -28,12 +28,19 @@ class V27RootCoverTests(unittest.TestCase):
     def setUpClass(cls) -> None:
         cls.contract = load_module("v27_contract_for_cover", "model_contract.py").load_contract()
 
-    def test_cover_is_twelve_tapered_printable_panels_with_service_openings(self) -> None:
+    def test_cover_builds_six_upper_and_six_lower_service_panels(self) -> None:
         cover_module = load_module("v27_cover_for_tests", "root_cover.py")
         result = cover_module.build_root_cover(self.contract)
         self.assertEqual(len(result.panel_names), 12)
-        self.assertEqual(len(result.upper_panel_names), 6)
-        self.assertEqual(len(result.lower_panel_names), 6)
+        self.assertEqual(
+            result.lower_panel_names,
+            tuple(f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
+        )
+        self.assertEqual(
+            result.upper_panel_names,
+            tuple(f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)),
+        )
+        self.assertEqual(len(result.frame_names), 3)
         self.assertEqual(len(result.motor_window_panels), 3)
         self.assertEqual(len(result.observation_window_panels), 3)
         self.assertEqual(result.type_c_service_panel, "fixed_cover_lower_panel_05")
@@ -44,35 +51,90 @@ class V27RootCoverTests(unittest.TestCase):
         self.assertEqual(
             self.contract.integration["root_cover"]["motor_window_mm"], [72.0, 82.0]
         )
+        expected_z_bounds = {
+            **{name: (-236.0, -80.0) for name in result.lower_panel_names},
+            **{name: (-80.0, 64.0) for name in result.upper_panel_names},
+        }
         for name in result.panel_names:
             panel = result.components[name]
             self.assertTrue(panel.isValid())
             box = panel.BoundingBox()
-            self.assertLessEqual(box.zlen, 160.0 + 1e-5)
+            expected_z0, expected_z1 = expected_z_bounds[name]
+            self.assertAlmostEqual(box.zmin, expected_z0, places=5)
+            self.assertAlmostEqual(box.zmax, expected_z1, places=5)
+            self.assertAlmostEqual(box.zlen, expected_z1 - expected_z0, places=5)
             self.assertLessEqual(box.xlen, 350.0)
             self.assertLessEqual(box.ylen, 350.0)
-            self.assertLess(panel.Volume(), 180.0 * 2.4 * 160.0)
-        self.assertEqual(result.print_envelope_mm[2], 300.0)
-        self.assertAlmostEqual(result.outer_circumdiameter_mm, 332.0)
-        self.assertAlmostEqual(result.print_envelope_mm[0], 332.0)
-        self.assertLessEqual(result.print_envelope_mm[0], 350.0)
+            self.assertLess(panel.Volume(), 180.0 * 2.4 * 300.0)
+        self.assertEqual(result.nominal_profile_envelope_mm[2], 300.0)
+        self.assertAlmostEqual(result.nominal_profile_circumdiameter_mm, 324.0)
+        self.assertAlmostEqual(result.nominal_profile_envelope_mm[0], 324.0)
+        self.assertAlmostEqual(result.actual_panel_max_radial_diameter_mm, 322.019, places=3)
+        for actual, expected in zip(
+            result.actual_panel_assembly_bounds_mm,
+            (322.0, 283.092, 300.0),
+        ):
+            self.assertAlmostEqual(actual, expected, places=3)
+        self.assertLessEqual(result.nominal_profile_envelope_mm[0], 350.0)
+
+    def test_split_cover_panels_keep_all_service_openings(self) -> None:
+        cover_module = load_module("v27_cover_service_openings_for_tests", "root_cover.py")
+        result = cover_module.build_root_cover(self.contract)
+        self.assertEqual(len(result.panel_names), 12)
+        self.assertEqual(
+            result.motor_window_panels,
+            ("fixed_cover_upper_panel_02", "fixed_cover_upper_panel_04", "fixed_cover_upper_panel_06"),
+        )
+        self.assertEqual(
+            result.observation_window_panels,
+            ("fixed_cover_lower_panel_01", "fixed_cover_lower_panel_03", "fixed_cover_lower_panel_05"),
+        )
+        self.assertEqual(result.type_c_service_panel, "fixed_cover_lower_panel_05")
+        cfg = self.contract.integration["root_cover"]
+        opening_specs = (
+            ("fixed_cover_upper_panel_02", 90.0, "motor_window_center_z_mm", "motor_window_mm"),
+            ("fixed_cover_upper_panel_04", 210.0, "motor_window_center_z_mm", "motor_window_mm"),
+            ("fixed_cover_upper_panel_06", 330.0, "motor_window_center_z_mm", "motor_window_mm"),
+            ("fixed_cover_lower_panel_01", 30.0, "observation_window_center_z_mm", "observation_window_mm"),
+            ("fixed_cover_lower_panel_03", 150.0, "observation_window_center_z_mm", "observation_window_mm"),
+            ("fixed_cover_lower_panel_05", 270.0, "observation_window_center_z_mm", "observation_window_mm"),
+            ("fixed_cover_lower_panel_05", 270.0, "m12_service_window_center_z_mm", "m12_service_window_mm"),
+        )
+        for panel_name, normal_deg, center_key, size_key in opening_specs:
+            center_z = float(cfg[center_key])
+            width_mm, height_mm = (float(value) for value in cfg[size_key])
+            probe = cover_module._face_box(
+                normal_deg,
+                cfg["outer_circumradius_mm"] * math.cos(math.radians(30.0))
+                - cfg["panel_thickness_mm"] / 2.0,
+                0.0,
+                center_z,
+                width_mm - 0.02,
+                20.0,
+                height_mm - 0.02,
+            )
+            self.assertLess(
+                result.components[panel_name].intersect(probe).Volume(),
+                1e-3,
+                msg=f"{panel_name} {size_key} opening is blocked",
+            )
 
     def test_cover_frames_fit_printer_and_root_guard_clears_arm(self) -> None:
         cover_module = load_module("v27_cover_for_tests", "root_cover.py")
         result = cover_module.build_root_cover(self.contract)
-        self.assertEqual(len(result.frame_names), 4)
+        self.assertEqual(len(result.frame_names), 3)
         extents = [result.components[name].BoundingBox() for name in result.frame_names]
-        self.assertAlmostEqual(max(box.xlen for box in extents), 332.0, places=5)
+        self.assertLess(max(box.xlen for box in extents), 324.0)
         self.assertLessEqual(max(box.xlen for box in extents), 350.0)
         self.assertLessEqual(max(box.ylen for box in extents), 350.0)
         self.assertTrue(result.components[result.root_guard_name].isValid())
         self.assertEqual(result.root_guard_name, "fixed_root_guard_hex")
 
-    def test_taper_following_base_band_does_not_intersect_lower_panels(self) -> None:
+    def test_taper_following_base_band_does_not_intersect_side_panels(self) -> None:
         cover_module = load_module("v27_cover_for_tests", "root_cover.py")
         result = cover_module.build_root_cover(self.contract)
         base_band = result.components[result.frame_names[0]]
-        for panel_name in result.lower_panel_names:
+        for panel_name in result.panel_names:
             overlap = base_band.intersect(result.components[panel_name]).Volume()
             self.assertLess(
                 overlap,
@@ -89,8 +151,8 @@ class V27RootCoverTests(unittest.TestCase):
         self.assertEqual(cfg["frame_z_centers_mm"], [-232.0, -84.0, -76.0, 60.0])
         self.assertAlmostEqual(cfg["frame_radial_thickness_mm"], 4.0)
         self.assertAlmostEqual(cfg["window_surround_reveal_mm"], 1.5)
-        self.assertAlmostEqual(result.outer_circumdiameter_mm, 332.0)
-        self.assertAlmostEqual(result.print_envelope_mm[0], 332.0)
+        self.assertAlmostEqual(result.nominal_profile_circumdiameter_mm, 324.0)
+        self.assertAlmostEqual(result.nominal_profile_envelope_mm[0], 324.0)
         for name in result.frame_names:
             self.assertTrue(result.components[name].isValid(), msg=name)
 
@@ -191,6 +253,7 @@ class V27RootCoverTests(unittest.TestCase):
     def test_lower_observation_and_typec_windows_cut_through_sloped_panels(self) -> None:
         cover_module = load_module("v27_cover_for_tests", "root_cover.py")
         result = cover_module.build_root_cover(self.contract)
+        self.assertEqual(len(result.panel_names), 12)
         cfg = self.contract.integration["root_cover"]
         profile = result.profile_stations_mm
 
@@ -257,16 +320,175 @@ class V27RootCoverTests(unittest.TestCase):
         finally:
             cfg["panel_profile_stations_mm"] = original
 
-    def test_window_must_fit_its_assigned_panel_segment(self) -> None:
+    def test_window_must_fit_full_height_panel_bounds(self) -> None:
         cover_module = load_module("v27_cover_for_tests", "root_cover.py")
         cfg = self.contract.integration["root_cover"]
         original = cfg["motor_window_center_z_mm"]
-        cfg["motor_window_center_z_mm"] = -75.0
+        cfg["motor_window_center_z_mm"] = 65.0
         try:
             with self.assertRaisesRegex(ValueError, "assigned panel Z bounds"):
                 cover_module.build_root_cover(self.contract)
         finally:
             cfg["motor_window_center_z_mm"] = original
+
+    def test_cover_fasteners_share_m3_clearance_and_supported_holes(self) -> None:
+        cover_module = load_module("v27_cover_m3_for_tests", "root_cover.py")
+        result = cover_module.build_root_cover(self.contract)
+        cfg = self.contract.integration["root_cover"]
+        self.assertAlmostEqual(cfg["panel_fastener_diameter_mm"], 3.4)
+        self.assertAlmostEqual(cfg["root_guard_fastener_clearance_diameter_mm"], 3.4)
+        normals = (30.0, 90.0, 150.0, 210.0, 270.0, 330.0)
+        panel_thickness = float(cfg["panel_thickness_mm"])
+        profile = result.profile_stations_mm
+
+        def face_slope(z_mm: float) -> float:
+            for (za, ra), (zb, rb) in zip(profile, profile[1:]):
+                if za <= z_mm <= zb:
+                    return math.cos(math.radians(30.0)) * (rb - ra) / (zb - za)
+            raise AssertionError(f"no profile slope at z={z_mm}")
+
+        regions = (
+            (
+                result.lower_panel_names,
+                (cfg["frame_z_centers_mm"][0], cfg["frame_z_centers_mm"][1]),
+                (0, 1),
+            ),
+            (
+                result.upper_panel_names,
+                (cfg["frame_z_centers_mm"][2], cfg["frame_z_centers_mm"][3]),
+                (1, 2),
+            ),
+        )
+        for region_names, support_z_values, frame_indices in regions:
+            for panel_index, normal_deg in enumerate(normals, start=1):
+                panel_name = (
+                    result.lower_panel_names[panel_index - 1]
+                    if region_names is result.lower_panel_names
+                    else result.upper_panel_names[panel_index - 1]
+                )
+                panel = result.components[panel_name]
+                for center_z, frame_index in zip(support_z_values, frame_indices):
+                    radius = next(
+                        ra + (rb - ra) * (center_z - za) / (zb - za)
+                        for (za, ra), (zb, rb) in zip(
+                            result.profile_stations_mm, result.profile_stations_mm[1:]
+                        )
+                        if za <= center_z <= zb
+                    )
+                    frame = result.components[result.frame_names[frame_index]]
+                    for tangent_offset in cfg["panel_fastener_tangent_offsets_mm"]:
+                        radial = cq.Vector(
+                            math.cos(math.radians(normal_deg)),
+                            math.sin(math.radians(normal_deg)),
+                            0.0,
+                        )
+                        tangent = cq.Vector(
+                            math.cos(math.radians(normal_deg + 90.0)),
+                            math.sin(math.radians(normal_deg + 90.0)),
+                            0.0,
+                        )
+                        slope = face_slope(center_z)
+                        outward = cq.Vector(radial.x, radial.y, -slope).normalized()
+                        face_apothem = radius * math.cos(math.radians(30.0))
+                        face_point = (
+                            radial * face_apothem
+                            + tangent * tangent_offset
+                            + cq.Vector(0.0, 0.0, center_z)
+                        )
+                        screw_axis_probe = cq.Solid.makeCylinder(
+                            1.6,
+                            panel_thickness / outward.dot(radial) + 0.2,
+                            face_point + outward * 0.1,
+                            -outward,
+                        )
+                        self.assertLess(
+                            panel.intersect(screw_axis_probe).Volume(),
+                            1e-3,
+                            msg=f"{panel_name} M3 axis is not normal to its panel face",
+                        )
+                        frame_point = (
+                            radial * (face_apothem - panel_thickness)
+                            + tangent * tangent_offset
+                            + cq.Vector(0.0, 0.0, center_z)
+                        )
+                        frame_axis_probe = cq.Solid.makeCylinder(
+                            1.6,
+                            18.0,
+                            frame_point + outward * 0.1,
+                            -outward,
+                        )
+                        self.assertLess(
+                            frame.intersect(frame_axis_probe).Volume(),
+                            1e-3,
+                            msg=f"frame {frame_index + 1} M3 axis is blocked",
+                        )
+
+                        tool = cq.Solid.makeCylinder(
+                            4.0,
+                            9.8,
+                            face_point + outward * 0.1,
+                            outward,
+                        )
+                        for other_name, other_shape in result.components.items():
+                            self.assertLess(
+                                other_shape.intersect(tool).Volume(),
+                                1e-3,
+                                msg=(
+                                    f"M3 tool access for {panel_name}, face {normal_deg}, "
+                                    f"tangent {tangent_offset}, z={center_z} is blocked by {other_name}"
+                                ),
+                            )
+
+    def test_cover_support_frames_are_flush_with_panel_envelope(self) -> None:
+        cover_module = load_module("v27_cover_flush_frames_for_tests", "root_cover.py")
+        result = cover_module.build_root_cover(self.contract)
+        cfg = self.contract.integration["root_cover"]
+
+        def radius_at(z_mm: float) -> float:
+            for (za, ra), (zb, rb) in zip(
+                result.profile_stations_mm, result.profile_stations_mm[1:]
+            ):
+                if za <= z_mm <= zb:
+                    return ra + (rb - ra) * (z_mm - za) / (zb - za)
+            self.fail(f"support frame z={z_mm} is outside the cover profile")
+
+        normals = (30.0, 90.0, 150.0, 210.0, 270.0, 330.0)
+        frame_bounds = ((-236.0, -228.0), (-88.0, -72.0), (56.0, 64.0))
+        for name, (z0, z1) in zip(result.frame_names, frame_bounds):
+            frame = result.components[name]
+            for z_mm in (z0, z1):
+                vertices = [
+                    vertex
+                    for vertex in frame.Vertices()
+                    if abs(vertex.Z - z_mm) < 1e-4
+                ]
+                self.assertTrue(vertices, msg=f"{name} has no vertices at z={z_mm}")
+                target_apothem = (
+                    radius_at(z_mm) * math.cos(math.radians(30.0))
+                    - float(cfg["panel_thickness_mm"])
+                )
+                for normal_deg in normals:
+                    angle = math.radians(normal_deg)
+                    maximum_projection = max(
+                        vertex.X * math.cos(angle) + vertex.Y * math.sin(angle)
+                        for vertex in vertices
+                    )
+                    self.assertAlmostEqual(
+                        maximum_projection,
+                        target_apothem,
+                        places=4,
+                        msg=f"{name} is not recessed flush behind face {normal_deg}",
+                    )
+
+    def test_cover_parts_fit_nominal_printer_bounds(self) -> None:
+        cover_module = load_module("v27_cover_printer_bounds_for_tests", "root_cover.py")
+        result = cover_module.build_root_cover(self.contract)
+        part_names = (*result.panel_names, *result.frame_names, result.root_guard_name)
+        for name in part_names:
+            box = result.components[name].BoundingBox()
+            self.assertLessEqual(box.xlen, 350.0 + 1e-5, msg=name)
+            self.assertLessEqual(box.ylen, 350.0 + 1e-5, msg=name)
+            self.assertLessEqual(box.zlen, 320.0 + 1e-5, msg=name)
 
 
 if __name__ == "__main__":

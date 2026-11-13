@@ -593,7 +593,7 @@ def _electronics_review(result: Any, path: Path) -> None:
 
 def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
     figure = plt.figure(figsize=(16, 8.5), dpi=145, facecolor="#f4f6f8")
-    figure.suptitle("V27 根部平面拼接包覆｜上下分片、检修观察窗、根部短护罩", fontsize=17, y=0.97)
+    figure.suptitle("V27 根部平面拼接包覆｜下部可拆服务分界、检修观察窗、根部短护罩", fontsize=17, y=0.97)
     axes = [
         figure.add_subplot(1, 2, index, projection="3d")
         for index in (1, 2)
@@ -639,18 +639,18 @@ def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
         ax.set_zlim(-250, 80)
         ax.set_box_aspect((360, 360, 330))
         ax.view_init(elev=18, azim=35)
-    axes[0].set_title("装配状态：12块平面拼接护罩", fontsize=12)
+    axes[0].set_title("装配状态：六面护甲与齐平服务分界", fontsize=12)
     axes[0].text2D(
         0.04,
         0.04,
-        "上下各6块锥形平板｜检修观察窗｜外水连通｜非耐压壳",
+        "六边平面护甲｜下部检修板｜外水连通｜非耐压壳",
         transform=axes[0].transAxes,
         fontsize=10,
         color="#263746",
         bbox={"facecolor": "white", "alpha": 0.82, "edgecolor": "#cbd4db"},
     )
-    axes[1].set_title("拆卸示意：移开一块侧板", fontsize=12)
-    detached = result.components["fixed_cover_lower_panel_05"].translate(cq.Vector(24.0, -18.0, 0.0))
+    axes[1].set_title("拆卸示意：拆出下部服务板", fontsize=12)
+    detached = result.components["fixed_cover_lower_panel_05"].translate(cq.Vector(0.0, -24.0, 0.0))
     color, alpha = _group_style(result, "fixed_cover_panel_detached")
     _add(axes[1], detached, color, 0.40)
     figure.subplots_adjust(left=0.01, right=0.99, top=0.90, bottom=0.03, wspace=0.01)
@@ -668,7 +668,7 @@ def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
     ax.set_zlim(-250, 80)
     ax.set_box_aspect((360, 360, 330))
     ax.view_init(elev=20, azim=35)
-    ax.set_title("V27 包覆附件｜上、下锥形平板分片", fontsize=13, pad=10)
+    ax.set_title("V27 包覆附件｜齐平上下服务分界", fontsize=13, pad=10)
     _save(figure2, exploded_path)
 
 

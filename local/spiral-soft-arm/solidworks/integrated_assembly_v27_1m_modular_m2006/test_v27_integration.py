@@ -5,8 +5,10 @@ import csv
 from dataclasses import replace
 import hashlib
 import json
+import math
 from pathlib import Path
 import unittest
+from types import SimpleNamespace
 from unittest.mock import patch
 
 import cadquery as cq
@@ -15,6 +17,7 @@ from PIL import Image
 from generate_v27_assembly import (
     _polar_center,
     _select_v25_electronics,
+    _drive_removal_sweep,
     audit_v27_assembly,
     build_v27_assembly,
     export_v27,
@@ -98,6 +101,37 @@ class V27ZZDeliveryTests(unittest.TestCase):
         self.assertIn("零位/预紧标定", text)
         self.assertIn("C610 固定在电子/控制侧", text)
         self.assertIn("固定密封边界", text)
+        self.assertIn("拆下 24 颗下部 M3 面板螺钉", text)
+        self.assertIn("六块下部服务板及底部支撑框 01", text)
+        self.assertIn("六块上部面板和中央支撑框 02 保持安装", text)
+
+    def test_readme_and_preprint_record_final_cover_contract(self) -> None:
+        readme = self.local_readme.read_text(encoding="utf-8")
+        review = (self.directory / "preprint_review" / "V27打印前审查.md").read_text(
+            encoding="utf-8"
+        )
+        for value in (
+            "12 片独立打印件",
+            "三道六边形支撑框",
+            "324 mm",
+            "322.019 mm",
+            "322 × 283.092 × 300 mm",
+            "±35 mm",
+            "280 mm",
+            "接收方式尚未建模",
+        ):
+            self.assertIn(value, readme)
+        for value in (
+            "12 块独立面板",
+            "三道支撑框",
+            "324 mm",
+            "322.019 mm",
+            "Ø3.4 mm",
+            "±35 mm",
+            "接收件尚未确定或建模",
+            "280 mm",
+        ):
+            self.assertIn(value, review)
 
     def test_readme_lists_unverified_physical_gates(self) -> None:
         text = self.local_readme.read_text(encoding="utf-8")
@@ -146,25 +180,86 @@ class V27PlacementHelperTests(unittest.TestCase):
         self.assertEqual(z_mm, -55.0)
 
 
+class V27DriveSweepUnitTests(unittest.TestCase):
+    def test_drive_sweep_reports_each_colliding_obstacle(self) -> None:
+        moving = cq.Solid.makeBox(10.0, 10.0, 10.0, cq.Vector(-5.0, -5.0, -5.0))
+        first = cq.Solid.makeBox(4.0, 4.0, 4.0, cq.Vector(-2.0, -2.0, -52.0))
+        second = cq.Solid.makeBox(4.0, 4.0, 4.0, cq.Vector(-2.0, -2.0, -102.0))
+        result = SimpleNamespace(
+            drive_component_names=("removable_motor_plate",),
+            fixed_component_names=(
+                "fixed_cover_lower_panel_01",
+                "fixed_cover_frame_01",
+                "fixed_cover_upper_panel_01",
+                "fixed_baffle",
+            ),
+            electronics_component_names=(),
+            components={
+                "removable_motor_plate": moving,
+                "fixed_cover_upper_panel_01": first,
+                "fixed_baffle": second,
+            },
+        )
+        sweep = _drive_removal_sweep(result)
+        self.assertEqual(
+            {collision["fixed_component"] for collision in sweep["collisions"]},
+            {"fixed_cover_upper_panel_01", "fixed_baffle"},
+        )
+
+
 class V27CoverIntegrationTests(unittest.TestCase):
     def test_flat_cover_is_present_and_clear_in_full_assembly(self) -> None:
         result = build_v27_assembly(load_contract())
-        upper_panel_names = tuple(
-            name for name in result.components if name.startswith("fixed_cover_upper_panel_")
-        )
-        lower_panel_names = tuple(
-            name for name in result.components if name.startswith("fixed_cover_lower_panel_")
+        panel_names = tuple(
+            name
+            for name in result.components
+            if name.startswith("fixed_cover_lower_panel_")
+            or name.startswith("fixed_cover_upper_panel_")
         )
         frame_names = tuple(
             name for name in result.components if name.startswith("fixed_cover_frame_")
         )
-        self.assertEqual(len(upper_panel_names), 6)
-        self.assertEqual(len(lower_panel_names), 6)
-        self.assertEqual(len(frame_names), 4)
+        self.assertEqual(
+            set(panel_names),
+            {
+                *(f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
+                *(f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)),
+            },
+        )
+        self.assertEqual(len(frame_names), 3)
         self.assertIn("fixed_root_guard_hex", result.components)
         audit = preflight_v27(result)
         self.assertEqual(audit["collisions"]["forbidden"], [])
         self.assertTrue(audit["service"]["drive_negative_z_removal_clear"])
+        cover = audit["cover_layout"]
+        self.assertEqual(cover["panel_count"], 12)
+        self.assertEqual(cover["upper_panel_count"], 6)
+        self.assertEqual(cover["lower_service_panel_count"], 6)
+        self.assertEqual(cover["service_split_z_mm"], -80.0)
+        self.assertEqual(len(cover["panel_component_bounds_mm"]), 12)
+        self.assertEqual(len(cover["frame_component_bounds_mm"]), 3)
+        self.assertEqual(cover["nominal_profile_circumdiameter_mm"], 324.0)
+        self.assertEqual(cover["actual_panel_max_radial_diameter_mm"], 322.019)
+        self.assertEqual(
+            cover["actual_panel_assembly_bounds_mm"],
+            {"x": 322.0, "y": 283.092, "z": 300.0},
+        )
+        self.assertEqual(cover["panel_height_mm"], 300.0)
+        self.assertEqual(
+            cover["panel_fastener_interface"],
+            {
+                "thread": "M3",
+                "clearance_diameter_mm": 3.4,
+                "tangent_offsets_mm": [-35.0, 35.0],
+                "hole_count": 48,
+                "tool_envelope_diameter_mm": 8.0,
+                "relieved_tool_access_count": 2,
+                "tool_access_relief_diameter_mm": 8.6,
+                "tool_access_relief_depth_mm": 2.5,
+                "tool_access_relief_location": "lower_panel_05_bottom_support_row",
+                "receiver_hardware": "not modeled; M3 nut or insert method remains to be selected",
+            },
+        )
 
 
 class V27StepDeterminismTests(unittest.TestCase):
@@ -428,12 +523,31 @@ class V27IntegrationTests(unittest.TestCase):
             }.issubset(sweep["moving_component_names"])
         )
         self.assertEqual(len(sweep["removed_drive_component_names"]), 3)
-        self.assertEqual(len(sweep["removed_fixed_component_names"]), 7)
+        self.assertEqual(
+            set(sweep["removed_fixed_component_names"]),
+            {
+                *(f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
+                "fixed_cover_frame_01",
+            },
+        )
+        self.assertTrue(
+            {
+                f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)
+            }.issubset(sweep["fixed_obstacle_names"])
+        )
         self.assertAlmostEqual(
             service["drive_sweep_min_clearance_mm"], 0.1, places=6
         )
         sequence = service["drive_module_removal_sequence"]
-        self.assertIn("remove_lower_cover_panels_and_bottom_frame", sequence)
+        self.assertEqual(
+            sequence[:9],
+            [
+                "deenergize_all_power_sources_and_unload_tendons",
+                "remove_24_M3_lower_cover_fasteners",
+                *(f"remove_fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
+                "remove_bottom_cover_frame_01",
+            ],
+        )
         self.assertIn("remove_three_motor_cross_pins", sequence)
         self.assertIn("translate_plate_downward_to_withdraw_D6_shafts", sequence[-1])
 
@@ -494,15 +608,33 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertGreaterEqual(bounds.zmax, 999.0)
         self.assertLessEqual(bounds.zmin, -239.0)
 
+        cover = cq.importers.importStep(str(self.exports["root_cover"])).val()
+        cover_bounds = cover.BoundingBox()
+        self.assertTrue(cover.isValid())
+        self.assertAlmostEqual(cover_bounds.xlen, 322.0, places=3)
+        self.assertAlmostEqual(cover_bounds.ylen, 283.092, places=3)
+        self.assertAlmostEqual(cover_bounds.zlen, 300.0, places=3)
+        maximum_radius = max(
+            math.hypot(vertex.Center().x, vertex.Center().y)
+            for vertex in cover.Vertices()
+        )
+        self.assertAlmostEqual(2.0 * maximum_radius, 322.019, places=3)
+
     def test_audit_contains_alignment_load_and_source_sections(self) -> None:
         for key in ("alignment", "engineering", "sources", "collisions", "service", "cover_layout"):
             self.assertIn(key, self.audit)
         self.assertEqual(len(self.audit["alignment"]), 3)
         cover = self.audit["cover_layout"]
-        self.assertEqual(cover["outer_circumdiameter_mm"], 332.0)
-        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 104.031746, places=5)
-        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
-        self.assertEqual(cover["frame_outer_circumradius_ranges_mm"][1:], [[166.0, 166.0]] * 3)
+        self.assertEqual(cover["nominal_profile_circumdiameter_mm"], 324.0)
+        self.assertEqual(len(cover["frame_outer_circumradii_mm"]), 3)
+        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 97.260465, places=5)
+        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][1], 159.228719, places=5)
+        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [cover["frame_outer_circumradii_mm"][1]] * 2)
+        center_radius = cover["frame_outer_circumradii_mm"][1]
+        self.assertEqual(
+            cover["frame_outer_circumradius_ranges_mm"][1:],
+            [[center_radius, center_radius], [center_radius, center_radius]],
+        )
         self.assertEqual(cover["frame_radial_thickness_mm"], 4.0)
         self.assertEqual(cover["window_surround_reveal_mm"], 1.5)
         self.assertEqual(cover["window_surround_width_mm"], 8.0)
