@@ -63,6 +63,14 @@ B32 是本地论文构形和打印前研究的主要基线。当前参数记录�
 
 [`integrated_assembly_v27_1m_modular_m2006`](local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/) 是与 V26 并列保存的新候选，不覆盖 B32/V26 基线。该版本采用 1,000 mm、42 单元、四段打印臂体；螺旋参数由论文中心线长度方程反求（`b=0.140222015932`、`Δθ=30.918497752014°`）。三处燕尾榫切入既有关节单元 5、10、18 内部；第 18 单元切面为保留末段实体连续向根部偏移 6 mm。整根四段臂体从 Ø180 根部快换接口拆换，三台 M2006 连同共同安装板作为另一个模块拆换；电机竖轴经 KHK SM1.25-25H（每路一对、1:1）目录尺寸包络驱动水平切向线盘轴，线盘轴与电机轴垂直。拉索从线盘下侧真实圆柱面切点沿径向直线进入根部线孔；两侧干仓、轴承、轴封/迷宫、输出轴及线盘留在 250 mm 顶盘基座。电子件使用经哈希校验的冻结 STEP 快照，不依赖 V25 旧生成链（[快照清单](v27_electronics_snapshot/V27电子件快照.json)）。目录内提供模块/整机与四段打印 STEP、四个臂段 STL、CAD 审查图、螺旋曲线、[推导报告 PDF](local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/V27_5m水深_1m三缆臂螺旋函数推导.pdf) 和计算审计。新增回归检查三路实际线盘表面切点、两轴点积和下侧切向出线。本轮按方案 1 将 M2006 D6 插座与固定输入轴合为一件，保留可拆 Ø2.8 mm 横销；横销本体目前仅为 CAD 圆柱代理，防脱件类型尚未选定且未建模，采购/加工前须确定正向保持方式与工具操作空间；湿侧线盘保持独立可换，使用 Ø10.1 mm 圆形通孔和 Ø2.5 mm 径向驱动销，并增加 Ø10.8×0.8 mm 内止肩、Ø9.6×1.0 mm 卡簧槽和 Ø16 mm 卡簧几何包络。三路线盘正切向 32 mm 拆卸扫掠纳入装配审计。全装配无禁止碰撞及拆卸扫掠通过均是 CAD 候选证据，不代表 CNC 配合或真实维护已验证。齿轮齿形/啮合、卡簧选型与保持力、轴强度、打印强度、水密、30 分钟温升和 1 kg 水下任务仍未验证。
 
+V27 根部外罩恢复为**阶梯护甲式外观**：保留六面分片和可拆下部服务板，外侧增加明显收肩、四道外凸六边形环带和倒角检修窗框；每道环带为独立打印件，螺钉孔仍按 M3、Ø3.4 mm、切向 ±35 mm 设置。中央两道 8 mm 环带在 Z=-80 mm 接缝处加工 2.0 mm 高、1.2 mm 径向退让浅槽，形成清楚分层，不改变各带高度、螺钉行或总外廓。剖面和装配记录见[打印前审查](local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/preprint_review/V27打印前审查.md)。名义轮廓为 Ø324 mm，环带外廓 Ø332 mm；导出面板最大径向直径 Ø322.019 mm、面板包围盒 322 × 283.092 × 300 mm，含外凸环带的整体包围盒为 332 × 287.52 × 300 mm。350 mm 平台上按 X 最大尺寸计算每侧名义余量 9 mm，仍须由切片器逐件确认摆放和 brim 空间。外侧环带 M3 孔采用 Ø8 × 2 mm 浅沉孔加 Ø3.4 mm 通孔，审查采用 Ø2.5 mm 细杆工具代理；紧固接收方式尚未建模，环带局部剩余壁厚/打印夹紧强度未验证。电机板维护时拆下 24 颗下部 M3 螺钉、6 块下部服务板和底环带 01，底环带上方的 02、03、04 保持安装，再沿负 Z 抽出 280 mm。上述均为静态 CAD 几何证据，不代表切片、强度或水下验证。
+
+![V27 阶梯护甲包覆件改版前后对比](local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/V27_包覆件改版前后对比.png)
+
+![V27 阶梯护甲不透明外观](local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/V27_阶梯护甲外观.png)
+
+半透明总装仍见[总装与包覆预览](local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/V27_半透明包覆件总装与拆卸.png)。
+
 ### V26 原机械臂与V25电子仓整合总装
 
 [`integrated_assembly_v26_arm_and_v25_electronics`](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/) 是当前独立整机候选：保持原B32五实体机械臂、燕尾分段和三路M3508机构不变，完整复用V25电子仓，并输出[整机STEP](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_原机械臂与V25电子仓整合总装.step)、[全高预览](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_整机半透明预览.png)、[根部接口近景](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/B32_v26_根部与电子仓接口近景.png)和[整合审查](local/spiral-soft-arm/solidworks/integrated_assembly_v26_arm_and_v25_electronics/整机整合审查.json)。该版本是静态装配与坐标审查候选，不是打印、水密或运动验证结论。

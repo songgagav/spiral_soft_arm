@@ -102,8 +102,8 @@ class V27ZZDeliveryTests(unittest.TestCase):
         self.assertIn("C610 固定在电子/控制侧", text)
         self.assertIn("固定密封边界", text)
         self.assertIn("拆下 24 颗下部 M3 面板螺钉", text)
-        self.assertIn("六块下部服务板及底部支撑框 01", text)
-        self.assertIn("六块上部面板和中央支撑框 02 保持安装", text)
+        self.assertIn("六块下部服务板及底部环带 01", text)
+        self.assertIn("六块上部面板及环带 02、03、04 保持安装", text)
 
     def test_readme_and_preprint_record_final_cover_contract(self) -> None:
         readme = self.local_readme.read_text(encoding="utf-8")
@@ -111,11 +111,15 @@ class V27ZZDeliveryTests(unittest.TestCase):
             encoding="utf-8"
         )
         for value in (
-            "12 片独立打印件",
-            "三道六边形支撑框",
+            "12 块独立面板",
+            "四道外凸六边形环带",
             "324 mm",
+            "332 mm",
             "322.019 mm",
             "322 × 283.092 × 300 mm",
+            "332 × 287.52 × 300 mm",
+            "Ø8 × 2 mm",
+            "Ø2.5 mm",
             "±35 mm",
             "280 mm",
             "接收方式尚未建模",
@@ -123,9 +127,12 @@ class V27ZZDeliveryTests(unittest.TestCase):
             self.assertIn(value, readme)
         for value in (
             "12 块独立面板",
-            "三道支撑框",
+            "四道外凸环带",
             "324 mm",
+            "332.000 mm",
             "322.019 mm",
+            "Ø8 × 2 mm",
+            "Ø2.5 mm",
             "Ø3.4 mm",
             "±35 mm",
             "接收件尚未确定或建模",
@@ -208,7 +215,7 @@ class V27DriveSweepUnitTests(unittest.TestCase):
 
 
 class V27CoverIntegrationTests(unittest.TestCase):
-    def test_flat_cover_is_present_and_clear_in_full_assembly(self) -> None:
+    def test_stepped_cover_is_present_and_clear_in_full_assembly(self) -> None:
         result = build_v27_assembly(load_contract())
         panel_names = tuple(
             name
@@ -226,7 +233,10 @@ class V27CoverIntegrationTests(unittest.TestCase):
                 *(f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)),
             },
         )
-        self.assertEqual(len(frame_names), 3)
+        self.assertEqual(
+            frame_names,
+            tuple(f"fixed_cover_frame_{index:02d}" for index in range(1, 5)),
+        )
         self.assertIn("fixed_root_guard_hex", result.components)
         audit = preflight_v27(result)
         self.assertEqual(audit["collisions"]["forbidden"], [])
@@ -237,12 +247,29 @@ class V27CoverIntegrationTests(unittest.TestCase):
         self.assertEqual(cover["lower_service_panel_count"], 6)
         self.assertEqual(cover["service_split_z_mm"], -80.0)
         self.assertEqual(len(cover["panel_component_bounds_mm"]), 12)
-        self.assertEqual(len(cover["frame_component_bounds_mm"]), 3)
+        self.assertEqual(len(cover["frame_component_bounds_mm"]), 4)
         self.assertEqual(cover["nominal_profile_circumdiameter_mm"], 324.0)
+        self.assertEqual(cover["nominal_outer_armor_circumdiameter_mm"], 332.0)
         self.assertEqual(cover["actual_panel_max_radial_diameter_mm"], 322.019)
         self.assertEqual(
             cover["actual_panel_assembly_bounds_mm"],
             {"x": 322.0, "y": 283.092, "z": 300.0},
+        )
+        outer_bounds = cover["actual_outer_cover_assembly_bounds_mm"]
+        self.assertEqual(
+            outer_bounds,
+            {"x": 332.0, "y": 287.52, "z": 300.0},
+        )
+        self.assertEqual(
+            cover["actual_outer_cover_max_radial_diameter_mm"],
+            332.0,
+        )
+        self.assertLessEqual(max(outer_bounds["x"], outer_bounds["y"]), 350.0)
+        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 104.031746, places=5)
+        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
+        self.assertEqual(
+            [[round(value, 3) for value in pair] for pair in cover["frame_outer_circumradius_ranges_mm"]],
+            [[102.0, 106.063], [166.0, 166.0], [166.0, 166.0], [166.0, 166.0]],
         )
         self.assertEqual(cover["panel_height_mm"], 300.0)
         self.assertEqual(
@@ -257,8 +284,29 @@ class V27CoverIntegrationTests(unittest.TestCase):
                 "tool_access_relief_diameter_mm": 8.6,
                 "tool_access_relief_depth_mm": 2.5,
                 "tool_access_relief_location": "lower_panel_05_bottom_support_row",
+                "frame_tool_access_diameter_mm": 8.0,
+                "frame_tool_access_recess_depth_mm": 2.0,
+                "frame_tool_access_count": 48,
+                "tool_driver_shaft_diameter_mm": 2.5,
                 "receiver_hardware": "not modeled; M3 nut or insert method remains to be selected",
             },
+        )
+        sweep = audit["service"]["drive_removal_sweep"]
+        self.assertEqual(sweep["travel_mm"], 280.0)
+        self.assertTrue(sweep["passes"])
+        self.assertEqual(
+            set(sweep["removed_fixed_component_names"]),
+            {
+                *(f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
+                "fixed_cover_frame_01",
+            },
+        )
+        self.assertTrue(
+            {
+                "fixed_cover_frame_02",
+                "fixed_cover_frame_03",
+                "fixed_cover_frame_04",
+            }.issubset(sweep["fixed_obstacle_names"])
         )
 
 
@@ -611,14 +659,14 @@ class V27IntegrationTests(unittest.TestCase):
         cover = cq.importers.importStep(str(self.exports["root_cover"])).val()
         cover_bounds = cover.BoundingBox()
         self.assertTrue(cover.isValid())
-        self.assertAlmostEqual(cover_bounds.xlen, 322.0, places=3)
-        self.assertAlmostEqual(cover_bounds.ylen, 283.092, places=3)
+        self.assertAlmostEqual(cover_bounds.xlen, 332.0, places=3)
+        self.assertAlmostEqual(cover_bounds.ylen, 287.52, places=3)
         self.assertAlmostEqual(cover_bounds.zlen, 300.0, places=3)
         maximum_radius = max(
             math.hypot(vertex.Center().x, vertex.Center().y)
             for vertex in cover.Vertices()
         )
-        self.assertAlmostEqual(2.0 * maximum_radius, 322.019, places=3)
+        self.assertAlmostEqual(2.0 * maximum_radius, 332.0, places=3)
 
     def test_audit_contains_alignment_load_and_source_sections(self) -> None:
         for key in ("alignment", "engineering", "sources", "collisions", "service", "cover_layout"):
@@ -626,14 +674,12 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertEqual(len(self.audit["alignment"]), 3)
         cover = self.audit["cover_layout"]
         self.assertEqual(cover["nominal_profile_circumdiameter_mm"], 324.0)
-        self.assertEqual(len(cover["frame_outer_circumradii_mm"]), 3)
-        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 97.260465, places=5)
-        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][1], 159.228719, places=5)
-        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [cover["frame_outer_circumradii_mm"][1]] * 2)
-        center_radius = cover["frame_outer_circumradii_mm"][1]
+        self.assertEqual(len(cover["frame_outer_circumradii_mm"]), 4)
+        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 104.031746, places=5)
+        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
         self.assertEqual(
-            cover["frame_outer_circumradius_ranges_mm"][1:],
-            [[center_radius, center_radius], [center_radius, center_radius]],
+            [[round(value, 3) for value in pair] for pair in cover["frame_outer_circumradius_ranges_mm"]],
+            [[102.0, 106.063], [166.0, 166.0], [166.0, 166.0], [166.0, 166.0]],
         )
         self.assertEqual(cover["frame_radial_thickness_mm"], 4.0)
         self.assertEqual(cover["window_surround_reveal_mm"], 1.5)
@@ -690,6 +736,8 @@ class V27IntegrationTests(unittest.TestCase):
                 "dovetail_joints",
                 "root_cover_review",
                 "root_cover_only",
+                "cover_comparison",
+                "root_cover_opaque",
             },
         )
         for path in self.images.values():
@@ -697,6 +745,11 @@ class V27IntegrationTests(unittest.TestCase):
             with Image.open(path) as image:
                 self.assertGreaterEqual(image.width, 1200)
                 self.assertGreaterEqual(image.height, 800)
+        baseline_path = self.contract.output_directory / "V27_简化版包覆基线.png"
+        self.assertTrue(baseline_path.is_file())
+        with Image.open(baseline_path) as before_image:
+            with Image.open(self.images["root_cover_only"]) as after_image:
+                self.assertEqual(before_image.size, after_image.size)
         with Image.open(self.images["drive_details"]) as image:
             self.assertGreaterEqual(image.width, 1600)
             self.assertGreaterEqual(image.height, 900)

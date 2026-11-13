@@ -591,9 +591,11 @@ def _electronics_review(result: Any, path: Path) -> None:
     _save(figure, path)
 
 
-def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
+def _cover_review(
+    result: Any, path: Path, exploded_path: Path, opaque_path: Path
+) -> None:
     figure = plt.figure(figsize=(16, 8.5), dpi=145, facecolor="#f4f6f8")
-    figure.suptitle("V27 根部平面拼接包覆｜下部可拆服务分界、检修观察窗、根部短护罩", fontsize=17, y=0.97)
+    figure.suptitle("V27 阶梯护甲根部包覆｜四道外凸环带、下部服务分界与检修窗框", fontsize=17, y=0.97)
     axes = [
         figure.add_subplot(1, 2, index, projection="3d")
         for index in (1, 2)
@@ -639,17 +641,17 @@ def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
         ax.set_zlim(-250, 80)
         ax.set_box_aspect((360, 360, 330))
         ax.view_init(elev=18, azim=35)
-    axes[0].set_title("装配状态：六面护甲与齐平服务分界", fontsize=12)
+    axes[0].set_title("装配状态：肩部、环带与六面护甲", fontsize=12)
     axes[0].text2D(
         0.04,
         0.04,
-        "六边平面护甲｜下部检修板｜外水连通｜非耐压壳",
+        "四道外凸六边形环带｜下部可拆服务板｜外水连通｜非耐压壳",
         transform=axes[0].transAxes,
         fontsize=10,
         color="#263746",
         bbox={"facecolor": "white", "alpha": 0.82, "edgecolor": "#cbd4db"},
     )
-    axes[1].set_title("拆卸示意：拆出下部服务板", fontsize=12)
+    axes[1].set_title("拆卸示意：移出一块下部服务板", fontsize=12)
     detached = result.components["fixed_cover_lower_panel_05"].translate(cq.Vector(0.0, -24.0, 0.0))
     color, alpha = _group_style(result, "fixed_cover_panel_detached")
     _add(axes[1], detached, color, 0.40)
@@ -668,8 +670,81 @@ def _cover_review(result: Any, path: Path, exploded_path: Path) -> None:
     ax.set_zlim(-250, 80)
     ax.set_box_aspect((360, 360, 330))
     ax.view_init(elev=20, azim=35)
-    ax.set_title("V27 包覆附件｜齐平上下服务分界", fontsize=13, pad=10)
+    ax.set_title("V27 阶梯护甲包覆附件｜半透明检查视图", fontsize=13, pad=10)
     _save(figure2, exploded_path)
+
+    _cover_opaque_view(
+        [(name, result.components[name]) for name in cover_names], opaque_path
+    )
+
+
+def _cover_opaque_view(parts: Iterable[tuple[str, cq.Shape]], path: Path) -> None:
+    figure = plt.figure(figsize=(9, 7), dpi=140, facecolor="#f4f6f8")
+    ax = figure.add_subplot(111, projection="3d")
+    ax.set_facecolor("#f4f6f8")
+    ax.set_axis_off()
+    ax.set_proj_type("ortho")
+    for name, shape in parts:
+        if "cover_frame" in name:
+            color = "#354c5c"
+        elif "root_guard" in name:
+            color = "#557989"
+        else:
+            color = "#d9e1e7"
+        _add(ax, shape, color, 0.98)
+    ax.set_xlim(-180, 180)
+    ax.set_ylim(-180, 180)
+    ax.set_zlim(-250, 80)
+    ax.set_box_aspect((360, 360, 330))
+    ax.view_init(elev=20, azim=35)
+    ax.set_title("V27 阶梯护甲｜不透明外观预览", fontsize=14, pad=12)
+    ax.text2D(
+        0.02,
+        0.03,
+        "四道浅环带 · 平面拼接板 · 8 mm 倒角窗框",
+        transform=ax.transAxes,
+        fontsize=9,
+        color="#263746",
+        bbox={"facecolor": "white", "alpha": 0.84, "edgecolor": "#cbd4db"},
+    )
+    _save(figure, path)
+
+
+def _cover_comparison(before_path: Path, after_path: Path, output_path: Path) -> None:
+    if not before_path.is_file():
+        raise FileNotFoundError(f"simplified-cover baseline is missing: {before_path}")
+    if not after_path.is_file():
+        raise FileNotFoundError(f"restored-cover preview is missing: {after_path}")
+    before = plt.imread(before_path)
+    after = plt.imread(after_path)
+    if before.shape[:2] != after.shape[:2]:
+        raise ValueError(
+            "cover comparison images must share the same pixel dimensions and camera scale"
+        )
+
+    figure, axes = plt.subplots(1, 2, figsize=(18, 8.5), dpi=120, facecolor="#f4f6f8")
+    figure.suptitle(
+        "V27 包覆外观改版前后对比｜同一相机与坐标范围",
+        fontsize=18,
+        y=0.98,
+    )
+    for ax, image, title in (
+        (axes[0], before, "改版前｜V27 简化六棱包覆"),
+        (axes[1], after, "改版后｜V27 阶梯护甲"),
+    ):
+        ax.imshow(image)
+        ax.set_axis_off()
+        ax.set_title(title, fontsize=14, pad=12)
+    figure.text(
+        0.5,
+        0.025,
+        "固定显示范围：X/Y ±180 mm，Z −250…80 mm；相机方位 elev 20° / azim 35°",
+        ha="center",
+        fontsize=10,
+        color="#3c4e59",
+    )
+    figure.subplots_adjust(left=0.01, right=0.99, top=0.88, bottom=0.07, wspace=0.02)
+    _save(figure, output_path)
 
 
 def _dovetail_review(result: Any, path: Path) -> None:
@@ -722,6 +797,8 @@ def render_v27(result: Any) -> dict[str, Path]:
         "dovetail_joints": directory / "V27_燕尾榫装配近景.png",
         "root_cover_review": directory / "V27_半透明包覆件总装与拆卸.png",
         "root_cover_only": directory / "V27_六边形包覆附件.png",
+        "root_cover_opaque": directory / "V27_阶梯护甲外观.png",
+        "cover_comparison": directory / "V27_包覆件改版前后对比.png",
     }
     _full_review(result, paths["full_transparent"])
     _exploded_review(result, paths["exploded_modules"])
@@ -730,5 +807,15 @@ def render_v27(result: Any) -> dict[str, Path]:
     _drive_details_sheet(result, paths["drive_details"])
     _electronics_review(result, paths["electronics_bay"])
     _dovetail_review(result, paths["dovetail_joints"])
-    _cover_review(result, paths["root_cover_review"], paths["root_cover_only"])
+    _cover_review(
+        result,
+        paths["root_cover_review"],
+        paths["root_cover_only"],
+        paths["root_cover_opaque"],
+    )
+    _cover_comparison(
+        directory / "V27_简化版包覆基线.png",
+        paths["root_cover_only"],
+        paths["cover_comparison"],
+    )
     return paths

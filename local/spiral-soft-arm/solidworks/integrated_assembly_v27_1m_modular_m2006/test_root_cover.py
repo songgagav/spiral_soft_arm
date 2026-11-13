@@ -40,7 +40,7 @@ class V27RootCoverTests(unittest.TestCase):
             result.upper_panel_names,
             tuple(f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)),
         )
-        self.assertEqual(len(result.frame_names), 3)
+        self.assertEqual(len(result.frame_names), 4)
         self.assertEqual(len(result.motor_window_panels), 3)
         self.assertEqual(len(result.observation_window_panels), 3)
         self.assertEqual(result.type_c_service_panel, "fixed_cover_lower_panel_05")
@@ -76,6 +76,62 @@ class V27RootCoverTests(unittest.TestCase):
         ):
             self.assertAlmostEqual(actual, expected, places=3)
         self.assertLessEqual(result.nominal_profile_envelope_mm[0], 350.0)
+
+    def test_cover_restores_four_stepped_armor_bands(self) -> None:
+        cover_module = load_module("v27_cover_stepped_bands_for_tests", "root_cover.py")
+        result = cover_module.build_root_cover(self.contract)
+        self.assertEqual(
+            result.frame_names,
+            tuple(f"fixed_cover_frame_{index:02d}" for index in range(1, 5)),
+        )
+        expected_z_bounds = (
+            (-236.0, -228.0),
+            (-88.0, -80.0),
+            (-80.0, -72.0),
+            (56.0, 64.0),
+        )
+        for name, expected_bounds in zip(result.frame_names, expected_z_bounds):
+            band = result.components[name]
+            self.assertTrue(band.isValid(), msg=name)
+            self.assertEqual(len(band.Solids()), 1, msg=name)
+            bounds = band.BoundingBox()
+            self.assertAlmostEqual(bounds.zmin, expected_bounds[0], places=5, msg=name)
+            self.assertAlmostEqual(bounds.zmax, expected_bounds[1], places=5, msg=name)
+
+        def max_radius(shape: cq.Shape) -> float:
+            return max(
+                math.hypot(vertex.Center().x, vertex.Center().y)
+                for vertex in shape.Vertices()
+            )
+
+        self.assertAlmostEqual(max_radius(result.components[result.frame_names[0]]), 106.063, places=2)
+        for name in result.frame_names[1:]:
+            self.assertAlmostEqual(max_radius(result.components[name]), 166.0, places=3)
+
+    def test_center_armor_bands_have_a_visible_recessed_seam(self) -> None:
+        cover_module = load_module("v27_cover_center_band_seam_for_tests", "root_cover.py")
+        result = cover_module.build_root_cover(self.contract)
+        config = self.contract.integration["root_cover"]
+        self.assertEqual(config["central_band_seam_height_mm"], 2.0)
+        self.assertEqual(config["central_band_seam_radial_recess_mm"], 1.2)
+        seam_probe = cover_module._face_box(
+            90.0,
+            143.4,
+            0.0,
+            -80.0,
+            20.0,
+            0.1,
+            0.5,
+        )
+        for name in ("fixed_cover_frame_02", "fixed_cover_frame_03"):
+            band = result.components[name]
+            self.assertTrue(band.isValid(), msg=name)
+            self.assertEqual(len(band.Solids()), 1, msg=name)
+            self.assertLess(
+                band.intersect(seam_probe).Volume(),
+                1e-3,
+                msg=f"{name} has no visible recessed break at the armor seam",
+            )
 
     def test_split_cover_panels_keep_all_service_openings(self) -> None:
         cover_module = load_module("v27_cover_service_openings_for_tests", "root_cover.py")
@@ -122,9 +178,9 @@ class V27RootCoverTests(unittest.TestCase):
     def test_cover_frames_fit_printer_and_root_guard_clears_arm(self) -> None:
         cover_module = load_module("v27_cover_for_tests", "root_cover.py")
         result = cover_module.build_root_cover(self.contract)
-        self.assertEqual(len(result.frame_names), 3)
+        self.assertEqual(len(result.frame_names), 4)
         extents = [result.components[name].BoundingBox() for name in result.frame_names]
-        self.assertLess(max(box.xlen for box in extents), 324.0)
+        self.assertAlmostEqual(max(box.xlen for box in extents), 332.0, places=3)
         self.assertLessEqual(max(box.xlen for box in extents), 350.0)
         self.assertLessEqual(max(box.ylen for box in extents), 350.0)
         self.assertTrue(result.components[result.root_guard_name].isValid())
@@ -356,7 +412,7 @@ class V27RootCoverTests(unittest.TestCase):
             (
                 result.upper_panel_names,
                 (cfg["frame_z_centers_mm"][2], cfg["frame_z_centers_mm"][3]),
-                (1, 2),
+                (2, 3),
             ),
         )
         for region_names, support_z_values, frame_indices in regions:
@@ -406,15 +462,17 @@ class V27RootCoverTests(unittest.TestCase):
                             1e-3,
                             msg=f"{panel_name} M3 axis is not normal to its panel face",
                         )
-                        frame_point = (
-                            radial * (face_apothem - panel_thickness)
-                            + tangent * tangent_offset
-                            + cq.Vector(0.0, 0.0, center_z)
-                        )
+                        frame_outer_apothem = (
+                            radius + float(cfg["frame_radial_thickness_mm"])
+                        ) * math.cos(math.radians(30.0))
+                        normal_offset = (
+                            frame_outer_apothem - face_apothem
+                        ) / math.sqrt(1.0 + slope * slope)
+                        frame_outer_point = face_point + outward * normal_offset
                         frame_axis_probe = cq.Solid.makeCylinder(
                             1.6,
                             18.0,
-                            frame_point + outward * 0.1,
+                            frame_outer_point + outward * 0.1,
                             -outward,
                         )
                         self.assertLess(
@@ -423,24 +481,40 @@ class V27RootCoverTests(unittest.TestCase):
                             msg=f"frame {frame_index + 1} M3 axis is blocked",
                         )
 
-                        tool = cq.Solid.makeCylinder(
+                        tool_recess = cq.Solid.makeCylinder(
                             4.0,
-                            9.8,
-                            face_point + outward * 0.1,
-                            outward,
+                            2.0,
+                            frame_outer_point + outward * 0.1,
+                            -outward,
                         )
-                        for other_name, other_shape in result.components.items():
-                            self.assertLess(
-                                other_shape.intersect(tool).Volume(),
-                                1e-3,
-                                msg=(
-                                    f"M3 tool access for {panel_name}, face {normal_deg}, "
-                                    f"tangent {tangent_offset}, z={center_z} is blocked by {other_name}"
-                                ),
-                            )
+                        self.assertLess(
+                            frame.intersect(tool_recess).Volume(),
+                            1e-3,
+                            msg=(
+                                f"M3 outer Ø8 x 2 mm access recess for {panel_name}, "
+                                f"face {normal_deg}, tangent {tangent_offset}, "
+                                f"z={center_z} is blocked"
+                            ),
+                        )
+                        tool_shaft = cq.Solid.makeCylinder(
+                            1.25,
+                            18.0,
+                            frame_outer_point + outward * 0.1,
+                            -outward,
+                        )
+                        self.assertLess(
+                            frame.intersect(tool_shaft).Volume(),
+                            1e-3,
+                            msg=f"M3 driver shaft is blocked by {result.frame_names[frame_index]}",
+                        )
+                        self.assertLess(
+                            panel.intersect(tool_shaft).Volume(),
+                            1e-3,
+                            msg=f"M3 driver shaft is blocked by {panel_name}",
+                        )
 
-    def test_cover_support_frames_are_flush_with_panel_envelope(self) -> None:
-        cover_module = load_module("v27_cover_flush_frames_for_tests", "root_cover.py")
+    def test_cover_armor_frames_extend_four_mm_beyond_panel_envelope(self) -> None:
+        cover_module = load_module("v27_cover_external_frames_for_tests", "root_cover.py")
         result = cover_module.build_root_cover(self.contract)
         cfg = self.contract.integration["root_cover"]
 
@@ -453,7 +527,12 @@ class V27RootCoverTests(unittest.TestCase):
             self.fail(f"support frame z={z_mm} is outside the cover profile")
 
         normals = (30.0, 90.0, 150.0, 210.0, 270.0, 330.0)
-        frame_bounds = ((-236.0, -228.0), (-88.0, -72.0), (56.0, 64.0))
+        frame_bounds = (
+            (-236.0, -228.0),
+            (-88.0, -80.0),
+            (-80.0, -72.0),
+            (56.0, 64.0),
+        )
         for name, (z0, z1) in zip(result.frame_names, frame_bounds):
             frame = result.components[name]
             for z_mm in (z0, z1):
@@ -464,9 +543,12 @@ class V27RootCoverTests(unittest.TestCase):
                 ]
                 self.assertTrue(vertices, msg=f"{name} has no vertices at z={z_mm}")
                 target_apothem = (
-                    radius_at(z_mm) * math.cos(math.radians(30.0))
-                    - float(cfg["panel_thickness_mm"])
-                )
+                    radius_at(z_mm) + float(cfg["frame_radial_thickness_mm"])
+                ) * math.cos(math.radians(30.0))
+                if abs(z_mm - float(cfg["central_band_seam_z_mm"])) < 1e-6:
+                    target_apothem -= float(
+                        cfg["central_band_seam_radial_recess_mm"]
+                    ) * math.cos(math.radians(30.0))
                 for normal_deg in normals:
                     angle = math.radians(normal_deg)
                     maximum_projection = max(
@@ -477,7 +559,7 @@ class V27RootCoverTests(unittest.TestCase):
                         maximum_projection,
                         target_apothem,
                         places=4,
-                        msg=f"{name} is not recessed flush behind face {normal_deg}",
+                        msg=f"{name} does not form the approved exterior step at face {normal_deg}",
                     )
 
     def test_cover_parts_fit_nominal_printer_bounds(self) -> None:

@@ -236,14 +236,14 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
                 ),
             ]
         )
-    # Lower/upper service panels share the merged seam support ring.
+    # Each panel half is supported by its own exterior armor rows.
     for index in range(1, 7):
         intentional.extend(
             [
                 (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_01"),
                 (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_02"),
-                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_02"),
                 (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_03"),
+                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_04"),
             ]
         )
     for index in range(1, 4):
@@ -951,35 +951,23 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     cover_support_hole_centers = [
         float(value) for value in cover_cfg["frame_z_centers_mm"]
     ]
-    cover_frame_specs = (
+    cover_frame_specs = tuple(
         (
-            cover_support_hole_centers[0],
-            cover_support_hole_centers[0] - cover_frame_height / 2.0,
-            cover_support_hole_centers[0] + cover_frame_height / 2.0,
-        ),
-        (
-            0.5 * (cover_support_hole_centers[1] + cover_support_hole_centers[2]),
-            cover_support_hole_centers[1] - cover_frame_height / 2.0,
-            cover_support_hole_centers[2] + cover_frame_height / 2.0,
-        ),
-        (
-            cover_support_hole_centers[3],
-            cover_support_hole_centers[3] - cover_frame_height / 2.0,
-            cover_support_hole_centers[3] + cover_frame_height / 2.0,
-        ),
+            center_z,
+            center_z - cover_frame_height / 2.0,
+            center_z + cover_frame_height / 2.0,
+        )
+        for center_z in cover_support_hole_centers
     )
     cover_frame_centers = [spec[0] for spec in cover_frame_specs]
     cover_frame_outer_radii = [
-        cover_radius_at(center_z)
-        - float(cover_cfg["panel_thickness_mm"]) / math.cos(math.radians(30.0))
+        cover_radius_at(center_z) + cover_frame_thickness
         for center_z in cover_frame_centers
     ]
     cover_frame_outer_radius_ranges = [
         [
-            cover_radius_at(band_z0)
-            - float(cover_cfg["panel_thickness_mm"]) / math.cos(math.radians(30.0)),
-            cover_radius_at(band_z1)
-            - float(cover_cfg["panel_thickness_mm"]) / math.cos(math.radians(30.0)),
+            cover_radius_at(band_z0) + cover_frame_thickness,
+            cover_radius_at(band_z1) + cover_frame_thickness,
         ]
         for _, band_z0, band_z1 in cover_frame_specs
     ]
@@ -992,7 +980,8 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     )
     cover_panel_names = (*cover_lower_panel_names, *cover_upper_panel_names)
     cover_frame_names = tuple(
-        f"fixed_cover_frame_{index:02d}" for index in range(1, 4)
+        f"fixed_cover_frame_{index:02d}"
+        for index in range(1, len(cover_support_hole_centers) + 1)
     )
     cover_panel_shapes = [result.components[name] for name in cover_panel_names]
     cover_panel_compound = cq.Compound.makeCompound(cover_panel_shapes)
@@ -1000,6 +989,16 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     cover_panel_max_radius = max(
         math.hypot(vertex.Center().x, vertex.Center().y)
         for shape in cover_panel_shapes
+        for vertex in shape.Vertices()
+    )
+    cover_outer_shapes = [
+        result.components[name] for name in (*cover_panel_names, *cover_frame_names)
+    ]
+    cover_outer_compound = cq.Compound.makeCompound(cover_outer_shapes)
+    cover_outer_bounds = cover_outer_compound.BoundingBox()
+    cover_outer_max_radius = max(
+        math.hypot(vertex.Center().x, vertex.Center().y)
+        for shape in cover_outer_shapes
         for vertex in shape.Vertices()
     )
 
@@ -1289,6 +1288,9 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             "nominal_profile_circumdiameter_mm": round(
                 2.0 * cover_max_radius, 3
             ),
+            "nominal_outer_armor_circumdiameter_mm": round(
+                2.0 * (cover_max_radius + cover_frame_thickness), 3
+            ),
             "actual_panel_max_radial_diameter_mm": round(
                 2.0 * cover_panel_max_radius, 3
             ),
@@ -1296,6 +1298,14 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                 "x": round(cover_panel_bounds.xlen, 3),
                 "y": round(cover_panel_bounds.ylen, 3),
                 "z": round(cover_panel_bounds.zlen, 3),
+            },
+            "actual_outer_cover_max_radial_diameter_mm": round(
+                2.0 * cover_outer_max_radius, 3
+            ),
+            "actual_outer_cover_assembly_bounds_mm": {
+                "x": round(cover_outer_bounds.xlen, 3),
+                "y": round(cover_outer_bounds.ylen, 3),
+                "z": round(cover_outer_bounds.zlen, 3),
             },
             "panel_height_mm": round(
                 float(cover_cfg["panel_z_bounds_mm"][1])
@@ -1342,6 +1352,12 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                     cover_cfg["window_surround_proud_mm"]
                 ),
                 "tool_access_relief_location": "lower_panel_05_bottom_support_row",
+                "frame_tool_access_diameter_mm": 8.0,
+                "frame_tool_access_recess_depth_mm": 2.0,
+                "frame_tool_access_count": 6
+                * len(cover_support_hole_centers)
+                * len(cover_cfg["panel_fastener_tangent_offsets_mm"]),
+                "tool_driver_shaft_diameter_mm": 2.5,
                 "receiver_hardware": "not modeled; M3 nut or insert method remains to be selected",
             },
             "window_surround_reveal_mm": float(

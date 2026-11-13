@@ -165,6 +165,8 @@ def _profile_frame(
     bolt_radius_mm: float,
     bolt_offsets_mm: tuple[float, ...],
     bolt_z_values_mm: tuple[float, ...],
+    tool_access_diameter_mm: float,
+    tool_access_recess_depth_mm: float,
 ) -> cq.Shape:
     z0, z1 = z_bounds_mm
     outer = cq.Solid.makeLoft(
@@ -183,26 +185,46 @@ def _profile_frame(
     )
     frame = outer.cut(inner)
     face_slope = math.cos(math.radians(30.0)) * (
-        outer_radii_mm[1] - outer_radii_mm[0]
+        inner_radii_mm[1] - inner_radii_mm[0]
     ) / (z1 - z0)
     for bolt_z in bolt_z_values_mm:
         fraction = (bolt_z - z0) / (z1 - z0)
-        outer_radius = outer_radii_mm[0] + fraction * (
+        panel_radius = inner_radii_mm[0] + fraction * (
+            inner_radii_mm[1] - inner_radii_mm[0]
+        )
+        outer_frame_radius = outer_radii_mm[0] + fraction * (
             outer_radii_mm[1] - outer_radii_mm[0]
         )
-        outer_apothem = outer_radius * math.cos(math.radians(30.0))
+        panel_apothem = panel_radius * math.cos(math.radians(30.0))
+        normal_offset = (
+            (outer_frame_radius - panel_radius) * math.cos(math.radians(30.0))
+            / math.sqrt(1.0 + face_slope * face_slope)
+        )
         for normal_deg in (30.0, 90.0, 150.0, 210.0, 270.0, 330.0):
             outward_normal = _surface_outward_normal(normal_deg, face_slope)
             for offset in bolt_offsets_mm:
                 frame = frame.cut(
                     _oriented_face_hole(
                         normal_deg,
-                        outer_apothem,
+                        panel_apothem,
                         offset,
                         bolt_z,
                         bolt_radius_mm,
                         18.0,
                         outward_normal,
+                        normal_offset + 0.1,
+                    )
+                )
+                frame = frame.cut(
+                    _oriented_face_hole(
+                        normal_deg,
+                        panel_apothem,
+                        offset,
+                        bolt_z,
+                        tool_access_diameter_mm / 2.0,
+                        tool_access_recess_depth_mm,
+                        outward_normal,
+                        normal_offset + 0.1,
                     )
                 )
     return frame.clean()
@@ -554,44 +576,55 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                 panel_name
             )
 
-    frame_specs = (
+    frame_specs = tuple(
         (
-            frame_centers[0],
-            frame_centers[0] - frame_height / 2.0,
-            frame_centers[0] + frame_height / 2.0,
-            (frame_centers[0],),
-        ),
-        (
-            0.5 * (frame_centers[1] + frame_centers[2]),
-            frame_centers[1] - frame_height / 2.0,
-            frame_centers[2] + frame_height / 2.0,
-            (frame_centers[1], frame_centers[2]),
-        ),
-        (
-            frame_centers[3],
-            frame_centers[3] - frame_height / 2.0,
-            frame_centers[3] + frame_height / 2.0,
-            (frame_centers[3],),
-        ),
+            frame_z,
+            frame_z - frame_height / 2.0,
+            frame_z + frame_height / 2.0,
+            (frame_z,),
+        )
+        for frame_z in frame_centers
     )
     frame_names: list[str] = []
+    central_seam_z = float(cfg["central_band_seam_z_mm"])
+    central_seam_height = float(cfg["central_band_seam_height_mm"])
+    central_seam_recess = float(cfg["central_band_seam_radial_recess_mm"])
+    if central_seam_height <= 0.0 or central_seam_recess <= 0.0:
+        raise ValueError("central armor seam dimensions must be positive")
+    central_seam_outer_radius = (
+        radius_at(central_seam_z) + frame_radial_thickness + 0.25
+    )
+    central_seam_inner_radius = (
+        central_seam_outer_radius - 0.25 - central_seam_recess
+    )
+    central_seam_start_z = central_seam_z - central_seam_height / 2.0
+    central_seam_groove = _hex_prism(
+        central_seam_outer_radius,
+        central_seam_start_z,
+        central_seam_height,
+    ).cut(
+        _hex_prism(
+            central_seam_inner_radius,
+            central_seam_start_z - 0.1,
+            central_seam_height + 0.2,
+        )
+    )
     for index, (frame_z, band_z0, band_z1, bolt_z_values) in enumerate(
         frame_specs, start=1
     ):
-        panel_inner_radii = tuple(
-            radius - panel_thickness / math.cos(math.radians(30.0))
-            for radius in (radius_at(band_z0), radius_at(band_z1))
-        )
-        frame_inner_radii = tuple(
-            radius - frame_radial_thickness for radius in panel_inner_radii
+        frame_inner_radii = (radius_at(band_z0), radius_at(band_z1))
+        frame_outer_radii = tuple(
+            radius + frame_radial_thickness for radius in frame_inner_radii
         )
         frame = _profile_frame(
             frame_inner_radii,
-            panel_inner_radii,
+            frame_outer_radii,
             (band_z0, band_z1),
             bolt_radius,
             bolt_offsets,
             bolt_z_values,
+            8.0,
+            2.0,
         )
         if index == 1:
             # The low Type-C bezel runs through this band in Z. Relieve its
@@ -614,7 +647,7 @@ def build_root_cover(contract: Any) -> RootCoverResult:
             service_bezel_center_z = service_z - (
                 face_slope / normal_scale
             ) * (surround_proud / 2.0)
-            band_outer_center_radius = (panel_inner_radii[0] + panel_inner_radii[1]) / 2.0
+            band_outer_center_radius = (frame_outer_radii[0] + frame_outer_radii[1]) / 2.0
             frame = frame.cut(
                 _face_box(
                     270.0,
@@ -627,8 +660,12 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                     service_bezel_height + 2.0,
                 )
             )
+        if index in (2, 3):
+            # Recess both mating band edges to show a narrow armor break
+            # without changing the 8 mm band heights or fastener rows.
+            frame = frame.cut(central_seam_groove)
         if abs(frame_z) < 1.0e-8:
-            outer_face_apothem = panel_inner_radii[0] * math.cos(math.radians(30.0))
+            outer_face_apothem = frame_outer_radii[0] * math.cos(math.radians(30.0))
             anchor_z0 = frame_z - frame_height / 2.0
             anchor_height = frame_height / 2.0
             anchor_width = 10.0
