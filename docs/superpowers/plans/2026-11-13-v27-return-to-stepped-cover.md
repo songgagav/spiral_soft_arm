@@ -4,27 +4,29 @@
 
 **Goal:** 将 V27 简化六边形外罩改回具有明显肩部、四道六边形外凸环带和倒角窗框的阶梯护甲，同时保留当前维护接口和机械结构。
 
-**Architecture:** 以提交 `59bf1e5` 的 V27 外罩实现为造型参考，恢复四道 8 mm 高、4 mm 外凸的型面跟随环带和窗口边框；保留当前 12 块上下分板、M3 Ø3.4 mm/±35 mm 紧固孔、两个底部工具让位窝、电子仓/传动布局和根部护圈。总装审计同步从三道框更新为四道框，重新计算实际 STEP 外廓并重新导出预览、审计和哈希清单。
+**Architecture:** 以提交 `59bf1e5` 的 V27 外罩实现为造型参考，恢复四道 8 mm 高、4 mm 外凸的型面跟随环带和窗口边框；保留当前 12 块上下分板、M3 Ø3.4 mm/±35 mm 紧固孔、两个底部工具让位窝、电子仓/传动布局和根部护圈。原定独立闭合环带经整装维护审查后改为六面平面肋条并融合进对应面板。总装审计验证各下板径向拆出和驱动模块 280 mm 抽出，重新计算实际 STEP 外廓并重新导出预览、审计和哈希清单。
 
 **Tech Stack:** Python 3.12、CadQuery 2.8、unittest、STEP、Matplotlib/Pillow、JSON、SHA-256。
 
 **Spec:** `docs/superpowers/specs/2026-11-13-v27-return-to-stepped-cover-design.md`
 
+> Review correction: the originally planned closed support rings trapped the service panels, and frame 02 lost independent support after lower-panel removal. The review ruling below supersedes the original separate-frame and bottom-frame removal notes: fuse six flat ribs into each matching panel, then remove the six lower rib-panels individually/radially.
+
 ## Global Constraints
 
 - 只在 `E:\Spiral_Robots\.worktrees\spiral-soft-arm-v27` 的 `feat/v27-modular-m2006` 分支工作。
 - 保留外罩轮廓站点 `[-236,98]`, `[-110,162]`, `[-80,162]`, `[64,162]` mm；服务分界 `Z=-80 mm`；12 块平面面板。
-- 恢复框/环带中心 `Z=[-232,-84,-76,60] mm`，每道高度 `8 mm`、径向厚度 `4 mm`；名义最大外廓约 Ø332 mm。
+- 恢复四道视觉环带中心 `Z=[-232,-84,-76,60] mm`，每道高度 `8 mm`、径向厚度 `4 mm`；每道由六个平面侧肋组成并融合进对应的上/下板，不产生闭合独立框件；名义最大外廓约 Ø332 mm。
 - 保留当前面板 M3 Ø3.4 mm/±35 mm、48 孔；四道外环的每个紧固点使用 Ø3.4 mm 贯通孔与外侧 Ø8 mm × 2 mm 头部/工具浅窝，工具检验采用 Ø8 mm 浅窝加 Ø2.5 mm 驱动杆的阶梯包络。lower panel 05 上两个 Ø8.6 mm × 2.5 mm 底部工具让位窝另行保留；不得回退至旧 Ø3.2 mm/±50 mm 孔位。
 - 外罩可见紧固接口统一使用 M3；逐项核对 48 个孔的贯通、框体支承、同轴关系及外侧工具可达性。M3 螺母/嵌件接收方式仍标为未定，不假定完整实物紧固方案已验证。
 - 保留窗框宽 8 mm、外凸 2.5 mm、切角 5 mm、每侧让口 1.5 mm；窗孔净尺寸和外水连通性不变。
-- 底框 `fixed_cover_frame_01` 仍是驱动板负 Z 抽出前拆除的唯一环带；服务顺序仍包括 24 颗 M3、六块下板、底框、线束和三只横销，抽出行程 280 mm。
+- 驱动板负 Z 抽出前拆除六块下部一体肋面板；服务顺序包括 24 颗 M3、线束和三只横销，抽出行程 280 mm。上部面板及其肋条保持安装。
 - 350 × 350 × 320 mm 是打印机标称空间。CAD 包围盒通过不代表 Brim、摆放、翘曲、打印强度或水下验证通过。
 - 使用 `$py = 'C:\Users\MOSS\.cache\codex-cadquery-py312\Scripts\python.exe'`。
 
 ## Review Focus
 
-- 四道环带与每块下/上面板、窗口边框、M12 接口及硬件包络的相交：增加几何回归断言并在 Task 2 中验证。
+- 四道肋条与对应上下板、窗口边框、M12 接口及硬件包络的融合/相交：增加单体有效性、实体支承和几何回归断言并在 Task 2 中验证。
 - 统一 M3 接口是否实际可装拆：检查每个螺钉位的 Ø8 × 2 mm 浅窝、Ø3.4 mm 贯通轴线与 Ø2.5 mm 驱动杆路径，并在 README/审查记录中保留未定螺母或嵌件方案。
 - 下部斜环带及 M12 服务窗/两处 M3 工具让位的局部冲突：测试退让范围和 Ø8 mm 工具包络；Task 2。
 - 上下拼缝附近 `Z=-84/-76 mm` 两道独立环带和相邻面板支承关系：测试各面螺孔同轴、面板支承和无非预期交叠；Task 2。
@@ -40,13 +42,13 @@
 - Test: `local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/test_v27_integration.py`
 
 **Interfaces:**
-- `RootCoverResult.frame_names` 必须列出四个实体：`fixed_cover_frame_01…04`。
+- `RootCoverResult.band_centers_mm` 必须列出四个特征中心 `[-232,-84,-76,60]`；组件表不得包含 `fixed_cover_frame_01…04` 闭合环件。
 - 参数仍使用 `root_cover.frame_z_centers_mm`，有序为 `[-232,-84,-76,60]`。
 - 面板紧固接口必须维持 M3、通孔 Ø3.4 mm、切向偏移 `[-35,35]` mm、48 孔；工具外廓 Ø8 mm，两个边框让位直径 Ø8.6 mm、深 2.5 mm。
 
 - [x] **Step 1: Add failing ring geometry tests**
 
-  断言四个环带各自有效、Z 区间分别为 `[-236,-228]`、`[-88,-80]`、`[-80,-72]`、`[56,64]` mm；直壁环带外接圆半径为 166 mm，底部环带外缘随下罩斜面从 Z=-236 的 102 mm 变化至 Z=-228 的约 106.063 mm。断言四道环带不是合并中央 16 mm 框。
+  断言四道视觉环带的 Z 区间分别为 `[-236,-228]`、`[-88,-80]`、`[-80,-72]`、`[56,64]` mm，并在各六面服务板上验证对应肋条存在；面板保持有效单体，中央两道之间有浅槽。
 
 - [x] **Step 2: Run the new tests against current three-frame geometry**
 
@@ -74,12 +76,12 @@
 
 **Interfaces:**
 - `build_root_cover(contract) -> RootCoverResult` 保持既有签名。
-- `_profile_frame(...)` 按各带 Z 下/上端型面半径建立六边形环带，保留 M3 孔中心和外侧切向工具轴。
+- `_face_band_segment(...)` 按每面型面半径构造环带肋条，与相应服务面板融合为一个有效实体；在融合后打通 M3 孔并切 Ø8 × 2 mm 外侧沉孔。
 - 窗口围框仍由 `add_window_surround(...)` 生成，尺寸沿用配置中的 8/2.5/5/1.5 mm。
 
 - [x] **Step 1: Keep four distinct frame specs in regression tests**
 
-  用已通过的规格中心建立四个 frame spec；逐道检查 BBox、实际外凸量和独立实体数量。
+  用四个规定中心建立 band feature spec；逐道检查面板中的实际外凸量和单体数量。
 
 - [x] **Step 2: Run focused geometry tests to see required failures**
 
@@ -87,19 +89,19 @@
 
   Expected: failures only for current three-frame merge and Ø332 stepped-envelope assertions.
 
-- [x] **Step 3: Restore four `frame_specs` in `root_cover.py`**
+- [x] **Step 3: Restore four band rows in `root_cover.py`**
 
-  复用型面半径函数和 `_profile_frame`，分别生成底部斜带、中央下带、中央上带和顶部带；外缘为面板外表面径向外扩 4 mm，保持每带 8 mm 高。底带按 M12 围框投影开让位，不切掉两侧支撑翼和当前 M3 工具路径。
+  复用型面半径函数和 `_face_band_segment`，分别生成底部斜带、中央下带、中央上带和顶部带的六个平面面肋；外缘为面板外表面径向外扩 4 mm，保持每带 8 mm 高。底带与 M12 窗口相交处保持连接器净空，并保留 M3 工具路径。
 
 - [x] **Step 4: Preserve current holes and window reliefs**
 
-  对所有四排 M3 孔沿真实面外法线贯穿，并在外环外侧加工 Ø8 × 2 mm 浅窝；不打穿 8 mm 高环带，以免环带在工具孔处断裂。保留两处下部 Ø8.6 mm × 2.5 mm 浅让位，避免恢复旧孔径/孔距。检修窗开口保持原尺寸且外水连通。
+  对所有四排 M3 孔在肋条融合后沿真实面外法线贯穿，并在肋条外侧加工 Ø8 × 2 mm 浅窝；不打穿 8 mm 高肋条，以保留孔底支承。保留两处下部 Ø8.6 mm × 2.5 mm 浅让位，避免恢复旧孔径/孔距。检修窗开口保持原尺寸且外水连通。
 
 - [x] **Step 5: Run focused cover tests**
 
   Run: `& $py -X utf8 -m unittest test_root_cover -v`
 
-  Expected: PASS; 四道环带有效、无面板/开窗冲突，环带及面板保持可单件打印且包围盒在 350 × 350 × 320 mm 名义空间内；所有可见外罩紧固点使用统一 M3 接口。
+  Expected: PASS; 四道环带视觉特征由各面板的一体肋条形成，12 块面板为有效单体且包围盒在 350 × 350 × 320 mm 名义空间内；所有可见外罩紧固点使用统一 M3 接口。
 
 ---
 
@@ -110,13 +112,13 @@
 - Test: `local/spiral-soft-arm/solidworks/integrated_assembly_v27_1m_modular_m2006/test_v27_integration.py`
 
 **Interfaces:**
-- `cover_layout.frame_component_bounds_mm`、环带半径/范围和支持中心记录四个环带。
+- `cover_layout` 记录四道视觉环带半径/范围和支持中心，不生成独立 frame component bounds。
 - `service.drive_removal_sweep` 继续移除 `fixed_cover_frame_01`，并把 frame 02–04 保留为真实固定障碍。
 - `panel_fastener_interface` 继续报告 M3、Ø3.4 mm、±35 mm、48 孔、Ø8 mm 工具包络和两个浅让位。
 
 - [x] **Step 1: Add failing audit and service tests**
 
- 断言 audit 的 `frame_component_bounds_mm` 有四项；明确 frame 02–04 是 drive sweep 保留障碍；完整 STEP 的实际包围盒和最大径向尺寸同时写入审计；外罩可见紧固接口均报告为 M3、Ø8 × 2 mm 浅窝，并保留接收件与头型未定状态。
+  断言审计报告四道视觉环带和一体面板结构，不输出独立闭合框实体；明确上部六板连同其肋条是 drive sweep 保留障碍；完整 STEP 的实际包围盒和最大径向尺寸同时写入审计；外罩可见紧固接口均报告为 M3、Ø8 × 2 mm 浅窝，并保留接收件与头型未定状态。
 
 - [x] **Step 2: Run integration tests to capture stale three-band assumptions**
 
@@ -126,7 +128,7 @@
 
 - [x] **Step 3: Update hardcoded frame mappings and sweep names**
 
-  将 `generate_v27_assembly.py` 中的 frame contact pair、`cover_frame_specs` 和名字生成从三项改为四项：下板接 frame01/02，上板接 frame03/04；只拆 frame01 的维护顺序保持不变。
+  删除面板与独立框的接触对，将四道环带保留为造型/审计特征数据；驱动模块 sweep 仅排除六块下部肋面板，上部六块面板及肋条留作障碍物。
 
 - [x] **Step 4: Record nominal and measured cover dimensions separately**
 
@@ -136,7 +138,7 @@
 
   Run: `& $py -X utf8 -m unittest test_v27_integration.V27CoverIntegrationTests -v`
 
-  Expected: PASS; 全装配禁止碰撞为空、三道保留环带不挡 280 mm 抽出、根部快拆保持通过；外罩所有打印件单件尺寸满足标称打印空间。中央两道带接缝的窄浅槽需在单件中保持有效且不改变 8 mm 高度、孔位与最大外廓。
+  Expected: PASS; 全装配禁止碰撞为空、上部肋面板不挡 280 mm 抽出、六块下部肋面板逐一径向取出通过、根部快拆保持通过；12 块面板尺寸满足标称打印空间。中央两道肋条的接缝浅槽需保持可见且不改变 8 mm 高度、孔位与最大外廓。
 
 ---
 
@@ -171,7 +173,7 @@
 
   Expected: all tests pass; root cover and full assembly STEP read back as valid; all four printable segments and every cover part fit nominal bounds; collisions and service sweeps pass; manifest hashes match all deliverables.
 
-- [ ] **Step 5: Commit the verified redesign locally**
+- [x] **Step 5: Commit the verified redesign locally**
 
   Stage only the V27 model/output/docs and this plan/spec; leave pre-existing untracked temporary preview and 2026-11-12 experiment docs untouched. Commit as `feat(v27): restore stepped root armor`; do not push.
 

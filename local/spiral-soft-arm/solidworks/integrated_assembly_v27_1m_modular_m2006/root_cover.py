@@ -16,7 +16,7 @@ class RootCoverResult:
     motor_window_panels: tuple[str, ...]
     observation_window_panels: tuple[str, ...]
     type_c_service_panel: str
-    frame_names: tuple[str, ...]
+    band_centers_mm: tuple[float, ...]
     root_guard_name: str
     nominal_profile_circumdiameter_mm: float
     actual_panel_max_radial_diameter_mm: float
@@ -222,12 +222,55 @@ def _profile_frame(
                         offset,
                         bolt_z,
                         tool_access_diameter_mm / 2.0,
-                        tool_access_recess_depth_mm,
+                        tool_access_recess_depth_mm + 0.1,
                         outward_normal,
                         normal_offset + 0.1,
                     )
                 )
     return frame.clean()
+
+
+def _face_band_segment(
+    normal_deg: float,
+    inner_radii_mm: tuple[float, float],
+    z_bounds_mm: tuple[float, float],
+    radial_thickness_mm: float,
+    panel_overlap_mm: float,
+    edge_gap_mm: float,
+    corner_gap_mm: float = 0.0,
+) -> cq.Shape:
+    """Create one flat-face rib that overlaps and fuses into its service panel."""
+    normal = _unit(normal_deg)
+    tangent = _unit(normal_deg + 90.0)
+    z0, z1 = z_bounds_mm
+    wires = []
+    for radius, z_mm in zip(inner_radii_mm, (z0, z1)):
+        panel_apothem = radius * math.cos(math.radians(30.0))
+        outer_radius = radius + radial_thickness_mm
+        outer_apothem = outer_radius * math.cos(math.radians(30.0))
+        inner_half_width = radius / 2.0 - edge_gap_mm / 2.0
+        outer_half_width = outer_radius / 2.0 - corner_gap_mm
+        if inner_half_width <= 0.0 or outer_half_width <= 0.0:
+            raise ValueError("armor rib width must remain positive")
+        corners = (
+            (panel_apothem - panel_overlap_mm, -inner_half_width),
+            (outer_apothem, -outer_half_width),
+            (outer_apothem, outer_half_width),
+            (panel_apothem - panel_overlap_mm, inner_half_width),
+        )
+        points = [
+            cq.Vector(
+                normal_mm * normal[0] + tangent_mm * tangent[0],
+                normal_mm * normal[1] + tangent_mm * tangent[1],
+                z_mm,
+            )
+            for normal_mm, tangent_mm in corners
+        ]
+        wires.append(cq.Wire.makePolygon(points + [points[0]]))
+    rib = cq.Solid.makeLoft(wires, ruled=True)
+    if not rib.isValid() or len(rib.Solids()) != 1:
+        raise ValueError("armor face rib must be one valid solid")
+    return rib
 
 
 def build_root_cover(contract: Any) -> RootCoverResult:
@@ -513,54 +556,58 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                     tuple(cfg["m12_service_window_mm"]),
                 )
                 type_c_service_panel = panel_name
-                # The lower screw row overlaps the proud M12 service-window
-                # surround. Recess only the raised surround around these two
-                # fastener axes so an external tool can approach the panel
-                # face; stop at the base panel plane to preserve its wall.
+                # The M12 bezel reaches the bottom armor band. Trim only its
+                # proud outer lip across that 8 mm band height, leaving the
+                # panel wall and the complete ring fastener seats intact.
                 access_z = frame_centers[0]
-                access_normal = _surface_outward_normal(
-                    normal_deg,
-                    _profile_face_slope(tuple(profile_stations), access_z),
-                )
+                access_slope = _profile_face_slope(tuple(profile_stations), access_z)
+                access_normal = _surface_outward_normal(normal_deg, access_slope)
                 access_apothem = radius_at(access_z) * math.cos(
                     math.radians(30.0)
                 )
+                angle = math.radians(normal_deg)
+                tangent = _unit(normal_deg + 90.0)
+                face_point = cq.Vector(
+                    access_apothem * math.cos(angle),
+                    access_apothem * math.sin(angle),
+                    access_z,
+                )
+                service_outer_width = (
+                    float(cfg["m12_service_window_mm"][0])
+                    + 2.0 * (surround_width + surround_reveal)
+                    + 1.0
+                )
+                bezel_band_trim = (
+                    cq.Workplane(
+                        cq.Plane(
+                            origin=face_point,
+                            xDir=tangent,
+                            normal=access_normal,
+                        )
+                    )
+                    .rect(service_outer_width, frame_height + 0.2)
+                    .extrude(surround_proud + 0.1)
+                    .val()
+                )
+                panel = panel.cut(bezel_band_trim).clean()
+                # The lower screw row overlaps the proud M12 service-window
+                # surround at the two M3 axes. Retain the screw-seat annuli in
+                # both the panel and the bottom ring.
                 access_radius = float(
                     cfg["panel_tool_access_relief_diameter_mm"]
                 ) / 2.0
                 for offset in bolt_offsets:
-                    panel = panel.cut(
-                        _oriented_face_hole(
-                            normal_deg,
-                            access_apothem,
-                            offset,
-                            access_z,
-                            access_radius,
-                            surround_proud + 0.1,
-                            access_normal,
-                            start_outside_mm=surround_proud + 0.1,
-                        )
+                    access_relief = _oriented_face_hole(
+                        normal_deg,
+                        access_apothem,
+                        offset,
+                        access_z,
+                        access_radius,
+                        surround_proud + 0.1,
+                        access_normal,
+                        start_outside_mm=surround_proud + 0.1,
                     )
-            for frame_z in region_frame_centers:
-                outward_normal = _surface_outward_normal(
-                    normal_deg, _profile_face_slope(tuple(profile_stations), frame_z)
-                )
-                radial = _unit(normal_deg)
-                radial_component = outward_normal.dot(
-                    cq.Vector(radial[0], radial[1], 0.0)
-                )
-                for offset in bolt_offsets:
-                    panel = panel.cut(
-                        _oriented_face_hole(
-                            normal_deg,
-                            radius_at(frame_z) * math.cos(math.radians(30.0)),
-                            offset,
-                            frame_z,
-                            bolt_radius,
-                            panel_thickness / radial_component + 0.2,
-                            outward_normal,
-                        )
-                    )
+                    panel = panel.cut(access_relief)
             panel_height_clip = cq.Solid.makeBox(
                 2.0 * clip_radius,
                 2.0 * clip_radius,
@@ -581,127 +628,84 @@ def build_root_cover(contract: Any) -> RootCoverResult:
             frame_z,
             frame_z - frame_height / 2.0,
             frame_z + frame_height / 2.0,
-            (frame_z,),
         )
         for frame_z in frame_centers
     )
-    frame_names: list[str] = []
     central_seam_z = float(cfg["central_band_seam_z_mm"])
     central_seam_height = float(cfg["central_band_seam_height_mm"])
     central_seam_recess = float(cfg["central_band_seam_radial_recess_mm"])
     if central_seam_height <= 0.0 or central_seam_recess <= 0.0:
         raise ValueError("central armor seam dimensions must be positive")
-    central_seam_outer_radius = (
-        radius_at(central_seam_z) + frame_radial_thickness + 0.25
-    )
-    central_seam_inner_radius = (
-        central_seam_outer_radius - 0.25 - central_seam_recess
-    )
-    central_seam_start_z = central_seam_z - central_seam_height / 2.0
-    central_seam_groove = _hex_prism(
-        central_seam_outer_radius,
-        central_seam_start_z,
-        central_seam_height,
-    ).cut(
-        _hex_prism(
-            central_seam_inner_radius,
-            central_seam_start_z - 0.1,
-            central_seam_height + 0.2,
-        )
-    )
-    for index, (frame_z, band_z0, band_z1, bolt_z_values) in enumerate(
-        frame_specs, start=1
-    ):
+    seam_apothem = (
+        radius_at(central_seam_z) + frame_radial_thickness
+    ) * math.cos(math.radians(30.0))
+    for index, (frame_z, band_z0, band_z1) in enumerate(frame_specs, start=1):
         frame_inner_radii = (radius_at(band_z0), radius_at(band_z1))
-        frame_outer_radii = tuple(
-            radius + frame_radial_thickness for radius in frame_inner_radii
-        )
-        frame = _profile_frame(
-            frame_inner_radii,
-            frame_outer_radii,
-            (band_z0, band_z1),
-            bolt_radius,
-            bolt_offsets,
-            bolt_z_values,
-            8.0,
-            2.0,
-        )
-        if index == 1:
-            # The low Type-C bezel runs through this band in Z. Relieve its
-            # full projected footprint while keeping the two side flanks and
-            # their original radial screw axes.
-            service_window_height = float(cfg["m12_service_window_mm"][1])
-            service_z = float(cfg["m12_service_window_center_z_mm"])
-            segment = next(
-                (first, second)
-                for first, second in zip(profile_stations, profile_stations[1:])
-                if first[0] - 1e-8 <= service_z <= second[0] + 1e-8
+        for normal_deg in normals:
+            panel_name = f"fixed_cover_{'lower' if index <= 2 else 'upper'}_panel_{normal_to_index[normal_deg]:02d}"
+            panel = components[panel_name]
+            rib = _face_band_segment(
+                normal_deg,
+                frame_inner_radii,
+                (band_z0, band_z1),
+                frame_radial_thickness,
+                panel_overlap_mm=0.6,
+                edge_gap_mm=edge_gap,
             )
-            (za, ra), (zb, rb) = segment
-            face_slope = math.cos(math.radians(30.0)) * (rb - ra) / (zb - za)
-            normal_scale = math.sqrt(1.0 + face_slope * face_slope)
-            surround_total = surround_width + surround_reveal
-            service_outer_width = float(cfg["m12_service_window_mm"][0]) + 2.0 * surround_total
-            service_outer_projected_height = service_window_height * normal_scale + 2.0 * surround_total
-            service_bezel_height = service_outer_projected_height / normal_scale
-            service_bezel_center_z = service_z - (
-                face_slope / normal_scale
-            ) * (surround_proud / 2.0)
-            band_outer_center_radius = (frame_outer_radii[0] + frame_outer_radii[1]) / 2.0
-            frame = frame.cut(
-                _face_box(
-                    270.0,
-                    band_outer_center_radius * math.cos(math.radians(30.0))
-                    - frame_radial_thickness * math.cos(math.radians(30.0)) / 2.0,
+            panel = panel.fuse(rib).clean()
+            if not panel.isValid() or len(panel.Solids()) != 1:
+                raise ValueError(f"integrated armor panel is not one solid: {panel_name}")
+
+            if index in (2, 3):
+                # Recess the outer 1.2 mm across the two middle rib edges,
+                # preserving the 8 mm-high printed ribs and their panel seam.
+                seam_groove = _face_box(
+                    normal_deg,
+                    seam_apothem - central_seam_recess / 2.0 + 0.1,
                     0.0,
-                    service_bezel_center_z,
-                    service_outer_width + 1.0,
-                    20.0,
-                    service_bezel_height + 2.0,
+                    central_seam_z,
+                    2.0 * clip_radius,
+                    central_seam_recess + 0.2,
+                    central_seam_height,
                 )
+                panel = panel.cut(seam_groove).clean()
+
+            center_radius = radius_at(frame_z)
+            base_face_apothem = center_radius * math.cos(math.radians(30.0))
+            outer_face_apothem = (
+                center_radius + frame_radial_thickness
+            ) * math.cos(math.radians(30.0))
+            face_slope = _profile_face_slope(tuple(profile_stations), frame_z)
+            outward_normal = _surface_outward_normal(normal_deg, face_slope)
+            rib_surface_offset = (outer_face_apothem - base_face_apothem) / math.sqrt(
+                1.0 + face_slope * face_slope
             )
-        if index in (2, 3):
-            # Recess both mating band edges to show a narrow armor break
-            # without changing the 8 mm band heights or fastener rows.
-            frame = frame.cut(central_seam_groove)
-        if abs(frame_z) < 1.0e-8:
-            outer_face_apothem = frame_outer_radii[0] * math.cos(math.radians(30.0))
-            anchor_z0 = frame_z - frame_height / 2.0
-            anchor_height = frame_height / 2.0
-            anchor_width = 10.0
-            anchor_inner_radius = 100.0
-            anchor_length = outer_face_apothem - anchor_inner_radius
-            anchor_center_radius = 0.5 * (anchor_inner_radius + outer_face_apothem)
-            for normal_deg in (30.0, 90.0, 150.0, 210.0, 270.0, 330.0):
-                anchor = (
-                    cq.Workplane("XY")
-                    .box(anchor_length, anchor_width, anchor_height)
-                    .val()
-                    .rotate((0.0, 0.0, 0.0), (0.0, 0.0, 1.0), normal_deg)
-                    .translate(
-                        (
-                            anchor_center_radius * math.cos(math.radians(normal_deg)),
-                            anchor_center_radius * math.sin(math.radians(normal_deg)),
-                            anchor_z0 + anchor_height / 2.0,
-                        )
+            for offset in bolt_offsets:
+                panel = panel.cut(
+                    _oriented_face_hole(
+                        normal_deg,
+                        base_face_apothem,
+                        offset,
+                        frame_z,
+                        bolt_radius,
+                        20.0,
+                        outward_normal,
+                        start_outside_mm=rib_surface_offset + 0.1,
                     )
                 )
-                frame = frame.fuse(anchor)
-                mount = cq.Solid.makeCylinder(
-                    1.6,
-                    frame_height / 2.0 + 0.2,
-                    cq.Vector(
-                        anchor_inner_radius * math.cos(math.radians(normal_deg)),
-                        anchor_inner_radius * math.sin(math.radians(normal_deg)),
-                        anchor_z0 - 0.1,
-                    ),
-                    cq.Vector(0.0, 0.0, 1.0),
+                panel = panel.cut(
+                    _oriented_face_hole(
+                        normal_deg,
+                        base_face_apothem,
+                        offset,
+                        frame_z,
+                        4.0,
+                        2.1,
+                        outward_normal,
+                        start_outside_mm=rib_surface_offset + 0.1,
+                    )
                 )
-                frame = frame.cut(mount)
-        frame = frame.clean()
-        name = f"fixed_cover_frame_{index:02d}"
-        components[name] = frame
-        frame_names.append(name)
+            components[panel_name] = panel.clean()
 
     guard_outer = float(cfg["root_guard_outer_circumradius_mm"])
     guard_inner = float(cfg["root_guard_inner_circumradius_mm"])
@@ -829,7 +833,7 @@ def build_root_cover(contract: Any) -> RootCoverResult:
         motor_window_panels=tuple(motor_window_panels),
         observation_window_panels=tuple(observation_window_panels),
         type_c_service_panel=type_c_service_panel,
-        frame_names=tuple(frame_names),
+        band_centers_mm=tuple(frame_centers),
         root_guard_name=root_guard_name,
         nominal_profile_circumdiameter_mm=2.0 * max_outer_radius,
         actual_panel_max_radial_diameter_mm=2.0 * actual_panel_max_radius,

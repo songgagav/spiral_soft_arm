@@ -39,7 +39,7 @@
   ],
   "candidate_id": "V27-1M-M2006",
   "collisions": {
-    "checked_pair_count": 11476,
+    "checked_pair_count": 10878,
     "checked_same_group_pairs": [
       [
         "arm_module_arm_segment_01",
@@ -1467,22 +1467,6 @@
       ],
       [
         "fixed_top_plate",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_top_plate",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_top_plate",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_top_plate",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_top_plate",
         "fixed_root_guard_hex"
       ],
       [
@@ -1811,22 +1795,6 @@
       ],
       [
         "fixed_root_receiver",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_root_receiver",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_root_receiver",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_root_receiver",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_root_receiver",
         "fixed_root_guard_hex"
       ],
       [
@@ -2151,22 +2119,6 @@
       ],
       [
         "fixed_common_motor_chamber",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_common_motor_chamber",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_common_motor_chamber",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_common_motor_chamber",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_common_motor_chamber",
         "fixed_root_guard_hex"
       ],
       [
@@ -2487,22 +2439,6 @@
       ],
       [
         "fixed_drive_plate_register_seat",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_drive_plate_register_seat",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_drive_plate_register_seat",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_drive_plate_register_seat",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_drive_plate_register_seat",
         "fixed_root_guard_hex"
       ],
       [
@@ -2819,22 +2755,6 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -3147,22 +3067,6 @@
       ],
       [
         "fixed_drive_plate_dowel_socket_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_drive_plate_dowel_socket_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -3471,22 +3375,6 @@
       ],
       [
         "fixed_bearing_inner_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bearing_inner_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bearing_inner_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bearing_inner_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bearing_inner_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -3791,22 +3679,6 @@
       ],
       [
         "fixed_bearing_outer_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bearing_outer_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bearing_outer_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bearing_outer_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bearing_outer_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -4107,22 +3979,6 @@
       ],
       [
         "fixed_oil_seal_drive_side_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_oil_seal_drive_side_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_oil_seal_drive_side_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_oil_seal_drive_side_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_oil_seal_drive_side_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -4419,22 +4275,6 @@
       ],
       [
         "fixed_labyrinth_drive_side_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_labyrinth_drive_side_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_labyrinth_drive_side_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_labyrinth_drive_side_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_labyrinth_drive_side_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -4727,22 +4567,6 @@
       ],
       [
         "fixed_oil_seal_outboard_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_oil_seal_outboard_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_oil_seal_outboard_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_oil_seal_outboard_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_oil_seal_outboard_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -5031,22 +4855,6 @@
       ],
       [
         "fixed_labyrinth_outboard_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_labyrinth_outboard_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_labyrinth_outboard_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_labyrinth_outboard_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_labyrinth_outboard_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -5331,22 +5139,6 @@
       ],
       [
         "fixed_spool_retainer_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_spool_retainer_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_spool_retainer_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_spool_retainer_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_spool_retainer_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -5627,22 +5419,6 @@
       ],
       [
         "fixed_spool_drive_pin_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_spool_drive_pin_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_spool_drive_pin_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_spool_drive_pin_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_spool_drive_pin_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -5919,22 +5695,6 @@
       ],
       [
         "fixed_input_bearing_1_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_bearing_1_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_bearing_1_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_bearing_1_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_bearing_1_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -6207,22 +5967,6 @@
       ],
       [
         "fixed_input_bearing_2_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_bearing_2_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_bearing_2_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_bearing_2_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_bearing_2_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -6491,22 +6235,6 @@
       ],
       [
         "fixed_input_support_post_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_support_post_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_support_post_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_support_post_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_support_post_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -6771,22 +6499,6 @@
       ],
       [
         "fixed_bevel_pod_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_pod_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_pod_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_pod_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_pod_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -7047,22 +6759,6 @@
       ],
       [
         "fixed_output_support_land_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_land_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_land_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_land_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_land_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -7319,22 +7015,6 @@
       ],
       [
         "fixed_output_support_cartridge_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -7587,22 +7267,6 @@
       ],
       [
         "fixed_output_support_cartridge_screw_01_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -7851,22 +7515,6 @@
       ],
       [
         "fixed_output_support_cartridge_screw_01_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_01_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -8111,22 +7759,6 @@
       ],
       [
         "fixed_bevel_input_envelope_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_input_envelope_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_input_envelope_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_input_envelope_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_input_envelope_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -8367,22 +7999,6 @@
       ],
       [
         "fixed_bevel_output_envelope_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_output_envelope_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_output_envelope_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_output_envelope_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_output_envelope_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -8619,22 +8235,6 @@
       ],
       [
         "fixed_wet_spool_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_wet_spool_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_wet_spool_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_wet_spool_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_wet_spool_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -8867,22 +8467,6 @@
       ],
       [
         "fixed_shaft_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_shaft_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_shaft_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_shaft_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_shaft_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -9111,22 +8695,6 @@
       ],
       [
         "fixed_output_shaft_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_shaft_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_shaft_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_shaft_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_shaft_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -9351,22 +8919,6 @@
       ],
       [
         "fixed_bearing_inner_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bearing_inner_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bearing_inner_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bearing_inner_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bearing_inner_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -9587,22 +9139,6 @@
       ],
       [
         "fixed_bearing_outer_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bearing_outer_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bearing_outer_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bearing_outer_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bearing_outer_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -9819,22 +9355,6 @@
       ],
       [
         "fixed_oil_seal_drive_side_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_oil_seal_drive_side_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_oil_seal_drive_side_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_oil_seal_drive_side_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_oil_seal_drive_side_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -10047,22 +9567,6 @@
       ],
       [
         "fixed_labyrinth_drive_side_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_labyrinth_drive_side_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_labyrinth_drive_side_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_labyrinth_drive_side_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_labyrinth_drive_side_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -10271,22 +9775,6 @@
       ],
       [
         "fixed_oil_seal_outboard_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_oil_seal_outboard_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_oil_seal_outboard_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_oil_seal_outboard_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_oil_seal_outboard_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -10491,22 +9979,6 @@
       ],
       [
         "fixed_labyrinth_outboard_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_labyrinth_outboard_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_labyrinth_outboard_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_labyrinth_outboard_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_labyrinth_outboard_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -10707,22 +10179,6 @@
       ],
       [
         "fixed_spool_retainer_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_spool_retainer_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_spool_retainer_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_spool_retainer_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_spool_retainer_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -10919,22 +10375,6 @@
       ],
       [
         "fixed_spool_drive_pin_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_spool_drive_pin_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_spool_drive_pin_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_spool_drive_pin_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_spool_drive_pin_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -11127,22 +10567,6 @@
       ],
       [
         "fixed_input_bearing_1_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_bearing_1_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_bearing_1_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_bearing_1_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_bearing_1_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -11331,22 +10755,6 @@
       ],
       [
         "fixed_input_bearing_2_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_bearing_2_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_bearing_2_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_bearing_2_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_bearing_2_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -11531,22 +10939,6 @@
       ],
       [
         "fixed_input_support_post_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_support_post_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_support_post_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_support_post_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_support_post_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -11727,22 +11119,6 @@
       ],
       [
         "fixed_bevel_pod_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_pod_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_pod_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_pod_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_pod_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -11919,22 +11295,6 @@
       ],
       [
         "fixed_output_support_land_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_land_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_land_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_land_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_land_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -12107,22 +11467,6 @@
       ],
       [
         "fixed_output_support_cartridge_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -12291,22 +11635,6 @@
       ],
       [
         "fixed_output_support_cartridge_screw_02_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -12471,22 +11799,6 @@
       ],
       [
         "fixed_output_support_cartridge_screw_02_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_02_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -12647,22 +11959,6 @@
       ],
       [
         "fixed_bevel_input_envelope_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_input_envelope_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_input_envelope_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_input_envelope_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_input_envelope_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -12819,22 +12115,6 @@
       ],
       [
         "fixed_bevel_output_envelope_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_output_envelope_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_output_envelope_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_output_envelope_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_output_envelope_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -12987,22 +12267,6 @@
       ],
       [
         "fixed_wet_spool_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_wet_spool_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_wet_spool_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_wet_spool_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_wet_spool_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -13151,22 +12415,6 @@
       ],
       [
         "fixed_shaft_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_shaft_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_shaft_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_shaft_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_shaft_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -13311,22 +12559,6 @@
       ],
       [
         "fixed_output_shaft_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_shaft_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_shaft_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_shaft_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_shaft_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -13467,22 +12699,6 @@
       ],
       [
         "fixed_bearing_inner_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bearing_inner_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bearing_inner_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bearing_inner_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bearing_inner_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -13619,22 +12835,6 @@
       ],
       [
         "fixed_bearing_outer_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bearing_outer_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bearing_outer_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bearing_outer_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bearing_outer_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -13767,22 +12967,6 @@
       ],
       [
         "fixed_oil_seal_drive_side_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_oil_seal_drive_side_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_oil_seal_drive_side_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_oil_seal_drive_side_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_oil_seal_drive_side_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -13911,22 +13095,6 @@
       ],
       [
         "fixed_labyrinth_drive_side_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_labyrinth_drive_side_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_labyrinth_drive_side_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_labyrinth_drive_side_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_labyrinth_drive_side_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14051,22 +13219,6 @@
       ],
       [
         "fixed_oil_seal_outboard_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_oil_seal_outboard_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_oil_seal_outboard_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_oil_seal_outboard_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_oil_seal_outboard_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14187,22 +13339,6 @@
       ],
       [
         "fixed_labyrinth_outboard_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_labyrinth_outboard_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_labyrinth_outboard_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_labyrinth_outboard_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_labyrinth_outboard_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14319,22 +13455,6 @@
       ],
       [
         "fixed_spool_retainer_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_spool_retainer_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_spool_retainer_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_spool_retainer_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_spool_retainer_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14447,22 +13567,6 @@
       ],
       [
         "fixed_spool_drive_pin_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_spool_drive_pin_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_spool_drive_pin_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_spool_drive_pin_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_spool_drive_pin_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14571,22 +13675,6 @@
       ],
       [
         "fixed_input_bearing_1_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_bearing_1_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_bearing_1_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_bearing_1_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_bearing_1_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14691,22 +13779,6 @@
       ],
       [
         "fixed_input_bearing_2_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_bearing_2_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_bearing_2_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_bearing_2_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_bearing_2_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14807,22 +13879,6 @@
       ],
       [
         "fixed_input_support_post_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_input_support_post_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_input_support_post_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_input_support_post_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_input_support_post_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -14919,22 +13975,6 @@
       ],
       [
         "fixed_bevel_pod_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_pod_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_pod_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_pod_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_pod_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15027,22 +14067,6 @@
       ],
       [
         "fixed_output_support_land_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_land_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_land_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_land_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_land_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15131,22 +14155,6 @@
       ],
       [
         "fixed_output_support_cartridge_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15231,22 +14239,6 @@
       ],
       [
         "fixed_output_support_cartridge_screw_03_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -15327,22 +14319,6 @@
       ],
       [
         "fixed_output_support_cartridge_screw_03_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_support_cartridge_screw_03_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -15419,22 +14395,6 @@
       ],
       [
         "fixed_bevel_input_envelope_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_input_envelope_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_input_envelope_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_input_envelope_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_input_envelope_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15507,22 +14467,6 @@
       ],
       [
         "fixed_bevel_output_envelope_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_bevel_output_envelope_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_bevel_output_envelope_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_bevel_output_envelope_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_bevel_output_envelope_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15591,22 +14535,6 @@
       ],
       [
         "fixed_wet_spool_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_wet_spool_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_wet_spool_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_wet_spool_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_wet_spool_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15671,22 +14599,6 @@
       ],
       [
         "fixed_shaft_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_shaft_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_shaft_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_shaft_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_shaft_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15747,22 +14659,6 @@
       ],
       [
         "fixed_output_shaft_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_output_shaft_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_output_shaft_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_output_shaft_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_output_shaft_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -15819,22 +14715,6 @@
       ],
       [
         "fixed_cover_lower_panel_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_lower_panel_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_lower_panel_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -15887,22 +14767,6 @@
       ],
       [
         "fixed_cover_upper_panel_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_upper_panel_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_upper_panel_01",
         "fixed_root_guard_hex"
       ],
       [
@@ -15951,22 +14815,6 @@
       ],
       [
         "fixed_cover_lower_panel_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_lower_panel_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_lower_panel_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -16011,22 +14859,6 @@
       ],
       [
         "fixed_cover_upper_panel_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_upper_panel_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_upper_panel_02",
         "fixed_root_guard_hex"
       ],
       [
@@ -16067,22 +14899,6 @@
       ],
       [
         "fixed_cover_lower_panel_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_lower_panel_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_lower_panel_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -16119,22 +14935,6 @@
       ],
       [
         "fixed_cover_upper_panel_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_upper_panel_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_upper_panel_03",
         "fixed_root_guard_hex"
       ],
       [
@@ -16167,22 +14967,6 @@
       ],
       [
         "fixed_cover_lower_panel_04",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_04",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_lower_panel_04",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_lower_panel_04",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_04",
         "fixed_root_guard_hex"
       ],
       [
@@ -16211,22 +14995,6 @@
       ],
       [
         "fixed_cover_upper_panel_04",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_upper_panel_04",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_04",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_04",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_upper_panel_04",
         "fixed_root_guard_hex"
       ],
       [
@@ -16251,22 +15019,6 @@
       ],
       [
         "fixed_cover_lower_panel_05",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_05",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_lower_panel_05",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_lower_panel_05",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_05",
         "fixed_root_guard_hex"
       ],
       [
@@ -16287,22 +15039,6 @@
       ],
       [
         "fixed_cover_upper_panel_05",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_upper_panel_05",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_05",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_05",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_upper_panel_05",
         "fixed_root_guard_hex"
       ],
       [
@@ -16319,22 +15055,6 @@
       ],
       [
         "fixed_cover_lower_panel_06",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_06",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_lower_panel_06",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_lower_panel_06",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_06",
         "fixed_root_guard_hex"
       ],
       [
@@ -16347,22 +15067,6 @@
       ],
       [
         "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_upper_panel_06",
         "fixed_root_guard_hex"
       ],
       [
@@ -16371,78 +15075,6 @@
       ],
       [
         "fixed_cover_upper_panel_06",
-        "fixed_root_dowel_02"
-      ],
-      [
-        "fixed_cover_frame_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_frame_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_frame_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_frame_01",
-        "fixed_root_guard_hex"
-      ],
-      [
-        "fixed_cover_frame_01",
-        "fixed_root_dowel_01"
-      ],
-      [
-        "fixed_cover_frame_01",
-        "fixed_root_dowel_02"
-      ],
-      [
-        "fixed_cover_frame_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_frame_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_frame_02",
-        "fixed_root_guard_hex"
-      ],
-      [
-        "fixed_cover_frame_02",
-        "fixed_root_dowel_01"
-      ],
-      [
-        "fixed_cover_frame_02",
-        "fixed_root_dowel_02"
-      ],
-      [
-        "fixed_cover_frame_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_frame_03",
-        "fixed_root_guard_hex"
-      ],
-      [
-        "fixed_cover_frame_03",
-        "fixed_root_dowel_01"
-      ],
-      [
-        "fixed_cover_frame_03",
-        "fixed_root_dowel_02"
-      ],
-      [
-        "fixed_cover_frame_04",
-        "fixed_root_guard_hex"
-      ],
-      [
-        "fixed_cover_frame_04",
-        "fixed_root_dowel_01"
-      ],
-      [
-        "fixed_cover_frame_04",
         "fixed_root_dowel_02"
       ],
       [
@@ -18485,102 +17117,6 @@
         "fixed_bevel_pod_03"
       ],
       [
-        "fixed_cover_lower_panel_01",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_01",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_01",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_01",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_02",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_02",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_02",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_02",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_03",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_03",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_03",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_03",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_04",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_04",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_04",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_04",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_05",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_05",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_05",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_05",
-        "fixed_cover_frame_04"
-      ],
-      [
-        "fixed_cover_lower_panel_06",
-        "fixed_cover_frame_01"
-      ],
-      [
-        "fixed_cover_lower_panel_06",
-        "fixed_cover_frame_02"
-      ],
-      [
-        "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_03"
-      ],
-      [
-        "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_04"
-      ],
-      [
         "fixed_shaft_01",
         "removable_M2006_01"
       ],
@@ -18662,53 +17198,19 @@
     },
     "actual_outer_cover_max_radial_diameter_mm": 332.0,
     "actual_panel_assembly_bounds_mm": {
-      "x": 322.0,
-      "y": 283.092,
+      "x": 332.0,
+      "y": 287.52,
       "z": 300.0
     },
-    "actual_panel_max_radial_diameter_mm": 322.019,
-    "floodable_openings": true,
-    "frame_component_bounds_mm": [
-      {
-        "name": "fixed_cover_frame_01",
-        "x_mm": 212.127,
-        "y_mm": 183.707,
-        "z_max_mm": -228.0,
-        "z_min_mm": -236.0,
-        "z_mm": 8.0
-      },
-      {
-        "name": "fixed_cover_frame_02",
-        "x_mm": 332.0,
-        "y_mm": 287.52,
-        "z_max_mm": -80.0,
-        "z_min_mm": -88.0,
-        "z_mm": 8.0
-      },
-      {
-        "name": "fixed_cover_frame_03",
-        "x_mm": 332.0,
-        "y_mm": 287.52,
-        "z_max_mm": -72.0,
-        "z_min_mm": -80.0,
-        "z_mm": 8.0
-      },
-      {
-        "name": "fixed_cover_frame_04",
-        "x_mm": 332.0,
-        "y_mm": 287.52,
-        "z_max_mm": 64.0,
-        "z_min_mm": 56.0,
-        "z_mm": 8.0
-      }
-    ],
-    "frame_outer_circumradii_mm": [
+    "actual_panel_max_radial_diameter_mm": 332.0,
+    "band_construction": "six flat face ribs fused into each matching service panel; no closed frame parts",
+    "band_outer_circumradii_mm": [
       104.03174603174602,
       166.0,
       166.0,
       166.0
     ],
-    "frame_outer_circumradius_ranges_mm": [
+    "band_outer_circumradius_ranges_mm": [
       [
         102.0,
         106.06349206349206
@@ -18726,13 +17228,14 @@
         166.0
       ]
     ],
-    "frame_radial_thickness_mm": 4.0,
-    "frame_z_centers_mm": [
+    "band_z_centers_mm": [
       -232.0,
       -84.0,
       -76.0,
       60.0
     ],
+    "floodable_openings": true,
+    "frame_radial_thickness_mm": 4.0,
     "lower_service_panel_count": 6,
     "motor_window_center_z_mm": -1.0,
     "motor_window_mm": [
@@ -18744,96 +17247,96 @@
     "panel_component_bounds_mm": [
       {
         "name": "fixed_cover_lower_panel_01",
-        "x_mm": 113.078,
-        "y_mm": 138.032,
+        "x_mm": 118.078,
+        "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_lower_panel_02",
-        "x_mm": 158.0,
-        "y_mm": 57.826,
+        "x_mm": 166.0,
+        "y_mm": 61.29,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_lower_panel_03",
-        "x_mm": 113.078,
-        "y_mm": 138.032,
+        "x_mm": 118.078,
+        "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_lower_panel_04",
-        "x_mm": 113.078,
-        "y_mm": 138.032,
+        "x_mm": 118.078,
+        "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_lower_panel_05",
-        "x_mm": 158.0,
-        "y_mm": 57.826,
+        "x_mm": 166.0,
+        "y_mm": 61.29,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_lower_panel_06",
-        "x_mm": 113.078,
-        "y_mm": 138.032,
+        "x_mm": 118.078,
+        "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_upper_panel_01",
-        "x_mm": 81.078,
-        "y_mm": 138.032,
+        "x_mm": 86.078,
+        "y_mm": 143.76,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_02",
-        "x_mm": 158.0,
-        "y_mm": 4.9,
+        "x_mm": 166.0,
+        "y_mm": 5.864,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_03",
-        "x_mm": 81.078,
-        "y_mm": 138.032,
+        "x_mm": 86.078,
+        "y_mm": 143.76,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_04",
-        "x_mm": 81.078,
-        "y_mm": 138.032,
+        "x_mm": 86.078,
+        "y_mm": 143.76,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_05",
-        "x_mm": 158.0,
-        "y_mm": 2.4,
+        "x_mm": 166.0,
+        "y_mm": 5.864,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_06",
-        "x_mm": 81.078,
-        "y_mm": 138.032,
+        "x_mm": 86.078,
+        "y_mm": 143.76,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
@@ -18841,10 +17344,10 @@
     ],
     "panel_count": 12,
     "panel_fastener_interface": {
+      "band_tool_access_count": 48,
+      "band_tool_access_diameter_mm": 8.0,
+      "band_tool_access_recess_depth_mm": 2.0,
       "clearance_diameter_mm": 3.4,
-      "frame_tool_access_count": 48,
-      "frame_tool_access_diameter_mm": 8.0,
-      "frame_tool_access_recess_depth_mm": 2.0,
       "hole_count": 48,
       "receiver_hardware": "not modeled; M3 nut or insert method remains to be selected",
       "relieved_tool_access_count": 2,
@@ -18891,6 +17394,7 @@
       60.0
     ],
     "upper_panel_count": 6,
+    "visible_band_count": 4,
     "window_surround_proud_mm": 2.5,
     "window_surround_reveal_mm": 1.5,
     "window_surround_width_mm": 8.0
@@ -19232,7 +17736,7 @@
       "collisions": [],
       "direction": "positive_z",
       "final_clearance_mm": 0.5,
-      "fixed_obstacle_count": 130,
+      "fixed_obstacle_count": 126,
       "fixed_obstacle_names": [
         "fixed_top_plate",
         "fixed_root_receiver",
@@ -19315,10 +17819,6 @@
         "fixed_cover_upper_panel_05",
         "fixed_cover_lower_panel_06",
         "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_01",
-        "fixed_cover_frame_02",
-        "fixed_cover_frame_03",
-        "fixed_cover_frame_04",
         "fixed_root_dowel_01",
         "fixed_root_dowel_02",
         "removable_motor_plate",
@@ -19415,7 +17915,6 @@
       "remove_fixed_cover_lower_panel_04",
       "remove_fixed_cover_lower_panel_05",
       "remove_fixed_cover_lower_panel_06",
-      "remove_bottom_cover_frame_01",
       "disconnect_motor_harnesses",
       "remove_three_motor_cross_pins",
       "translate_plate_downward_to_withdraw_D6_shafts"
@@ -19426,7 +17925,7 @@
     "drive_removal_sweep": {
       "collisions": [],
       "direction": "negative_z",
-      "fixed_obstacle_count": 112,
+      "fixed_obstacle_count": 109,
       "fixed_obstacle_names": [
         "fixed_top_plate",
         "fixed_root_receiver",
@@ -19503,9 +18002,6 @@
         "fixed_cover_upper_panel_04",
         "fixed_cover_upper_panel_05",
         "fixed_cover_upper_panel_06",
-        "fixed_cover_frame_02",
-        "fixed_cover_frame_03",
-        "fixed_cover_frame_04",
         "fixed_root_guard_hex",
         "fixed_root_dowel_01",
         "fixed_root_dowel_02",
@@ -19562,7 +18058,6 @@
         "removable_M2006_cross_pin_03"
       ],
       "removed_fixed_component_names": [
-        "fixed_cover_frame_01",
         "fixed_cover_lower_panel_01",
         "fixed_cover_lower_panel_02",
         "fixed_cover_lower_panel_03",
@@ -19570,20 +18065,138 @@
         "fixed_cover_lower_panel_05",
         "fixed_cover_lower_panel_06"
       ],
-      "sweep_type": "exact horizontal-face extrusion after removing lower service panels and fixed_cover_frame_01, then withdrawing M2006 cross-pins",
+      "sweep_type": "exact horizontal-face extrusion after removing six lower service panels, then withdrawing M2006 cross-pins",
       "travel_mm": 280.0
     },
     "drive_sweep_collisions": [],
-    "drive_sweep_fixed_obstacle_count": 112,
+    "drive_sweep_fixed_obstacle_count": 109,
     "drive_sweep_initial_release_gap_mm": 0.5,
     "drive_sweep_min_clearance_mm": 0.09999995800743518,
     "drive_sweep_moving_component_count": 9,
     "drive_sweep_travel_mm": 280.0,
-    "drive_sweep_type": "exact horizontal-face extrusion after removing lower service panels and fixed_cover_frame_01, then withdrawing M2006 cross-pins",
+    "drive_sweep_type": "exact horizontal-face extrusion after removing six lower service panels, then withdrawing M2006 cross-pins",
     "electronics_connector_clearance_hits": [],
     "electronics_connector_clearance_passes": true,
     "fixed_shaft_support_pair_count": 3,
     "fixed_shafts_supported_without_drive": true,
+    "lower_cover_removal": {
+      "direction": "radial_outward",
+      "independent_fastener_removal_required": 24,
+      "panel_removals": [
+        {
+          "candidate_obstacle_count": 13,
+          "collisions": [],
+          "component": "fixed_cover_lower_panel_01",
+          "direction": "radial_outward",
+          "face_normal_deg": 30.0,
+          "initial_release_gap_mm": 0.5,
+          "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+          "moving_components": [
+            "fixed_cover_lower_panel_01"
+          ],
+          "obstacle_count": 114,
+          "passes": true,
+          "path_type": "translated-position CAD intersection samples",
+          "removed_before": [],
+          "sample_step_mm": 1.0,
+          "travel_mm": 120.0
+        },
+        {
+          "candidate_obstacle_count": 7,
+          "collisions": [],
+          "component": "fixed_cover_lower_panel_02",
+          "direction": "radial_outward",
+          "face_normal_deg": 90.0,
+          "initial_release_gap_mm": 0.5,
+          "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+          "moving_components": [
+            "fixed_cover_lower_panel_02"
+          ],
+          "obstacle_count": 114,
+          "passes": true,
+          "path_type": "translated-position CAD intersection samples",
+          "removed_before": [],
+          "sample_step_mm": 1.0,
+          "travel_mm": 120.0
+        },
+        {
+          "candidate_obstacle_count": 10,
+          "collisions": [],
+          "component": "fixed_cover_lower_panel_03",
+          "direction": "radial_outward",
+          "face_normal_deg": 150.0,
+          "initial_release_gap_mm": 0.5,
+          "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+          "moving_components": [
+            "fixed_cover_lower_panel_03"
+          ],
+          "obstacle_count": 114,
+          "passes": true,
+          "path_type": "translated-position CAD intersection samples",
+          "removed_before": [],
+          "sample_step_mm": 1.0,
+          "travel_mm": 120.0
+        },
+        {
+          "candidate_obstacle_count": 9,
+          "collisions": [],
+          "component": "fixed_cover_lower_panel_04",
+          "direction": "radial_outward",
+          "face_normal_deg": 210.0,
+          "initial_release_gap_mm": 0.5,
+          "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+          "moving_components": [
+            "fixed_cover_lower_panel_04"
+          ],
+          "obstacle_count": 114,
+          "passes": true,
+          "path_type": "translated-position CAD intersection samples",
+          "removed_before": [],
+          "sample_step_mm": 1.0,
+          "travel_mm": 120.0
+        },
+        {
+          "candidate_obstacle_count": 7,
+          "collisions": [],
+          "component": "fixed_cover_lower_panel_05",
+          "direction": "radial_outward",
+          "face_normal_deg": 270.0,
+          "initial_release_gap_mm": 0.5,
+          "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+          "moving_components": [
+            "fixed_cover_lower_panel_05"
+          ],
+          "obstacle_count": 114,
+          "passes": true,
+          "path_type": "translated-position CAD intersection samples",
+          "removed_before": [],
+          "sample_step_mm": 1.0,
+          "travel_mm": 120.0
+        },
+        {
+          "candidate_obstacle_count": 14,
+          "collisions": [],
+          "component": "fixed_cover_lower_panel_06",
+          "direction": "radial_outward",
+          "face_normal_deg": 330.0,
+          "initial_release_gap_mm": 0.5,
+          "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+          "moving_components": [
+            "fixed_cover_lower_panel_06"
+          ],
+          "obstacle_count": 114,
+          "passes": true,
+          "path_type": "translated-position CAD intersection samples",
+          "removed_before": [],
+          "sample_step_mm": 1.0,
+          "travel_mm": 120.0
+        }
+      ],
+      "passes": true,
+      "path_type": "six independent face-normal extractions",
+      "receiver_hardware_status": "not modeled; remove the four M3 fasteners on the selected panel before extraction",
+      "sample_step_mm": 1.0
+    },
     "m2006_coupling_interface": {
       "collar_diameter_mm": 15.0,
       "collar_to_first_bearing_clearance_mm": 0.2,
@@ -19606,7 +18219,7 @@
     },
     "motor_port_harness": {
       "checked_backing_count": 3,
-      "checked_nonendpoint_component_count": 152,
+      "checked_nonendpoint_component_count": 148,
       "clearance_passes": true,
       "collisions": [],
       "hits": [],
@@ -19788,10 +18401,6 @@
           "fixed_cover_upper_panel_05",
           "fixed_cover_lower_panel_06",
           "fixed_cover_upper_panel_06",
-          "fixed_cover_frame_01",
-          "fixed_cover_frame_02",
-          "fixed_cover_frame_03",
-          "fixed_cover_frame_04",
           "fixed_root_guard_hex",
           "fixed_root_dowel_01",
           "fixed_root_dowel_02",
@@ -19956,10 +18565,6 @@
           "fixed_cover_upper_panel_05",
           "fixed_cover_lower_panel_06",
           "fixed_cover_upper_panel_06",
-          "fixed_cover_frame_01",
-          "fixed_cover_frame_02",
-          "fixed_cover_frame_03",
-          "fixed_cover_frame_04",
           "fixed_root_guard_hex",
           "fixed_root_dowel_01",
           "fixed_root_dowel_02",
@@ -20124,10 +18729,6 @@
           "fixed_cover_upper_panel_05",
           "fixed_cover_lower_panel_06",
           "fixed_cover_upper_panel_06",
-          "fixed_cover_frame_01",
-          "fixed_cover_frame_02",
-          "fixed_cover_frame_03",
-          "fixed_cover_frame_04",
           "fixed_root_guard_hex",
           "fixed_root_dowel_01",
           "fixed_root_dowel_02",
@@ -20302,10 +18903,6 @@
           "fixed_cover_upper_panel_05",
           "fixed_cover_lower_panel_06",
           "fixed_cover_upper_panel_06",
-          "fixed_cover_frame_01",
-          "fixed_cover_frame_02",
-          "fixed_cover_frame_03",
-          "fixed_cover_frame_04",
           "fixed_root_guard_hex",
           "fixed_root_dowel_01",
           "fixed_root_dowel_02",
@@ -20468,10 +19065,6 @@
           "fixed_cover_upper_panel_05",
           "fixed_cover_lower_panel_06",
           "fixed_cover_upper_panel_06",
-          "fixed_cover_frame_01",
-          "fixed_cover_frame_02",
-          "fixed_cover_frame_03",
-          "fixed_cover_frame_04",
           "fixed_root_guard_hex",
           "fixed_root_dowel_01",
           "fixed_root_dowel_02",
@@ -20634,10 +19227,6 @@
           "fixed_cover_upper_panel_05",
           "fixed_cover_lower_panel_06",
           "fixed_cover_upper_panel_06",
-          "fixed_cover_frame_01",
-          "fixed_cover_frame_02",
-          "fixed_cover_frame_03",
-          "fixed_cover_frame_04",
           "fixed_root_guard_hex",
           "fixed_root_dowel_01",
           "fixed_root_dowel_02",
@@ -20748,7 +19337,7 @@
       },
       "motor_harness": {
         "checked_backing_count": 3,
-        "checked_nonendpoint_component_count": 152,
+        "checked_nonendpoint_component_count": 148,
         "clearance_passes": true,
         "collisions": [],
         "hits": [],

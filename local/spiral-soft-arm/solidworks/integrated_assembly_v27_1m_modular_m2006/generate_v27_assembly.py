@@ -236,16 +236,6 @@ def build_v27_assembly(contract: V27Contract) -> V27AssemblyResult:
                 ),
             ]
         )
-    # Each panel half is supported by its own exterior armor rows.
-    for index in range(1, 7):
-        intentional.extend(
-            [
-                (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_01"),
-                (f"fixed_cover_lower_panel_{index:02d}", "fixed_cover_frame_02"),
-                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_03"),
-                (f"fixed_cover_upper_panel_{index:02d}", "fixed_cover_frame_04"),
-            ]
-        )
     for index in range(1, 4):
         intentional.extend(
             [
@@ -352,7 +342,6 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
         name
         for name in result.fixed_component_names
         if name.startswith("fixed_cover_lower_panel_")
-        or name == "fixed_cover_frame_01"
     }
     obstacles = tuple(
         name
@@ -413,7 +402,7 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
                 minimum_clearance = min(minimum_clearance, swept.distance(obstacle))
     return {
         "direction": "negative_z",
-        "sweep_type": "exact horizontal-face extrusion after removing lower service panels and fixed_cover_frame_01, then withdrawing M2006 cross-pins",
+        "sweep_type": "exact horizontal-face extrusion after removing six lower service panels, then withdrawing M2006 cross-pins",
         "travel_mm": travel_mm,
         "initial_release_gap_mm": initial_release_gap_mm,
         "moving_component_count": len(moving_names),
@@ -425,6 +414,178 @@ def _drive_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
         "minimum_clearance_mm": minimum_clearance,
         "collisions": collisions,
         "passes": not collisions,
+    }
+
+
+def _sampled_translation_path(
+    result: V27AssemblyResult,
+    moving_names: tuple[str, ...],
+    removed_before: set[str],
+    direction: cq.Vector,
+    travel_mm: float,
+    *,
+    step_mm: float = 1.0,
+    initial_release_gap_mm: float = 0.5,
+) -> dict[str, Any]:
+    """Check translated CAD positions at a dense, documented interval."""
+    if step_mm <= 0.0 or travel_mm <= initial_release_gap_mm:
+        raise ValueError("translation path needs positive step and travel")
+    moving_shapes = [(name, result.components[name]) for name in moving_names]
+    excluded = set(moving_names) | set(removed_before)
+    obstacle_names = tuple(
+        name
+        for name in (*result.fixed_component_names, *result.electronics_component_names)
+        if name not in excluded
+    )
+    obstacle_boxes = {
+        name: result.components[name].BoundingBox() for name in obstacle_names
+    }
+    moving_xy_boxes = {
+        name: shape.BoundingBox() for name, shape in moving_shapes
+    }
+    unit_direction = direction.normalized()
+    travel_vector = unit_direction * travel_mm
+
+    def swept_bounds(box: Any) -> tuple[float, float, float, float, float, float]:
+        return (
+            box.xmin + min(0.0, travel_vector.x),
+            box.xmax + max(0.0, travel_vector.x),
+            box.ymin + min(0.0, travel_vector.y),
+            box.ymax + max(0.0, travel_vector.y),
+            box.zmin + min(0.0, travel_vector.z),
+            box.zmax + max(0.0, travel_vector.z),
+        )
+
+    moving_swept_bounds = {
+        name: swept_bounds(box) for name, box in moving_xy_boxes.items()
+    }
+    candidates = tuple(
+        name
+        for name in obstacle_names
+        if any(
+            obstacle_boxes[name].xmax >= bounds[0]
+            and obstacle_boxes[name].xmin <= bounds[1]
+            and obstacle_boxes[name].ymax >= bounds[2]
+            and obstacle_boxes[name].ymin <= bounds[3]
+            and obstacle_boxes[name].zmax >= bounds[4]
+            and obstacle_boxes[name].zmin <= bounds[5]
+            for bounds in moving_swept_bounds.values()
+        )
+    )
+    distances = [
+        initial_release_gap_mm + index * step_mm
+        for index in range(
+            int(math.floor((travel_mm - initial_release_gap_mm) / step_mm)) + 1
+        )
+    ]
+    if not distances or distances[-1] < travel_mm - 1e-8:
+        distances.append(travel_mm)
+    collisions: list[dict[str, Any]] = []
+    minimum_clearance = float("inf")
+    for distance_mm in distances:
+        translation = direction.normalized() * distance_mm
+        for moving_name, shape in moving_shapes:
+            moved = shape.translate(translation)
+            moved_box = moved.BoundingBox()
+            for obstacle_name in candidates:
+                obstacle_box = obstacle_boxes[obstacle_name]
+                if (
+                    moved_box.xmax < obstacle_box.xmin
+                    or moved_box.xmin > obstacle_box.xmax
+                    or moved_box.ymax < obstacle_box.ymin
+                    or moved_box.ymin > obstacle_box.ymax
+                    or moved_box.zmax < obstacle_box.zmin
+                    or moved_box.zmin > obstacle_box.zmax
+                ):
+                    continue
+                obstacle = result.components[obstacle_name]
+                volume = moved.intersect(obstacle).Volume()
+                if volume > 0.02:
+                    collisions.append(
+                        {
+                            "distance_mm": round(distance_mm, 3),
+                            "moving_component": moving_name,
+                            "fixed_component": obstacle_name,
+                            "volume_mm3": round(volume, 4),
+                        }
+                    )
+                    continue
+                dx = max(
+                    obstacle_box.xmin - moved_box.xmax,
+                    moved_box.xmin - obstacle_box.xmax,
+                    0.0,
+                )
+                dy = max(
+                    obstacle_box.ymin - moved_box.ymax,
+                    moved_box.ymin - obstacle_box.ymax,
+                    0.0,
+                )
+                dz = max(
+                    obstacle_box.zmin - moved_box.zmax,
+                    moved_box.zmin - obstacle_box.zmax,
+                    0.0,
+                )
+                minimum_clearance = min(
+                    minimum_clearance, math.sqrt(dx * dx + dy * dy + dz * dz)
+                )
+    return {
+        "direction": (
+            "negative_z"
+            if direction.z < -1e-8
+            else "positive_z"
+            if direction.z > 1e-8
+            else "radial_outward"
+        ),
+        "path_type": "translated-position CAD intersection samples",
+        "sample_step_mm": step_mm,
+        "travel_mm": travel_mm,
+        "initial_release_gap_mm": initial_release_gap_mm,
+        "moving_components": list(moving_names),
+        "removed_before": sorted(removed_before),
+        "obstacle_count": len(obstacle_names),
+        "candidate_obstacle_count": len(candidates),
+        "minimum_sampled_aabb_clearance_lower_bound_mm": (
+            round(minimum_clearance, 4)
+            if math.isfinite(minimum_clearance)
+            else None
+        ),
+        "collisions": collisions,
+        "passes": not collisions,
+    }
+
+
+def _lower_cover_removal_paths(result: V27AssemblyResult) -> dict[str, Any]:
+    """Audit one face-normal pull-out path for each independently removable panel."""
+    lower_panels = tuple(
+        f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)
+    )
+    normals = (30.0, 90.0, 150.0, 210.0, 270.0, 330.0)
+    panel_removals = [
+        {
+            "component": panel_name,
+            "face_normal_deg": normal_deg,
+            **_sampled_translation_path(
+                result,
+                (panel_name,),
+                set(),
+                cq.Vector(
+                    math.cos(math.radians(normal_deg)),
+                    math.sin(math.radians(normal_deg)),
+                    0.0,
+                ),
+                120.0,
+            ),
+        }
+        for panel_name, normal_deg in zip(lower_panels, normals)
+    ]
+    return {
+        "direction": "radial_outward",
+        "path_type": "six independent face-normal extractions",
+        "sample_step_mm": 1.0,
+        "independent_fastener_removal_required": 24,
+        "receiver_hardware_status": "not modeled; remove the four M3 fasteners on the selected panel before extraction",
+        "panel_removals": panel_removals,
+        "passes": all(item["passes"] for item in panel_removals),
     }
 
 
@@ -928,6 +1089,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         if any(name in arm_names for name in item["components"])
     ]
     arm_sweep = _arm_removal_sweep(result)
+    lower_cover_removal = _lower_cover_removal_paths(result)
     drive_sweep = _drive_removal_sweep(result)
     support_cartridge_removal = _output_support_cartridge_removal_sweeps(result)
     spool_removal = _spool_removal_sweeps(result)
@@ -979,10 +1141,6 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)
     )
     cover_panel_names = (*cover_lower_panel_names, *cover_upper_panel_names)
-    cover_frame_names = tuple(
-        f"fixed_cover_frame_{index:02d}"
-        for index in range(1, len(cover_support_hole_centers) + 1)
-    )
     cover_panel_shapes = [result.components[name] for name in cover_panel_names]
     cover_panel_compound = cq.Compound.makeCompound(cover_panel_shapes)
     cover_panel_bounds = cover_panel_compound.BoundingBox()
@@ -991,9 +1149,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         for shape in cover_panel_shapes
         for vertex in shape.Vertices()
     )
-    cover_outer_shapes = [
-        result.components[name] for name in (*cover_panel_names, *cover_frame_names)
-    ]
+    cover_outer_shapes = cover_panel_shapes
     cover_outer_compound = cq.Compound.makeCompound(cover_outer_shapes)
     cover_outer_bounds = cover_outer_compound.BoundingBox()
     cover_outer_max_radius = max(
@@ -1042,6 +1198,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     service = {
         "arm_positive_z_removal_clear": not arm_forbidden and arm_sweep["passes"],
         "arm_removal_sweep": arm_sweep,
+        "lower_cover_removal": lower_cover_removal,
         "arm_module_removal_sequence": [
             "deenergize_all_power_sources_and_unload_tendons",
             "release_and_remove_three_tendon_terminals_adjusters_and_retentions",
@@ -1323,12 +1480,11 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             "panel_component_bounds_mm": [
                 component_bounds_mm(name) for name in cover_panel_names
             ],
-            "frame_component_bounds_mm": [
-                component_bounds_mm(name) for name in cover_frame_names
-            ],
-            "frame_outer_circumradii_mm": cover_frame_outer_radii,
-            "frame_outer_circumradius_ranges_mm": cover_frame_outer_radius_ranges,
-            "frame_z_centers_mm": cover_frame_centers,
+            "visible_band_count": len(cover_frame_centers),
+            "band_construction": "six flat face ribs fused into each matching service panel; no closed frame parts",
+            "band_outer_circumradii_mm": cover_frame_outer_radii,
+            "band_outer_circumradius_ranges_mm": cover_frame_outer_radius_ranges,
+            "band_z_centers_mm": cover_frame_centers,
             "support_hole_z_centers_mm": cover_support_hole_centers,
             "frame_radial_thickness_mm": cover_frame_thickness,
             "panel_fastener_interface": {
@@ -1352,9 +1508,9 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                     cover_cfg["window_surround_proud_mm"]
                 ),
                 "tool_access_relief_location": "lower_panel_05_bottom_support_row",
-                "frame_tool_access_diameter_mm": 8.0,
-                "frame_tool_access_recess_depth_mm": 2.0,
-                "frame_tool_access_count": 6
+                "band_tool_access_diameter_mm": 8.0,
+                "band_tool_access_recess_depth_mm": 2.0,
+                "band_tool_access_count": 6
                 * len(cover_support_hole_centers)
                 * len(cover_cfg["panel_fastener_tangent_offsets_mm"]),
                 "tool_driver_shaft_diameter_mm": 2.5,
@@ -1392,6 +1548,8 @@ def preflight_v27(result: V27AssemblyResult) -> dict[str, Any]:
         failures.append("arm removal")
     if not audit["service"]["drive_negative_z_removal_clear"]:
         failures.append("drive removal sweep")
+    if not audit["service"]["lower_cover_removal"]["passes"]:
+        failures.append("lower cover removal path")
     if not audit["service"]["drive_register_engagement_passes"]:
         failures.append("drive register engagement")
     if not all(path["passes"] for path in audit["service"]["spool_removal"]):

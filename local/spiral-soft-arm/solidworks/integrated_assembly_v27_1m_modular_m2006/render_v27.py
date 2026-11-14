@@ -651,8 +651,8 @@ def _cover_review(
         color="#263746",
         bbox={"facecolor": "white", "alpha": 0.82, "edgecolor": "#cbd4db"},
     )
-    axes[1].set_title("拆卸示意：移出一块下部服务板", fontsize=12)
-    detached = result.components["fixed_cover_lower_panel_05"].translate(cq.Vector(0.0, -24.0, 0.0))
+    axes[1].set_title("拆卸示意：下部服务板连同环带肋条沿面法线取出", fontsize=12)
+    detached = result.components["fixed_cover_lower_panel_05"].translate(cq.Vector(0.0, -55.0, 0.0))
     color, alpha = _group_style(result, "fixed_cover_panel_detached")
     _add(axes[1], detached, color, 0.40)
     figure.subplots_adjust(left=0.01, right=0.99, top=0.90, bottom=0.03, wspace=0.01)
@@ -685,13 +685,26 @@ def _cover_opaque_view(parts: Iterable[tuple[str, cq.Shape]], path: Path) -> Non
     ax.set_axis_off()
     ax.set_proj_type("ortho")
     for name, shape in parts:
-        if "cover_frame" in name:
-            color = "#354c5c"
-        elif "root_guard" in name:
-            color = "#557989"
+        if "root_guard" in name:
+            color = "#365866"
         else:
-            color = "#d9e1e7"
+            color = "#aab8c0"
         _add(ax, shape, color, 0.98)
+        for edge in shape.Edges():
+            if edge.geomType() != "LINE":
+                continue
+            vertices = edge.Vertices()
+            if len(vertices) != 2:
+                continue
+            ax.plot(
+                [vertex.X for vertex in vertices],
+                [vertex.Y for vertex in vertices],
+                [vertex.Z for vertex in vertices],
+                color="#304a56",
+                linewidth=1.0,
+                alpha=0.98,
+                solid_capstyle="round",
+            )
     ax.set_xlim(-180, 180)
     ax.set_ylim(-180, 180)
     ax.set_zlim(-250, 80)
@@ -701,7 +714,7 @@ def _cover_opaque_view(parts: Iterable[tuple[str, cq.Shape]], path: Path) -> Non
     ax.text2D(
         0.02,
         0.03,
-        "四道浅环带 · 平面拼接板 · 8 mm 倒角窗框",
+        "四道阶梯环带 · 肋条与面板一体打印 · 8 mm 倒角窗框",
         transform=ax.transAxes,
         fontsize=9,
         color="#263746",

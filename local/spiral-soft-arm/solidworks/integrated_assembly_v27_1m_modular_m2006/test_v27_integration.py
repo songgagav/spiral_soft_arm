@@ -18,6 +18,7 @@ from generate_v27_assembly import (
     _polar_center,
     _select_v25_electronics,
     _drive_removal_sweep,
+    _lower_cover_removal_paths,
     audit_v27_assembly,
     build_v27_assembly,
     export_v27,
@@ -102,8 +103,8 @@ class V27ZZDeliveryTests(unittest.TestCase):
         self.assertIn("C610 固定在电子/控制侧", text)
         self.assertIn("固定密封边界", text)
         self.assertIn("拆下 24 颗下部 M3 面板螺钉", text)
-        self.assertIn("六块下部服务板及底部环带 01", text)
-        self.assertIn("六块上部面板及环带 02、03、04 保持安装", text)
+        self.assertIn("六块下部面板", text)
+        self.assertIn("六块上部面板及其肋条留在原位", text)
 
     def test_readme_and_preprint_record_final_cover_contract(self) -> None:
         readme = self.local_readme.read_text(encoding="utf-8")
@@ -113,10 +114,9 @@ class V27ZZDeliveryTests(unittest.TestCase):
         for value in (
             "12 块独立面板",
             "四道外凸六边形环带",
+            "融合为同一打印件",
             "324 mm",
             "332 mm",
-            "322.019 mm",
-            "322 × 283.092 × 300 mm",
             "332 × 287.52 × 300 mm",
             "Ø8 × 2 mm",
             "Ø2.5 mm",
@@ -126,11 +126,12 @@ class V27ZZDeliveryTests(unittest.TestCase):
         ):
             self.assertIn(value, readme)
         for value in (
-            "12 块独立面板",
+            "12 块面板",
             "四道外凸环带",
             "324 mm",
             "332.000 mm",
-            "322.019 mm",
+            "融合到对应的上下板",
+            "332 × 287.52 × 300 mm",
             "Ø8 × 2 mm",
             "Ø2.5 mm",
             "Ø3.4 mm",
@@ -196,7 +197,6 @@ class V27DriveSweepUnitTests(unittest.TestCase):
             drive_component_names=("removable_motor_plate",),
             fixed_component_names=(
                 "fixed_cover_lower_panel_01",
-                "fixed_cover_frame_01",
                 "fixed_cover_upper_panel_01",
                 "fixed_baffle",
             ),
@@ -215,6 +215,20 @@ class V27DriveSweepUnitTests(unittest.TestCase):
 
 
 class V27CoverIntegrationTests(unittest.TestCase):
+    def test_each_lower_service_panel_has_a_clear_radial_pull_out_path(self) -> None:
+        result = build_v27_assembly(load_contract())
+        removal = _lower_cover_removal_paths(result)
+        self.assertTrue(removal["passes"])
+        self.assertEqual(removal["direction"], "radial_outward")
+        self.assertEqual(removal["path_type"], "six independent face-normal extractions")
+        self.assertEqual(
+            {item["component"] for item in removal["panel_removals"]},
+            {f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)},
+        )
+        self.assertTrue(all(item["direction"] == "radial_outward" for item in removal["panel_removals"]))
+        self.assertTrue(all(item["passes"] for item in removal["panel_removals"]))
+        self.assertEqual(removal["independent_fastener_removal_required"], 24)
+
     def test_stepped_cover_is_present_and_clear_in_full_assembly(self) -> None:
         result = build_v27_assembly(load_contract())
         panel_names = tuple(
@@ -223,9 +237,7 @@ class V27CoverIntegrationTests(unittest.TestCase):
             if name.startswith("fixed_cover_lower_panel_")
             or name.startswith("fixed_cover_upper_panel_")
         )
-        frame_names = tuple(
-            name for name in result.components if name.startswith("fixed_cover_frame_")
-        )
+        frame_names = tuple(name for name in result.components if name.startswith("fixed_cover_frame_"))
         self.assertEqual(
             set(panel_names),
             {
@@ -233,10 +245,7 @@ class V27CoverIntegrationTests(unittest.TestCase):
                 *(f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)),
             },
         )
-        self.assertEqual(
-            frame_names,
-            tuple(f"fixed_cover_frame_{index:02d}" for index in range(1, 5)),
-        )
+        self.assertEqual(frame_names, ())
         self.assertIn("fixed_root_guard_hex", result.components)
         audit = preflight_v27(result)
         self.assertEqual(audit["collisions"]["forbidden"], [])
@@ -247,13 +256,14 @@ class V27CoverIntegrationTests(unittest.TestCase):
         self.assertEqual(cover["lower_service_panel_count"], 6)
         self.assertEqual(cover["service_split_z_mm"], -80.0)
         self.assertEqual(len(cover["panel_component_bounds_mm"]), 12)
-        self.assertEqual(len(cover["frame_component_bounds_mm"]), 4)
+        self.assertEqual(cover["visible_band_count"], 4)
+        self.assertEqual(cover["band_construction"], "six flat face ribs fused into each matching service panel; no closed frame parts")
         self.assertEqual(cover["nominal_profile_circumdiameter_mm"], 324.0)
         self.assertEqual(cover["nominal_outer_armor_circumdiameter_mm"], 332.0)
-        self.assertEqual(cover["actual_panel_max_radial_diameter_mm"], 322.019)
+        self.assertEqual(cover["actual_panel_max_radial_diameter_mm"], 332.0)
         self.assertEqual(
             cover["actual_panel_assembly_bounds_mm"],
-            {"x": 322.0, "y": 283.092, "z": 300.0},
+            {"x": 332.0, "y": 287.52, "z": 300.0},
         )
         outer_bounds = cover["actual_outer_cover_assembly_bounds_mm"]
         self.assertEqual(
@@ -265,10 +275,10 @@ class V27CoverIntegrationTests(unittest.TestCase):
             332.0,
         )
         self.assertLessEqual(max(outer_bounds["x"], outer_bounds["y"]), 350.0)
-        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 104.031746, places=5)
-        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
+        self.assertAlmostEqual(cover["band_outer_circumradii_mm"][0], 104.031746, places=5)
+        self.assertEqual(cover["band_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
         self.assertEqual(
-            [[round(value, 3) for value in pair] for pair in cover["frame_outer_circumradius_ranges_mm"]],
+            [[round(value, 3) for value in pair] for pair in cover["band_outer_circumradius_ranges_mm"]],
             [[102.0, 106.063], [166.0, 166.0], [166.0, 166.0], [166.0, 166.0]],
         )
         self.assertEqual(cover["panel_height_mm"], 300.0)
@@ -284,9 +294,9 @@ class V27CoverIntegrationTests(unittest.TestCase):
                 "tool_access_relief_diameter_mm": 8.6,
                 "tool_access_relief_depth_mm": 2.5,
                 "tool_access_relief_location": "lower_panel_05_bottom_support_row",
-                "frame_tool_access_diameter_mm": 8.0,
-                "frame_tool_access_recess_depth_mm": 2.0,
-                "frame_tool_access_count": 48,
+                "band_tool_access_diameter_mm": 8.0,
+                "band_tool_access_recess_depth_mm": 2.0,
+                "band_tool_access_count": 48,
                 "tool_driver_shaft_diameter_mm": 2.5,
                 "receiver_hardware": "not modeled; M3 nut or insert method remains to be selected",
             },
@@ -298,16 +308,19 @@ class V27CoverIntegrationTests(unittest.TestCase):
             set(sweep["removed_fixed_component_names"]),
             {
                 *(f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
-                "fixed_cover_frame_01",
             },
         )
-        self.assertTrue(
-            {
-                "fixed_cover_frame_02",
-                "fixed_cover_frame_03",
-                "fixed_cover_frame_04",
-            }.issubset(sweep["fixed_obstacle_names"])
+        self.assertTrue({f"fixed_cover_upper_panel_{index:02d}" for index in range(1, 7)}.issubset(sweep["fixed_obstacle_names"]))
+        lower_cover = audit["service"]["lower_cover_removal"]
+        self.assertEqual(lower_cover["direction"], "radial_outward")
+        self.assertEqual(lower_cover["path_type"], "six independent face-normal extractions")
+        self.assertEqual(lower_cover["independent_fastener_removal_required"], 24)
+        self.assertEqual(
+            {item["component"] for item in lower_cover["panel_removals"]},
+            {f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)},
         )
+        self.assertTrue(all(item["passes"] for item in lower_cover["panel_removals"]))
+        self.assertTrue(all(item["direction"] == "radial_outward" for item in lower_cover["panel_removals"]))
 
 
 class V27StepDeterminismTests(unittest.TestCase):
@@ -562,6 +575,10 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertTrue(sweep["passes"])
         self.assertEqual(sweep["collisions"], [])
         self.assertEqual(sweep["travel_mm"], 280.0)
+        self.assertEqual(
+            sweep["sweep_type"],
+            "exact horizontal-face extrusion after removing six lower service panels, then withdrawing M2006 cross-pins",
+        )
         self.assertTrue(
             {
                 "removable_motor_plate",
@@ -575,7 +592,6 @@ class V27IntegrationTests(unittest.TestCase):
             set(sweep["removed_fixed_component_names"]),
             {
                 *(f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
-                "fixed_cover_frame_01",
             },
         )
         self.assertTrue(
@@ -588,12 +604,11 @@ class V27IntegrationTests(unittest.TestCase):
         )
         sequence = service["drive_module_removal_sequence"]
         self.assertEqual(
-            sequence[:9],
+            sequence[:8],
             [
                 "deenergize_all_power_sources_and_unload_tendons",
                 "remove_24_M3_lower_cover_fasteners",
                 *(f"remove_fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)),
-                "remove_bottom_cover_frame_01",
             ],
         )
         self.assertIn("remove_three_motor_cross_pins", sequence)
@@ -674,11 +689,11 @@ class V27IntegrationTests(unittest.TestCase):
         self.assertEqual(len(self.audit["alignment"]), 3)
         cover = self.audit["cover_layout"]
         self.assertEqual(cover["nominal_profile_circumdiameter_mm"], 324.0)
-        self.assertEqual(len(cover["frame_outer_circumradii_mm"]), 4)
-        self.assertAlmostEqual(cover["frame_outer_circumradii_mm"][0], 104.031746, places=5)
-        self.assertEqual(cover["frame_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
+        self.assertEqual(len(cover["band_outer_circumradii_mm"]), 4)
+        self.assertAlmostEqual(cover["band_outer_circumradii_mm"][0], 104.031746, places=5)
+        self.assertEqual(cover["band_outer_circumradii_mm"][1:], [166.0, 166.0, 166.0])
         self.assertEqual(
-            [[round(value, 3) for value in pair] for pair in cover["frame_outer_circumradius_ranges_mm"]],
+            [[round(value, 3) for value in pair] for pair in cover["band_outer_circumradius_ranges_mm"]],
             [[102.0, 106.063], [166.0, 166.0], [166.0, 166.0], [166.0, 166.0]],
         )
         self.assertEqual(cover["frame_radial_thickness_mm"], 4.0)

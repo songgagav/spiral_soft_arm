@@ -590,7 +590,6 @@ def build_drive_module(
             "remove_fixed_cover_lower_panel_04",
             "remove_fixed_cover_lower_panel_05",
             "remove_fixed_cover_lower_panel_06",
-            "remove_bottom_cover_frame_01",
             "disconnect_motor_harnesses",
             "remove_three_motor_cross_pins",
             "translate_plate_downward_to_withdraw_D6_shafts",
