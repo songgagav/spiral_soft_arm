@@ -13,10 +13,13 @@ class RootCoverResult:
     panel_names: tuple[str, ...]
     lower_panel_names: tuple[str, ...]
     upper_panel_names: tuple[str, ...]
+    top_plate_attachment_panel_names: tuple[str, ...]
     motor_window_panels: tuple[str, ...]
     observation_window_panels: tuple[str, ...]
     type_c_service_panel: str
-    band_centers_mm: tuple[float, ...]
+    raised_rib_centers_mm: tuple[float, ...]
+    fastener_row_centers_mm: tuple[float, ...]
+    inner_support_pad_count: int
     root_guard_name: str
     nominal_profile_circumdiameter_mm: float
     actual_panel_max_radial_diameter_mm: float
@@ -273,6 +276,56 @@ def _face_band_segment(
     return rib
 
 
+def _face_inner_support_pad(
+    normal_deg: float,
+    outer_face_apothem_mm: float,
+    panel_thickness_mm: float,
+    z_mm: float,
+    tangent_offset_mm: float,
+    face_slope: float,
+    tangent_width_mm: float,
+    vertical_height_mm: float,
+    inward_thickness_mm: float,
+    panel_overlap_mm: float = 0.6,
+) -> cq.Shape:
+    """Make one local inner fastener pad, leaving the outside panel face flush."""
+    dimensions = (
+        panel_thickness_mm,
+        tangent_width_mm,
+        vertical_height_mm,
+        inward_thickness_mm,
+        panel_overlap_mm,
+    )
+    if any(not math.isfinite(value) or value <= 0.0 for value in dimensions):
+        raise ValueError("inner support-pad dimensions must be finite and positive")
+
+    radial = _unit(normal_deg)
+    tangent_tuple = _unit(normal_deg + 90.0)
+    tangent = cq.Vector(*tangent_tuple)
+    outward_normal = _surface_outward_normal(normal_deg, face_slope)
+    inner_apothem = outer_face_apothem_mm - panel_thickness_mm
+    origin = cq.Vector(
+        inner_apothem * radial[0] + tangent_offset_mm * tangent_tuple[0],
+        inner_apothem * radial[1] + tangent_offset_mm * tangent_tuple[1],
+        z_mm,
+    )
+    pad_plane = cq.Plane(
+        origin=origin + outward_normal * panel_overlap_mm,
+        xDir=tangent,
+        normal=-outward_normal,
+    )
+    pad_surface_height = vertical_height_mm * math.sqrt(1.0 + face_slope**2)
+    pad = (
+        cq.Workplane(pad_plane)
+        .rect(tangent_width_mm, pad_surface_height)
+        .extrude(inward_thickness_mm + panel_overlap_mm)
+        .val()
+    )
+    if not pad.isValid() or len(pad.Solids()) != 1:
+        raise ValueError("inner fastener support pad must be one valid solid")
+    return pad
+
+
 def build_root_cover(contract: Any) -> RootCoverResult:
     cfg = contract.integration["root_cover"]
     outer_radius = float(cfg["outer_circumradius_mm"])
@@ -299,7 +352,16 @@ def build_root_cover(contract: Any) -> RootCoverResult:
         )
     ):
         raise ValueError("cover window surrounds require finite positive dimensions")
-    frame_centers = tuple(float(value) for value in cfg["frame_z_centers_mm"])
+    fastener_row_centers = tuple(
+        float(value) for value in cfg["fastener_row_z_centers_mm"]
+    )
+    raised_rib_centers = tuple(
+        float(value) for value in cfg["raised_rib_z_centers_mm"]
+    )
+    if len(fastener_row_centers) != 4 or len(raised_rib_centers) != 2:
+        raise ValueError("cover requires four fastener rows and two raised ribs")
+    if any(center not in fastener_row_centers for center in raised_rib_centers):
+        raise ValueError("each raised armor rib must align with a fastener row")
     profile_stations = tuple(
         (float(z_mm), float(radius_mm))
         for z_mm, radius_mm in cfg["panel_profile_stations_mm"]
@@ -329,10 +391,10 @@ def build_root_cover(contract: Any) -> RootCoverResult:
         - outer_radius
     ) > 1e-6:
         raise ValueError("cover split radius must match outer_circumradius_mm")
-    if len(frame_centers) != 4:
-        raise ValueError("cover requires four armor band center heights")
     bolt_radius = float(cfg["panel_fastener_diameter_mm"]) / 2.0
     bolt_offsets = tuple(float(value) for value in cfg["panel_fastener_tangent_offsets_mm"])
+    fastener_pad_width = float(cfg["panel_fastener_pad_tangent_width_mm"])
+    counterbore_recess_depth = float(cfg["panel_fastener_recess_depth_mm"])
     normals = (30.0, 90.0, 150.0, 210.0, 270.0, 330.0)
 
     def radius_at(z_mm: float) -> float:
@@ -495,12 +557,14 @@ def build_root_cover(contract: Any) -> RootCoverResult:
     observation_window_panels: list[str] = []
     clip_radius = max(radius for _, radius in profile_stations) + surround_proud + 10.0
     region_specs = (
-        ("lower", z0, split_z, (frame_centers[0], frame_centers[1])),
-        ("upper", split_z, z1, (frame_centers[2], frame_centers[3])),
+        ("lower", z0, split_z, fastener_row_centers[:2]),
+        ("upper", split_z, z1, fastener_row_centers[2:]),
     )
     normal_to_index = {normal: index for index, normal in enumerate(normals, start=1)}
     motor_normals = {90.0, 210.0, 330.0}
-    observation_normals = {30.0, 150.0, 270.0}
+    observation_normals = {
+        float(value) for value in cfg["observation_window_normals_deg"]
+    }
     motor_z = float(cfg["motor_window_center_z_mm"])
     observation_z = float(cfg["observation_window_center_z_mm"])
     service_z = float(cfg["m12_service_window_center_z_mm"])
@@ -508,7 +572,7 @@ def build_root_cover(contract: Any) -> RootCoverResult:
 
     for normal_deg in normals:
         index = normal_to_index[normal_deg]
-        for region, panel_z0, panel_z1, region_frame_centers in region_specs:
+        for region, panel_z0, panel_z1, _region_row_centers in region_specs:
             panel_name = f"fixed_cover_{region}_panel_{index:02d}"
             panel = panel_solid(normal_deg, panel_z0, panel_z1)
             if region == "upper" and normal_deg in motor_normals:
@@ -559,7 +623,7 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                 # The M12 bezel reaches the bottom armor band. Trim only its
                 # proud outer lip across that 8 mm band height, leaving the
                 # panel wall and the complete ring fastener seats intact.
-                access_z = frame_centers[0]
+                access_z = fastener_row_centers[0]
                 access_slope = _profile_face_slope(tuple(profile_stations), access_z)
                 access_normal = _surface_outward_normal(normal_deg, access_slope)
                 access_apothem = radius_at(access_z) * math.cos(
@@ -623,42 +687,63 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                 panel_name
             )
 
-    frame_specs = tuple(
+    fastener_specs = tuple(
         (
-            frame_z,
-            frame_z - frame_height / 2.0,
-            frame_z + frame_height / 2.0,
+            row_z,
+            row_z - frame_height / 2.0,
+            row_z + frame_height / 2.0,
         )
-        for frame_z in frame_centers
+        for row_z in fastener_row_centers
     )
     central_seam_z = float(cfg["central_band_seam_z_mm"])
     central_seam_height = float(cfg["central_band_seam_height_mm"])
     central_seam_recess = float(cfg["central_band_seam_radial_recess_mm"])
     if central_seam_height <= 0.0 or central_seam_recess <= 0.0:
         raise ValueError("central armor seam dimensions must be positive")
-    seam_apothem = (
-        radius_at(central_seam_z) + frame_radial_thickness
-    ) * math.cos(math.radians(30.0))
-    for index, (frame_z, band_z0, band_z1) in enumerate(frame_specs, start=1):
+    seam_apothem = radius_at(central_seam_z) * math.cos(math.radians(30.0))
+    inner_support_pad_count = 0
+    for index, (row_z, band_z0, band_z1) in enumerate(fastener_specs, start=1):
         frame_inner_radii = (radius_at(band_z0), radius_at(band_z1))
+        region = "lower" if index <= 2 else "upper"
         for normal_deg in normals:
-            panel_name = f"fixed_cover_{'lower' if index <= 2 else 'upper'}_panel_{normal_to_index[normal_deg]:02d}"
+            panel_name = f"fixed_cover_{region}_panel_{normal_to_index[normal_deg]:02d}"
             panel = components[panel_name]
-            rib = _face_band_segment(
-                normal_deg,
-                frame_inner_radii,
-                (band_z0, band_z1),
-                frame_radial_thickness,
-                panel_overlap_mm=0.6,
-                edge_gap_mm=edge_gap,
-            )
-            panel = panel.fuse(rib).clean()
+            has_raised_rib = row_z in raised_rib_centers
+            if has_raised_rib:
+                rib = _face_band_segment(
+                    normal_deg,
+                    frame_inner_radii,
+                    (band_z0, band_z1),
+                    frame_radial_thickness,
+                    panel_overlap_mm=0.6,
+                    edge_gap_mm=edge_gap,
+                )
+                panel = panel.fuse(rib).clean()
+            else:
+                face_slope = _profile_face_slope(tuple(profile_stations), row_z)
+                center_radius = radius_at(row_z)
+                base_face_apothem = center_radius * math.cos(math.radians(30.0))
+                for offset in bolt_offsets:
+                    pad = _face_inner_support_pad(
+                        normal_deg,
+                        base_face_apothem,
+                        panel_thickness,
+                        row_z,
+                        offset,
+                        face_slope,
+                        fastener_pad_width,
+                        frame_height,
+                        frame_radial_thickness,
+                    )
+                    panel = panel.fuse(pad).clean()
+                    inner_support_pad_count += 1
+
             if not panel.isValid() or len(panel.Solids()) != 1:
-                raise ValueError(f"integrated armor panel is not one solid: {panel_name}")
+                raise ValueError(f"integrated armor support is not one solid: {panel_name}")
 
             if index in (2, 3):
-                # Recess the outer 1.2 mm across the two middle rib edges,
-                # preserving the 8 mm-high printed ribs and their panel seam.
+                # Recess the outer 1.2 mm at the split seam. The middle
+                # fastener support pads remain on the inside of the panel.
                 seam_groove = _face_box(
                     normal_deg,
                     seam_apothem - central_seam_recess / 2.0 + 0.1,
@@ -670,23 +755,25 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                 )
                 panel = panel.cut(seam_groove).clean()
 
-            center_radius = radius_at(frame_z)
+            center_radius = radius_at(row_z)
             base_face_apothem = center_radius * math.cos(math.radians(30.0))
-            outer_face_apothem = (
-                center_radius + frame_radial_thickness
-            ) * math.cos(math.radians(30.0))
-            face_slope = _profile_face_slope(tuple(profile_stations), frame_z)
+            face_slope = _profile_face_slope(tuple(profile_stations), row_z)
             outward_normal = _surface_outward_normal(normal_deg, face_slope)
-            rib_surface_offset = (outer_face_apothem - base_face_apothem) / math.sqrt(
-                1.0 + face_slope * face_slope
-            )
+            rib_surface_offset = 0.0
+            if has_raised_rib:
+                outer_face_apothem = (
+                    center_radius + frame_radial_thickness
+                ) * math.cos(math.radians(30.0))
+                rib_surface_offset = (
+                    outer_face_apothem - base_face_apothem
+                ) / math.sqrt(1.0 + face_slope * face_slope)
             for offset in bolt_offsets:
                 panel = panel.cut(
                     _oriented_face_hole(
                         normal_deg,
                         base_face_apothem,
                         offset,
-                        frame_z,
+                        row_z,
                         bolt_radius,
                         20.0,
                         outward_normal,
@@ -698,14 +785,101 @@ def build_root_cover(contract: Any) -> RootCoverResult:
                         normal_deg,
                         base_face_apothem,
                         offset,
-                        frame_z,
+                        row_z,
                         4.0,
-                        2.1,
+                        counterbore_recess_depth,
                         outward_normal,
                         start_outside_mm=rib_surface_offset + 0.1,
                     )
                 )
-            components[panel_name] = panel.clean()
+            panel_z0, panel_z1 = (z0, split_z) if region == "lower" else (split_z, z1)
+            final_height_clip = cq.Solid.makeBox(
+                2.0 * clip_radius,
+                2.0 * clip_radius,
+                panel_z1 - panel_z0,
+                cq.Vector(-clip_radius, -clip_radius, panel_z0),
+            )
+            panel = panel.intersect(final_height_clip).clean()
+            if not panel.isValid() or len(panel.Solids()) != 1:
+                raise ValueError(f"final cover panel is not one valid solid: {panel_name}")
+            components[panel_name] = panel
+
+    attachment_normals = tuple(
+        float(value) for value in cfg["top_plate_attachment_normals_deg"]
+    )
+    attachment_inner_radius = float(cfg["top_plate_attachment_inner_radius_mm"])
+    attachment_tangent_width = float(cfg["top_plate_attachment_tangent_width_mm"])
+    attachment_z0, attachment_z1 = (
+        float(value) for value in cfg["top_plate_attachment_z_bounds_mm"]
+    )
+    attachment_hole_diameter = float(cfg["top_plate_attachment_hole_diameter_mm"])
+    attachment_hole_radius = float(cfg["top_plate_attachment_hole_radius_mm"])
+    attachment_overlap = float(cfg["top_plate_attachment_panel_overlap_mm"])
+    if (
+        len(attachment_normals) != 3
+        or len(set(attachment_normals)) != 3
+        or any(normal not in normals or normal in motor_normals for normal in attachment_normals)
+    ):
+        raise ValueError("top-plate cover ears must use three distinct non-motor face normals")
+    if any(
+        not math.isfinite(value) or value <= 0.0
+        for value in (
+            attachment_inner_radius,
+            attachment_tangent_width,
+            attachment_hole_diameter,
+            attachment_hole_radius,
+            attachment_overlap,
+        )
+    ):
+        raise ValueError("top-plate cover-ear dimensions must be finite and positive")
+    if not math.isfinite(attachment_z0) or not math.isfinite(attachment_z1) or attachment_z1 <= attachment_z0:
+        raise ValueError("top-plate cover-ear Z bounds must be finite and increasing")
+    attachment_wall_inner_apothem = (
+        radius_at(attachment_z0) * math.cos(math.radians(30.0)) - panel_thickness
+    )
+    if not (
+        attachment_inner_radius < attachment_hole_radius
+        and attachment_hole_radius + attachment_hole_diameter / 2.0
+        < attachment_wall_inner_apothem
+    ):
+        raise ValueError("top-plate attachment hole must lie within the radial ear shelf")
+    attachment_panel_names: list[str] = []
+    attachment_center_z = 0.5 * (attachment_z0 + attachment_z1)
+    attachment_normal_width = (
+        attachment_wall_inner_apothem + attachment_overlap - attachment_inner_radius
+    )
+    attachment_center_normal = (
+        attachment_wall_inner_apothem + attachment_overlap + attachment_inner_radius
+    ) / 2.0
+    for normal_deg in attachment_normals:
+        panel_name = f"fixed_cover_upper_panel_{normal_to_index[normal_deg]:02d}"
+        panel = components[panel_name]
+        ear = _face_box(
+            normal_deg,
+            attachment_center_normal,
+            0.0,
+            attachment_center_z,
+            attachment_tangent_width,
+            attachment_normal_width,
+            attachment_z1 - attachment_z0,
+        )
+        panel = panel.fuse(ear).clean()
+        radial = _unit(normal_deg)
+        attachment_hole = cq.Solid.makeCylinder(
+            attachment_hole_diameter / 2.0,
+            attachment_z1 - attachment_z0 + 0.2,
+            cq.Vector(
+                attachment_hole_radius * radial[0],
+                attachment_hole_radius * radial[1],
+                attachment_z0 - 0.1,
+            ),
+            cq.Vector(0.0, 0.0, 1.0),
+        )
+        panel = panel.cut(attachment_hole).clean()
+        if not panel.isValid() or len(panel.Solids()) != 1:
+            raise ValueError(f"top-plate attachment ear is not fused to one panel: {panel_name}")
+        components[panel_name] = panel
+        attachment_panel_names.append(panel_name)
 
     guard_outer = float(cfg["root_guard_outer_circumradius_mm"])
     guard_inner = float(cfg["root_guard_inner_circumradius_mm"])
@@ -830,10 +1004,13 @@ def build_root_cover(contract: Any) -> RootCoverResult:
         panel_names=tuple(panel_names),
         lower_panel_names=tuple(lower_panel_names),
         upper_panel_names=tuple(upper_panel_names),
+        top_plate_attachment_panel_names=tuple(attachment_panel_names),
         motor_window_panels=tuple(motor_window_panels),
         observation_window_panels=tuple(observation_window_panels),
         type_c_service_panel=type_c_service_panel,
-        band_centers_mm=tuple(frame_centers),
+        raised_rib_centers_mm=tuple(raised_rib_centers),
+        fastener_row_centers_mm=tuple(fastener_row_centers),
+        inner_support_pad_count=inner_support_pad_count,
         root_guard_name=root_guard_name,
         nominal_profile_circumdiameter_mm=2.0 * max_outer_radius,
         actual_panel_max_radial_diameter_mm=2.0 * actual_panel_max_radius,

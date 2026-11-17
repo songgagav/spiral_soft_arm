@@ -17203,32 +17203,26 @@
       "z": 300.0
     },
     "actual_panel_max_radial_diameter_mm": 332.0,
-    "band_construction": "six flat face ribs fused into each matching service panel; no closed frame parts",
+    "band_construction": "two raised levels of six flat face ribs fused into each matching service panel; no closed frame parts",
     "band_outer_circumradii_mm": [
-      104.03174603174602,
       166.0,
-      166.0,
-      166.0
+      131.074074
     ],
     "band_outer_circumradius_ranges_mm": [
       [
-        102.0,
-        106.06349206349206
-      ],
-      [
         166.0,
         166.0
       ],
       [
-        166.0,
-        166.0
-      ],
-      [
-        166.0,
-        166.0
+        137.148148,
+        125.0
       ]
     ],
     "band_z_centers_mm": [
+      -232.0,
+      60.0
+    ],
+    "fastener_row_z_centers_mm": [
       -232.0,
       -84.0,
       -76.0,
@@ -17236,6 +17230,13 @@
     ],
     "floodable_openings": true,
     "frame_radial_thickness_mm": 4.0,
+    "inner_support_pad_backing_below_head_recess_mm": 4.3,
+    "inner_support_pad_count": 24,
+    "inner_support_pad_nominal_dimensions_mm": {
+      "inward_thickness": 4.0,
+      "tangential_width": 12.0,
+      "vertical_height": 8.0
+    },
     "lower_service_panel_count": 6,
     "motor_window_center_z_mm": -1.0,
     "motor_window_mm": [
@@ -17244,10 +17245,20 @@
     ],
     "nominal_outer_armor_circumdiameter_mm": 332.0,
     "nominal_profile_circumdiameter_mm": 324.0,
+    "observation_window_center_z_mm": -150.0,
+    "observation_window_count": 2,
+    "observation_window_mm": [
+      110.0,
+      80.0
+    ],
+    "observation_window_normals_deg": [
+      30.0,
+      210.0
+    ],
     "panel_component_bounds_mm": [
       {
         "name": "fixed_cover_lower_panel_01",
-        "x_mm": 118.078,
+        "x_mm": 86.078,
         "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
@@ -17256,14 +17267,14 @@
       {
         "name": "fixed_cover_lower_panel_02",
         "x_mm": 166.0,
-        "y_mm": 61.29,
+        "y_mm": 9.864,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_lower_panel_03",
-        "x_mm": 118.078,
+        "x_mm": 86.078,
         "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
@@ -17271,7 +17282,7 @@
       },
       {
         "name": "fixed_cover_lower_panel_04",
-        "x_mm": 118.078,
+        "x_mm": 86.078,
         "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
@@ -17280,14 +17291,14 @@
       {
         "name": "fixed_cover_lower_panel_05",
         "x_mm": 166.0,
-        "y_mm": 61.29,
+        "y_mm": 9.864,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
         "z_mm": 156.0
       },
       {
         "name": "fixed_cover_lower_panel_06",
-        "x_mm": 118.078,
+        "x_mm": 86.078,
         "y_mm": 143.76,
         "z_max_mm": -80.0,
         "z_min_mm": -236.0,
@@ -17295,48 +17306,48 @@
       },
       {
         "name": "fixed_cover_upper_panel_01",
-        "x_mm": 86.078,
-        "y_mm": 143.76,
+        "x_mm": 101.578,
+        "y_mm": 138.564,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_02",
-        "x_mm": 166.0,
-        "y_mm": 5.864,
+        "x_mm": 158.0,
+        "y_mm": 40.407,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_03",
-        "x_mm": 86.078,
-        "y_mm": 143.76,
+        "x_mm": 101.578,
+        "y_mm": 138.564,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_04",
-        "x_mm": 86.078,
-        "y_mm": 143.76,
+        "x_mm": 101.578,
+        "y_mm": 138.564,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_05",
-        "x_mm": 166.0,
-        "y_mm": 5.864,
+        "x_mm": 158.0,
+        "y_mm": 48.296,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
       },
       {
         "name": "fixed_cover_upper_panel_06",
-        "x_mm": 86.078,
-        "y_mm": 143.76,
+        "x_mm": 101.578,
+        "y_mm": 138.564,
         "z_max_mm": 64.0,
         "z_min_mm": -80.0,
         "z_mm": 144.0
@@ -17344,10 +17355,10 @@
     ],
     "panel_count": 12,
     "panel_fastener_interface": {
-      "band_tool_access_count": 48,
-      "band_tool_access_diameter_mm": 8.0,
-      "band_tool_access_recess_depth_mm": 2.0,
       "clearance_diameter_mm": 3.4,
+      "counterbore_access_count": 48,
+      "counterbore_access_diameter_mm": 8.0,
+      "counterbore_recess_depth_mm": 2.1,
       "hole_count": 48,
       "receiver_hardware": "not modeled; M3 nut or insert method remains to be selected",
       "relieved_tool_access_count": 2,
@@ -17366,10 +17377,6 @@
     "panel_profile_stations_mm": [
       [
         -236.0,
-        98.0
-      ],
-      [
-        -110.0,
         162.0
       ],
       [
@@ -17377,8 +17384,16 @@
         162.0
       ],
       [
-        64.0,
+        37.0,
         162.0
+      ],
+      [
+        56.0,
+        133.148148
+      ],
+      [
+        64.0,
+        121.0
       ]
     ],
     "panel_z_bounds_mm": [
@@ -17386,6 +17401,10 @@
       64.0
     ],
     "pressure_boundary": false,
+    "raised_rib_z_centers_mm": [
+      -232.0,
+      60.0
+    ],
     "service_split_z_mm": -80.0,
     "support_hole_z_centers_mm": [
       -232.0,
@@ -17394,7 +17413,7 @@
       60.0
     ],
     "upper_panel_count": 6,
-    "visible_band_count": 4,
+    "visible_band_count": 2,
     "window_surround_proud_mm": 2.5,
     "window_surround_reveal_mm": 1.5,
     "window_surround_width_mm": 8.0
@@ -18084,7 +18103,7 @@
       "independent_fastener_removal_required": 24,
       "panel_removals": [
         {
-          "candidate_obstacle_count": 13,
+          "candidate_obstacle_count": 7,
           "collisions": [],
           "component": "fixed_cover_lower_panel_01",
           "direction": "radial_outward",
@@ -18102,7 +18121,7 @@
           "travel_mm": 120.0
         },
         {
-          "candidate_obstacle_count": 7,
+          "candidate_obstacle_count": 5,
           "collisions": [],
           "component": "fixed_cover_lower_panel_02",
           "direction": "radial_outward",
@@ -18120,7 +18139,7 @@
           "travel_mm": 120.0
         },
         {
-          "candidate_obstacle_count": 10,
+          "candidate_obstacle_count": 7,
           "collisions": [],
           "component": "fixed_cover_lower_panel_03",
           "direction": "radial_outward",
@@ -18138,7 +18157,7 @@
           "travel_mm": 120.0
         },
         {
-          "candidate_obstacle_count": 9,
+          "candidate_obstacle_count": 6,
           "collisions": [],
           "component": "fixed_cover_lower_panel_04",
           "direction": "radial_outward",
@@ -18156,7 +18175,7 @@
           "travel_mm": 120.0
         },
         {
-          "candidate_obstacle_count": 7,
+          "candidate_obstacle_count": 5,
           "collisions": [],
           "component": "fixed_cover_lower_panel_05",
           "direction": "radial_outward",
@@ -18174,7 +18193,7 @@
           "travel_mm": 120.0
         },
         {
-          "candidate_obstacle_count": 14,
+          "candidate_obstacle_count": 6,
           "collisions": [],
           "component": "fixed_cover_lower_panel_06",
           "direction": "radial_outward",
@@ -18291,6 +18310,14 @@
         "axis_index": 1,
         "collision_volume_threshold_mm3": 0.02,
         "collisions": [],
+        "cover_panel_removal_path_passes": true,
+        "cover_panel_removal_required_first": "fixed_cover_upper_panel_01",
+        "cover_panel_retention_fasteners_to_release": 5,
+        "cover_panel_service_sequence": [
+          "release_four_existing_upper_panel_M3_fasteners",
+          "remove_top_plate_retention_M3_fastener",
+          "pull_paired_upper_panel_radially_outward_120_mm"
+        ],
         "direction": "positive_spool_axis",
         "fixed_obstacle_names": [
           "arm_module_arm_segment_01",
@@ -18390,7 +18417,6 @@
           "fixed_shaft_03",
           "fixed_output_shaft_03",
           "fixed_cover_lower_panel_01",
-          "fixed_cover_upper_panel_01",
           "fixed_cover_lower_panel_02",
           "fixed_cover_upper_panel_02",
           "fixed_cover_lower_panel_03",
@@ -18445,7 +18471,8 @@
           "fixed_output_support_cartridge_screw_01_02",
           "fixed_bearing_outer_01",
           "fixed_oil_seal_outboard_01",
-          "fixed_labyrinth_outboard_01"
+          "fixed_labyrinth_outboard_01",
+          "fixed_cover_upper_panel_01"
         ],
         "retained_support_land_name": "fixed_output_support_land_01",
         "sweep_type": "continuous axial extrusion of cartridge end profiles",
@@ -18455,6 +18482,14 @@
         "axis_index": 2,
         "collision_volume_threshold_mm3": 0.02,
         "collisions": [],
+        "cover_panel_removal_path_passes": true,
+        "cover_panel_removal_required_first": "fixed_cover_upper_panel_03",
+        "cover_panel_retention_fasteners_to_release": 5,
+        "cover_panel_service_sequence": [
+          "release_four_existing_upper_panel_M3_fasteners",
+          "remove_top_plate_retention_M3_fastener",
+          "pull_paired_upper_panel_radially_outward_120_mm"
+        ],
         "direction": "positive_spool_axis",
         "fixed_obstacle_names": [
           "arm_module_arm_segment_01",
@@ -18558,7 +18593,6 @@
           "fixed_cover_lower_panel_02",
           "fixed_cover_upper_panel_02",
           "fixed_cover_lower_panel_03",
-          "fixed_cover_upper_panel_03",
           "fixed_cover_lower_panel_04",
           "fixed_cover_upper_panel_04",
           "fixed_cover_lower_panel_05",
@@ -18609,7 +18643,8 @@
           "fixed_output_support_cartridge_screw_02_02",
           "fixed_bearing_outer_02",
           "fixed_oil_seal_outboard_02",
-          "fixed_labyrinth_outboard_02"
+          "fixed_labyrinth_outboard_02",
+          "fixed_cover_upper_panel_03"
         ],
         "retained_support_land_name": "fixed_output_support_land_02",
         "sweep_type": "continuous axial extrusion of cartridge end profiles",
@@ -18619,6 +18654,14 @@
         "axis_index": 3,
         "collision_volume_threshold_mm3": 0.02,
         "collisions": [],
+        "cover_panel_removal_path_passes": true,
+        "cover_panel_removal_required_first": "fixed_cover_upper_panel_05",
+        "cover_panel_retention_fasteners_to_release": 5,
+        "cover_panel_service_sequence": [
+          "release_four_existing_upper_panel_M3_fasteners",
+          "remove_top_plate_retention_M3_fastener",
+          "pull_paired_upper_panel_radially_outward_120_mm"
+        ],
         "direction": "positive_spool_axis",
         "fixed_obstacle_names": [
           "arm_module_arm_segment_01",
@@ -18726,7 +18769,6 @@
           "fixed_cover_lower_panel_04",
           "fixed_cover_upper_panel_04",
           "fixed_cover_lower_panel_05",
-          "fixed_cover_upper_panel_05",
           "fixed_cover_lower_panel_06",
           "fixed_cover_upper_panel_06",
           "fixed_root_guard_hex",
@@ -18773,7 +18815,8 @@
           "fixed_output_support_cartridge_screw_03_02",
           "fixed_bearing_outer_03",
           "fixed_oil_seal_outboard_03",
-          "fixed_labyrinth_outboard_03"
+          "fixed_labyrinth_outboard_03",
+          "fixed_cover_upper_panel_05"
         ],
         "retained_support_land_name": "fixed_output_support_land_03",
         "sweep_type": "continuous axial extrusion of cartridge end profiles",
@@ -19296,6 +19339,274 @@
       "hits": [],
       "route_count": 3,
       "route_definition": "straight spool tangent to arm root, followed by a 60 mm swept fairlead"
+    },
+    "top_plate_cover_attachment": {
+      "attachment_count": 3,
+      "attachments": [
+        {
+          "coaxial_tolerance_mm": 0.01,
+          "coaxial_with_top_plate_hole": true,
+          "driver_corridor": {
+            "blocked_component_names": [],
+            "diameter_mm": 8.0,
+            "passes": true,
+            "z_bounds_mm": [
+              8.05,
+              20.05
+            ]
+          },
+          "face_normal_deg": 30.0,
+          "hole_center_detection": {
+            "diameter_mm": 3.2,
+            "source": "fixed_top_plate circular B-rep edges on top and bottom planes"
+          },
+          "hole_center_error_mm": 0.0,
+          "hole_center_mm": [
+            86.603,
+            50.0,
+            0.0
+          ],
+          "m3_bolt_blocking_component_names": [],
+          "m3_bolt_probe_diameter_mm": 3.0,
+          "m3_bolt_probe_passes": true,
+          "panel_name": "fixed_cover_upper_panel_01",
+          "plate_hole_center_mm": [
+            86.60254,
+            50.0
+          ],
+          "radial_removal": {
+            "candidate_obstacle_count": 23,
+            "collisions": [],
+            "direction": "radial_outward",
+            "initial_release_gap_mm": 0.5,
+            "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+            "moving_components": [
+              "fixed_cover_upper_panel_01"
+            ],
+            "obstacle_count": 114,
+            "passes": true,
+            "path_type": "translated-position CAD intersection samples",
+            "released_fasteners": {
+              "existing_panel_m3_fasteners": 4,
+              "top_plate_retention_m3_fastener": 1
+            },
+            "removed_before": [],
+            "required_sequence": [
+              "release_four_existing_upper_panel_M3_fasteners",
+              "remove_top_plate_retention_M3_fastener",
+              "pull_upper_panel_radially_outward"
+            ],
+            "sample_step_mm": 1.0,
+            "travel_mm": 120.0
+          },
+          "seating": {
+            "contact_probe_location_radial_mm": 104.0,
+            "contact_probe_passes": true,
+            "ear_bottom_z_mm": 0.0,
+            "plane_delta_mm": -0.0,
+            "probe_contact_volume_mm3": {
+              "ear_panel": 0.4,
+              "top_plate": 0.4
+            },
+            "top_plate_top_z_mm": 0.0,
+            "unintended_volume_overlap_mm3": 0.0
+          },
+          "underside_receiver": {
+            "blocked_component_names": [],
+            "nominal_envelope_mm": [
+              6.5,
+              6.5,
+              2.4
+            ],
+            "passes": true,
+            "status": "nominal M3 receiver envelope only; exact hardware is not selected",
+            "z_bounds_mm": [
+              -10.4,
+              -8.0
+            ]
+          }
+        },
+        {
+          "coaxial_tolerance_mm": 0.01,
+          "coaxial_with_top_plate_hole": true,
+          "driver_corridor": {
+            "blocked_component_names": [],
+            "diameter_mm": 8.0,
+            "passes": true,
+            "z_bounds_mm": [
+              8.05,
+              20.05
+            ]
+          },
+          "face_normal_deg": 150.0,
+          "hole_center_detection": {
+            "diameter_mm": 3.2,
+            "source": "fixed_top_plate circular B-rep edges on top and bottom planes"
+          },
+          "hole_center_error_mm": 0.0,
+          "hole_center_mm": [
+            -86.603,
+            50.0,
+            0.0
+          ],
+          "m3_bolt_blocking_component_names": [],
+          "m3_bolt_probe_diameter_mm": 3.0,
+          "m3_bolt_probe_passes": true,
+          "panel_name": "fixed_cover_upper_panel_03",
+          "plate_hole_center_mm": [
+            -86.60254,
+            50.0
+          ],
+          "radial_removal": {
+            "candidate_obstacle_count": 23,
+            "collisions": [],
+            "direction": "radial_outward",
+            "initial_release_gap_mm": 0.5,
+            "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+            "moving_components": [
+              "fixed_cover_upper_panel_03"
+            ],
+            "obstacle_count": 114,
+            "passes": true,
+            "path_type": "translated-position CAD intersection samples",
+            "released_fasteners": {
+              "existing_panel_m3_fasteners": 4,
+              "top_plate_retention_m3_fastener": 1
+            },
+            "removed_before": [],
+            "required_sequence": [
+              "release_four_existing_upper_panel_M3_fasteners",
+              "remove_top_plate_retention_M3_fastener",
+              "pull_upper_panel_radially_outward"
+            ],
+            "sample_step_mm": 1.0,
+            "travel_mm": 120.0
+          },
+          "seating": {
+            "contact_probe_location_radial_mm": 104.0,
+            "contact_probe_passes": true,
+            "ear_bottom_z_mm": 0.0,
+            "plane_delta_mm": -0.0,
+            "probe_contact_volume_mm3": {
+              "ear_panel": 0.4,
+              "top_plate": 0.4
+            },
+            "top_plate_top_z_mm": 0.0,
+            "unintended_volume_overlap_mm3": 0.0
+          },
+          "underside_receiver": {
+            "blocked_component_names": [],
+            "nominal_envelope_mm": [
+              6.5,
+              6.5,
+              2.4
+            ],
+            "passes": true,
+            "status": "nominal M3 receiver envelope only; exact hardware is not selected",
+            "z_bounds_mm": [
+              -10.4,
+              -8.0
+            ]
+          }
+        },
+        {
+          "coaxial_tolerance_mm": 0.01,
+          "coaxial_with_top_plate_hole": true,
+          "driver_corridor": {
+            "blocked_component_names": [],
+            "diameter_mm": 8.0,
+            "passes": true,
+            "z_bounds_mm": [
+              8.05,
+              20.05
+            ]
+          },
+          "face_normal_deg": 270.0,
+          "hole_center_detection": {
+            "diameter_mm": 3.2,
+            "source": "fixed_top_plate circular B-rep edges on top and bottom planes"
+          },
+          "hole_center_error_mm": 0.0,
+          "hole_center_mm": [
+            -0.0,
+            -100.0,
+            0.0
+          ],
+          "m3_bolt_blocking_component_names": [],
+          "m3_bolt_probe_diameter_mm": 3.0,
+          "m3_bolt_probe_passes": true,
+          "panel_name": "fixed_cover_upper_panel_05",
+          "plate_hole_center_mm": [
+            -0.0,
+            -100.0
+          ],
+          "radial_removal": {
+            "candidate_obstacle_count": 22,
+            "collisions": [],
+            "direction": "radial_outward",
+            "initial_release_gap_mm": 0.5,
+            "minimum_sampled_aabb_clearance_lower_bound_mm": 0.0,
+            "moving_components": [
+              "fixed_cover_upper_panel_05"
+            ],
+            "obstacle_count": 114,
+            "passes": true,
+            "path_type": "translated-position CAD intersection samples",
+            "released_fasteners": {
+              "existing_panel_m3_fasteners": 4,
+              "top_plate_retention_m3_fastener": 1
+            },
+            "removed_before": [],
+            "required_sequence": [
+              "release_four_existing_upper_panel_M3_fasteners",
+              "remove_top_plate_retention_M3_fastener",
+              "pull_upper_panel_radially_outward"
+            ],
+            "sample_step_mm": 1.0,
+            "travel_mm": 120.0
+          },
+          "seating": {
+            "contact_probe_location_radial_mm": 104.0,
+            "contact_probe_passes": true,
+            "ear_bottom_z_mm": 0.0,
+            "plane_delta_mm": -0.0,
+            "probe_contact_volume_mm3": {
+              "ear_panel": 0.4,
+              "top_plate": 0.4
+            },
+            "top_plate_top_z_mm": 0.0,
+            "unintended_volume_overlap_mm3": 0.0
+          },
+          "underside_receiver": {
+            "blocked_component_names": [],
+            "nominal_envelope_mm": [
+              6.5,
+              6.5,
+              2.4
+            ],
+            "passes": true,
+            "status": "nominal M3 receiver envelope only; exact hardware is not selected",
+            "z_bounds_mm": [
+              -10.4,
+              -8.0
+            ]
+          }
+        }
+      ],
+      "host_panel_names": [
+        "fixed_cover_upper_panel_01",
+        "fixed_cover_upper_panel_03",
+        "fixed_cover_upper_panel_05"
+      ],
+      "load_qualification": "nominal CAD geometry only; joint strength and fastener preload are not qualified",
+      "mating_plane_z_mm": 0.0,
+      "nominal_ear_dimensions_mm": {
+        "inner_radius": 92.0,
+        "tangential_width": 18.0,
+        "vertical_height": 8.0
+      },
+      "panel_overlap_mm": 0.6,
+      "passes": true
     },
     "wet_spool_interface": {
       "axial_retention": "integral inboard shoulder plus removable external retaining-ring envelope",

@@ -589,6 +589,229 @@ def _lower_cover_removal_paths(result: V27AssemblyResult) -> dict[str, Any]:
     }
 
 
+def _top_plate_cover_attachment_audit(result: V27AssemblyResult) -> dict[str, Any]:
+    """Check ear seating, fastener access and panel extraction at the top plate."""
+    cfg = result.contract.integration["root_cover"]
+    normals = tuple(float(value) for value in cfg["top_plate_attachment_normals_deg"])
+    hole_radius = float(cfg["top_plate_attachment_hole_radius_mm"])
+    hole_diameter = float(cfg["top_plate_attachment_hole_diameter_mm"])
+    ear_z0, ear_z1 = (
+        float(value) for value in cfg["top_plate_attachment_z_bounds_mm"]
+    )
+    panel_overlap = float(cfg["top_plate_attachment_panel_overlap_mm"])
+    inner_radius = float(cfg["top_plate_attachment_inner_radius_mm"])
+    tangent_width = float(cfg["top_plate_attachment_tangent_width_mm"])
+    top_plate = result.components["fixed_top_plate"]
+    plate_box = top_plate.BoundingBox()
+    plate_top_z = plate_box.zmax
+    plate_bottom_z = plate_box.zmin
+    normal_to_index = {
+        30.0 + 60.0 * index: index + 1 for index in range(6)
+    }
+    attachments: list[dict[str, Any]] = []
+
+    plate_hole_diameter_mm = 3.2
+
+    def probe_blockers(probe: cq.Shape) -> list[str]:
+        blocked: list[str] = []
+        for component_name, component in result.components.items():
+            if not _aabb_overlap(probe, component):
+                continue
+            if probe.intersect(component).Volume() > 0.02:
+                blocked.append(component_name)
+        return blocked
+
+    for normal_deg in normals:
+        panel_name = f"fixed_cover_upper_panel_{normal_to_index[normal_deg]:02d}"
+        panel = result.components[panel_name]
+        radial = (math.cos(math.radians(normal_deg)), math.sin(math.radians(normal_deg)))
+        x_mm, y_mm = hole_radius * radial[0], hole_radius * radial[1]
+        hole_center = [round(x_mm, 3), round(y_mm, 3), 0.0]
+        plate_hole_center_xy, hole_center_error = _nearest_circular_hole_center_xy(
+            top_plate,
+            target_center_xy=(x_mm, y_mm),
+            diameter_mm=plate_hole_diameter_mm,
+            z_planes_mm=(plate_bottom_z, plate_top_z),
+        )
+        bolt_probe = cq.Solid.makeCylinder(
+            1.5,
+            ear_z1 - plate_bottom_z + 0.2,
+            cq.Vector(x_mm, y_mm, plate_bottom_z - 0.1),
+            cq.Vector(0.0, 0.0, 1.0),
+        )
+        bolt_blockers = probe_blockers(bolt_probe)
+        coaxial = hole_center_error is not None and hole_center_error <= 0.01
+        bolt_probe_passes = not bolt_blockers
+
+        contact_center_radius = 104.0
+        contact_x = contact_center_radius * radial[0]
+        contact_y = contact_center_radius * radial[1]
+        contact_probe = cq.Solid.makeBox(
+            2.0,
+            2.0,
+            0.2,
+            cq.Vector(contact_x - 1.0, contact_y - 1.0, -0.1),
+        )
+        panel_contact_volume = panel.intersect(contact_probe).Volume()
+        plate_contact_volume = top_plate.intersect(contact_probe).Volume()
+        unintended_overlap = panel.intersect(top_plate).Volume()
+        seat_probe_passes = panel_contact_volume > 0.1 and plate_contact_volume > 0.1
+        seating = {
+            "ear_bottom_z_mm": ear_z0,
+            "top_plate_top_z_mm": round(plate_top_z, 3),
+            "plane_delta_mm": round(ear_z0 - plate_top_z, 6),
+            "contact_probe_location_radial_mm": contact_center_radius,
+            "contact_probe_passes": seat_probe_passes
+            and abs(ear_z0 - plate_top_z) <= 1e-6,
+            "unintended_volume_overlap_mm3": round(unintended_overlap, 6),
+            "probe_contact_volume_mm3": {
+                "ear_panel": round(panel_contact_volume, 6),
+                "top_plate": round(plate_contact_volume, 6),
+            },
+        }
+
+        driver_diameter = 8.0
+        driver_z0 = ear_z1 + 0.05
+        driver_z1 = driver_z0 + 12.0
+        driver_probe = cq.Solid.makeCylinder(
+            driver_diameter / 2.0,
+            driver_z1 - driver_z0,
+            cq.Vector(x_mm, y_mm, driver_z0),
+            cq.Vector(0.0, 0.0, 1.0),
+        )
+        driver_blockers = probe_blockers(driver_probe)
+
+        receiver_diameter = 6.5
+        receiver_height = 2.4
+        receiver_z0 = plate_bottom_z - receiver_height
+        receiver_probe = cq.Solid.makeCylinder(
+            receiver_diameter / 2.0,
+            receiver_height,
+            cq.Vector(x_mm, y_mm, receiver_z0),
+            cq.Vector(0.0, 0.0, 1.0),
+        )
+        receiver_blockers = probe_blockers(receiver_probe)
+
+        radial_panel_removal = _sampled_translation_path(
+            result,
+            (panel_name,),
+            set(),
+            cq.Vector(radial[0], radial[1], 0.0),
+            120.0,
+        )
+        radial_panel_removal["released_fasteners"] = {
+            "existing_panel_m3_fasteners": 4,
+            "top_plate_retention_m3_fastener": 1,
+        }
+        radial_panel_removal["required_sequence"] = [
+            "release_four_existing_upper_panel_M3_fasteners",
+            "remove_top_plate_retention_M3_fastener",
+            "pull_upper_panel_radially_outward",
+        ]
+
+        attachments.append(
+            {
+                "panel_name": panel_name,
+                "face_normal_deg": normal_deg,
+                "hole_center_mm": hole_center,
+                "plate_hole_center_mm": (
+                    [round(plate_hole_center_xy[0], 6), round(plate_hole_center_xy[1], 6)]
+                    if plate_hole_center_xy is not None
+                    else None
+                ),
+                "hole_center_error_mm": (
+                    round(hole_center_error, 6) if hole_center_error is not None else None
+                ),
+                "coaxial_with_top_plate_hole": coaxial,
+                "m3_bolt_probe_passes": bolt_probe_passes,
+                "m3_bolt_probe_diameter_mm": 3.0,
+                "m3_bolt_blocking_component_names": bolt_blockers,
+                "coaxial_tolerance_mm": 0.01,
+                "hole_center_detection": {
+                    "source": "fixed_top_plate circular B-rep edges on top and bottom planes",
+                    "diameter_mm": plate_hole_diameter_mm,
+                },
+                "seating": seating,
+                "driver_corridor": {
+                    "diameter_mm": driver_diameter,
+                    "z_bounds_mm": [round(driver_z0, 3), round(driver_z1, 3)],
+                    "blocked_component_names": driver_blockers,
+                    "passes": not driver_blockers,
+                },
+                "underside_receiver": {
+                    "nominal_envelope_mm": [
+                        receiver_diameter,
+                        receiver_diameter,
+                        receiver_height,
+                    ],
+                    "z_bounds_mm": [round(receiver_z0, 3), round(plate_bottom_z, 3)],
+                    "blocked_component_names": receiver_blockers,
+                    "passes": not receiver_blockers,
+                    "status": "nominal M3 receiver envelope only; exact hardware is not selected",
+                },
+                "radial_removal": radial_panel_removal,
+            }
+        )
+
+    all_pass = all(
+        item["coaxial_with_top_plate_hole"]
+        and item["m3_bolt_probe_passes"]
+        and item["seating"]["contact_probe_passes"]
+        and item["seating"]["unintended_volume_overlap_mm3"] < 1e-3
+        and item["driver_corridor"]["passes"]
+        and item["underside_receiver"]["passes"]
+        and item["radial_removal"]["passes"]
+        for item in attachments
+    )
+    return {
+        "host_panel_names": [item["panel_name"] for item in attachments],
+        "attachment_count": len(attachments),
+        "nominal_ear_dimensions_mm": {
+            "tangential_width": tangent_width,
+            "vertical_height": ear_z1 - ear_z0,
+            "inner_radius": inner_radius,
+        },
+        "panel_overlap_mm": panel_overlap,
+        "mating_plane_z_mm": round(plate_top_z, 3),
+        "attachments": attachments,
+        "passes": all_pass,
+        "load_qualification": "nominal CAD geometry only; joint strength and fastener preload are not qualified",
+    }
+
+
+def _nearest_circular_hole_center_xy(
+    shape: cq.Shape,
+    *,
+    target_center_xy: tuple[float, float],
+    diameter_mm: float,
+    z_planes_mm: tuple[float, float],
+    radius_tolerance_mm: float = 1e-5,
+    plane_tolerance_mm: float = 0.02,
+) -> tuple[tuple[float, float] | None, float | None]:
+    """Return the closest center from circular B-rep edges at the given Z planes."""
+    radius_mm = diameter_mm / 2.0
+    centers: list[tuple[float, float]] = []
+    for edge in shape.Edges():
+        if edge.geomType() != "CIRCLE":
+            continue
+        if abs(float(edge.radius()) - radius_mm) > radius_tolerance_mm:
+            continue
+        center = edge.Center()
+        if min(abs(center.z - z_plane) for z_plane in z_planes_mm) > plane_tolerance_mm:
+            continue
+        candidate = (float(center.x), float(center.y))
+        if not any(math.dist(candidate, known) <= 1e-4 for known in centers):
+            centers.append(candidate)
+
+    if not centers:
+        return None, None
+    nearest_center = min(
+        centers,
+        key=lambda center: math.dist(center, target_center_xy),
+    )
+    return nearest_center, math.dist(nearest_center, target_center_xy)
+
+
 def _arm_removal_sweep(result: V27AssemblyResult) -> dict[str, Any]:
     """Audit the complete positive-Z arm extraction after its root hardware is released."""
     removed_names = tuple(
@@ -972,6 +1195,7 @@ def _spool_removal_sweeps(result: V27AssemblyResult) -> list[dict[str, Any]]:
 
 def _output_support_cartridge_removal_sweeps(
     result: V27AssemblyResult,
+    top_plate_cover_attachment: dict[str, Any],
 ) -> list[dict[str, Any]]:
     """Sweep each outboard support cartridge out of its fixed through-bored land."""
     travel_mm = float(
@@ -981,6 +1205,29 @@ def _output_support_cartridge_removal_sweeps(
     for axis in result.fixed.axes:
         index = axis.axis_index
         cartridge_name = f"fixed_output_support_cartridge_{index:02d}"
+        required_panel_normal = (axis.angle_deg + 30.0) % 360.0
+        required_panel_attachment = next(
+            (
+                item
+                for item in top_plate_cover_attachment["attachments"]
+                if abs(
+                    (item["face_normal_deg"] - required_panel_normal + 180.0)
+                    % 360.0
+                    - 180.0
+                )
+                <= 1e-6
+            ),
+            None,
+        )
+        cover_panel_name = (
+            required_panel_attachment["panel_name"]
+            if required_panel_attachment is not None
+            else None
+        )
+        cover_panel_removal_passes = bool(
+            required_panel_attachment
+            and required_panel_attachment["radial_removal"]["passes"]
+        )
         removed_names = [
             f"fixed_output_support_cartridge_screw_{index:02d}_01",
             f"fixed_output_support_cartridge_screw_{index:02d}_02",
@@ -988,6 +1235,8 @@ def _output_support_cartridge_removal_sweeps(
             f"fixed_oil_seal_outboard_{index:02d}",
             f"fixed_labyrinth_outboard_{index:02d}",
         ]
+        if cover_panel_name is not None and cover_panel_removal_passes:
+            removed_names.append(cover_panel_name)
         missing = [name for name in [cartridge_name, *removed_names] if name not in result.components]
         if missing:
             raise ValueError(f"output support cartridge {index} removal prerequisites are missing: {missing}")
@@ -1052,6 +1301,14 @@ def _output_support_cartridge_removal_sweeps(
                 "fixed_obstacle_names": list(obstacles),
                 "retained_support_land_name": f"fixed_output_support_land_{index:02d}",
                 "initial_face_contact_expected": True,
+                "cover_panel_removal_required_first": cover_panel_name,
+                "cover_panel_removal_path_passes": cover_panel_removal_passes,
+                "cover_panel_retention_fasteners_to_release": 5,
+                "cover_panel_service_sequence": [
+                    "release_four_existing_upper_panel_M3_fasteners",
+                    "remove_top_plate_retention_M3_fastener",
+                    "pull_paired_upper_panel_radially_outward_120_mm",
+                ],
                 "initial_radial_clearance_mm": round(
                     (
                         float(
@@ -1090,8 +1347,11 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
     ]
     arm_sweep = _arm_removal_sweep(result)
     lower_cover_removal = _lower_cover_removal_paths(result)
+    top_plate_cover_attachment = _top_plate_cover_attachment_audit(result)
     drive_sweep = _drive_removal_sweep(result)
-    support_cartridge_removal = _output_support_cartridge_removal_sweeps(result)
+    support_cartridge_removal = _output_support_cartridge_removal_sweeps(
+        result, top_plate_cover_attachment
+    )
     spool_removal = _spool_removal_sweeps(result)
     tendon_route = _tendon_root_route_audit(result)
     motor_ports = _motor_port_harness_audit(result)
@@ -1110,29 +1370,32 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                 return ra + (rb - ra) * (z_mm - za) / (zb - za)
         raise ValueError(f"cover profile does not define z={z_mm:g} mm")
 
-    cover_support_hole_centers = [
-        float(value) for value in cover_cfg["frame_z_centers_mm"]
+    cover_rib_centers = [
+        float(value) for value in cover_cfg["raised_rib_z_centers_mm"]
     ]
-    cover_frame_specs = tuple(
+    cover_support_hole_centers = [
+        float(value) for value in cover_cfg["fastener_row_z_centers_mm"]
+    ]
+    cover_rib_specs = tuple(
         (
             center_z,
             center_z - cover_frame_height / 2.0,
             center_z + cover_frame_height / 2.0,
         )
-        for center_z in cover_support_hole_centers
+        for center_z in cover_rib_centers
     )
-    cover_frame_centers = [spec[0] for spec in cover_frame_specs]
-    cover_frame_outer_radii = [
+    cover_rib_outer_radii = [
         cover_radius_at(center_z) + cover_frame_thickness
-        for center_z in cover_frame_centers
+        for center_z in cover_rib_centers
     ]
-    cover_frame_outer_radius_ranges = [
+    cover_rib_outer_radius_ranges = [
         [
             cover_radius_at(band_z0) + cover_frame_thickness,
             cover_radius_at(band_z1) + cover_frame_thickness,
         ]
-        for _, band_z0, band_z1 in cover_frame_specs
+        for _, band_z0, band_z1 in cover_rib_specs
     ]
+    cover_max_outer_radius = max(cover_rib_outer_radii)
     cover_max_radius = max(radius_mm for _, radius_mm in cover_profile)
     cover_lower_panel_names = tuple(
         f"fixed_cover_lower_panel_{index:02d}" for index in range(1, 7)
@@ -1199,6 +1462,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
         "arm_positive_z_removal_clear": not arm_forbidden and arm_sweep["passes"],
         "arm_removal_sweep": arm_sweep,
         "lower_cover_removal": lower_cover_removal,
+        "top_plate_cover_attachment": top_plate_cover_attachment,
         "arm_module_removal_sequence": [
             "deenergize_all_power_sources_and_unload_tendons",
             "release_and_remove_three_tendon_terminals_adjusters_and_retentions",
@@ -1446,7 +1710,7 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                 2.0 * cover_max_radius, 3
             ),
             "nominal_outer_armor_circumdiameter_mm": round(
-                2.0 * (cover_max_radius + cover_frame_thickness), 3
+                2.0 * cover_max_outer_radius, 3
             ),
             "actual_panel_max_radial_diameter_mm": round(
                 2.0 * cover_panel_max_radius, 3
@@ -1480,12 +1744,32 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             "panel_component_bounds_mm": [
                 component_bounds_mm(name) for name in cover_panel_names
             ],
-            "visible_band_count": len(cover_frame_centers),
-            "band_construction": "six flat face ribs fused into each matching service panel; no closed frame parts",
-            "band_outer_circumradii_mm": cover_frame_outer_radii,
-            "band_outer_circumradius_ranges_mm": cover_frame_outer_radius_ranges,
-            "band_z_centers_mm": cover_frame_centers,
+            "visible_band_count": len(cover_rib_centers),
+            "band_construction": "two raised levels of six flat face ribs fused into each matching service panel; no closed frame parts",
+            "band_outer_circumradii_mm": cover_rib_outer_radii,
+            "band_outer_circumradius_ranges_mm": cover_rib_outer_radius_ranges,
+            "band_z_centers_mm": cover_rib_centers,
             "support_hole_z_centers_mm": cover_support_hole_centers,
+            "raised_rib_z_centers_mm": cover_rib_centers,
+            "fastener_row_z_centers_mm": cover_support_hole_centers,
+            "inner_support_pad_count": (
+                6
+                * (len(cover_support_hole_centers) - len(cover_rib_centers))
+                * len(cover_cfg["panel_fastener_tangent_offsets_mm"])
+            ),
+            "inner_support_pad_nominal_dimensions_mm": {
+                "tangential_width": float(
+                    cover_cfg["panel_fastener_pad_tangent_width_mm"]
+                ),
+                "vertical_height": float(cover_cfg["frame_height_mm"]),
+                "inward_thickness": cover_frame_thickness,
+            },
+            "inner_support_pad_backing_below_head_recess_mm": round(
+                float(cover_cfg["panel_thickness_mm"])
+                + cover_frame_thickness
+                - float(cover_cfg["panel_fastener_recess_depth_mm"]),
+                3,
+            ),
             "frame_radial_thickness_mm": cover_frame_thickness,
             "panel_fastener_interface": {
                 "thread": "M3",
@@ -1508,9 +1792,11 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
                     cover_cfg["window_surround_proud_mm"]
                 ),
                 "tool_access_relief_location": "lower_panel_05_bottom_support_row",
-                "band_tool_access_diameter_mm": 8.0,
-                "band_tool_access_recess_depth_mm": 2.0,
-                "band_tool_access_count": 6
+                "counterbore_access_diameter_mm": 8.0,
+                "counterbore_recess_depth_mm": float(
+                    cover_cfg["panel_fastener_recess_depth_mm"]
+                ),
+                "counterbore_access_count": 6
                 * len(cover_support_hole_centers)
                 * len(cover_cfg["panel_fastener_tangent_offsets_mm"]),
                 "tool_driver_shaft_diameter_mm": 2.5,
@@ -1524,6 +1810,19 @@ def audit_v27_assembly(result: V27AssemblyResult) -> dict[str, Any]:
             ),
             "window_surround_proud_mm": float(
                 cover_cfg["window_surround_proud_mm"]
+            ),
+            "observation_window_count": len(
+                cover_cfg["observation_window_normals_deg"]
+            ),
+            "observation_window_normals_deg": [
+                float(value)
+                for value in cover_cfg["observation_window_normals_deg"]
+            ],
+            "observation_window_mm": [
+                float(value) for value in cover_cfg["observation_window_mm"]
+            ],
+            "observation_window_center_z_mm": float(
+                cover_cfg["observation_window_center_z_mm"]
             ),
             "motor_window_mm": [
                 float(value) for value in cover_cfg["motor_window_mm"]
@@ -1550,6 +1849,8 @@ def preflight_v27(result: V27AssemblyResult) -> dict[str, Any]:
         failures.append("drive removal sweep")
     if not audit["service"]["lower_cover_removal"]["passes"]:
         failures.append("lower cover removal path")
+    if not audit["service"].get("top_plate_cover_attachment", {}).get("passes", True):
+        failures.append("top-plate cover attachment and panel removal")
     if not audit["service"]["drive_register_engagement_passes"]:
         failures.append("drive register engagement")
     if not all(path["passes"] for path in audit["service"]["spool_removal"]):

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -595,7 +596,7 @@ def _cover_review(
     result: Any, path: Path, exploded_path: Path, opaque_path: Path
 ) -> None:
     figure = plt.figure(figsize=(16, 8.5), dpi=145, facecolor="#f4f6f8")
-    figure.suptitle("V27 阶梯护甲根部包覆｜四道外凸环带、下部服务分界与检修窗框", fontsize=17, y=0.97)
+    figure.suptitle("V27 阶梯护甲根部包覆｜两道外凸环带、大面积观察口与服务分界", fontsize=17, y=0.97)
     axes = [
         figure.add_subplot(1, 2, index, projection="3d")
         for index in (1, 2)
@@ -645,7 +646,7 @@ def _cover_review(
     axes[0].text2D(
         0.04,
         0.04,
-        "四道外凸六边形环带｜下部可拆服务板｜外水连通｜非耐压壳",
+        "两道外凸六边形环带｜两处大观察口｜下部可拆服务板｜外水连通｜非耐压壳",
         transform=axes[0].transAxes,
         fontsize=10,
         color="#263746",
@@ -676,6 +677,94 @@ def _cover_review(
     _cover_opaque_view(
         [(name, result.components[name]) for name in cover_names], opaque_path
     )
+
+
+def _top_plate_cover_joint_review(result: Any, path: Path) -> None:
+    """Render a magnified view of the three hidden ear-to-plate interfaces."""
+    cfg = result.contract.integration["root_cover"]
+    normals = tuple(float(value) for value in cfg["top_plate_attachment_normals_deg"])
+    hole_radius = float(cfg["top_plate_attachment_hole_radius_mm"])
+    ear_z0, ear_z1 = (
+        float(value) for value in cfg["top_plate_attachment_z_bounds_mm"]
+    )
+    plate = result.components["fixed_top_plate"]
+    plate_z0 = plate.BoundingBox().zmin
+    figure = plt.figure(figsize=(15.5, 7.5), dpi=145, facecolor="#f4f6f8")
+    figure.suptitle(
+        "V27 顶板与包覆件隐藏固定耳｜三处连接局部放大",
+        fontsize=17,
+        y=0.96,
+    )
+    for slot, normal_deg in enumerate(normals, start=1):
+        panel_index = int((normal_deg - 30.0) / 60.0) + 1
+        panel_name = f"fixed_cover_upper_panel_{panel_index:02d}"
+        angle = math.radians(normal_deg)
+        x_mm, y_mm = hole_radius * math.cos(angle), hole_radius * math.sin(angle)
+        ax = figure.add_subplot(1, 3, slot, projection="3d")
+        ax.set_facecolor("#f4f6f8")
+        ax.set_axis_off()
+        ax.set_proj_type("ortho")
+        local_clip = cq.Solid.makeBox(
+            68.0,
+            68.0,
+            ear_z1 - plate_z0 + 28.0,
+            cq.Vector(x_mm - 34.0, y_mm - 34.0, plate_z0 - 12.0),
+        )
+        plate_detail = plate.intersect(local_clip)
+        panel_detail = result.components[panel_name].intersect(local_clip)
+        _add(ax, plate_detail, "#687983", 0.55)
+        _add(ax, panel_detail, "#5c9eaa", 0.42)
+
+        bolt_shaft = cq.Solid.makeCylinder(
+            1.5,
+            ear_z1 - plate_z0,
+            cq.Vector(x_mm, y_mm, plate_z0),
+            cq.Vector(0.0, 0.0, 1.0),
+        )
+        receiver = cq.Solid.makeCylinder(
+            3.25,
+            2.4,
+            cq.Vector(x_mm, y_mm, plate_z0 - 2.4),
+            cq.Vector(0.0, 0.0, 1.0),
+        )
+        _add(ax, bolt_shaft, "#d6a444", 0.96)
+        _add(ax, receiver, "#d6a444", 0.55)
+        ax.plot(
+            [x_mm, x_mm],
+            [y_mm, y_mm],
+            [ear_z1 - 1.0, ear_z1 + 10.0],
+            color="#d6a444",
+            linewidth=3.5,
+            marker="o",
+            markersize=3.5,
+            zorder=100,
+        )
+        ax.text2D(
+            0.04,
+            0.06,
+            "M3 nominal axis Ø3.0",
+            transform=ax.transAxes,
+            fontsize=8,
+            color="#9b6c18",
+            bbox={"facecolor": "white", "alpha": 0.88, "edgecolor": "#d6a444"},
+        )
+        ax.set_xlim(x_mm - 34.0, x_mm + 34.0)
+        ax.set_ylim(y_mm - 34.0, y_mm + 34.0)
+        ax.set_zlim(plate_z0 - 12.0, ear_z1 + 16.0)
+        ax.set_box_aspect((68.0, 68.0, 36.0))
+        ax.view_init(elev=27, azim=normal_deg + 38.0)
+        ax.set_title(f"面板 {panel_index:02d}｜法向 {normal_deg:.0f}°", fontsize=11, pad=3)
+    figure.text(
+        0.5,
+        0.06,
+        "蓝灰：上板一体固定耳与顶盘　｜　金色：Ø3.0 螺杆与 Ø6.5×2.4 mm 接收件名义包络　｜　实际紧固件尚未选定",
+        ha="center",
+        fontsize=10,
+        color="#263746",
+        bbox={"facecolor": "white", "alpha": 0.9, "edgecolor": "#cbd4db"},
+    )
+    figure.subplots_adjust(left=0.01, right=0.99, top=0.87, bottom=0.12, wspace=0.01)
+    _save(figure, path)
 
 
 def _cover_opaque_view(parts: Iterable[tuple[str, cq.Shape]], path: Path) -> None:
@@ -714,7 +803,7 @@ def _cover_opaque_view(parts: Iterable[tuple[str, cq.Shape]], path: Path) -> Non
     ax.text2D(
         0.02,
         0.03,
-        "四道阶梯环带 · 肋条与面板一体打印 · 8 mm 倒角窗框",
+        "两道阶梯环带 · 大观察口 · 肋条与面板一体打印 · 8 mm 倒角窗框",
         transform=ax.transAxes,
         fontsize=9,
         color="#263746",
@@ -811,6 +900,7 @@ def render_v27(result: Any) -> dict[str, Path]:
         "root_cover_review": directory / "V27_半透明包覆件总装与拆卸.png",
         "root_cover_only": directory / "V27_六边形包覆附件.png",
         "root_cover_opaque": directory / "V27_阶梯护甲外观.png",
+        "top_plate_cover_joint": directory / "V27_顶板包覆固定耳连接细节.png",
         "cover_comparison": directory / "V27_包覆件改版前后对比.png",
     }
     _full_review(result, paths["full_transparent"])
@@ -826,6 +916,7 @@ def render_v27(result: Any) -> dict[str, Path]:
         paths["root_cover_only"],
         paths["root_cover_opaque"],
     )
+    _top_plate_cover_joint_review(result, paths["top_plate_cover_joint"])
     _cover_comparison(
         directory / "V27_简化版包覆基线.png",
         paths["root_cover_only"],
