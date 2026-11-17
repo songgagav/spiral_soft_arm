@@ -1,0 +1,214 @@
+{
+  "candidate_id": "V27-1M-M2006",
+  "design_extremes": {
+    "constant_curvature_bend_angles_deg": [
+      60.0,
+      -60.0
+    ]
+  },
+  "force_budget": {
+    "assumptions": {
+      "drivetrain_efficiency": 0.85,
+      "force_model": "steady_low_speed_torque_over_radius_after_losses",
+      "motor_continuous_torque_nm": 1.0,
+      "seal_drag_torque_nm": 0.05,
+      "tendon_friction_efficiency": 0.7
+    },
+    "drivetrain_efficiency": 0.85,
+    "maximum_effective_radius_mm": 12.0,
+    "maximum_tendon_force_n": 55.999999999999986,
+    "minimum_effective_radius_mm": 10.0,
+    "minimum_tendon_force_n": 46.66666666666666,
+    "missing_measurements": [
+      "measured_seal_drag_torque",
+      "measured_drivetrain_efficiency",
+      "measured_tendon_friction_efficiency"
+    ],
+    "motor_continuous_torque_nm": 1.0,
+    "net_spool_torque_nm": 0.7999999999999999,
+    "qualified": false,
+    "seal_drag_torque_nm": 0.05,
+    "tendon_friction_efficiency": 0.7
+  },
+  "hardware_validated": false,
+  "measurement_plan": {
+    "bolt_group_capacity": {
+      "acceptance_evidence": "Fastener specification, torque record and static/fatigue load result.",
+      "bench_method": "Confirm the installed bolt stack, then load the root interface in the documented worst-case direction.",
+      "required_inputs": [
+        "fastener_grade",
+        "thread_engagement_mm",
+        "printed_or_metal_mate_material",
+        "torque_and_preload"
+      ],
+      "status": "pending_physical_measurement"
+    },
+    "drivetrain_efficiency": {
+      "acceptance_evidence": "Efficiency versus load trace with the fitted gear pair installed.",
+      "bench_method": "Compare calibrated motor input torque with output torque at the spool under representative low-speed load.",
+      "required_inputs": [
+        "motor_input_torque_or_current_calibration",
+        "spool_output_torque",
+        "gear_lubrication_state"
+      ],
+      "status": "pending_physical_measurement"
+    },
+    "dynamic_root_load": {
+      "acceptance_evidence": "Peak root force and moment traces linked to the motion profile.",
+      "bench_method": "Run constrained low-speed and start-stop motions with a root load cell or strain-gauged fixture.",
+      "required_inputs": [
+        "measured_tip_load_N",
+        "motion_profile",
+        "root_acceleration_or_strain_trace"
+      ],
+      "status": "pending_physical_measurement"
+    },
+    "low_speed_full_travel_current": {
+      "acceptance_evidence": "Time-aligned current, voltage and temperature log for all three routes.",
+      "bench_method": "Log each C610 current and temperature through complete low-speed payout and take-up cycles.",
+      "required_inputs": [
+        "bus_voltage_V",
+        "per_motor_current_A",
+        "motor_and_C610_temperature_C",
+        "full_tendon_travel_command"
+      ],
+      "status": "pending_physical_measurement"
+    },
+    "seal_drag": {
+      "acceptance_evidence": "Torque trace, leakage observation and test duration for both media.",
+      "bench_method": "Measure breakaway and running torque of the completed shaft, seal and labyrinth assembly dry and submerged.",
+      "required_inputs": [
+        "seal_part_and_material",
+        "journal_surface_finish",
+        "dry_and_wet_breakaway_torque"
+      ],
+      "status": "pending_physical_measurement"
+    },
+    "spool_usable_turns": {
+      "acceptance_evidence": "Video or photographs plus turn count and layered-radius measurement for each spool.",
+      "bench_method": "Wind the production tendon across the full spool width and count stable turns before flange contact or cross-over instability.",
+      "required_inputs": [
+        "actual_tendon_diameter_mm",
+        "first_and_last_layer_radius_mm",
+        "retained_turns_before_flange_contact"
+      ],
+      "status": "pending_physical_measurement"
+    },
+    "tendon_friction": {
+      "acceptance_evidence": "Per-route friction ratio, sliding observation, slack and rebound record.",
+      "bench_method": "Pull each actual tendon route at low speed through straight and bent arm states while measuring both-end tension.",
+      "required_inputs": [
+        "actual_tendon_diameter_mm",
+        "route_tension_in_N",
+        "route_tension_out_N",
+        "bend_state"
+      ],
+      "status": "pending_physical_measurement"
+    },
+    "wet_mass_and_buoyancy": {
+      "acceptance_evidence": "Recorded mass, displacement and residual buoyancy for each medium.",
+      "bench_method": "Weigh the fully assembled dry and flooded machine, then measure displaced volume in fresh and salt water.",
+      "required_inputs": [
+        "measured_arm_wet_mass_kg",
+        "measured_displaced_volume_m3",
+        "freshwater_and_seawater_density_kg_m3"
+      ],
+      "status": "pending_physical_measurement"
+    }
+  },
+  "missing_measurements": [
+    "arm_wet_mass_and_buoyancy",
+    "bolt_group_capacity",
+    "measured_drivetrain_efficiency",
+    "measured_dynamic_root_load",
+    "measured_low_speed_full_travel_current",
+    "measured_seal_drag_torque",
+    "measured_spool_usable_turns",
+    "measured_tendon_friction_efficiency",
+    "target_displaced_volume"
+  ],
+  "qualified": false,
+  "root_load": {
+    "assumptions": {
+      "load_distribution": "nominal_equal_share_inputs_only",
+      "not_a_fastener_stress_analysis": true,
+      "unknown_displacement_policy": "zero_buoyancy_worst_case"
+    },
+    "buoyant_force_n": 0.0,
+    "displaced_volume_m3": null,
+    "dowel_count": 2,
+    "fastener_count": 6,
+    "gravity_m_s2": 9.80665,
+    "impact_factor": 1.5,
+    "lever_arm_m": 1.0,
+    "missing_measurements": [
+      "target_displaced_volume"
+    ],
+    "net_downward_force_n": 9.80665,
+    "nominal_force_per_dowel_n": 7.3549875,
+    "nominal_force_per_fastener_n": 2.4516625,
+    "qualified": false,
+    "root_moment_nm": 14.709975,
+    "target_mass_kg": 1.0,
+    "water_density_kg_m3": 1025.0
+  },
+  "spool_capacity": {
+    "assumptions": {
+      "capacity_margin_fraction": 0.2,
+      "capacity_radius": "minimum_effective_radius_conservative",
+      "required_turns_radius": "maximum_effective_radius_conservative"
+    },
+    "available_travel_mm": 376.99111843077515,
+    "margin_fraction": 0.2,
+    "margin_mm": 334.0600643328247,
+    "maximum_effective_radius_mm": 12.0,
+    "minimum_effective_radius_mm": 10.0,
+    "missing_measurements": [],
+    "qualified": true,
+    "required_travel_mm": 35.7758784149587,
+    "required_turns_at_max_radius": 0.5693907893195318,
+    "required_with_margin_mm": 42.93105409795044,
+    "usable_turns": 6.0
+  },
+  "status": "calculation_candidate_not_physical_release",
+  "tendon_travel": {
+    "assumptions": {
+      "method": "piecewise_linear_sampled_centerline_length",
+      "travel_definition": "full_extreme_to_extreme_wind_and_payout_range"
+    },
+    "extreme_lengths_mm": [
+      [
+        990.8878405922467,
+        1017.7164417685688,
+        1017.7164417685688
+      ],
+      [
+        1026.6637190072054,
+        999.8284254610261,
+        999.8284254610261
+      ]
+    ],
+    "reference_lengths_mm": [
+      1008.839992252721,
+      1008.839992252721,
+      1008.839992252721
+    ],
+    "required_travel_mm": [
+      35.7758784149587,
+      17.88801630754267,
+      17.88801630754267
+    ],
+    "signed_deltas_mm": [
+      [
+        -17.95215166047433,
+        8.876449515847753,
+        8.876449515847753
+      ],
+      [
+        17.82372675448437,
+        -9.011566791694918,
+        -9.011566791694918
+      ]
+    ]
+  }
+}
